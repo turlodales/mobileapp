@@ -131,7 +131,12 @@ namespace Toggl.iOS.Views.Calendar
                     if (!supplementaryViewLayoutAttributes.ContainsKey((NSString)pair.Key))
                         return;
 
-                    supplementaryViewLayoutAttributes[(NSString)pair.Key].Remove((NSIndexPath)pair.Value);
+                    var indexPaths = (NSArray) pair.Value;
+                    for(nuint i = 0; i < indexPaths.Count; i++)
+                    {
+                        var indexPath = indexPaths.GetItem<NSIndexPath>(i);
+                        supplementaryViewLayoutAttributes[(NSString)pair.Key].Remove(indexPath);
+                    }
                 });
 
             base.InvalidateLayout(context);
