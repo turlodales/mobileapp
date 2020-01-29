@@ -302,7 +302,7 @@ namespace Toggl.iOS.Views.Calendar
 
         private nint zIndexForItemAtIndexPath(NSIndexPath indexPath)
         {
-            var editingIndexIndexPath = dataSource.IndexPathForEditingItem();
+            var editingIndexIndexPath = dataSource.IndexPathForSelectedItem;
             var isEditing = editingIndexIndexPath != null && editingIndexIndexPath.Item == indexPath.Item;
             return isEditing ? 150 : 100;
         }
@@ -333,8 +333,8 @@ namespace Toggl.iOS.Views.Calendar
         {
             if (IsEditing)
             {
-                var editingItemIndexPath = dataSource.IndexPathForEditingItem();
-                var runningTimeEntryIndexPath = dataSource.IndexPathForRunningTimeEntry();
+                var editingItemIndexPath = dataSource.IndexPathForSelectedItem;
+                var runningTimeEntryIndexPath = dataSource.IndexPathForRunningTimeEntry;
                 var isEditingRunningTimeEntry = editingItemIndexPath != null && runningTimeEntryIndexPath != null
                                                 && runningTimeEntryIndexPath.Item == editingItemIndexPath.Item;
                 return isEditingRunningTimeEntry
@@ -374,8 +374,7 @@ namespace Toggl.iOS.Views.Calendar
 
         private CGRect frameForEditingHour(NSIndexPath indexPath)
         {
-            var editingItemIndexPath = dataSource.IndexPathForEditingItem();
-            var attrs = dataSource.LayoutAttributesForItemAtIndexPath(editingItemIndexPath);
+            var attrs = dataSource.LayoutAttributesForItemAtIndexPath(dataSource.IndexPathForSelectedItem);
 
             var isStartTime = (int)indexPath.Item == 0;
             var time = isStartTime ? attrs.StartTime : attrs.EndTime;
