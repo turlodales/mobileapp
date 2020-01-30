@@ -196,6 +196,7 @@
                 android:layout_height="48dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_project"
+                android:tint="@color/icon"
                 app:layout_constraintTop_toBottomOf="@id/GroupCount"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -251,6 +252,7 @@
                 android:layout_height="48dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_tag"
+                android:tint="@color/icon"
                 app:layout_constraintTop_toBottomOf="@id/ProjectBottomBorder"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -300,6 +302,7 @@
                 android:layout_height="48dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_billable"
+                android:tint="@color/icon"
                 app:layout_constraintTop_toBottomOf="@id/TagsBottomBorder"
                 app:layout_constraintLeft_toLeftOf="parent"
                 />
@@ -360,7 +363,7 @@
                 android:layout_height="48dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_timer"
-                android:tint="#757575"
+                android:tint="@color/icon"
                 app:layout_constraintTop_toBottomOf="@id/BillableBottomBorder"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -524,6 +527,7 @@
                 android:layout_height="48dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_delete"
+                android:tint="@color/icon"
                 app:layout_constraintTop_toBottomOf="@id/DurationBottomBorder"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
