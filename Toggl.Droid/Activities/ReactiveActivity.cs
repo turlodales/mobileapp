@@ -171,6 +171,7 @@ namespace Toggl.Droid.Activities
 
             SupportActionBar.SetDisplayHomeAsUpEnabled(showHomeAsUp);
             SupportActionBar.SetDisplayShowHomeEnabled(showHomeAsUp);
+            toolbar.Elevation = 0;
         }
 
         private void setupRootViewInsets()
