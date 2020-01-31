@@ -1,154 +1,106 @@
-using Android.App;
 using Android.Content;
-using Android.Gms.Auth;
-using Android.Gms.Auth.Api;
 using Android.Gms.Auth.Api.SignIn;
-using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using Toggl.Core.Exceptions;
+using Android.Gms.Tasks;
+using Toggl.Droid.Extensions;
 using Toggl.Shared.Extensions;
 using Object = Java.Lang.Object;
+
 
 namespace Toggl.Droid.Activities
 {
     public abstract partial class ReactiveActivity<TViewModel>
     {
-        private const int googleSignInResult = 123;
+        private const int googleSignInResult = 9002;
         private readonly object lockable = new object();
-        private readonly string scope = $"oauth2:{Scopes.Profile}";
 
         private bool isLoggingIn;
-        private GoogleApiClient googleApiClient;
+        private GoogleSignInClient signInClient;
         private Subject<string> loginSubject = new Subject<string>();
 
         public IObservable<string> GetGoogleToken()
         {
-            ensureApiClientExists();
-
-            return logOutIfNeeded().SelectMany(getGoogleToken);
-
-            IObservable<Unit> logOutIfNeeded()
-            {
-                if (!googleApiClient.IsConnected)
-                    return Observable.Return(Unit.Default);
-
-                var logoutSubject = new Subject<Unit>();
-                var logoutCallback = new LogOutCallback(() => logoutSubject.CompleteWith(Unit.Default));
-                Auth.GoogleSignInApi
-                    .SignOut(googleApiClient)
-                    .SetResultCallback(logoutCallback);
-
-                return logoutSubject.AsObservable();
-            }
+            return signOutIfNeeded().SelectMany(getGoogleToken);
 
             IObservable<string> getGoogleToken(Unit _)
             {
                 lock (lockable)
                 {
                     if (isLoggingIn)
+                    {
                         return loginSubject.AsObservable();
+                    }
 
                     isLoggingIn = true;
                     loginSubject = new Subject<string>();
 
-                    if (googleApiClient.IsConnected)
-                    {
-                        login();
-                        return loginSubject.AsObservable();
-                    }
-
-                    googleApiClient.Connect();
+                    SignIn();
                     return loginSubject.AsObservable();
                 }
             }
+
+            IObservable<Unit> signOutIfNeeded()
+            {
+                var logoutSubject = new Subject<Unit>();
+                var logoutCallback = new SignOutCallback(() => logoutSubject.CompleteWith(Unit.Default));
+                signInClient.SignOut().AddOnCompleteListener(this, logoutCallback);
+                return logoutSubject.AsObservable();
+            }
+        }
+
+        private void SignIn()
+        {
+            var intent = signInClient.SignInIntent;
+            StartActivityForResult(intent, googleSignInResult);
         }
 
         private void onGoogleSignInResult(Intent data)
         {
             lock (lockable)
             {
-                var signInData = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
-                if (!signInData.IsSuccess)
+                var completedTask = GoogleSignIn.GetSignedInAccountFromIntent(data);
+                try
                 {
-                    loginSubject.OnError(new GoogleLoginException(signInData.Status.IsCanceled));
-                    isLoggingIn = false;
-                    return;
+                    var account = completedTask.GetResult(JavaUtils.ToClass<ApiException>()) as GoogleSignInAccount;
+                    loginSubject.OnNext(account.IdToken);
+                    loginSubject.OnCompleted();
                 }
-
-                Task.Run(() =>
+                catch (ApiException e) {
+                    loginSubject.OnError(e);
+                }
+                finally
                 {
-                    try
-                    {
-                        var token = GoogleAuthUtil.GetToken(Application.Context, signInData.SignInAccount.Account, scope);
-                        loginSubject.OnNext(token);
-                        loginSubject.OnCompleted();
-                    }
-                    catch (Exception e)
-                    {
-                        loginSubject.OnError(e);
-                    }
-                    finally
-                    {
-                        isLoggingIn = false;
-                    }
-                });
+                    isLoggingIn = false;
+                }
             }
         }
 
-        private void login()
+        private void initializeGoogleClient()
         {
-            if (!isLoggingIn) return;
-
-            if (!googleApiClient.IsConnected)
-            {
-                throw new GoogleLoginException(false);
-            }
-
-            var intent = Auth.GoogleSignInApi.GetSignInIntent(googleApiClient);
-            StartActivityForResult(intent, googleSignInResult);
-        }
-
-        private void onError(ConnectionResult result)
-        {
-            lock (lockable)
-            {
-                loginSubject.OnError(new GoogleLoginException(false));
-                isLoggingIn = false;
-            }
-        }
-
-        private void ensureApiClientExists()
-        {
-            if (googleApiClient != null)
-                return;
+            if (signInClient != null) return;
 
             var signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
                 .RequestIdToken("{TOGGL_DROID_GOOGLE_SERVICES_CLIENT_ID}")
                 .RequestEmail()
                 .Build();
 
-            googleApiClient = new GoogleApiClient.Builder(Application.Context)
-                .AddConnectionCallbacks(login)
-                .AddOnConnectionFailedListener(onError)
-                .AddApi(Auth.GOOGLE_SIGN_IN_API, signInOptions)
-                .Build();
+            signInClient = GoogleSignIn.GetClient(this, signInOptions);
         }
 
-        private class LogOutCallback : Object, IResultCallback
+        private class SignOutCallback : Object, IOnCompleteListener
         {
             private Action callback;
 
-            public LogOutCallback(Action callback)
+            public SignOutCallback(Action callback)
             {
                 this.callback = callback;
             }
 
-            public void OnResult(Object result)
+            public void OnComplete(Task task)
             {
                 callback();
             }

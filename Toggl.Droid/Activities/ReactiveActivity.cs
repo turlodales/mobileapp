@@ -64,6 +64,7 @@ namespace Toggl.Droid.Activities
             InitializeViews();
             RestoreViewModelStateFromBundle(bundle);
             InitializeBindings();
+            initializeGoogleClient();
             this.SetQFlags();
         }
 
