@@ -67,6 +67,12 @@ namespace Toggl.Droid.Activities
             this.SetQFlags();
         }
 
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState);
+            RestoreViewModelStateFromBundle(savedInstanceState);
+        }
+
         /// <summary>
         /// Use this to rehydrate the ViewModel after tombstoning
         /// </summary>
