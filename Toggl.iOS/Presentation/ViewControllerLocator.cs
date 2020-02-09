@@ -91,8 +91,6 @@ namespace Toggl.iOS.Presentation
                     return new TokenResetViewController(vm);
                 case UpcomingEventsNotificationSettingsViewModel vm:
                     return new UpcomingEventsNotificationSettingsViewController(vm);
-                case January2020CampaignViewModel vm:
-                    return new January2020CampaignViewController(vm);
                 case DateRangePickerViewModel vm:
                     return new DateRangePickerViewController(vm);
                 default:
@@ -109,7 +107,7 @@ namespace Toggl.iOS.Presentation
             if (viewController is CalendarViewController)
                 return viewController;
 
-            return  new ReactiveNavigationController(viewController);
+            return new ReactiveNavigationController(viewController);
         }
     }
 }

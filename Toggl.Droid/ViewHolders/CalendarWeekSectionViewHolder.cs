@@ -22,7 +22,7 @@ namespace Toggl.Droid.ViewHolders
     public class CalendarWeekSectionViewHolder
     {
         private CompositeDisposable disposableBag = new CompositeDisposable();
-        private readonly InputAction<CalendarWeeklyViewDayViewModel> dayInputAction;
+        private readonly Action<CalendarWeeklyViewDayViewModel> dayInputAction;
         private readonly ConstraintLayout rootView;
         private readonly TextView[] dayTextViews;
         private readonly View currentDayIndicator;
@@ -49,7 +49,7 @@ namespace Toggl.Droid.ViewHolders
             { CalendarWeekDayType.TodaySelected, Typeface.Create(Typeface.SansSerif, TypefaceStyle.Bold) }
         };
 
-        public CalendarWeekSectionViewHolder(ConstraintLayout view, InputAction<CalendarWeeklyViewDayViewModel> dayInputAction)
+        public CalendarWeekSectionViewHolder(ConstraintLayout view, Action<CalendarWeeklyViewDayViewModel> dayInputAction)
         {
             this.dayInputAction = dayInputAction;
             rootView = view;
@@ -75,7 +75,7 @@ namespace Toggl.Droid.ViewHolders
             if (!dayViewModel.Enabled)
                 return;
 
-            dayInputAction.Inputs.OnNext(dayViewModel);
+            dayInputAction(dayViewModel);
         }
 
         public void InitDaysAndSelectedDate(ImmutableList<CalendarWeeklyViewDayViewModel> weekSection, DateTime newSelectedDate)

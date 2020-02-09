@@ -39,7 +39,8 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/SelectWorkspaceFAB"
         app:elevation="4dp"
-        android:src="@drawable/workspace_white"
+        android:src="@drawable/ic_workspace"
+        android:tint="@android:color/white"
         app:backgroundTint="@color/startTimeEntryButtonBackground"
         android:layout_width="56dp"
         android:layout_height="56dp"

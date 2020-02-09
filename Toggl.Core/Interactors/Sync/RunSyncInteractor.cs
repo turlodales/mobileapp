@@ -49,7 +49,7 @@ namespace Toggl.Core.Interactors
 
         private IObservable<SyncOutcome> syncFailed(Exception error)
         {
-            analyticsService.PushNotificationSyncFailed.Track(sourceState.ToString(), error.GetType().FullName, error.Message, error.StackTrace);
+            analyticsService.PushNotificationSyncFailed.Track(sourceState.ToString(), error.GetType().FullName, error.Message, error.StackTrace ?? "");
             return Observable.Return(SyncOutcome.Failed);
         }
     }

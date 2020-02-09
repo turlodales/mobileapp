@@ -18,6 +18,19 @@ namespace Toggl.iOS.Cells.Reports
         private static readonly UIColor totalTimeEnabledColor = Colors.Reports.TotalTimeActivated.ToNativeColor();
         private static readonly UIColor disabledColor = Colors.Reports.Disabled.ToNativeColor();
 
+        private static readonly int secondsPartLength = 3;
+        private readonly UIStringAttributes durationEmphasizedAttributes = new UIStringAttributes
+        {
+            Font = UIFont.SystemFontOfSize(fontSize, UIFontWeight.Medium),
+            ForegroundColor = totalTimeEnabledColor
+        };
+
+        private readonly UIStringAttributes durationSecondsAttributes = new UIStringAttributes
+        {
+            Font = UIFont.SystemFontOfSize(fontSize, UIFontWeight.Light),
+            ForegroundColor = totalTimeEnabledColor
+        };
+
         private readonly UIStringAttributes normalAttributes = new UIStringAttributes
         {
             Font = UIFont.SystemFontOfSize(fontSize, UIFontWeight.Medium),
@@ -76,7 +89,7 @@ namespace Toggl.iOS.Cells.Reports
             {
                 LoadingView.Hidden = true;
                 BillablePercentageLabel.AttributedText = billableFormattedString(element.BillablePercentage);
-                TotalTimeLabel.Text = ((TimeSpan)element.TotalTime).ToFormattedString(element.DurationFormat);
+                TotalTimeLabel.AttributedText = durationFormattedString(element.TotalTime, element.DurationFormat);
                 TotalTimeLabel.TextColor = element.TotalTime == TimeSpan.Zero
                     ? disabledColor
                     : totalTimeEnabledColor;
@@ -93,6 +106,19 @@ namespace Toggl.iOS.Cells.Reports
             var attributes = isDisabled ? disabledAttributes : normalAttributes;
             return new NSAttributedString(percentage, attributes);
         }
+
+        private NSAttributedString durationFormattedString(TimeSpan? duration, DurationFormat format)
+        {
+            var durationText = ((TimeSpan) duration).ToFormattedString(format);
+
+            if (format == DurationFormat.Classic || format == DurationFormat.Decimal)
+                return new NSAttributedString(durationText, durationEmphasizedAttributes);
+
+            var emphazisedLength = durationText.Length - secondsPartLength;
+            var attributedString = new NSMutableAttributedString(durationText);
+            attributedString.AddAttributes(durationEmphasizedAttributes, new NSRange(0, emphazisedLength));
+            attributedString.AddAttributes(durationSecondsAttributes, new NSRange(emphazisedLength, secondsPartLength));
+            return attributedString;
+        }
     }
 }
-

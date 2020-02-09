@@ -67,7 +67,7 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsSuggestingProjects
-                .Select(isSuggesting => isSuggesting ? Resource.Drawable.te_project_active : Resource.Drawable.project)
+                .Select(isSuggesting => isSuggesting ? Resource.Drawable.ic_project_active : Resource.Drawable.ic_project)
                 .Subscribe(selectProjectToolbarButton.SetImageResource)
                 .DisposedBy(DisposeBag);
 
@@ -77,7 +77,7 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsSuggestingTags
-                .Select(isSuggesting => isSuggesting ? Resource.Drawable.te_tag_active : Resource.Drawable.tag)
+                .Select(isSuggesting => isSuggesting ? Resource.Drawable.ic_tag_active : Resource.Drawable.ic_tag)
                 .Subscribe(selectTagToolbarButton.SetImageResource)
                 .DisposedBy(DisposeBag);
 
@@ -87,7 +87,7 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsBillable
-                .Select(isSuggesting => isSuggesting ? Resource.Drawable.te_billable_active : Resource.Drawable.billable)
+                .Select(isSuggesting => isSuggesting ? Resource.Drawable.ic_billable_active : Resource.Drawable.ic_billable)
                 .Subscribe(selectBillableToolbarButton.SetImageResource)
                 .DisposedBy(DisposeBag);
 

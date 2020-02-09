@@ -19,6 +19,7 @@ namespace Toggl.Core.Login
         private readonly Lazy<IApiFactory> apiFactory;
         private readonly Lazy<ITogglDatabase> database;
         private readonly Lazy<IPrivateSharedStorageService> privateSharedStorageService;
+        private readonly Lazy<ITimeService> timeService;
 
         private readonly ISubject<ITogglApi> userLoggedInSubject = new Subject<ITogglApi>();
         private readonly ISubject<Unit> userLoggedOutSubject = new Subject<Unit>();
@@ -29,15 +30,18 @@ namespace Toggl.Core.Login
         public UserAccessManager(
             Lazy<IApiFactory> apiFactory,
             Lazy<ITogglDatabase> database,
-            Lazy<IPrivateSharedStorageService> privateSharedStorageService)
+            Lazy<IPrivateSharedStorageService> privateSharedStorageService,
+            Lazy<ITimeService> timeService)
         {
             Ensure.Argument.IsNotNull(database, nameof(database));
             Ensure.Argument.IsNotNull(apiFactory, nameof(apiFactory));
             Ensure.Argument.IsNotNull(privateSharedStorageService, nameof(privateSharedStorageService));
+            Ensure.Argument.IsNotNull(timeService, nameof(timeService));
 
             this.database = database;
             this.apiFactory = apiFactory;
             this.privateSharedStorageService = privateSharedStorageService;
+            this.timeService = timeService;
         }
 
         public IObservable<Unit> Login(Email email, Password password)
@@ -51,7 +55,7 @@ namespace Toggl.Core.Login
 
             return database.Value
                 .Clear()
-                .SelectMany(_ => apiFactory.Value.CreateApiWith(credentials).User.Get())
+                .SelectMany(_ => apiFactory.Value.CreateApiWith(credentials, timeService.Value).User.Get())
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Create)
                 .Select(apiFromUser)
@@ -91,7 +95,7 @@ namespace Toggl.Core.Login
             if (!email.IsValid)
                 throw new ArgumentException($"A valid {nameof(email)} must be provided when trying to reset forgotten password.");
 
-            var api = apiFactory.Value.CreateApiWith(Credentials.None);
+            var api = apiFactory.Value.CreateApiWith(Credentials.None, timeService.Value);
             return api.User.ResetPassword(email).ToObservable();
         }
 
@@ -132,7 +136,7 @@ namespace Toggl.Core.Login
         {
             var apiToken = privateSharedStorageService.Value.GetApiToken();
             var newCredentials = Credentials.WithApiToken(apiToken);
-            var api = apiFactory.Value.CreateApiWith(newCredentials);
+            var api = apiFactory.Value.CreateApiWith(newCredentials, timeService.Value);
             return api;
         }
 
@@ -145,7 +149,7 @@ namespace Toggl.Core.Login
                 .Single()
                 .Select(user => user.Email)
                 .Select(email => Credentials.WithPassword(email, password))
-                .Select(apiFactory.Value.CreateApiWith)
+                .Select(credentials => apiFactory.Value.CreateApiWith(credentials, timeService.Value))
                 .SelectMany(api => api.User.Get())
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Update)
@@ -163,7 +167,7 @@ namespace Toggl.Core.Login
         {
             storeApiInfoOnPrivateStorage(user);
             var newCredentials = Credentials.WithApiToken(user.ApiToken);
-            var api = apiFactory.Value.CreateApiWith(newCredentials);
+            var api = apiFactory.Value.CreateApiWith(newCredentials, timeService.Value);
             return api;
         }
 
@@ -178,7 +182,7 @@ namespace Toggl.Core.Login
             var credentials = Credentials.WithGoogleToken(googleToken);
 
             return Observable
-                .Return(apiFactory.Value.CreateApiWith(credentials))
+                .Return(apiFactory.Value.CreateApiWith(credentials, timeService.Value))
                 .SelectMany(api => api.User.GetWithGoogle())
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Create)
@@ -190,7 +194,7 @@ namespace Toggl.Core.Login
         private IObservable<IUser> signUp(Email email, Password password, bool termsAccepted, int countryId, string timezone)
         {
             return apiFactory.Value
-                .CreateApiWith(Credentials.None)
+                .CreateApiWith(Credentials.None, timeService.Value)
                 .User
                 .SignUp(email, password, termsAccepted, countryId, timezone)
                 .ToObservable();
@@ -198,7 +202,7 @@ namespace Toggl.Core.Login
 
         private IObservable<Unit> signUpWithGoogle(string googleToken, bool termsAccepted, int countryId, string timezone)
         {
-            var api = apiFactory.Value.CreateApiWith(Credentials.None);
+            var api = apiFactory.Value.CreateApiWith(Credentials.None, timeService.Value);
             return api.User
                 .SignUpWithGoogle(googleToken, termsAccepted, countryId, timezone)
                 .ToObservable()

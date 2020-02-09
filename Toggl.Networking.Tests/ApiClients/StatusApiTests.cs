@@ -3,12 +3,15 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Networking.ApiClients;
 using Toggl.Networking.Exceptions;
 using Toggl.Networking.Network;
+using Toggl.Networking.Tests.Exceptions;
+using Toggl.Networking.Tests.Network;
 using Xunit;
 using static System.Net.HttpStatusCode;
 
@@ -54,7 +57,7 @@ namespace Toggl.Networking.Tests.Clients
             {
                 apiClient
                     .Send(Arg.Any<IRequest>())
-                    .Returns(x => new Response("OK", true, "text/plain", new List<KeyValuePair<string, IEnumerable<string>>>(), OK));
+                    .Returns(x => new Response("OK", true, "text/plain", new MockHttpHeaders(), OK));
 
                 statusApi.IsAvailable().Wait();
             }
@@ -64,7 +67,7 @@ namespace Toggl.Networking.Tests.Clients
             {
                 apiClient
                     .Send(Arg.Any<IRequest>())
-                    .Returns(x => new Response("PANIC", false, "text/plain", new List<KeyValuePair<string, IEnumerable<string>>>(), InternalServerError));
+                    .Returns(x => new Response("PANIC", false, "text/plain", new MockHttpHeaders(), InternalServerError));
 
                 Action gettingServerStatus = () => statusApi.IsAvailable().Wait();
 

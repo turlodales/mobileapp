@@ -194,27 +194,27 @@ namespace Toggl.Droid.ViewHolders.MainLog
         private void presentAsCollapsedGroupHeader(int timeEntriesCount)
         {
             groupExpansionButton.Enabled = true;
-            groupCountTextView.SetBackgroundResource(Resource.Drawable.GrayBorderRoundedRectangle);
+            groupCountTextView.SetBackgroundResource(Resource.Drawable.background_rounded_rectangle_gray_border);
             groupCountTextView.Enabled = true;
             groupCountTextView.Text = timeEntriesCount.ToString();
             groupCountTextView.Visibility = ViewStates.Visible;
             groupCountTextView.SetTextColor(ItemView.Context.SafeGetColor(Resource.Color.primaryText));
             groupItemBackground.Visibility = ViewStates.Gone;
             durationPadding.SetBackgroundColor(cardColor);
-            durationFadeGradient.SetBackgroundResource(Resource.Drawable.TransparentToCardColorGradient);
+            durationFadeGradient.SetBackgroundResource(Resource.Drawable.gradient_transparent_to_card_color);
         }
 
         private void presentAsExpandedGroupHeader(int timeEntriesCount)
         {
             groupExpansionButton.Enabled = true;
-            groupCountTextView.SetBackgroundResource(Resource.Drawable.TagsBackground);
+            groupCountTextView.SetBackgroundResource(Resource.Drawable.background_tags);
             groupCountTextView.Enabled = true;
             groupCountTextView.Text = timeEntriesCount.ToString();
             groupCountTextView.Visibility = ViewStates.Visible;
             groupCountTextView.SetTextColor(ItemView.Context.SafeGetColor(Resource.Color.accent));
             groupItemBackground.Visibility = ViewStates.Gone;
             durationPadding.SetBackgroundColor(cardColor);
-            durationFadeGradient.SetBackgroundResource(Resource.Drawable.TransparentToCardColorGradient);
+            durationFadeGradient.SetBackgroundResource(Resource.Drawable.gradient_transparent_to_card_color);
         }
 
         private void presentAsSingleTimeEntry()
@@ -223,7 +223,7 @@ namespace Toggl.Droid.ViewHolders.MainLog
             groupCountTextView.Visibility = ViewStates.Gone;
             groupItemBackground.Visibility = ViewStates.Gone;
             durationPadding.SetBackgroundColor(cardColor);
-            durationFadeGradient.SetBackgroundResource(Resource.Drawable.TransparentToCardColorGradient);
+            durationFadeGradient.SetBackgroundResource(Resource.Drawable.gradient_transparent_to_card_color);
         }
 
         private void presentAsTimeEntryInAGroup()
@@ -232,7 +232,7 @@ namespace Toggl.Droid.ViewHolders.MainLog
             groupCountTextView.Visibility = ViewStates.Invisible;
             groupItemBackground.Visibility = ViewStates.Visible;
             durationPadding.SetBackgroundColor(backgroundColor);
-            durationFadeGradient.SetBackgroundResource(Resource.Drawable.TransparentToBackgroundGradient);
+            durationFadeGradient.SetBackgroundResource(Resource.Drawable.gradient_transparent_to_bg);
         }
 
         protected override void Dispose(bool disposing)

@@ -642,7 +642,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 ViewModel.SelectSuggestion.ExecuteWithCompletion(new ProjectSuggestion(project))
                     .Do(_ => ViewModel.SetTextSpans(ImmutableList.Create<ISpan>(querySpan, projectSpan)))
-                    .PrependAction(ViewModel.SelectSuggestion, tagSuggestion)
+                    .AppendAction(ViewModel.SelectSuggestion, tagSuggestion)
                     .Subscribe();
 
                 TestScheduler.Start();
@@ -886,8 +886,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.Suggestions.Subscribe(observer);
 
                 ViewModel.ToggleProjectSuggestions.ExecuteWithCompletion()
-                    .PrependAction(ViewModel.SelectSuggestion, chosenProject)
-                    .PrependAction(ViewModel.ToggleProjectSuggestions)
+                    .AppendAction(ViewModel.SelectSuggestion, chosenProject)
+                    .AppendAction(ViewModel.ToggleProjectSuggestions)
                     .Subscribe();
 
                 TestScheduler.Start();
@@ -1595,8 +1595,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                             return new TagSuggestion(tag);
                         });
 
-                    ViewModel.SelectSuggestion.ExecuteSequentally(suggestions)
-                        .PrependAction(ViewModel.SelectSuggestion, Suggestion)
+                    ViewModel.SelectSuggestion.ExecuteSequentially(suggestions)
+                        .AppendAction(ViewModel.SelectSuggestion, Suggestion)
                         .Subscribe();
 
                     TestScheduler.Start();

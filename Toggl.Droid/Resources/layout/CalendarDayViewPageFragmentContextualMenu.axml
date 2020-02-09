@@ -12,7 +12,7 @@
 
     <ImageView
         android:id="@+id/DismissButton"
-        android:src="@drawable/close"
+        android:src="@drawable/ic_close"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="12dp"
         android:layout_width="40dp"

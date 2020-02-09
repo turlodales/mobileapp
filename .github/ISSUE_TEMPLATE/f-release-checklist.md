@@ -50,9 +50,12 @@ about: A checklist before releasing to the AppStore and Play Store.
 - [ ] Fix any issue in the hotfix branch and go back to the testing phase
 
 
-## Closing this issue
+## Clean up and closing this issue
 
-- [ ] Close this issue and the release project when the release and any hotfix have shipped to all users
+Only continue these steps once the release and any hotfixes have shipped to all users.
+
+- [ ] Clean up any other issues that may still remain in the release project
+- [ ] Close this issue and the release project
 
 
 ### Notes and useful links

@@ -385,7 +385,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.IsEditingStartTime.Subscribe(startObserver);
                 ViewModel.IsEditingStopTime.Subscribe(stopObserver);
 
-                ViewModel.EditStartTime.ExecuteSequentally(times: 2)
+                ViewModel.EditStartTime.ExecuteSequentially(times: 2)
                     .Subscribe();
 
                 TestScheduler.Start();
@@ -516,7 +516,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.IsEditingStartTime.Subscribe(startObserver);
                 ViewModel.IsEditingStopTime.Subscribe(stopObserver);
 
-                ViewModel.EditStopTime.ExecuteSequentally(2)
+                ViewModel.EditStopTime.ExecuteSequentially(2)
                     .Subscribe();
 
                 TestScheduler.Start();

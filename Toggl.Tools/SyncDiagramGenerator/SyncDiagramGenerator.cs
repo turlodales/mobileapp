@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using NSubstitute;
@@ -11,10 +10,10 @@ using Toggl.Core.DataSources;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;
 using Toggl.Core.Sync.States;
-using Toggl.Core.UI;
 using Toggl.Storage;
 using Toggl.Networking;
 using Toggl.Storage.Settings;
+using Toggl.Core.Tests;
 
 namespace SyncDiagramGenerator
 {
@@ -235,7 +234,6 @@ namespace SyncDiagramGenerator
                 Substitute.For<ITogglDatabase>(),
                 Substitute.For<ITogglApi>(),
                 Substitute.For<ITogglDataSource>(),
-                Substitute.For<IScheduler>(),
                 Substitute.For<ITimeService>(),
                 Substitute.For<IAnalyticsService>(),
                 Substitute.For<ILastTimeUsageStorage>(),

@@ -16,19 +16,20 @@
             android:paddingTop="16dp"
             android:paddingStart="16dp"
             android:paddingBottom="16dp"
-            android:background="@drawable/TooltipShape"
+            android:background="@drawable/background_tooltip"
             tools:text="Add a project and tags on the fly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ImageView
-            app:srcCompat="@drawable/black_diamond"
+            app:srcCompat="@drawable/shape_diamond"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginTop="-6dp"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
     <ImageView
-        app:srcCompat="@drawable/white_close"
+        app:srcCompat="@drawable/ic_close"
+        android:tint="@android:color/white"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_gravity="end"

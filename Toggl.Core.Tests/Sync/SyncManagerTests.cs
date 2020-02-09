@@ -13,6 +13,7 @@ using Toggl.Core.Exceptions;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;
 using Toggl.Core.Tests.Generators;
+using Toggl.Core.Tests.Helpers;
 using Toggl.Networking.Exceptions;
 using Toggl.Networking.Network;
 using Toggl.Storage.Settings;
@@ -727,9 +728,9 @@ namespace Toggl.Core.Tests.Sync
             public static IEnumerable<object[]> ExceptionsRethrownByProgressObservableOnError()
                 => new[]
                 {
-                    new object[] { new ClientDeprecatedException(Substitute.For<IRequest>(), Substitute.For<IResponse>()) },
-                    new object[] { new ApiDeprecatedException(Substitute.For<IRequest>(), Substitute.For<IResponse>()) },
-                    new object[] { new UnauthorizedException(Substitute.For<IRequest>(), Substitute.For<IResponse>()),  }
+                    new object[] { new ClientDeprecatedException(ApiExceptions.Request, ApiExceptions.Response) },
+                    new object[] { new ApiDeprecatedException(ApiExceptions.Request, ApiExceptions.Response) },
+                    new object[] { new UnauthorizedException(ApiExceptions.Request, ApiExceptions.Response) }
                 };
 
             [Fact]

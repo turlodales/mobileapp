@@ -50,7 +50,7 @@ namespace Toggl.Droid.Adapters
 
         protected BaseSectionedRecyclerAdapter()
         {
-            HasStableIds = false;
+            SetHasStableIds(false);
             ItemsUpdateCompleted = itemsUpdateCompletedSubject.AsObservable();
         }
 

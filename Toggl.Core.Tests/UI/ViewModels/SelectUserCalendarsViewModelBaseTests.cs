@@ -140,7 +140,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     .Where(calendar => selectedIds.Contains(calendar.Id))
                     .Select(calendar => new SelectableUserCalendarViewModel(calendar, false));
 
-                ViewModel.SelectCalendar.ExecuteSequentally(calendars).Subscribe();
+                ViewModel.SelectCalendar.ExecuteSequentially(calendars).Subscribe();
                 ViewModel.CloseWithDefaultResult();
 
                 TestScheduler.Start();
@@ -174,8 +174,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     .Where(calendar => selectedIds.Contains(calendar.Id))
                     .Select(calendar => new SelectableUserCalendarViewModel(calendar, false));
 
-                ViewModel.SelectCalendar.ExecuteSequentally(calendars)
-                    .PrependAction(ViewModel.Save)
+                ViewModel.SelectCalendar.ExecuteSequentially(calendars)
+                    .AppendAction(ViewModel.Save)
                     .Subscribe();
 
                 TestScheduler.Start();
@@ -257,7 +257,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         });
 
                     var auxObserver = TestScheduler.CreateObserver<Unit>();
-                    ViewModel.SelectCalendar.ExecuteSequentally(selectedableUserCalendars)
+                    ViewModel.SelectCalendar.ExecuteSequentially(selectedableUserCalendars)
                         .Subscribe(auxObserver);
 
                     TestScheduler.Start();
@@ -289,7 +289,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
 
                     var auxObserver = TestScheduler.CreateObserver<Unit>();
-                    ViewModel.SelectCalendar.ExecuteSequentally(
+                    ViewModel.SelectCalendar.ExecuteSequentially(
                             selectedableUserCalendars
                                 .Concat(selectedableUserCalendars)
                         )
@@ -332,8 +332,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     .Where(calendar => selectedIds.Contains(calendar.Id))
                     .Select(calendar => new SelectableUserCalendarViewModel(calendar, false));
 
-                ViewModel.SelectCalendar.ExecuteSequentally(calendars)
-                    .PrependAction(ViewModel.Save)
+                ViewModel.SelectCalendar.ExecuteSequentially(calendars)
+                    .AppendAction(ViewModel.Save)
                     .Subscribe();
 
                 TestScheduler.Start();
@@ -370,8 +370,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     .Where(calendar => selectedIds.Contains(calendar.Id))
                     .Select(calendar => new SelectableUserCalendarViewModel(calendar, false));
 
-                ViewModel.SelectCalendar.ExecuteSequentally(calendars)
-                    .PrependAction(ViewModel.Save)
+                ViewModel.SelectCalendar.ExecuteSequentially(calendars)
+                    .AppendAction(ViewModel.Save)
                     .Subscribe();
 
                 TestScheduler.Start();

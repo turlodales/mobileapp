@@ -9,10 +9,11 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:padding="17dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:layout_gravity="center"
-            android:src="@drawable/stop_white"
-            android:background="@drawable/WidgetStopButton"/>
+            android:src="@drawable/ic_stop_big"
+            android:tint="@android:color/white"
+            android:background="@drawable/shape_widget_stop_button"/>
     <ImageButton
             android:id="@+id/StartButton"
             android:layout_width="60dp"
@@ -21,8 +22,9 @@
             android:paddingBottom="17dp"
             android:paddingLeft="18dp"
             android:paddingRight="16dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:layout_gravity="center"
-            android:src="@drawable/play_white"
-            android:background="@drawable/WidgetStartButton"/>
+            android:src="@drawable/ic_play_big"
+            android:tint="@android:color/white"
+            android:background="@drawable/shape_widget_start_button"/>
 </FrameLayout>

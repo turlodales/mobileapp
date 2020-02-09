@@ -53,11 +53,11 @@ namespace Toggl.Droid.ViewHolders
         
         private static readonly Dictionary<CalendarMenuActionKind, int> icons = new Dictionary<CalendarMenuActionKind, int>
         {
-            { CalendarMenuActionKind.Discard, Resource.Drawable.close },
-            { CalendarMenuActionKind.Edit, Resource.Drawable.ic_edit },
+            { CalendarMenuActionKind.Discard, Resource.Drawable.ic_close },
+            { CalendarMenuActionKind.Edit, Resource.Drawable.ic_edit_time_entry },
             { CalendarMenuActionKind.Save, Resource.Drawable.ic_save },
             { CalendarMenuActionKind.Delete, Resource.Drawable.ic_delete },
-            { CalendarMenuActionKind.Copy, Resource.Drawable.ic_copy },
+            { CalendarMenuActionKind.Copy, Resource.Drawable.ic_copy_time_entry },
             { CalendarMenuActionKind.Start, Resource.Drawable.ic_play },
             { CalendarMenuActionKind.Continue, Resource.Drawable.ic_play },
             { CalendarMenuActionKind.Stop, Resource.Drawable.ic_stop }

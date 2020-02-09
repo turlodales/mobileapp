@@ -73,19 +73,19 @@ namespace Toggl.Droid
             switch (type)
             {
                 case ShortcutType.ContinueLastTimeEntry:
-                    resourceId = Resource.Drawable.play;
+                    resourceId = Resource.Drawable.ic_play_big;
                     break;
 
                 case ShortcutType.Reports:
-                    resourceId = Resource.Drawable.reports_dark;
+                    resourceId = Resource.Drawable.ic_reports;
                     break;
 
                 case ShortcutType.StartTimeEntry:
-                    resourceId = Resource.Drawable.play;
+                    resourceId = Resource.Drawable.ic_play_big;
                     break;
 
                 case ShortcutType.StopTimeEntry:
-                    resourceId = Resource.Drawable.stop_white;
+                    resourceId = Resource.Drawable.ic_stop_big;
                     break;
             }
 

@@ -7,6 +7,7 @@ using System.Net.Http;
 using Toggl.Networking.Exceptions;
 using Toggl.Networking.Helpers;
 using Toggl.Networking.Network;
+using Toggl.Networking.Tests.Network;
 using Xunit;
 using static System.Net.HttpStatusCode;
 using NotImplementedException = Toggl.Networking.Exceptions.NotImplementedException;
@@ -84,7 +85,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var response = new Response(body, false, "plain/text", new List<KeyValuePair<string, IEnumerable<string>>>(), HttpStatusCode.InternalServerError);
+                var response = new Response(body, false, "plain/text", new MockHttpHeaders(), HttpStatusCode.InternalServerError);
                 var exception = new InternalServerErrorException(request, response, "Custom message.");
                 var expectedSerialization = $"InternalServerErrorException (Custom message.) for request {method} {endpoint} with response {{\"status\":\"500 InternalServerError\",\"headers\":{{}},\"body\":\"{body}\"}}";
 
@@ -100,7 +101,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url/endpoint");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var headers = new[] { new KeyValuePair<string, IEnumerable<string>>("abc", new[] { "a", "b", "c" }) };
+                var headers = new MockHttpHeaders { {"abc", new[] { "a", "b", "c" }} };
                 var response = new Response(body, false, "plain/text", headers, HttpStatusCode.InternalServerError);
                 var exception = new InternalServerErrorException(request, response, "Custom message.");
                 var expectedSerialization = $"InternalServerErrorException (Custom message.) for request {method} {endpoint} with response {{\"status\":\"500 InternalServerError\",\"headers\":{{\"abc\":[\"a\",\"b\",\"c\"]}},\"body\":\"{body}\"}}";
@@ -119,7 +120,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var response = new Response(body, false, "application/json", new List<KeyValuePair<string, IEnumerable<string>>>(), HttpStatusCode.NotFound);
+                var response = new Response(body, false, "application/json", new MockHttpHeaders(), HttpStatusCode.NotFound);
                 var exception = new ApiException(request, response, defaultMessage);
 
                 exception.LocalizedApiErrorMessage.Should().Be(message);
@@ -138,7 +139,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var response = new Response(noMessageJson, false, "application/json", new List<KeyValuePair<string, IEnumerable<string>>>(), HttpStatusCode.NotFound);
+                var response = new Response(noMessageJson, false, "application/json", new MockHttpHeaders(), HttpStatusCode.NotFound);
                 var exception = new ApiException(request, response, defaultMessage);
 
                 exception.LocalizedApiErrorMessage.Should().Be("Encountered unexpected error.");
@@ -156,7 +157,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var response = new Response(brokenJson, false, "application/json", new List<KeyValuePair<string, IEnumerable<string>>>(), HttpStatusCode.NotFound);
+                var response = new Response(brokenJson, false, "application/json", new MockHttpHeaders(), HttpStatusCode.NotFound);
                 var exception = new ApiException(request, response, defaultMessage);
 
                 exception.LocalizedApiErrorMessage.Should().Be("Encountered unexpected error.");
@@ -170,7 +171,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var response = new Response(body, false, "text/plain", new List<KeyValuePair<string, IEnumerable<string>>>(), HttpStatusCode.NotFound);
+                var response = new Response(body, false, "text/plain", new MockHttpHeaders(), HttpStatusCode.NotFound);
                 var exception = new ApiException(request, response, defaultMessage);
 
                 exception.LocalizedApiErrorMessage.Should().Be(body);
@@ -184,7 +185,7 @@ namespace Toggl.Networking.Tests.Exceptions
                 var endpoint = new Uri("https://www.some.url");
                 var method = new HttpMethod("GET");
                 var request = new Request("", endpoint, new HttpHeader[0], method);
-                var response = new Response(body, false, "foo/bar", new List<KeyValuePair<string, IEnumerable<string>>>(), HttpStatusCode.NotFound);
+                var response = new Response(body, false, "foo/bar", new MockHttpHeaders(), HttpStatusCode.NotFound);
                 var exception = new ApiException(request, response, defaultMessage);
 
                 exception.LocalizedApiErrorMessage.Should().Be(body);
@@ -195,7 +196,7 @@ namespace Toggl.Networking.Tests.Exceptions
             => new Request("{\"a\":123}", new Uri("https://integration.tests"), new[] { new HttpHeader("X", "Y") }, method);
 
         private static Response createErrorResponse(HttpStatusCode code, string contentType = "plain/text", string rawData = "")
-            => new Response(rawData, false, contentType, new List<KeyValuePair<string, IEnumerable<string>>>(), code);
+            => new Response(rawData, false, contentType, new MockHttpHeaders(), code);
 
         public static IEnumerable<object[]> ClientErrorsList
             => new[]

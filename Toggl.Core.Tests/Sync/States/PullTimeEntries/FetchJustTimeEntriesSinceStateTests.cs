@@ -25,8 +25,6 @@ namespace Toggl.Core.Tests.Sync.States.PullTimeEntries
             private readonly ISinceParameterRepository sinceParameters;
             private readonly ITogglApi api;
             private readonly ITimeService timeService;
-            private readonly ILeakyBucket leakyBucket;
-            private readonly IRateLimiter rateLimiter;
             private readonly FetchJustTimeEntriesSinceState state;
             private readonly DateTimeOffset now = new DateTimeOffset(2017, 02, 15, 13, 50, 00, TimeSpan.Zero);
 
@@ -35,12 +33,8 @@ namespace Toggl.Core.Tests.Sync.States.PullTimeEntries
                 sinceParameters = Substitute.For<ISinceParameterRepository>();
                 api = Substitute.For<ITogglApi>();
                 timeService = Substitute.For<ITimeService>();
-                leakyBucket = Substitute.For<ILeakyBucket>();
-                leakyBucket.TryClaimFreeSlots(Arg.Any<int>(), out _).Returns(true);
-                rateLimiter = Substitute.For<IRateLimiter>();
-                rateLimiter.WaitForFreeSlot().Returns(Observable.Return(Unit.Default));
                 timeService.CurrentDateTime.Returns(now);
-                state = new FetchJustTimeEntriesSinceState(api, sinceParameters, timeService, leakyBucket, rateLimiter);
+                state = new FetchJustTimeEntriesSinceState(api, sinceParameters, timeService);
             }
 
             [Fact, LogIfTooSlow]
@@ -57,27 +51,6 @@ namespace Toggl.Core.Tests.Sync.States.PullTimeEntries
                 state.Start();
 
                 var t = api.DidNotReceive().TimeEntries;
-            }
-
-            [Fact, LogIfTooSlow]
-            public void SendsRequestToFetchTimeEntriesWhenRateLimiterAllocatesASlotAfterSubscription()
-            {
-                var scheduler = new TestScheduler();
-                var delay = TimeSpan.FromSeconds(1);
-                rateLimiter.WaitForFreeSlot().Returns(Observable.Return(Unit.Default).Delay(delay, scheduler));
-
-                api.TimeEntries
-                    .GetAll(Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>())
-                    .ReturnsTaskOf(null);
-
-                state.Start().Subscribe();
-
-                api.TimeEntries.DidNotReceive().GetAll(Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>());
-                api.TimeEntries.DidNotReceive().GetAllSince(Arg.Any<DateTimeOffset>());
-
-                scheduler.AdvanceBy(delay.Ticks);
-
-                api.TimeEntries.Received().GetAll(Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>());
             }
 
             [Property]
@@ -143,22 +116,6 @@ namespace Toggl.Core.Tests.Sync.States.PullTimeEntries
 
                 await api.TimeEntries.Received().GetAll(
                     Arg.Is<DateTimeOffset>(start => min <= now - start && now - start <= max), Arg.Is(now.AddDays(2)));
-            }
-
-            [Property]
-            public void ReturnsPreventServerOverloadWithCorrectDelayWhenTheLeakyBucketIsFull(TimeSpan delay)
-            {
-                leakyBucket.TryClaimFreeSlots(Arg.Any<int>(), out _)
-                    .Returns(x =>
-                    {
-                        x[1] = delay;
-                        return false;
-                    });
-
-                var transition = state.Start().SingleAsync().Wait();
-
-                transition.Result.Should().Be(state.PreventOverloadingServer);
-                var parameter = ((Transition<TimeSpan>)transition).Parameter;
             }
 
             [Fact]

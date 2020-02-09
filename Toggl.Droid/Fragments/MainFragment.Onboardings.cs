@@ -1,4 +1,4 @@
-﻿using Android.Widget;
+using Android.Widget;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -125,7 +125,8 @@ namespace Toggl.Droid.Fragments
                     editTimeEntryOnboardingStep.ShouldBeVisible,
                     mainRecyclerViewChangesObservable,
                     ViewModel.SyncProgressState,
-                    (shouldShowStep, unit, syncState) => shouldShowStep && syncState == SyncProgress.Synced);
+                    ViewModel.IsTimeEntryRunning,
+                    (shouldShowStep, unit, syncState, isTimeEntryRunning) => shouldShowStep && syncState == SyncProgress.Synced && !isTimeEntryRunning);
 
             showTapToEditOnboardingStepObservable
                 .Where(shouldShowStep => shouldShowStep)

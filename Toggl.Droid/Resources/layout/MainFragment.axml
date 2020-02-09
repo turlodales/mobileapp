@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/MainCoordinatorLayout"
-    android:clipChildren="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ViewStub
@@ -48,7 +47,8 @@
     <toggl.droid.views.AnimatedFloatingActionButton
         android:id="@+id/MainPlayButton"
         app:elevation="4dp"
-        android:src="@drawable/play_white"
+        android:src="@drawable/ic_play_big"
+        android:tint="@android:color/white"
         app:backgroundTint="@color/startTimeEntryButtonBackground"
         android:layout_width="56dp"
         android:layout_height="56dp"

@@ -21,7 +21,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/Dot"
+        android:background="@drawable/shape_dot"
         app:layout_constraintBottom_toTopOf="@+id/Text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

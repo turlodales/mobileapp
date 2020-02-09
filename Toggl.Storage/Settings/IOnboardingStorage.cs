@@ -38,9 +38,6 @@ namespace Toggl.Storage.Settings
         void EditedTimeEntry();
         void SelectsProject();
 
-        void SetJanuary2020CampaignWasShown();
-        bool WasJanuary2020CampaignShown();
-
         bool WasDismissed(IDismissable dismissable);
         void Dismiss(IDismissable dismissable);
 

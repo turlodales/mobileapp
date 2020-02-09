@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using Toggl.Networking.Exceptions;
 using Toggl.Networking.Helpers;
 using Toggl.Networking.Network;
 using Toggl.Networking.Serialization;
+using Toggl.Networking.Tests.Exceptions;
+using Toggl.Networking.Tests.Network;
 using Toggl.Shared.Extensions;
 using Xunit;
 using static System.Net.HttpStatusCode;
@@ -28,7 +31,7 @@ namespace Toggl.Networking.Tests.ApiClients
                 var serializer = Substitute.For<IJsonSerializer>();
                 var endpoint = Endpoint.Get(BaseUrls.ForApi(ApiEnvironment.Staging), "");
 
-                apiClient.Send(Arg.Any<Request>()).Returns(x => new Response("It lives", true, "text/plain", new List<KeyValuePair<string, IEnumerable<string>>>(), OK));
+                apiClient.Send(Arg.Any<Request>()).Returns(x => new Response("It lives", true, "text/plain", new MockHttpHeaders(), OK));
 
                 var credentials = Credentials.WithPassword(
                     "susancalvin@psychohistorian.museum".ToEmail(),
@@ -88,7 +91,7 @@ namespace Toggl.Networking.Tests.ApiClients
             {
                 const string rawResponse = "It lives";
                 serializer.Deserialize<string>(Arg.Any<string>()).Returns(_ => throw new Exception());
-                apiClient.Send(Arg.Any<Request>()).Returns(x => new Response(rawResponse, true, "text/plain", new List<KeyValuePair<string, IEnumerable<string>>>(), OK));
+                apiClient.Send(Arg.Any<Request>()).Returns(x => new Response(rawResponse, true, "text/plain", new MockHttpHeaders(), OK));
 
                 var credentials = Credentials.WithPassword(
                     "susancalvin@psychohistorian.museum".ToEmail(),

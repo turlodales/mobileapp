@@ -77,7 +77,7 @@ namespace Toggl.Droid.Extensions
                 var spanText = spannable.SubSequence(start, end);
                 if (cursorPosition.IsInRange(start, end))
                 {
-                    return new QueryTextSpan(spanText, cursorPosition - currentPosition);
+                    return new QueryTextSpan(spanText, (cursorPosition - currentPosition).Clamp(0, spanText.Length));
                 }
                 else
                 {

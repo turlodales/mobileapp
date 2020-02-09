@@ -22,11 +22,11 @@
   </style>
 
   <style name="WheelDatePicker" parent="@android:style/Widget.Material.DatePicker">
-    <item name="android:headerBackground">@drawable/picker_header_background</item>
+    <item name="android:headerBackground">@drawable/background_picker_header</item>
   </style>
 
   <style name="WheelTimePicker" parent="@android:style/Widget.Material.TimePicker">
-    <item name="android:headerBackground">@drawable/picker_header_background</item>
+    <item name="android:headerBackground">@drawable/background_picker_header</item>
     <item name="android:numbersSelectorColor">@color/accent</item>
   </style>
 </resources>

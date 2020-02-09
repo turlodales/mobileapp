@@ -44,7 +44,7 @@ namespace Toggl.Droid.Activities
             recyclerView.SetAdapter(adapter);
 
             SetupToolbar();
-            SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.toolbar_close);
+            SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_close);
         }
     }
 }

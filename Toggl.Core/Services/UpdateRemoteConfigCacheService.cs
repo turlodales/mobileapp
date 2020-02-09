@@ -59,15 +59,11 @@ namespace Toggl.Core.Services
         {
             var ratingViewConfiguration = fetchRemoteConfigService.ExtractRatingViewConfigurationFromRemoteConfig();
             var pushNotificationsConfiguration = fetchRemoteConfigService.ExtractPushNotificationsConfigurationFromRemoteConfig();
-            var january2020CampaignConfiguration = fetchRemoteConfigService.ExtractJanuary2020CampaignConfig();
 
             keyValueStorage.SetInt(RatingViewDelayParameter, ratingViewConfiguration.DayCount);
             keyValueStorage.SetString(RatingViewTriggerParameter, ratingViewConfiguration.Criterion.ToString());
-
             keyValueStorage.SetBool(RegisterPushNotificationsTokenWithServerParameter, pushNotificationsConfiguration.RegisterPushNotificationsTokenWithServer);
             keyValueStorage.SetBool(HandlePushNotificationsParameter, pushNotificationsConfiguration.HandlePushNotifications);
-
-            keyValueStorage.SetString(January2020CampaignOption, january2020CampaignConfiguration.Option.ToString());
 
             lock (updateLock)
             {

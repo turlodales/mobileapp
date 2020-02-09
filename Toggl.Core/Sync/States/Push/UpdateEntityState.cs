@@ -23,9 +23,6 @@ namespace Toggl.Core.Sync.States.Push
 
         private readonly IBaseDataSource<TThreadsafeModel> dataSource;
 
-        private readonly ILeakyBucket leakyBucket;
-        private readonly IRateLimiter limiter;
-
         private readonly Func<TModel, TThreadsafeModel> convertToThreadsafeModel;
 
         public StateResult<TThreadsafeModel> EntityChanged { get; } = new StateResult<TThreadsafeModel>();
@@ -36,36 +33,25 @@ namespace Toggl.Core.Sync.States.Push
             IUpdatingApiClient<TModel> api,
             IBaseDataSource<TThreadsafeModel> dataSource,
             IAnalyticsService analyticsService,
-            ILeakyBucket leakyBucket,
-            IRateLimiter limiter,
             Func<TModel, TThreadsafeModel> convertToThreadsafeModel)
             : base(analyticsService)
         {
             Ensure.Argument.IsNotNull(api, nameof(api));
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
             Ensure.Argument.IsNotNull(convertToThreadsafeModel, nameof(convertToThreadsafeModel));
-            Ensure.Argument.IsNotNull(leakyBucket, nameof(leakyBucket));
-            Ensure.Argument.IsNotNull(limiter, nameof(limiter));
 
             this.api = api;
             this.dataSource = dataSource;
             this.convertToThreadsafeModel = convertToThreadsafeModel;
-            this.leakyBucket = leakyBucket;
-            this.limiter = limiter;
         }
 
         public override IObservable<ITransition> Start(TThreadsafeModel entity)
-        {
-            if (!leakyBucket.TryClaimFreeSlot(out var timeToFreeSlot))
-                return Observable.Return(PreventOverloadingServer.Transition(timeToFreeSlot));
-
-            return update(entity)
+            => update(entity)
                 .Select(convertToThreadsafeModel)
                 .SelectMany(tryOverwrite(entity))
                 .Track(AnalyticsService.EntitySynced, Update, entity.GetSafeTypeName())
                 .Track(AnalyticsService.EntitySyncStatus, entity.GetSafeTypeName(), $"{Update}:Success")
                 .Catch(Fail(entity, Update));
-        }
 
         private Func<TThreadsafeModel, IObservable<ITransition>> tryOverwrite(TThreadsafeModel originalEntity)
           => serverEntity
@@ -101,7 +87,6 @@ namespace Toggl.Core.Sync.States.Push
         private IObservable<TModel> update(TModel entity)
             => entity == null
                 ? Observable.Throw<TModel>(new ArgumentNullException(nameof(entity)))
-                : limiter.WaitForFreeSlot()
-                    .ThenExecute(() => api.Update(entity).ToObservable());
+                : api.Update(entity).ToObservable();
     }
 }

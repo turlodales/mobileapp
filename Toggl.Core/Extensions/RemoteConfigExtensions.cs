@@ -15,9 +15,5 @@ namespace Toggl.Core.Extensions
             => new PushNotificationsConfiguration(
                 keyValueStorage.GetBool(RemoteConfigKeys.RegisterPushNotificationsTokenWithServerParameter),
                 keyValueStorage.GetBool(RemoteConfigKeys.HandlePushNotificationsParameter));
-
-        public static January2020CampaignConfiguration ReadJanuary2020CampaignConfiguration(this IKeyValueStorage keyValueStorage)
-            => new January2020CampaignConfiguration(
-                keyValueStorage.GetString(RemoteConfigKeys.January2020CampaignOption));
     }
 }

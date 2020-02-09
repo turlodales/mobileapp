@@ -36,7 +36,7 @@
 
         <ImageView
             android:id="@+id/BillableDot"
-            android:src="@drawable/Dot"
+            android:src="@drawable/shape_dot"
             android:tint="@color/billable"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/BarChartView"
@@ -61,7 +61,7 @@
 
         <ImageView
             android:id="@+id/NonBillableDot"
-            android:src="@drawable/Dot"
+            android:src="@drawable/shape_dot"
             android:tint="@color/nonBillable"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/BarChartView"

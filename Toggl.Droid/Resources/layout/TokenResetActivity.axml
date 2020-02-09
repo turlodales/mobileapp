@@ -95,7 +95,7 @@
         app:elevation="4dp"
         app:borderWidth="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/next_light"
+        android:src="@drawable/ic_next"
         android:backgroundTint="@color/startTimeEntryButtonBackground"
         android:layout_width="56dp"
         android:layout_height="56dp"

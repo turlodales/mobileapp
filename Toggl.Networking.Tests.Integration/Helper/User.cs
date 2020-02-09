@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Networking.Network;
 using Toggl.Networking.Tests.Integration.Helper;
@@ -42,21 +41,9 @@ namespace Toggl.Networking.Tests.Integration
 
         private static async Task<IUser> createUser(Email email, Password password)
         {
-            var api = CreateTogglApiWith(Credentials.None);
+            var api = TogglApiWith(Credentials.None);
             var timeZone = TimeZoneInfo.Local.Id;
             var user = await api.User.SignUp(email, password, true, 237, timeZone);
-
-            // This is to make integration tests run slightly slower to prevent SecureChannelFailure
-            // errors caused by too many HTTP calls in quick succession in most cases
-            // (combined with limiting the XUnit max parallel threads)
-            // Empirically, a delay of 0.5s is too short, while 2s sees no further improvements
-            //
-            // Another issue this is trying to solve is the replication lag between databases.
-            // This causes problems when we create a new user and try to make more requests with the credentials
-            // of this user which is not known to all the replicas. We then end up with 403 Forbidden
-            // if the following request hits a replica which doesn't know the user. There is no perfect
-            // solution but we are told that the replication lag should be under one second in most cases.
-            await Task.Delay(TimeSpan.FromSeconds(1));
 
             return user;
         }

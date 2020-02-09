@@ -12,7 +12,5 @@ namespace Toggl.Core.Sync.States.Push.Interfaces
         StateResult<(Exception, T)> ClientError { get; }
 
         StateResult<Exception> UnknownError { get; }
-
-        StateResult<TimeSpan> PreventOverloadingServer { get; }
     }
 }

@@ -5,6 +5,7 @@ using NSubstitute;
 using System;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
+using Toggl.Core.Interactors;
 using Toggl.Core.Services;
 using Toggl.Core.Tests.Generators;
 using Xunit;
@@ -18,12 +19,14 @@ namespace Toggl.Core.Tests.Services
             protected ITimeService TimeService { get; }
             protected IAnalyticsService AnalyticsService { get; }
             protected IUpdateRemoteConfigCacheService UpdateRemoteConfigCacheService { get; }
+            protected IInteractorFactory InteractorFactory { get; }
 
             public BackgroundServiceTest()
             {
                 TimeService = Substitute.For<ITimeService>();
                 AnalyticsService = Substitute.For<IAnalyticsService>();
                 UpdateRemoteConfigCacheService = Substitute.For<IUpdateRemoteConfigCacheService>();
+                InteractorFactory = Substitute.For<IInteractorFactory>();
             }
         }
 
@@ -31,12 +34,13 @@ namespace Toggl.Core.Tests.Services
         {
             [Theory, LogIfTooSlow]
             [ConstructorData]
-            public void ThrowsWhenTheArgumentIsNull(bool useTimeService, bool useAnalyticsService, bool useRemoteConfigUpdateService)
+            public void ThrowsWhenTheArgumentIsNull(bool useTimeService, bool useAnalyticsService, bool useRemoteConfigUpdateService, bool useInteractorFactory)
             {
                 var timeService = useTimeService ? Substitute.For<ITimeService>() : null;
                 var analyticsService = useAnalyticsService ? Substitute.For<IAnalyticsService>() : null;
                 var updateRemoteConfigCacheService = useRemoteConfigUpdateService ? Substitute.For<IUpdateRemoteConfigCacheService>() : null;
-                Action constructor = () => new BackgroundService(timeService, analyticsService, updateRemoteConfigCacheService);
+                var interactorFactory = useInteractorFactory ? Substitute.For<IInteractorFactory>() : null;
+                Action constructor = () => new BackgroundService(timeService, analyticsService, updateRemoteConfigCacheService, interactorFactory);
 
                 constructor.Should().Throw<ArgumentNullException>();
             }
@@ -50,7 +54,7 @@ namespace Toggl.Core.Tests.Services
             public void DoesNotEmitAnythingWhenItHasNotEnterBackgroundFirst()
             {
                 bool emitted = false;
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
                 backgroundService
                     .AppResumedFromBackground
                     .Subscribe(_ => emitted = true);
@@ -64,7 +68,7 @@ namespace Toggl.Core.Tests.Services
             public void EmitsValueWhenEnteringForegroundAfterBeingInBackground()
             {
                 bool emitted = false;
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
                 TimeService.CurrentDateTime.Returns(now);
                 backgroundService
                     .AppResumedFromBackground
@@ -80,7 +84,7 @@ namespace Toggl.Core.Tests.Services
             public void DoesNotEmitAnythingWhenTheEnterForegroundIsCalledMultipleTimes()
             {
                 bool emitted = false;
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
                 TimeService.CurrentDateTime.Returns(now);
                 backgroundService.EnterBackground();
                 TimeService.CurrentDateTime.Returns(now.AddMinutes(1));
@@ -99,7 +103,7 @@ namespace Toggl.Core.Tests.Services
             public void EmitsAValueWhenEnteringForegroundAfterBeingInBackgroundForMoreThanTheLimit(NonNegativeInt waitingTime)
             {
                 TimeSpan? resumedAfter = null;
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
                 backgroundService
                     .AppResumedFromBackground
                     .Subscribe(timeInBackground => resumedAfter = timeInBackground);
@@ -116,7 +120,7 @@ namespace Toggl.Core.Tests.Services
             [Fact]
             public void TracksEventWhenAppResumed()
             {
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
                 backgroundService.EnterBackground();
                 backgroundService.EnterForeground();
                 AnalyticsService.Received().AppDidEnterForeground.Track();
@@ -125,7 +129,7 @@ namespace Toggl.Core.Tests.Services
             [Fact]
             public void TracksEventWhenAppGoesToBackground()
             {
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
                 backgroundService.EnterBackground();
                 AnalyticsService.Received().AppSentToBackground.Track();
             }
@@ -138,7 +142,7 @@ namespace Toggl.Core.Tests.Services
             {
                 var updateRemoteConfigCacheService = Substitute.For<IUpdateRemoteConfigCacheService>();
                 updateRemoteConfigCacheService.NeedsToUpdateStoredRemoteConfigData().Returns(true);
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, updateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, updateRemoteConfigCacheService, InteractorFactory);
 
                 backgroundService.EnterForeground();
 
@@ -153,7 +157,7 @@ namespace Toggl.Core.Tests.Services
             {
                 var updateRemoteConfigCacheService = Substitute.For<IUpdateRemoteConfigCacheService>();
                 updateRemoteConfigCacheService.NeedsToUpdateStoredRemoteConfigData().Returns(false);
-                var backgroundService = new BackgroundService(TimeService, AnalyticsService, updateRemoteConfigCacheService);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, updateRemoteConfigCacheService, InteractorFactory);
 
                 backgroundService.EnterForeground();
 
@@ -161,6 +165,21 @@ namespace Toggl.Core.Tests.Services
                 // fire and forget TaskTask.Run(() => {}).ConfigureAwait(false))
                 await Task.Delay(1);
                 updateRemoteConfigCacheService.DidNotReceive().FetchAndStoreRemoteConfigData();
+            }
+            
+            [Fact, LogIfTooSlow]
+            public async Task TriggersEventNotificationsUpdate()
+            {
+                var updateRemoteConfigCacheService = Substitute.For<IUpdateRemoteConfigCacheService>();
+                updateRemoteConfigCacheService.NeedsToUpdateStoredRemoteConfigData().Returns(false);
+                var backgroundService = new BackgroundService(TimeService, AnalyticsService, updateRemoteConfigCacheService, InteractorFactory);
+
+                backgroundService.EnterForeground();
+                
+                // This delay is make sure UpdateEventNotificationsSchedules has time to execute, since it's called inside a
+                // fire and forget TaskTask.Run(() => {}).ConfigureAwait(false))
+                await Task.Delay(1);
+                await InteractorFactory.Received().UpdateEventNotificationsSchedules().Execute();
             }
         }
     }

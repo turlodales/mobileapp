@@ -1,5 +1,6 @@
 using Foundation;
 using ObjCRuntime;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -13,7 +14,7 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(saveKeyCommand);
         }
 
-        private readonly UIKeyCommand saveKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand saveKeyCommand = KeyCommandFactory.Create(
             title: Resources.Save,
             image: null,
             action: new Selector(nameof(save)),

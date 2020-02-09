@@ -25,8 +25,6 @@ namespace Toggl.Core.Tests.Sync.States.Pull
             private readonly ISinceParameterRepository sinceParameters;
             private readonly ITogglApi api;
             private readonly ITimeService timeService;
-            private readonly ILeakyBucket leakyBucket;
-            private readonly IRateLimiter rateLimiter;
             private readonly FetchAllSinceState state;
             private readonly DateTimeOffset now = new DateTimeOffset(2017, 02, 15, 13, 50, 00, TimeSpan.Zero);
 
@@ -35,12 +33,8 @@ namespace Toggl.Core.Tests.Sync.States.Pull
                 sinceParameters = Substitute.For<ISinceParameterRepository>();
                 api = Substitute.For<ITogglApi>();
                 timeService = Substitute.For<ITimeService>();
-                leakyBucket = Substitute.For<ILeakyBucket>();
-                leakyBucket.TryClaimFreeSlots(Arg.Any<int>(), out _).Returns(true);
-                rateLimiter = Substitute.For<IRateLimiter>();
-                rateLimiter.WaitForFreeSlot().Returns(Observable.Return(Unit.Default));
                 timeService.CurrentDateTime.Returns(now);
-                state = new FetchAllSinceState(api, sinceParameters, timeService, leakyBucket, rateLimiter);
+                state = new FetchAllSinceState(api, sinceParameters, timeService);
             }
 
             [Fact, LogIfTooSlow]
@@ -65,66 +59,6 @@ namespace Toggl.Core.Tests.Sync.States.Pull
                 var ta = api.DidNotReceive().Tags;
                 var ts = api.DidNotReceive().Tasks;
                 var pr = api.DidNotReceive().Preferences;
-            }
-
-            [Fact, LogIfTooSlow]
-            public void SendsRequestsInWavesWhenRateLimiterAllocatesASlotAfterSubscription()
-            {
-                var scheduler = new TestScheduler();
-                var delay = TimeSpan.FromSeconds(1);
-                rateLimiter.WaitForFreeSlot().Returns(Observable.Return(Unit.Default).Delay(delay, scheduler));
-
-                api.Workspaces.GetAll().ReturnsTaskOf(null);
-                api.WorkspaceFeatures.GetAll().ReturnsTaskOf(null);
-                api.User.Get().ReturnsTaskOf(null);
-                api.Clients.GetAll().ReturnsTaskOf(null);
-                api.Projects.GetAll().ReturnsTaskOf(null);
-                api.TimeEntries.GetAll(Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>())
-                    .ReturnsTaskOf(null);
-                api.Tasks.GetAll().ReturnsTaskOf(null);
-                api.Tags.GetAll().ReturnsTaskOf(null);
-                api.Preferences.Get().ReturnsTaskOf(null);
-
-                state.Start().Subscribe();
-
-                // before the first wave
-                api.Workspaces.DidNotReceive().GetAll();
-                api.WorkspaceFeatures.DidNotReceive().GetAll();
-                api.User.DidNotReceive().Get();
-
-                // first wave
-                scheduler.AdvanceBy(delay.Ticks);
-
-                api.Workspaces.Received().GetAll();
-                api.WorkspaceFeatures.Received().GetAll();
-                api.User.Received().Get();
-
-                api.Preferences.DidNotReceive().Get();
-                api.Clients.DidNotReceive().GetAll();
-                api.Clients.DidNotReceive().GetAllSince(Arg.Any<DateTimeOffset>());
-                api.Tags.DidNotReceive().GetAll();
-                api.Tags.DidNotReceive().GetAllSince(Arg.Any<DateTimeOffset>());
-
-                // second wave
-                scheduler.AdvanceBy(delay.Ticks);
-
-                api.Preferences.Received().Get();
-                api.Clients.Received().GetAll();
-                api.Tags.Received().GetAll();
-
-                api.Tasks.DidNotReceive().GetAll();
-                api.Tasks.DidNotReceive().GetAllSince(Arg.Any<DateTimeOffset>());
-                api.Projects.DidNotReceive().GetAll();
-                api.Projects.DidNotReceive().GetAllSince(Arg.Any<DateTimeOffset>());
-                api.TimeEntries.DidNotReceive().GetAll(Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>());
-                api.TimeEntries.DidNotReceive().GetAllSince(Arg.Any<DateTimeOffset>());
-
-                // third wave
-                scheduler.AdvanceBy(delay.Ticks);
-
-                api.Tasks.Received().GetAll();
-                api.Projects.Received().GetAll();
-                api.TimeEntries.Received().GetAll(Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>());
             }
 
             [Property]
@@ -229,22 +163,6 @@ namespace Toggl.Core.Tests.Sync.States.Pull
 
                 await api.TimeEntries.Received().GetAll(
                     Arg.Is<DateTimeOffset>(start => min <= now - start && now - start <= max), Arg.Is(now.AddDays(2)));
-            }
-
-            [Property]
-            public void ReturnsPreventServerOverloadWithCorrectDelayWhenTheLeakyBucketIsFull(TimeSpan delay)
-            {
-                leakyBucket.TryClaimFreeSlots(Arg.Any<int>(), out _)
-                    .Returns(x =>
-                    {
-                        x[1] = delay;
-                        return false;
-                    });
-
-                var transition = state.Start().SingleAsync().Wait();
-
-                transition.Result.Should().Be(state.PreventOverloadingServer);
-                var parameter = ((Transition<TimeSpan>)transition).Parameter;
             }
         }
     }

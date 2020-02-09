@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:src="@drawable/error_baddata"
+        android:src="@drawable/ic_unsyncable"
         android:layout_marginBottom="16dp"
         android:layout_width="48dp"
         android:layout_height="48dp" />

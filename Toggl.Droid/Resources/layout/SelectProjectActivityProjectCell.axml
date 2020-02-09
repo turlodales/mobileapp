@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/SelectProjectProjectCell"
     android:elevation="1dp"
-    android:background="@color/cardBackground"
+    android:background="@color/background"
     android:foreground="?android:attr/selectableItemBackground"               
     android:layout_height="48dp"
     android:layout_width="match_parent">
     <View
         android:id="@+id/ProjectSelectionToken"
-        android:background="@drawable/ProjectRoundedRectangle"
+        android:background="@drawable/background_rounded_rectangle_reports_calendar_shortcut"
         android:layout_marginTop="-3dp"
         android:layout_marginLeft="-6dp"
         android:layout_marginRight="-6dp"
@@ -49,13 +49,13 @@
         android:layout_toRightOf="@id/ProjectLabel" />
     <View
         android:visibility="visible"
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_bg"
         android:layout_width="128dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true" />
     <ImageView
         android:id="@+id/Caret"
-        android:src="@drawable/dropdown"
+        android:src="@drawable/ic_dropdown"
         android:layout_marginRight="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

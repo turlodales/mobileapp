@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive;
+using System.Threading.Tasks;
 using Toggl.Core.Interactors.Notifications;
 
 namespace Toggl.Core.Interactors
@@ -11,5 +12,8 @@ namespace Toggl.Core.Interactors
 
         public IInteractor<IObservable<Unit>> ScheduleEventNotificationsForNextWeek()
             => new ScheduleEventNotificationsInteractor(timeService, calendarService, userPreferences, notificationService);
+
+        public IInteractor<Task> UpdateEventNotificationsSchedules()
+            => new UpdateEventNotificationsSchedulesInteractor(userPreferences, this);
     }
 }

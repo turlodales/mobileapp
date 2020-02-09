@@ -17,6 +17,5 @@ namespace Toggl.Core.Services
         public static string RegisterPushNotificationsTokenWithServerParameter { get; } = "PushNotificationsRegisterTokenWithServer";
         public static string HandlePushNotificationsParameter { get; } = "PushNotificationsHandle";
         public static string LastFetchAtKey { get; } = "LastFetchAtKey";
-        public static string January2020CampaignOption { get; } = "January2020CampaignOption";
     }
 }

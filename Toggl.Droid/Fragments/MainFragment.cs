@@ -121,8 +121,8 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(timeEntryCardDotView.Rx().DrawableColor())
                 .DisposedBy(DisposeBag);
 
-            addDrawable = ContextCompat.GetDrawable(Context, Resource.Drawable.add_white);
-            playDrawable = ContextCompat.GetDrawable(Context, Resource.Drawable.play_white);
+            addDrawable = ContextCompat.GetDrawable(Context, Resource.Drawable.ic_add);
+            playDrawable = ContextCompat.GetDrawable(Context, Resource.Drawable.ic_play_big);
 
             ViewModel.IsInManualMode
                 .Select(isManualMode => isManualMode ? addDrawable : playDrawable)

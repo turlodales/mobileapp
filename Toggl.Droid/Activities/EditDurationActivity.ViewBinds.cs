@@ -1,5 +1,6 @@
 using Android.Views;
 using Android.Widget;
+using Toggl.Droid.Extensions;
 using Toggl.Droid.Views.EditDuration;
 
 namespace Toggl.Droid.Activities
@@ -16,6 +17,7 @@ namespace Toggl.Droid.Activities
         private TextView stopDateText;
         private WheelForegroundView wheelForeground;
         private WheelDurationInput wheelNumericInput;
+        private View wheelContainer;
         private TextView durationLabel;
 
         protected override void InitializeViews()
@@ -30,6 +32,8 @@ namespace Toggl.Droid.Activities
             stopDateText = FindViewById<TextView>(Resource.Id.StopDateText);
             wheelForeground = FindViewById<WheelForegroundView>(Resource.Id.WheelForeground);
             wheelNumericInput = FindViewById<WheelDurationInput>(Resource.Id.WheelDurationInput);
+            wheelContainer = FindViewById<View>(Resource.Id.Wheel);
+            wheelContainer.FitBottomMarginInset();
             durationLabel = FindViewById<TextView>(Resource.Id.DurationLabel);
 
             startLabel.Text = Shared.Resources.StartTime;

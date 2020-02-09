@@ -21,8 +21,6 @@ namespace Toggl.Core.Sync.States.Push
 
         public StateResult<Exception> UnknownError { get; } = new StateResult<Exception>();
 
-        public StateResult<TimeSpan> PreventOverloadingServer { get; } = new StateResult<TimeSpan>();
-
         protected BasePushEntityState(IAnalyticsService analyticsService)
         {
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
@@ -33,9 +31,6 @@ namespace Toggl.Core.Sync.States.Push
         protected Func<Exception, IObservable<ITransition>> Fail(T entity, PushSyncOperation operation)
             => exception =>
             {
-                typeof(T).ToSyncErrorAnalyticsEvent(AnalyticsService).Track($"{operation}:{exception.Message}");
-                AnalyticsService.EntitySyncStatus.Track(entity.GetSafeTypeName(), $"{operation}:Failure");
-
                 if (exception is AggregateException aggregate)
                 {
                     // We need to match exactly one exception. The aggregate exception is added by .NET around an exception
@@ -45,6 +40,9 @@ namespace Toggl.Core.Sync.States.Push
                     // analyze the crash log and fix it.
                     exception = aggregate.Flatten().InnerExceptions.Single();
                 }
+
+                typeof(T).ToSyncErrorAnalyticsEvent(AnalyticsService).Track($"{operation}:{exception.Message}");
+                AnalyticsService.EntitySyncStatus.Track(entity.GetSafeTypeName(), $"{operation}:Failure");
 
                 return shouldRethrow(exception)
                     ? Observable.Throw<ITransition>(exception)

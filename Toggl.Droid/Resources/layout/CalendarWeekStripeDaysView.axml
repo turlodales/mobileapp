@@ -11,7 +11,7 @@
         android:id="@+id/CurrentDayIndicator"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="@drawable/Dot"
+        android:background="@drawable/shape_dot"
         android:backgroundTint="@color/accent"
         android:gravity="center"
         android:minWidth="20dp"

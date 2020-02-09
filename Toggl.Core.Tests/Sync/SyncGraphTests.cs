@@ -47,7 +47,6 @@ namespace Toggl.Core.Tests.Sync
                 Substitute.For<ITogglDatabase>(),
                 Substitute.For<ITogglApi>(),
                 Substitute.For<ITogglDataSource>(),
-                Substitute.For<IScheduler>(),
                 Substitute.For<ITimeService>(),
                 Substitute.For<IAnalyticsService>(),
                 Substitute.For<ILastTimeUsageStorage>(),

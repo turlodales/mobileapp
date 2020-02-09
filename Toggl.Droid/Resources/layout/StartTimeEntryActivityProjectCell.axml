@@ -34,7 +34,7 @@
         android:layout_toRightOf="@+id/ProjectLabel" />
     <View
         android:id="@+id/Fade"
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_card_color"
         android:layout_width="20dp"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/Caret" />
@@ -56,7 +56,7 @@
         android:layout_alignParentRight="true" />
     <ImageView
         android:id="@+id/Caret"
-        android:src="@drawable/dropdown"
+        android:src="@drawable/ic_dropdown"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/TaskCountLabel" />

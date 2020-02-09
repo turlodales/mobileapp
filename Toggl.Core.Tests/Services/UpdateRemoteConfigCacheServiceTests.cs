@@ -52,23 +52,20 @@ namespace Toggl.Core.Tests.Services
                 KeyValueStorage.DidNotReceive().SetString(RatingViewTriggerParameter, Arg.Any<string>());
                 KeyValueStorage.DidNotReceive().SetBool(RegisterPushNotificationsTokenWithServerParameter, Arg.Any<bool>());
                 KeyValueStorage.DidNotReceive().SetBool(HandlePushNotificationsParameter, Arg.Any<bool>());
-                KeyValueStorage.DidNotReceive().SetString(January2020CampaignOption, Arg.Any<string>());
             }
 
             [Theory, LogIfTooSlow]
-            [InlineData(1, RatingViewCriterion.Continue, true, false, "A")]
-            [InlineData(4, RatingViewCriterion.Start, false, true, "B")]
-            [InlineData(5, RatingViewCriterion.None, true, true, "None")]
-            public void ShouldUpdateTheCacheWhenFetchingSucceeds(int ratingViewDayCount, RatingViewCriterion ratingViewCriterion, bool registerPushes, bool handlePushes, string campaignOption)
+            [InlineData(1, RatingViewCriterion.Continue, true, false)]
+            [InlineData(4, RatingViewCriterion.Start, false, true)]
+            [InlineData(5, RatingViewCriterion.None, true, true)]
+            public void ShouldUpdateTheCacheWhenFetchingSucceeds(int ratingViewDayCount, RatingViewCriterion ratingViewCriterion, bool registerPushes, bool handlePushes)
             {
                 var expectedRatingViewConfiguration = new RatingViewConfiguration(ratingViewDayCount, ratingViewCriterion);
                 var expectedPushNotificationsConfiguration = new PushNotificationsConfiguration(registerPushes, handlePushes);
-                var expectedCampaignConfiguration = new January2020CampaignConfiguration(campaignOption);
                 var mockFetchRemoteConfigService = new MockFetchRemoteConfigService(
                     true,
                     ratingViewConfigurationToReturn: expectedRatingViewConfiguration,
-                    pushNotificationsConfigurationReturn: expectedPushNotificationsConfiguration,
-                    january2020CampaignConfiguration: expectedCampaignConfiguration);
+                    pushNotificationsConfigurationReturn: expectedPushNotificationsConfiguration);
                 UpdateRemoteConfigCacheService = new UpdateRemoteConfigCacheService(TimeService, KeyValueStorage, mockFetchRemoteConfigService);
 
                 UpdateRemoteConfigCacheService.FetchAndStoreRemoteConfigData();
@@ -77,7 +74,6 @@ namespace Toggl.Core.Tests.Services
                 KeyValueStorage.Received().SetString(RatingViewTriggerParameter, ratingViewCriterion.ToString());
                 KeyValueStorage.Received().SetBool(RegisterPushNotificationsTokenWithServerParameter, registerPushes);
                 KeyValueStorage.Received().SetBool(HandlePushNotificationsParameter, handlePushes);
-                KeyValueStorage.Received().SetString(January2020CampaignOption, campaignOption);
             }
         }
 
@@ -180,22 +176,19 @@ namespace Toggl.Core.Tests.Services
             private readonly Exception exceptionOnFailure;
             private readonly RatingViewConfiguration ratingViewConfigurationToReturn;
             private readonly PushNotificationsConfiguration pushNotificationsConfigurationReturn;
-            private readonly January2020CampaignConfiguration january2020CampaignConfiguration;
 
             public MockFetchRemoteConfigService(
                 bool shouldSucceed = true,
                 bool shouldFail = false,
                 Exception exceptionOnFailure = null,
                 RatingViewConfiguration ratingViewConfigurationToReturn = default,
-                PushNotificationsConfiguration pushNotificationsConfigurationReturn = default,
-                January2020CampaignConfiguration january2020CampaignConfiguration = default)
+                PushNotificationsConfiguration pushNotificationsConfigurationReturn = default)
             {
                 this.shouldSucceed = shouldSucceed;
                 this.shouldFail = shouldFail;
                 this.exceptionOnFailure = exceptionOnFailure;
                 this.ratingViewConfigurationToReturn = ratingViewConfigurationToReturn;
                 this.pushNotificationsConfigurationReturn = pushNotificationsConfigurationReturn;
-                this.january2020CampaignConfiguration = january2020CampaignConfiguration;
             }
 
             public void FetchRemoteConfigData(Action onFetchSucceeded, Action<Exception> onFetchFailed)
@@ -209,9 +202,6 @@ namespace Toggl.Core.Tests.Services
 
             public PushNotificationsConfiguration ExtractPushNotificationsConfigurationFromRemoteConfig()
                 => pushNotificationsConfigurationReturn;
-
-            public January2020CampaignConfiguration ExtractJanuary2020CampaignConfig()
-                => january2020CampaignConfiguration;
         }
     }
 }

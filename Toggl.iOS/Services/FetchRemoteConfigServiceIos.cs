@@ -48,12 +48,5 @@ namespace Toggl.iOS.Services
                 remoteConfig[RegisterPushNotificationsTokenWithServerParameter].BoolValue,
                 remoteConfig[HandlePushNotificationsParameter].BoolValue);
         }
-
-        public January2020CampaignConfiguration ExtractJanuary2020CampaignConfig()
-        {
-            var remoteConfig = RemoteConfig.SharedInstance;
-            return new January2020CampaignConfiguration(
-                remoteConfig[January2020CampaignOption].StringValue);
-        }
     }
 }

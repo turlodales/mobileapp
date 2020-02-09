@@ -155,7 +155,7 @@
             android:id="@+id/TimeEntriesLogCellDurationGradient"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/TransparentToCardColorGradient"
+            android:background="@drawable/gradient_transparent_to_card_color"
             app:layout_constraintRight_toLeftOf="@id/TimeEntriesLogCellDurationPaddingArea"
             android:layout_height="0dp"
             android:layout_width="48dp" />
@@ -178,7 +178,8 @@
             android:layout_alignParentTop="true" />
         <ImageView
             android:id="@+id/TimeEntriesLogCellBillable"
-            android:src="@drawable/billable"
+            android:src="@drawable/ic_billable"
+            android:tint="@color/icon"
             app:layout_constraintTop_toTopOf="@id/TimeEntriesLogCellDuration"
             app:layout_constraintRight_toLeftOf="@id/TimeEntriesLogCellDuration"
             app:layout_constraintBottom_toBottomOf="@id/TimeEntriesLogCellDuration"
@@ -187,7 +188,8 @@
             android:layout_marginRight="4dp" />
         <ImageView
             android:id="@+id/TimeEntriesLogCellTags"
-            android:src="@drawable/tag"
+            android:src="@drawable/ic_tag"
+            android:tint="@color/icon"
             app:layout_constraintTop_toTopOf="@id/TimeEntriesLogCellDuration"
             app:layout_constraintRight_toLeftOf="@id/TimeEntriesLogCellBillable"
             app:layout_constraintBottom_toBottomOf="@id/TimeEntriesLogCellDuration"
@@ -196,7 +198,7 @@
             android:layout_marginRight="4dp" />
         <ImageView
             android:id="@+id/TimeEntriesLogCellContinueImage"
-            android:src="@drawable/play"
+            android:src="@drawable/ic_play"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/ErrorImageView"
             app:layout_constraintTop_toBottomOf="@id/TimeEntriesLogCellDuration"
@@ -207,7 +209,7 @@
         <ImageView
             android:id="@+id/ErrorImageView"
             tools:visibility="gone"
-            android:src="@drawable/error_baddata"
+            android:src="@drawable/ic_unsyncable"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/TimeEntriesLogCellContinueImage"
@@ -217,7 +219,7 @@
             android:layout_marginBottom="8dp" />
         <ImageView
             android:id="@+id/ErrorNeedsSync"
-            android:src="@drawable/unsynced"
+            android:src="@drawable/ic_unsynced"
             app:layout_constraintTop_toTopOf="@id/TimeEntriesLogCellContinueImage"
             app:layout_constraintEnd_toStartOf="@id/TimeEntriesLogCellContinueImage"
             android:layout_width="24dp"

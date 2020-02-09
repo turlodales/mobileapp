@@ -4,6 +4,7 @@ using NSubstitute;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Reactive;
 using System.Reactive.Linq;
 using Toggl.Networking.ApiClients;
@@ -12,6 +13,7 @@ using Toggl.Networking.Models;
 using Toggl.Networking.Network;
 using Toggl.Networking.Serialization;
 using Toggl.Networking.Tests.Exceptions;
+using Toggl.Networking.Tests.Network;
 using Xunit;
 using Task = System.Threading.Tasks.Task;
 
@@ -43,7 +45,7 @@ namespace Toggl.Networking.Tests.ApiClients
                     "Time entry not found",
                     isSuccess: false,
                     "text/plain; charset=utf-8",
-                    Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>(),
+                    new MockHttpHeaders(),
                     HttpStatusCode.NotFound);
                 apiClient.Send(Arg.Any<IRequest>()).Returns(notFoundResponse);
 
@@ -60,7 +62,7 @@ namespace Toggl.Networking.Tests.ApiClients
                     "",
                     isSuccess: false,
                     "text/plain; charset=utf-8",
-                    Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>(),
+                    new MockHttpHeaders(),
                     errorCode);
                 apiClient.Send(Arg.Any<IRequest>()).Returns(response);
                 bool clientExceptionWasCaught = false;

@@ -80,7 +80,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
 
                 AnalyticsService.PushNotificationSyncStarted.Received().Track(sourceState.ToString());
                 AnalyticsService.PushNotificationSyncFinished.Received().Track(sourceState.ToString());
-                AnalyticsService.PushNotificationSyncFailed.Received().Track(sourceState.ToString(), exception.GetType().FullName, exception.Message, exception.StackTrace);
+                AnalyticsService.PushNotificationSyncFailed.Received().Track(sourceState.ToString(), exception.GetType().FullName, exception.Message, exception.StackTrace ?? "");
             }
         }
 

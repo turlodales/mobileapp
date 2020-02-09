@@ -3,6 +3,7 @@ using Foundation;
 using ObjCRuntime;
 using Toggl.Core.Analytics;
 using Toggl.Core.UI.Helper;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -24,7 +25,7 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(ShowCalendarKeyCommand);
         }
 
-        private readonly UIKeyCommand forceSyncKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand forceSyncKeyCommand = KeyCommandFactory.Create(
             title: Resources.Sync,
             image: null,
             action: new Selector(nameof(startSyncing)),
@@ -32,7 +33,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        private readonly UIKeyCommand startTimeEntryKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand startTimeEntryKeyCommand = KeyCommandFactory.Create(
                 title: Resources.StartTimeEntry,
                 image: null,
                 action: new Selector(nameof(showStartTimeEntry)),
@@ -40,7 +41,7 @@ namespace Toggl.iOS.ViewControllers
                 modifierFlags: UIKeyModifierFlags.Command,
                 propertyList: null);
 
-        private readonly UIKeyCommand editRunningTimeEntryKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand editRunningTimeEntryKeyCommand = KeyCommandFactory.Create(
             title: Resources.EditRunningTimeEntry,
             image: null,
             action: new Selector(nameof(editRunningTimeEntry)),
@@ -48,7 +49,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        private readonly UIKeyCommand stopRunningTimeEntryKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand stopRunningTimeEntryKeyCommand = KeyCommandFactory.Create(
             title: Resources.StopRunningTimeEntry,
             image: null,
             action: new Selector(nameof(stopRunningTimeEntry)),
@@ -56,7 +57,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        private readonly UIKeyCommand continueLastTimeEntryKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand continueLastTimeEntryKeyCommand = KeyCommandFactory.Create(
             title: Resources.ContinueLastEntry,
             image: null,
             action: new Selector(nameof(continueLastTimeEntry)),
@@ -64,7 +65,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        private readonly UIKeyCommand openSettingsKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand openSettingsKeyCommand = KeyCommandFactory.Create(
             title: Resources.Settings,
             image: null,
             action: new Selector(nameof(openSettings)),

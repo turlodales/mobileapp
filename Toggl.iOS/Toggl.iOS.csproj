@@ -1267,10 +1267,6 @@
     <ImageAsset Include="Resources\Images.xcassets\x.imageset\x.png" />
     <ImageAsset Include="Resources\Images.xcassets\x.imageset\x%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\x.imageset\x%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\pinata.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\pinata.imageset\pinata.png" />
-    <ImageAsset Include="Resources\Images.xcassets\pinata.imageset\pinata%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\pinata.imageset\pinata%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\stop.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\stop.imageset\stop.png" />
     <ImageAsset Include="Resources\Images.xcassets\stop.imageset\stop%403x.png" />
@@ -1478,7 +1474,6 @@
     <InterfaceDefinition Include="Cells\Reports\ReportsDonutChartLegendCollectionViewCell.xib" />
     <InterfaceDefinition Include="Cells\Reports\ReportsNoDataCollectionViewCell.xib" />
     <InterfaceDefinition Include="Cells\Reports\ReportsErrorCollectionViewCell.xib" />
-    <InterfaceDefinition Include="ViewControllers\January2020CampaignViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\DateRangePickerViewController.xib" />
     <InterfaceDefinition Include="Cells\MainLog\SuggestionLogViewCell.xib" />
     <InterfaceDefinition Include="Cells\MainLog\SuggestionsHeaderView.xib" />
@@ -1514,6 +1509,7 @@
     <Compile Include="Extensions\SuggestionExtensions.cs" />
     <Compile Include="Extensions\ViewControllerExtensions.cs" />
     <Compile Include="Helper\PermissionsHelper.cs" />
+    <Compile Include="Helper\KeyCommandFactory.cs" />
     <Compile Include="Presentation\IosPresenter.cs" />
     <Compile Include="Presentation\NavigationPresenter.cs" />
     <Compile Include="Presentation\ModalDialogPresenter.cs" />
@@ -1589,13 +1585,6 @@
     <Compile Include="ViewControllers\ReportsViewController.KeyCommands.cs">
       <DependentUpon>ReportsViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewControllers\Settings\Models\AnnotationRow.cs" />
-    <Compile Include="ViewControllers\Settings\Models\ButtonRow.cs" />
-    <Compile Include="ViewControllers\Settings\Models\CustomRow.cs" />
-    <Compile Include="ViewControllers\Settings\Models\InfoRow.cs" />
-    <Compile Include="ViewControllers\Settings\Models\ISettingRow.cs" />
-    <Compile Include="ViewControllers\Settings\Models\NavigationRow.cs" />
-    <Compile Include="ViewControllers\Settings\Models\ToggleRow.cs" />
     <Compile Include="ViewControllers\Settings\Siri\SiriShortcutsSelectReportPeriodViewController.cs" />
     <Compile Include="ViewControllers\Settings\Siri\SiriShortcutsSelectReportPeriodViewController.designer.cs">
       <DependentUpon>SiriShortcutsSelectReportPeriodViewController.cs</DependentUpon>
@@ -2096,10 +2085,6 @@
     <Compile Include="Cells\Reports\ReportsErrorCollectionViewCell.cs" />
     <Compile Include="Cells\Reports\ReportsErrorCollectionViewCell.designer.cs">
       <DependentUpon>ReportsErrorCollectionViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewControllers\January2020CampaignViewController.cs" />
-    <Compile Include="ViewControllers\January2020CampaignViewController.designer.cs">
-      <DependentUpon>January2020CampaignViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\DonutChartView.cs" />
     <Compile Include="ViewControllers\DateRangePickerViewController.cs" />

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
+using System.Net.Http.Headers;
 
 namespace Toggl.Networking.Network
 {
@@ -13,8 +13,10 @@ namespace Toggl.Networking.Network
 
         HttpStatusCode StatusCode { get; }
 
-        IEnumerable<KeyValuePair<string, IEnumerable<string>>> Headers { get; }
+        HttpHeaders Headers { get; }
 
         bool IsJson { get; }
+
+        bool TryGetBucketSizeFromHeaders(out uint size);
     }
 }

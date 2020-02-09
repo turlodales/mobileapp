@@ -8,7 +8,7 @@ namespace Toggl.Droid.Tiles
 {
     [Service(Name = "toggl.giskard.Tiles.NewTimeEntryTileService",
              Label = "@string/new_time_entry",
-             Icon = "@drawable/play",
+             Icon = "@drawable/ic_play",
              Permission = "android.permission.BIND_QUICK_SETTINGS_TILE")]
     [IntentFilter(new[] { "android.service.quicksettings.action.QS_TILE" })]
     public sealed class NewTimeEntryTileService : TileService

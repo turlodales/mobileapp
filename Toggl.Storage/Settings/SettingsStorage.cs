@@ -59,8 +59,6 @@ namespace Toggl.Storage.Settings
 
         private const string swipeActionsDisabledKey = "swipeActionsDisabled";
 
-        private const string showedJanuary2020Campaign = "showedJanuary2020Campaign";
-
         private readonly Version version;
         private readonly IKeyValueStorage keyValueStorage;
 
@@ -310,14 +308,6 @@ namespace Toggl.Storage.Settings
         public bool DidShowSiriClipboardInstruction() => keyValueStorage.GetBool(didShowSiriClipboardInstructionKey);
 
         public void SetDidShowSiriClipboardInstruction(bool value) => keyValueStorage.SetBool(didShowSiriClipboardInstructionKey, value);
-
-        public void SetJanuary2020CampaignWasShown()
-        {
-            keyValueStorage.SetBool(showedJanuary2020Campaign, true);
-        }
-
-        public bool WasJanuary2020CampaignShown()
-            => keyValueStorage.GetBool(showedJanuary2020Campaign);
 
         public bool WasDismissed(IDismissable dismissable) => keyValueStorage.GetBool(onboardingPrefix + dismissable.Key);
 

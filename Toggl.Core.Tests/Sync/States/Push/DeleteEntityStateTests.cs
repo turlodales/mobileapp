@@ -67,28 +67,11 @@ namespace Toggl.Core.Tests.Sync.States.Push
         }
 
         [Fact, LogIfTooSlow]
-        public void WaitsForASlotFromTheRateLimiter()
-        {
-            var scheduler = new TestScheduler();
-            var delay = TimeSpan.FromSeconds(1);
-            RateLimiter.WaitForFreeSlot().Returns(Observable.Return(Unit.Default).Delay(delay, scheduler));
-            var state = (DeleteEntityState<ITestModel, IDatabaseTestModel, IThreadSafeTestModel>)CreateState();
-            var entity = new TestModel(-1, SyncStatus.SyncFailed);
-
-            state.Start(entity).Subscribe();
-
-            scheduler.AdvanceBy(delay.Ticks - 1);
-            api.DidNotReceive().Delete(Arg.Any<ITestModel>());
-            scheduler.AdvanceBy(1);
-            api.Received().Delete(Arg.Any<ITestModel>());
-        }
-
-        [Fact, LogIfTooSlow]
         public void DoesNotDeleteTheEntityLocallyIfTheApiOperationFails()
         {
             var state = CreateState();
             var dirtyEntity = new TestModel(-1, SyncStatus.SyncNeeded);
-            api.Delete(Arg.Any<ITestModel>()).Throws(new TestException());
+            api.Delete(Arg.Any<ITestModel>()).Returns(Task.FromException<ITestModel>(new TestException()));
 
             state.Start(dirtyEntity).SingleAsync().Wait();
 
@@ -164,7 +147,7 @@ namespace Toggl.Core.Tests.Sync.States.Push
         {
             var exception = new Exception("SomeRandomMessage");
             var entity = (IThreadSafeTestModel)Substitute.For(new[] { entityType }, new object[0]);
-            var state = new DeleteEntityState<ITestModel, IDatabaseTestModel, IThreadSafeTestModel>(api, analyticsService, dataSource, LeakyBucket, RateLimiter);
+            var state = new DeleteEntityState<ITestModel, IDatabaseTestModel, IThreadSafeTestModel>(api, analyticsService, dataSource);
             var expectedMessage = $"{Delete}:{exception.Message}";
             var analyticsEvent = entity.GetType().ToSyncErrorAnalyticsEvent(analyticsService);
             PrepareApiCallFunctionToThrow(exception);
@@ -175,11 +158,11 @@ namespace Toggl.Core.Tests.Sync.States.Push
         }
 
         protected override BasePushEntityState<IThreadSafeTestModel> CreateState()
-        => new DeleteEntityState<ITestModel, IDatabaseTestModel, IThreadSafeTestModel>(api, analyticsService, dataSource, LeakyBucket, RateLimiter);
+        => new DeleteEntityState<ITestModel, IDatabaseTestModel, IThreadSafeTestModel>(api, analyticsService, dataSource);
 
         protected override void PrepareApiCallFunctionToThrow(Exception e)
         {
-            api.Delete(Arg.Any<ITestModel>()).Throws(e);
+            api.Delete(Arg.Any<ITestModel>()).Returns(Task.FromException<ITestModel>(e));
         }
 
         protected override void PrepareDatabaseOperationToThrow(Exception e)

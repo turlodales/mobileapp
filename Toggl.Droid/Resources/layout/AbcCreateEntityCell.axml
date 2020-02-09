@@ -9,7 +9,8 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:background="@color/cardBackground">  
     <ImageView
-        android:src="@drawable/add_new"
+        android:src="@drawable/ic_add"
+        android:tint="@color/accent"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginLeft="8dp"
@@ -28,7 +29,7 @@
         android:layout_gravity="center_vertical" />
     <View
         android:id="@+id/StartTimeEntryProjectCellFade"
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_card_color"
         android:layout_width="40dp"
         android:layout_gravity="right"
         android:layout_height="match_parent" />

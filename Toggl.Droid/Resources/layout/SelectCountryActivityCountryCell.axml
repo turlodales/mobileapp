@@ -17,7 +17,7 @@
         android:layout_height="match_parent" />
     <ImageView
         android:id="@+id/SelectedImageView"
-        android:src="@drawable/check"
+        android:src="@drawable/ic_check"
         android:layout_marginRight="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

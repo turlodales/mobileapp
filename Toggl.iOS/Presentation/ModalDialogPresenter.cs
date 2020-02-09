@@ -21,7 +21,6 @@ namespace Toggl.iOS.Presentation
             typeof(PasteFromClipboardViewModel),
             typeof(SelectDefaultWorkspaceViewModel),
             typeof(TermsOfServiceViewModel),
-            typeof(January2020CampaignViewModel),
             typeof(DateRangePickerViewModel),
         };
 

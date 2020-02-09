@@ -3,7 +3,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
+using Toggl.Core.Interactors;
 using Toggl.Shared;
+using Toggl.Storage.Settings;
 
 namespace Toggl.Core.Services
 {
@@ -12,6 +14,7 @@ namespace Toggl.Core.Services
         private readonly ITimeService timeService;
         private readonly IAnalyticsService analyticsService;
         private readonly IUpdateRemoteConfigCacheService updateRemoteConfigCacheService;
+        private readonly IInteractorFactory interactorFactory;
 
         private DateTimeOffset? lastEnteredBackground { get; set; }
         private ISubject<TimeSpan> appBecameActiveSubject { get; }
@@ -20,15 +23,20 @@ namespace Toggl.Core.Services
 
         public bool AppIsInBackground { get; private set; }
         
-        public BackgroundService(ITimeService timeService, IAnalyticsService analyticsService, IUpdateRemoteConfigCacheService updateRemoteConfigCacheService)
+        public BackgroundService(ITimeService timeService,
+            IAnalyticsService analyticsService,
+            IUpdateRemoteConfigCacheService updateRemoteConfigCacheService,
+            IInteractorFactory interactorFactory)
         {
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
             Ensure.Argument.IsNotNull(updateRemoteConfigCacheService, nameof(updateRemoteConfigCacheService));
+            Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
 
             this.timeService = timeService;
             this.analyticsService = analyticsService;
             this.updateRemoteConfigCacheService = updateRemoteConfigCacheService;
+            this.interactorFactory = interactorFactory;
 
             appBecameActiveSubject = new Subject<TimeSpan>();
             lastEnteredBackground = null;
@@ -54,6 +62,8 @@ namespace Toggl.Core.Services
             if (updateRemoteConfigCacheService.NeedsToUpdateStoredRemoteConfigData())
                 Task.Run(() => updateRemoteConfigCacheService.FetchAndStoreRemoteConfigData()).ConfigureAwait(false);
 
+            interactorFactory.UpdateEventNotificationsSchedules().Execute().ConfigureAwait(false);
+            
             if (lastEnteredBackground.HasValue == false)
                 return;
 

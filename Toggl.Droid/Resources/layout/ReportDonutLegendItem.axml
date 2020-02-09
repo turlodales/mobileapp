@@ -42,7 +42,7 @@
         android:layout_toRightOf="@+id/ReportsFragmentItemProjectName" />
     <View
         android:id="@+id/ReportsFragmentItemFade"
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_card_color"
         android:layout_width="30dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"

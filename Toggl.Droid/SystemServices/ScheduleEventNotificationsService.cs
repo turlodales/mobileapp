@@ -21,7 +21,7 @@ namespace Toggl.Droid.SystemServices
             EnqueueWork(context, componentName, JobId, intent);
         }
 
-        protected override void OnHandleWork(Intent intent)
+        protected override async void OnHandleWork(Intent intent)
         {
             try
             {
@@ -34,12 +34,7 @@ namespace Toggl.Droid.SystemServices
 
                 // Yes, it's ok to run blocking code here, this should run in a background thread as per docs
                 // https://developer.android.com/reference/androidx/core/app/JobIntentService#onHandleWork(android.content.Intent)
-                interactorFactory
-                    .ScheduleEventNotificationsForNextWeek()
-                    .Execute()
-                    .FirstOrDefaultAsync()
-                    .GetAwaiter()
-                    .GetResult();
+                await interactorFactory.UpdateEventNotificationsSchedules().Execute();
             }
             catch (SecurityException timedOut)
             {

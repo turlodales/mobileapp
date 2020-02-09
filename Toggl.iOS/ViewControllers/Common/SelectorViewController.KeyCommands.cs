@@ -2,6 +2,7 @@ using Foundation;
 using ObjCRuntime;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -14,7 +15,7 @@ namespace Toggl.iOS.ViewControllers.Common
             AddKeyCommand(cancelKeyCommand);
         }
 
-        private readonly UIKeyCommand cancelKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand cancelKeyCommand = KeyCommandFactory.Create(
             title: Resources.Cancel,
             image: null,
             action: new Selector(nameof(cancel)),

@@ -15,7 +15,8 @@
             android:layout_width="match_parent">
             <ImageView
                 android:id="@+id/ProjectImageView"
-                android:src="@drawable/project"
+                android:src="@drawable/ic_project"
+                android:tint="@color/icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="16dp"
@@ -49,7 +50,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/ProjectNameTextView" />
             <View
-                android:background="@drawable/TransparentToBackgroundGradient"
+                android:background="@drawable/gradient_transparent_to_bg"
                 android:layout_width="80dp"
                 android:layout_marginRight="40dp"
                 android:layout_height="match_parent"
@@ -67,7 +68,7 @@
             <ImageView
                 android:id="@+id/ColorArrow"
                 android:clickable="true"
-                android:src="@drawable/dropdown"
+                android:src="@drawable/ic_dropdown"
                 android:layout_marginRight="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,7 +88,8 @@
             android:layout_width="match_parent">
             <ImageView
                 android:id="@+id/ChangeWorkspaceViewWorkspaceImage"
-                android:src="@drawable/workspace"
+                android:src="@drawable/ic_workspace"
+                android:tint="@color/icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end"
@@ -110,7 +112,7 @@
                 android:layout_toRightOf="@id/ChangeWorkspaceViewWorkspaceImage"
                 android:layout_marginRight="16dp" />
             <View
-                android:background="@drawable/TransparentToBackgroundGradient"
+                android:background="@drawable/gradient_transparent_to_bg"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
@@ -118,7 +120,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="16dp" />
             <ImageView
-                android:src="@drawable/dropdown"
+                android:src="@drawable/ic_dropdown"
                 android:layout_marginRight="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,7 +140,8 @@
             android:layout_width="match_parent">
             <ImageView
                 android:id="@+id/ChangeWorkspaceViewClientImage"
-                android:src="@drawable/client"
+                android:src="@drawable/ic_client"
+                android:tint="@color/icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end"
@@ -161,7 +164,7 @@
                 android:layout_toRightOf="@id/ChangeWorkspaceViewClientImage"
                 android:layout_marginRight="16dp" />
             <View
-                android:background="@drawable/TransparentToBackgroundGradient"
+                android:background="@drawable/gradient_transparent_to_bg"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
@@ -169,7 +172,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="16dp" />
             <ImageView
-                android:src="@drawable/dropdown"
+                android:src="@drawable/ic_dropdown"
                 android:layout_marginRight="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -189,7 +192,8 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ChangeWorkspaceViewPrivateProjectImage"
-                android:src="@drawable/padlock"
+                android:src="@drawable/ic_padlock"
+                android:tint="@color/icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="16dp"

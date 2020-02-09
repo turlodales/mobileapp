@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Toggl.Core.Extensions;
 using Toggl.Networking;
 using Toggl.Networking.Network;
 using Toggl.Shared;
@@ -27,10 +28,10 @@ namespace Toggl.Core.Login
             this.httpClient = httpClient;
         }
 
-        public ITogglApi CreateApiWith(Credentials credentials)
+        public ITogglApi CreateApiWith(Credentials credentials, ITimeService timeService)
         {
             var configuration = new ApiConfiguration(Environment, credentials, UserAgent);
-            return TogglApiFactory.With(configuration, httpClient);
+            return TogglApiFactory.With(configuration, httpClient, timeService.Now);
         }
     }
 }

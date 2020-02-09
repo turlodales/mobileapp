@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="987654321"
-    android:versionName="2.8.2"
+    android:versionName="2.10"
     package="com.toggl.giskard.debug"
     android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29" />
@@ -21,5 +21,6 @@
 				<category android:name="${applicationId}" />
 			</intent-filter>
 		</receiver>
+    <uses-library android:name="org.apache.http.legacy" android:required="false" />
 	</application>
 </manifest>

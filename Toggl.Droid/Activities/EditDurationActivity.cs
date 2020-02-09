@@ -5,9 +5,11 @@ using Android.Views;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Toggl.Core.Analytics;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
@@ -95,11 +97,11 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             startTimeText.Rx().Tap()
-                .Subscribe(_ => { editMode = EditMode.Time; })
+                .Subscribe(_ => { editMode = EditMode.StartTime; })
                 .DisposedBy(DisposeBag);
 
             startDateText.Rx().Tap()
-                .Subscribe(_ => { editMode = EditMode.Date; })
+                .Subscribe(_ => { editMode = EditMode.StartDate; })
                 .DisposedBy(DisposeBag);
 
             startTimeText.Rx()
@@ -111,11 +113,11 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             stopTimeText.Rx().Tap()
-                .Subscribe(_ => { editMode = EditMode.Time; })
+                .Subscribe(_ => { editMode = EditMode.EndTime; })
                 .DisposedBy(DisposeBag);
 
             stopDateText.Rx().Tap()
-                .Subscribe(_ => { editMode = EditMode.Date; })
+                .Subscribe(_ => { editMode = EditMode.EndDate; })
                 .DisposedBy(DisposeBag);
 
             stopTimeText.Rx()
@@ -202,6 +204,23 @@ namespace Toggl.Droid.Activities
             wheelForeground.EndTimeObservable
                 .Subscribe(ViewModel.ChangeStopTime.Inputs)
                 .DisposedBy(DisposeBag);
+
+            var timeEditedFromNumericInput = wheelNumericInput
+                .Duration
+                .SelectValue(EditTimeSource.NumpadDuration);
+
+            var timeEditedFromPickers = activeEditionChangedSubject
+                .SelectValue(editMode)
+                .Where(mode => mode != EditMode.None)
+                .Select(editModeToEditTimeSource);
+
+            Observable.Merge(
+                    wheelForeground.TimeEdited,
+                    timeEditedFromNumericInput,
+                    timeEditedFromPickers)
+                .Distinct()
+                .Subscribe(ViewModel.TimeEditedWithSource)
+                .DisposedBy(DisposeBag);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -258,7 +277,7 @@ namespace Toggl.Droid.Activities
 
             var localInitialValue = initialValue.ToLocalTime();
 
-            if (editMode == EditMode.Time)
+            if (editMode == EditMode.StartTime || editMode == EditMode.EndTime)
             {
                 editTime(localInitialValue);
             }
@@ -285,6 +304,7 @@ namespace Toggl.Droid.Activities
                 editDialog.Show();
             }
         }
+
         private void editDate(DateTimeOffset currentDate)
         {
             if (editDialog == null)
@@ -333,10 +353,22 @@ namespace Toggl.Droid.Activities
             }
         }
 
+        private EditTimeSource editModeToEditTimeSource(EditMode targetEditMode)
+            => targetEditMode switch
+            {
+                EditMode.StartTime => EditTimeSource.BarrelStartTime,
+                EditMode.EndTime => EditTimeSource.BarrelStopTime,
+                EditMode.StartDate => EditTimeSource.BarrelStartDate,
+                EditMode.EndDate => EditTimeSource.BarrelStopDate,
+                _ => throw new InvalidEnumArgumentException($"It's not possible to convert {targetEditMode} into a EditTimeSource")
+            };
+
         private enum EditMode
         {
-            Time,
-            Date,
+            StartTime,
+            EndTime,
+            StartDate,
+            EndDate,
             None
         }
     }

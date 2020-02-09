@@ -61,7 +61,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/TaskLabel" />
     <View
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_card_color"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true" />

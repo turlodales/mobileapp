@@ -143,8 +143,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         => new SelectableTagViewModel(tagSuggestion.TagId, tagSuggestion.Name, false,
                             tagSuggestion.WorkspaceId));
 
-                ViewModel.SelectTag.ExecuteSequentally(selectedTags)
-                    .PrependAction(ViewModel.Save)
+                ViewModel.SelectTag.ExecuteSequentially(selectedTags)
+                    .AppendAction(ViewModel.Save)
                     .Subscribe();
 
                 TestScheduler.Start();

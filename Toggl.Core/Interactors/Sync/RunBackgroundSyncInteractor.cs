@@ -37,7 +37,7 @@ namespace Toggl.Core.Interactors
         private IObservable<SyncOutcome> syncFailed(Exception error)
         {
             analyticsService.BackgroundSyncFailed
-                .Track(error.GetType().FullName, error.Message, error.StackTrace);
+                .Track(error.GetType().FullName, error.Message, error.StackTrace ?? "");
             return Observable.Return(SyncOutcome.Failed);
         }
     }

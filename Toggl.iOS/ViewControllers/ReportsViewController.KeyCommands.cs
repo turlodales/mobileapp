@@ -2,6 +2,7 @@ using Foundation;
 using ObjCRuntime;
 using Toggl.Core.Analytics;
 using Toggl.Core.Models;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -30,7 +31,7 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(ShowCalendarKeyCommand);
         }
 
-        private readonly UIKeyCommand selectWorkspaceCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand selectWorkspaceCommand = KeyCommandFactory.Create(
             title: Resources.Workspace,
             image: null,
             action: new Selector(nameof(selectWorkspace)),
@@ -39,7 +40,7 @@ namespace Toggl.iOS.ViewControllers
             propertyList: null);
 
         private UIKeyCommand shortcutCommand(string input, DateRangePeriod period)
-            => UIKeyCommand.Create(
+            => KeyCommandFactory.Create(
             title: period.ToHumanReadableString(),
             image: null,
             action: new Selector("selectShortcut:"),
@@ -47,7 +48,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command | UIKeyModifierFlags.Alternate,
             propertyList: new NSNumber((int)period));
 
-        private readonly UIKeyCommand selectDateRangeCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand selectDateRangeCommand = KeyCommandFactory.Create(
             title: Resources.DateRange,
             image: null,
             action: new Selector(nameof(selectDateRange)),

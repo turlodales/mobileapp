@@ -4,7 +4,7 @@
     <item name="android:windowNoTitle">true</item>
     <item name="android:windowLightStatusBar">@bool/is_light_theme</item>
     <item name="android:windowLightNavigationBar">@bool/is_light_theme</item>
-    <item name="android:windowBackground">@drawable/Splash</item>
+    <item name="android:windowBackground">@drawable/splash_screen</item>
     <item name="android:statusBarColor">@color/background</item>
     <item name="android:navigationBarColor">@color/background</item>
   </style>

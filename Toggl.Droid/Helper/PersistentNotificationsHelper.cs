@@ -66,8 +66,8 @@ namespace Toggl.Droid.Helper
                     .SetContentTitle(timeEntryDescription)
                     .SetContentText(projectDetails)
                     .SetWhen(startTime)
-                    .SetContentIntent(getIntentFor(activity))
-                    .SetSmallIcon(Resource.Drawable.ic_icon_running)
+                    .SetContentIntent(activity.GetOpenAppPendingIntent())
+                    .SetSmallIcon(Resource.Drawable.ic_running)
                     .Build();
 
                 notificationManager.Notify(runningTimeEntryNotificationId, notification);
@@ -90,8 +90,8 @@ namespace Toggl.Droid.Helper
                     .SetOngoing(true)
                     .SetContentTitle(Resources.AppTitle)
                     .SetContentText(Resources.IdleTimerNotification)
-                    .SetContentIntent(getIntentFor(activity))
-                    .SetSmallIcon(Resource.Drawable.ic_icon_notrunning)
+                    .SetContentIntent(activity.GetOpenAppPendingIntent())
+                    .SetSmallIcon(Resource.Drawable.ic_not_running)
                     .Build();
 
                 notificationManager.Notify(idleTimerNotificationId, notification);
@@ -120,15 +120,6 @@ namespace Toggl.Droid.Helper
                 projectDetails.Append($" {dotSeparator} {timeEntryViewModel.Project.Client.Name}");
             }
             return projectDetails.ToString();
-        }
-
-
-        private static PendingIntent getIntentFor(Activity activity)
-        {
-            var notificationIntent = activity.PackageManager.GetLaunchIntentForPackage(activity.PackageName);
-            notificationIntent.SetPackage(null);
-            notificationIntent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ResetTaskIfNeeded);
-            return PendingIntent.GetActivity(activity, 0, notificationIntent, 0);
         }
     }
 }

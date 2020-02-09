@@ -5,6 +5,6 @@ namespace Toggl.Core.Login
 {
     public interface IApiFactory
     {
-        ITogglApi CreateApiWith(Credentials credentials);
+        ITogglApi CreateApiWith(Credentials credentials, ITimeService timeService);
     }
 }

@@ -2,6 +2,7 @@ using System.Reactive.Linq;
 using Foundation;
 using ObjCRuntime;
 using Toggl.Core.UI.ViewModels;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -21,7 +22,7 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(ShowCalendarKeyCommand);
         }
 
-        private readonly UIKeyCommand previousDayKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand previousDayKeyCommand = KeyCommandFactory.Create(
             title: Resources.Previous,
             image: null,
             action: new Selector(nameof(goToPreviousDay)),
@@ -29,7 +30,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: default,
             propertyList: null);
 
-        private readonly UIKeyCommand nextDayKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand nextDayKeyCommand = KeyCommandFactory.Create(
             title: Resources.Next,
             image: null,
             action: new Selector(nameof(goToNextDay)),
@@ -37,7 +38,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: default,
             propertyList: null);
 
-        private readonly UIKeyCommand openSettingsKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand openSettingsKeyCommand = KeyCommandFactory.Create(
             title: Resources.Settings,
             image: null,
             action: new Selector(nameof(openSettings)),

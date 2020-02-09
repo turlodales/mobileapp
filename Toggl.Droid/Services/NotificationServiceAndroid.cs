@@ -44,7 +44,7 @@ namespace Toggl.Droid.Services
                     var androidNotification = notificationsBuilder.SetAutoCancel(true)
                         .SetContentIntent(pendingIntent)
                         .SetContentTitle(notification.Title)
-                        .SetSmallIcon(Resource.Drawable.ic_icon_running)
+                        .SetSmallIcon(Resource.Drawable.ic_running)
                         .SetContentText(notification.Description)
                         .Build();
                     var scheduleAt = notification.ScheduledTime;

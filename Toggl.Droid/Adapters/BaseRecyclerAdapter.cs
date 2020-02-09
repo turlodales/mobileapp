@@ -42,7 +42,7 @@ namespace Toggl.Droid.Adapters
         {
             this.diffingStrategy = normalizeDiffingStrategy(diffingStrategy);
 
-            HasStableIds = this.diffingStrategy.HasStableIds;
+            SetHasStableIds(this.diffingStrategy.HasStableIds);
         }
 
         private IDiffingStrategy<T> normalizeDiffingStrategy(IDiffingStrategy<T> diffingStrategy)

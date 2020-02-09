@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toTopOf="@+id/Title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/ic_illustration_error_spider"/>
+        android:src="@drawable/illustration_outdated_error"/>
     <TextView
         android:id="@+id/Title"
         android:layout_width="0dp"

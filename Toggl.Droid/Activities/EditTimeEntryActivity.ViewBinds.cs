@@ -144,7 +144,7 @@ namespace Toggl.Droid.Activities
             tagsRecycler.SetAdapter(tagsAdapter);
 
             SetupToolbar();
-            SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.toolbar_close);
+            SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_close);
 
             scrollView.AttachMaterialScrollBehaviour(appBarLayout);
         }

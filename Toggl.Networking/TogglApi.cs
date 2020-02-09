@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Toggl.Networking.ApiClients;
 using Toggl.Networking.ApiClients.Interfaces;
 using Toggl.Networking.Network;
 using Toggl.Networking.Serialization;
 using Toggl.Shared;
-using static System.Net.DecompressionMethods;
 
 namespace Toggl.Networking
 {
@@ -59,10 +59,14 @@ namespace Toggl.Networking
 
     public static class TogglApiFactory
     {
-        public static ITogglApi With(ApiConfiguration configuration, HttpClient httpClient)
+        public static ITogglApi With(
+            ApiConfiguration configuration,
+            HttpClient httpClient,
+            Func<DateTimeOffset> currentTime)
         {
             var apiClient = new ApiClient(httpClient, configuration.UserAgent);
-            return new TogglApi(configuration, apiClient);
+            var rateLimitingApiClient = new AdaptingRateLimitingAwareApiClient(apiClient, currentTime);
+            return new TogglApi(configuration, rateLimitingApiClient);
         }
     }
 }

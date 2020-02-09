@@ -105,8 +105,11 @@ namespace Toggl.iOS.ViewControllers.Settings
             return IosDependencyContainer.Instance.IntentDonationService.GetCurrentShortcuts()
                 .CombineLatest(ViewModel.GetUserWorkspaces(), filterByWorkspace)
                 .SelectMany(filterByProject)
-                .Select(shortcuts => SiriShortcut.DefaultShortcuts.Concat(shortcuts));
+                .Select(shortcuts => SiriShortcut.DefaultShortcuts.Where(notClipboardShortcutOnIOS13).Concat(shortcuts));
         }
+
+        private bool notClipboardShortcutOnIOS13(SiriShortcut shortcut)
+            => !(UIDevice.CurrentDevice.CheckSystemVersion(13, 0) && shortcut.Type == SiriShortcutType.StartFromClipboard);
 
         private IEnumerable<SiriShortcut> filterByWorkspace(IEnumerable<SiriShortcut> shortcuts, IEnumerable<IThreadSafeWorkspace> userWorkspaces)
         {

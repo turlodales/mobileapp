@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Toggl.Networking.Extensions;
 using Toggl.Networking.Helpers;
 using Toggl.Networking.Network;
 
@@ -11,7 +12,11 @@ namespace Toggl.Networking.Tests.Integration.Helper
     {
         private const int maximumNumberOfTries = 3;
 
-        private readonly TimeSpan tooManyRequestsDelay = TimeSpan.FromSeconds(60);
+        // Five seconds is enough to empty a leaky bucket set to 200r/min, which translates
+        // to 0.3s/request, with an allowed burst of 10 requests. That means that the
+        // nginx leaky bucket will be empty in 0.3s * 11 = 3.3s. We'll wait a bit longer
+        // just to make sure we won't run into another 429 right away.
+        private readonly TimeSpan tooManyRequestsDelay = TimeSpan.FromSeconds(5);
 
         private readonly TimeSpan badGatewayDelay = TimeSpan.FromSeconds(30);
 
@@ -75,6 +80,5 @@ namespace Toggl.Networking.Tests.Integration.Helper
 
         private TimeSpan randomizedDelay(TimeSpan baseDelay)
             => baseDelay + random.NextDouble() * maximumRandomDelay;
-
     }
 }

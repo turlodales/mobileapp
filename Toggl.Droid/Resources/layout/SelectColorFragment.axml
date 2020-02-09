@@ -34,7 +34,7 @@
     <toggl.droid.views.ValueSlider
         android:id="@+id/SelectColorValueSlider"
         android:max="75"
-        android:thumb="@drawable/ValueSliderThumb"
+        android:thumb="@drawable/shape_value_slider_thumb"
         android:layout_height="20dp"
         android:maxHeight="20dp"
         android:layout_width="match_parent"

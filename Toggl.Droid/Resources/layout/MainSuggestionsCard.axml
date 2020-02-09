@@ -60,14 +60,14 @@
             app:layout_constraintLeft_toRightOf="@id/ProjectLabel"
             />
         <View
-            android:background="@drawable/TransparentToCardColorGradient"
+            android:background="@drawable/gradient_transparent_to_card_color"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="68dp"
             android:layout_height="match_parent" />
         <ImageView
             android:layout_gravity="center_vertical|right"
             android:id="@+id/ContinueButton"
-            android:src="@drawable/play"
+            android:src="@drawable/ic_play"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

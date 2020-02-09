@@ -49,6 +49,7 @@ namespace Toggl.Core.Tests.Login
             protected IScheduler Scheduler { get; } = System.Reactive.Concurrency.Scheduler.Default;
             protected ISyncManager SyncManager { get; } = Substitute.For<ISyncManager>();
             protected IInteractorFactory InteractorFactory { get; } = Substitute.For<IInteractorFactory>();
+            protected ITimeService TimeService { get; } = Substitute.For<ITimeService>();
             protected (ISyncManager, IInteractorFactory) Initialize(ITogglApi api) => (SyncManager, InteractorFactory);
             protected virtual IScheduler CreateScheduler => Scheduler;
             protected IAnalyticsService AnalyticsService { get; } = Substitute.For<IAnalyticsService>();
@@ -59,13 +60,14 @@ namespace Toggl.Core.Tests.Login
                 UserAccessManager = new UserAccessManager(
                     new Lazy<IApiFactory>(() => ApiFactory),
                     new Lazy<ITogglDatabase>(() => Database),
-                    new Lazy<IPrivateSharedStorageService>(() => PrivateSharedStorageService)
+                    new Lazy<IPrivateSharedStorageService>(() => PrivateSharedStorageService),
+                    new Lazy<ITimeService>(() => TimeService)
                 );
 
                 Api.User.Get().ReturnsTaskOf(User);
                 Api.User.SignUp(Email, Password, TermsAccepted, CountryId, Timezone).ReturnsTaskOf(User);
                 Api.User.GetWithGoogle().ReturnsTaskOf(User);
-                ApiFactory.CreateApiWith(Arg.Any<Credentials>()).Returns(Api);
+                ApiFactory.CreateApiWith(Arg.Any<Credentials>(), Arg.Any<ITimeService>()).Returns(Api);
                 Database.Clear().Returns(Observable.Return(Unit.Default));
             }
         }
@@ -83,14 +85,16 @@ namespace Toggl.Core.Tests.Login
             public void ThrowsIfAnyOfTheArgumentsIsNull(
                 bool useApiFactory,
                 bool useDatabase,
-                bool usePrivateSharedStorageService)
+                bool usePrivateSharedStorageService,
+                bool useTimeService)
             {
                 var database = useDatabase ? new Lazy<ITogglDatabase>(() => Database) : null;
                 var apiFactory = useApiFactory ? new Lazy<IApiFactory>(() => ApiFactory) : null;
                 var privateSharedStorageService = usePrivateSharedStorageService ? new Lazy<IPrivateSharedStorageService>(() => PrivateSharedStorageService) : null;
+                var timeService = useTimeService ? new Lazy<ITimeService>(() => TimeService) : null;
 
                 Action tryingToConstructWithEmptyParameters =
-                    () => new UserAccessManager(apiFactory, database, privateSharedStorageService);
+                    () => new UserAccessManager(apiFactory, database, privateSharedStorageService, timeService);
 
                 tryingToConstructWithEmptyParameters
                     .Should().Throw<ArgumentNullException>();
@@ -214,7 +218,8 @@ namespace Toggl.Core.Tests.Login
                 ApiFactory.Received().CreateApiWith(Arg.Is<Credentials>(
                     arg => arg.Header.Name == null
                         && arg.Header.Value == null
-                        && arg.Header.Type == HttpHeader.HeaderType.None));
+                        && arg.Header.Type == HttpHeader.HeaderType.None),
+                    Arg.Any<ITimeService>());
             }
 
             [Theory, LogIfTooSlow]

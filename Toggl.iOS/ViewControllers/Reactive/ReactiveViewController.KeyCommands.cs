@@ -1,5 +1,6 @@
 using Foundation;
 using ObjCRuntime;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -9,7 +10,7 @@ namespace Toggl.iOS.ViewControllers
     {
         protected virtual bool AcceptsCancelKeyCommand { get; } = false;
 
-        protected readonly UIKeyCommand CancelKeyCommand = UIKeyCommand.Create(
+        protected readonly UIKeyCommand CancelKeyCommand = KeyCommandFactory.Create(
                 title: Resources.Cancel,
                 image: null,
                 action: new Selector(nameof(cancel)),
@@ -17,7 +18,7 @@ namespace Toggl.iOS.ViewControllers
                 modifierFlags: UIKeyModifierFlags.Command,
                 propertyList: null);
 
-        protected readonly UIKeyCommand ShowMainLogKeyCommand = UIKeyCommand.Create(
+        protected readonly UIKeyCommand ShowMainLogKeyCommand = KeyCommandFactory.Create(
             title: Resources.Timer,
             image: null,
             action: new Selector(nameof(showMainLog)),
@@ -25,7 +26,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        protected readonly UIKeyCommand ShowReportsKeyCommand = UIKeyCommand.Create(
+        protected readonly UIKeyCommand ShowReportsKeyCommand = KeyCommandFactory.Create(
             title: Resources.Reports,
             image: null,
             action: new Selector(nameof(showReports)),
@@ -33,7 +34,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        protected readonly UIKeyCommand ShowCalendarKeyCommand = UIKeyCommand.Create(
+        protected readonly UIKeyCommand ShowCalendarKeyCommand = KeyCommandFactory.Create(
             title: Resources.Calendar,
             image: null,
             action: new Selector(nameof(showCalendar)),

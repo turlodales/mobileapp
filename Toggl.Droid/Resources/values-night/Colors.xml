@@ -19,6 +19,8 @@
   <color name="darkBackground">#DDFFFFFF</color>
   <color name="primaryTextOnDarkBackground">#FF000000</color>
   <color name="weekStripeDisabledDayColor">#656565</color>
+  <color name="icon">#FFB1B1B5</color>
+  <color name="toolbarActionColor">#008DFF</color>
 
   <!-- Reports page-->
   <color name="placeholderBarFilled">#19FFFFFF</color>
@@ -34,5 +36,8 @@
   <color name="todayMarkerBackground">#E0E0E0</color>
   <color name="selectionBackground">#328FFF</color>
   <color name="shortcutBackground">#3E3E3E</color>
+
+  <!-- Login/Sign Up -->
+  <color name="loginSignUpOptionsDivider">#616161</color>
   
 </resources>

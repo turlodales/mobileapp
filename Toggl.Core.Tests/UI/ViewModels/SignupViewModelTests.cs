@@ -14,6 +14,7 @@ using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Tests.Generators;
+using Toggl.Core.Tests.Helpers;
 using Toggl.Core.Tests.TestExtensions;
 using Toggl.Core.UI;
 using Toggl.Core.UI.Navigation;
@@ -65,7 +66,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 Api.Location.Get().ReturnsTaskOf(Location);
 
-                ApiFactory.CreateApiWith(Arg.Any<Credentials>()).Returns(Api);
+                ApiFactory.CreateApiWith(Arg.Any<Credentials>(), Arg.Any<ITimeService>()).Returns(Api);
 
                 var container = new TestDependencyContainer { MockSyncManager = SyncManager };
                 TestDependencyContainer.Initialize(container);
@@ -568,7 +569,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 request.Endpoint.Returns(new Uri("http://any.url.com"));
                 var exception = new EmailIsAlreadyUsedException(
                     new BadRequestException(
-                        request, Substitute.For<IResponse>()
+                        request, ApiExceptions.Response
                     )
                 );
                 UserAccessManager
@@ -854,8 +855,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         ViewModel.ErrorMessage.Subscribe(observer);
 
                         prepareException(new UnauthorizedException(
-                            Substitute.For<IRequest>(),
-                            Substitute.For<IResponse>()));
+                            ApiExceptions.Request,
+                            ApiExceptions.Response));
 
                         ViewModel.Signup.Execute();
 
@@ -877,7 +878,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         prepareException(new EmailIsAlreadyUsedException(
                             new BadRequestException(
                                 request,
-                                Substitute.For<IResponse>()
+                                ApiExceptions.Response
                             )
                         ));
 

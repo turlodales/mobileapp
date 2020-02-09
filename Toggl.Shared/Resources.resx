@@ -1463,26 +1463,6 @@ No worries. Create a new workspace to continue.</value>
         <value>No internet connection. Please try again.</value>
         <comment>Generic error message shown when there's an error caused by the internet connection</comment>
     </data>
-    <data name="January2020CampaignTitle" xml:space="preserve">
-        <value>Save 20% on Annual Plans</value>
-        <comment>@Invariant</comment>
-    </data>
-    <data name="January2020CampaignPositiveButtonText" xml:space="preserve">
-        <value>Learn more</value>
-        <comment>@Invariant</comment>
-    </data>
-    <data name="January2020CampaignNegativeButtonText" xml:space="preserve">
-        <value>Dismiss</value>
-        <comment>@Invariant</comment>
-    </data>
-    <data name="January2020CampaignTextVersionA" xml:space="preserve">
-        <value>Upgrade to any annual plan and pocket some extra cash just in time for the holiday season!</value>
-        <comment>@Invariant</comment>
-    </data>
-    <data name="January2020CampaignTextVersionB" xml:space="preserve">
-        <value>Psst... we've got an early gift for you! Sign up for any annual plan between now and January 17th and get 20% off.</value>
-        <comment>@Invariant</comment>
-    </data>
 
     <!-- Siri Related Copies -->
 
@@ -1659,10 +1639,6 @@ No worries. Create a new workspace to continue.</value>
     </data>
     <data name="ReportErrorGeneric" xml:space="preserve">
         <value>Something went wrong</value>
-    </data>
-    <data name="January2020CampaignTitle" xml:space="preserve">
-        <value>Save 20% on Annual Plans</value>
-        <comment>@Invariant</comment>
     </data>
     <data name="Main" xml:space="preserve">
         <value>Main</value>

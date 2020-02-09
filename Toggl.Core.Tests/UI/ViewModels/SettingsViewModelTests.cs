@@ -962,5 +962,65 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 messages.Last().Should().BeTrue();
             }
         }
+
+        public sealed class TheOpenCalendarSmartRemindersMethod : SettingsViewModelTest
+        {
+            [Fact, LogIfTooSlow]
+            public async Task NavigatesToTheUpcomingEventsNotificationSettingsViewModel()
+            {
+                ViewModel.OpenCalendarSmartReminders.Execute();
+
+                await NavigationService.Received().Navigate<UpcomingEventsNotificationSettingsViewModel>(ViewModel.View);
+            }
+            
+            [Fact, LogIfTooSlow]
+            public async Task RefreshesNotificationSettings()
+            {
+                ViewModel.OpenCalendarSmartReminders.Execute();
+
+                await NavigationService.Received().Navigate<UpcomingEventsNotificationSettingsViewModel>(ViewModel.View);
+                InteractorFactory.Received().UpdateEventNotificationsSchedules().Execute();
+            }
+        }
+
+        public sealed class OpenNotificationSettingsMethod : SettingsViewModelTest
+        {
+            [Fact, LogIfTooSlow]
+            public async Task NavigatesToTheNotificationSettingsViewModelAndRefreshesNotificationSettings()
+            {
+                ViewModel.OpenNotificationSettings.Execute();
+
+                await NavigationService.Received().Navigate<NotificationSettingsViewModel>(ViewModel.View);
+            }
+            
+            [Fact, LogIfTooSlow]
+            public async Task RefreshesNotificationSettings()
+            {
+                ViewModel.OpenNotificationSettings.Execute();
+
+                await NavigationService.Received().Navigate<NotificationSettingsViewModel>(ViewModel.View);
+                InteractorFactory.Received().UpdateEventNotificationsSchedules().Execute();
+            }
+        }
+        
+        public sealed class OpenCalendarSettingsMethod : SettingsViewModelTest
+        {
+            [Fact, LogIfTooSlow]
+            public async Task NavigatesToTheCalendarSettingsViewModelAndRefreshesNotificationSettings()
+            {
+                ViewModel.OpenCalendarSettings.Execute();
+
+                await NavigationService.Received().Navigate<CalendarSettingsViewModel, bool, string[]>(false, ViewModel.View);
+            }
+            
+            [Fact, LogIfTooSlow]
+            public async Task RefreshesNotificationSettings()
+            {
+                ViewModel.OpenCalendarSettings.Execute();
+
+                await NavigationService.Received().Navigate<CalendarSettingsViewModel, bool, string[]>(false, ViewModel.View);
+                InteractorFactory.Received().UpdateEventNotificationsSchedules().Execute();
+            }
+        }
     }
 }

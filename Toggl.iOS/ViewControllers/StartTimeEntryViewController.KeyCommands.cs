@@ -1,6 +1,7 @@
 using System.Reactive.Linq;
 using Foundation;
 using ObjCRuntime;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -18,7 +19,7 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(toggleBillableKeyCommand);
         }
 
-        private readonly UIKeyCommand saveKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand saveKeyCommand = KeyCommandFactory.Create(
             title: Resources.Save,
             image: null,
             action: new Selector(nameof(save)),
@@ -26,7 +27,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: default,
             propertyList: null);
 
-        private readonly UIKeyCommand toggleBillableKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand toggleBillableKeyCommand = KeyCommandFactory.Create(
             title: Resources.Billable,
             image: null,
             action: new Selector(nameof(toggleBillable)),
@@ -34,7 +35,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        private readonly UIKeyCommand selectDateKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand selectDateKeyCommand = KeyCommandFactory.Create(
             title: Resources.Startdate,
             image: null,
             action: new Selector(nameof(selectDate)),
@@ -42,7 +43,7 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        private readonly UIKeyCommand selectTimeKeyCommand = UIKeyCommand.Create(
+        private readonly UIKeyCommand selectTimeKeyCommand = KeyCommandFactory.Create(
             title: Resources.DateAndTime,
             image: null,
             action: new Selector(nameof(selectTime)),

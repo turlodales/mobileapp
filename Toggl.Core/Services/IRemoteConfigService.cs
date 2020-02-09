@@ -7,6 +7,5 @@ namespace Toggl.Core.Services
     {
         RatingViewConfiguration GetRatingViewConfiguration();
         PushNotificationsConfiguration GetPushNotificationsConfiguration();
-        January2020CampaignConfiguration GetJanuary2020CampaignConfiguration();
     }
 }

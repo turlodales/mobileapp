@@ -201,7 +201,7 @@ namespace Toggl.Core.UI.ViewModels
 
             allCountries = await new GetAllCountriesInteractor().Execute();
 
-            var api = apiFactory.CreateApiWith(Credentials.None);
+            var api = apiFactory.CreateApiWith(Credentials.None, timeService);
             getCountrySubscription = new GetCurrentLocationInteractor(api)
                 .Execute()
                 .Select(location => allCountries.First(country => country.CountryCode == location.CountryCode))

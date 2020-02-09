@@ -13,24 +13,19 @@ namespace Toggl.Core.Sync.States.Pull
 {
     public abstract class BaseFetchSinceState : ISyncState
     {
-        private readonly ILeakyBucket leakyBucket;
         private readonly ISinceParameterRepository since;
         private readonly ITimeService timeService;
 
-        public StateResult<TimeSpan> PreventOverloadingServer { get; } = new StateResult<TimeSpan>();
         public StateResult<IFetchObservables> Done { get; } = new StateResult<IFetchObservables>();
 
         protected ITogglApi Api { get; }
-        protected abstract int NumberOfHttpRequests { get; }
 
         public BaseFetchSinceState(
             ITogglApi api,
-            ILeakyBucket leakyBucket,
             ISinceParameterRepository since,
             ITimeService timeService)
         {
             this.since = since;
-            this.leakyBucket = leakyBucket;
             this.timeService = timeService;
 
             Api = api;
@@ -39,14 +34,6 @@ namespace Toggl.Core.Sync.States.Pull
         public IObservable<ITransition> Start()
             => Observable.Create<ITransition>(observer =>
             {
-                if (!leakyBucket.TryClaimFreeSlots(
-                    numberOfSlots: NumberOfHttpRequests,
-                    timeToFreeSlot: out var timeToNextFreeSlot))
-                {
-                    observer.CompleteWith(PreventOverloadingServer.Transition(timeToNextFreeSlot));
-                    return () => { };
-                }
-
                 var observables = Fetch();
 
                 observer.CompleteWith(Done.Transition(observables));

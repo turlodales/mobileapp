@@ -217,12 +217,6 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
-        IAnalyticsEvent<string> MarketingMessageShown { get; }
-
-        IAnalyticsEvent<string> MarketingMessageCallToActionHit { get; }
-
-        IAnalyticsEvent<string> MarketingMessageDismissed { get; }
-
         void SetAppCenterUserId(long id);
         void ResetAppCenterUserId();
 

@@ -70,7 +70,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
                 AnalyticsService.BackgroundSyncStarted.Received().Track();
                 AnalyticsService.BackgroundSyncFinished.Received().Track(nameof(SyncOutcome.Failed));
                 AnalyticsService.BackgroundSyncFailed.Received()
-                    .Track(exception.GetType().FullName, exception.Message, exception.StackTrace);
+                    .Track(exception.GetType().FullName, exception.Message, exception.StackTrace ?? "");
             }
         }
     }

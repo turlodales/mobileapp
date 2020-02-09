@@ -1960,36 +1960,6 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string January2020CampaignTitle {
-            get {
-                return ResourceManager.GetString("January2020CampaignTitle", resourceCulture);
-            }
-        }
-        
-        public static string January2020CampaignPositiveButtonText {
-            get {
-                return ResourceManager.GetString("January2020CampaignPositiveButtonText", resourceCulture);
-            }
-        }
-        
-        public static string January2020CampaignNegativeButtonText {
-            get {
-                return ResourceManager.GetString("January2020CampaignNegativeButtonText", resourceCulture);
-            }
-        }
-        
-        public static string January2020CampaignTextVersionA {
-            get {
-                return ResourceManager.GetString("January2020CampaignTextVersionA", resourceCulture);
-            }
-        }
-        
-        public static string January2020CampaignTextVersionB {
-            get {
-                return ResourceManager.GetString("January2020CampaignTextVersionB", resourceCulture);
-            }
-        }
-        
         public static string Siri {
             get {
                 return ResourceManager.GetString("Siri", resourceCulture);

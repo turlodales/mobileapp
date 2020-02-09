@@ -163,7 +163,7 @@ namespace Toggl.Core.Sync
         private void processError(Exception error)
         {
             analyticsService.TrackAnonymized(error);
-            analyticsService.SyncFailed.Track(error.GetType().FullName, error.Message, error.StackTrace);
+            analyticsService.SyncFailed.Track(error.GetType().FullName, error.Message, error.StackTrace ?? "");
 
             queue.Clear();
             orchestrator.Start(Sleep);

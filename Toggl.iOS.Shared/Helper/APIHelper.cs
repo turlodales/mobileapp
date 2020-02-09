@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using Foundation;
@@ -28,7 +29,7 @@ namespace Toggl.iOS.Shared
 
             var httpHandler = new NSUrlSessionHandler(NSUrlSessionConfiguration.DefaultSessionConfiguration);
             var httpClient = new HttpClient(httpHandler, true);
-            return TogglApiFactory.With(apiConfiguration, httpClient);
+            return TogglApiFactory.With(apiConfiguration, httpClient, () => DateTimeOffset.UtcNow);
         }
     }
 }

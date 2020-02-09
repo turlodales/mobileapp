@@ -222,12 +222,6 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
-        public IAnalyticsEvent<string> MarketingMessageShown { get; }
-
-        public IAnalyticsEvent<string> MarketingMessageCallToActionHit { get; }
-
-        public IAnalyticsEvent<string> MarketingMessageDismissed { get; }
-
         protected BaseAnalyticsService()
         {
             Login = new AnalyticsEvent<AuthenticationMethod>(this, nameof(Login), "AuthenticationMethod");
@@ -335,9 +329,6 @@ namespace Toggl.Core.Analytics
             CalendarExistingTimeEntryContextualMenu = new AnalyticsEvent<CalendarContextualMenuActionType>(this, nameof(CalendarExistingTimeEntryContextualMenu), "SelectedOption");
             CalendarRunningTimeEntryContextualMenu = new AnalyticsEvent<CalendarContextualMenuActionType>(this, nameof(CalendarRunningTimeEntryContextualMenu), "SelectedOption");
             CalendarTimeEntryCreated = new AnalyticsEvent<CalendarTimeEntryCreatedType, int, string>(this, nameof(CalendarTimeEntryCreated), "Type", "DaysSinceToday", "DayOfTheWeek");
-            MarketingMessageShown = new AnalyticsEvent<string>(this, nameof(MarketingMessageShown), "Campaign");
-            MarketingMessageCallToActionHit = new AnalyticsEvent<string>(this, nameof(MarketingMessageCallToActionHit), "Campaign");
-            MarketingMessageDismissed = new AnalyticsEvent<string>(this, nameof(MarketingMessageDismissed), "Campaign");
         }
 
         public void TrackAnonymized(Exception exception)

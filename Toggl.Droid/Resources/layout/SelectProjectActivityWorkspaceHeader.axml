@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true" />
     <View
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_card_color"
         android:layout_width="56dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true" />

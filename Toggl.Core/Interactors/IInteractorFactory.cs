@@ -133,7 +133,7 @@ namespace Toggl.Core.Interactors
 
         #region Preferences
 
-        IInteractor<IObservable<IThreadSafePreferences>> GetPreferences();
+        IInteractor<IObservable<IThreadSafePreferences>> ObserveCurrentPreferences();
 
         IInteractor<IObservable<IThreadSafePreferences>> UpdatePreferences(EditPreferencesDTO dto);
 
@@ -178,6 +178,8 @@ namespace Toggl.Core.Interactors
         IInteractor<IObservable<Unit>> UnscheduleAllNotifications();
 
         IInteractor<IObservable<Unit>> ScheduleEventNotificationsForNextWeek();
+
+        IInteractor<Task> UpdateEventNotificationsSchedules();
 
         #endregion
 

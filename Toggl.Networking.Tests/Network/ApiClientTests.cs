@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using System.Linq;
 using System.Net.Http;
 using Toggl.Networking.Network;

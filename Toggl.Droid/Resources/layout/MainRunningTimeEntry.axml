@@ -69,7 +69,7 @@
         android:layout_height="wrap_content">
         <View
             android:id="@+id/MainRunningTimeEntryProjectDotView"
-            android:background="@drawable/SmallDot"
+            android:background="@drawable/shape_dot"
             android:layout_width="4dp"
             android:layout_height="4dp"
             android:layout_gravity="center" />
@@ -96,7 +96,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/TransparentToCardColorGradient"
+        android:background="@drawable/gradient_transparent_to_card_color"
         android:layout_height="0dp"
         android:layout_width="144dp" />
     <View
@@ -109,7 +109,8 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/MainStopButton"
         app:elevation="4dp"
-        android:src="@drawable/stop_white"
+        android:src="@drawable/ic_stop_big"
+        android:tint="@android:color/white"
         app:backgroundTint="@color/stopTimeEntryButtonBackground"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

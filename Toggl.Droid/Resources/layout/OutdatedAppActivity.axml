@@ -15,7 +15,7 @@
             android:layout_width="312dp"
             android:layout_height="320dp">
             <ImageView
-                android:src="@drawable/ic_illustration_error_spider"
+                android:src="@drawable/illustration_outdated_error"
                 android:layout_width="140dp"
                 android:layout_height="133dp"
                 android:layout_gravity="center_horizontal" />

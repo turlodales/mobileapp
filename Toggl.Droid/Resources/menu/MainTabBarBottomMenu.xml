@@ -5,18 +5,18 @@
     <item
         android:id="@+id/MainTabTimerItem"
         tools:title="Timer"
-        android:icon="@drawable/timer_light" 
+        android:icon="@drawable/ic_timer" 
         android:title=""/>
 
     <item
         android:id="@+id/MainTabReportsItem"
         tools:title="Reports"
-        android:icon="@drawable/reports_light" 
+        android:icon="@drawable/ic_reports" 
         android:title=""/>
 
     <item
         android:id="@+id/MainTabCalendarItem"
         tools:title="Calendar"
-        android:icon="@drawable/calendar_light"
+        android:icon="@drawable/ic_calendar"
         android:title=""/>
 </menu>

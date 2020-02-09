@@ -127,23 +127,6 @@ namespace Toggl.Core.Tests.Sync.States.Push
         }
 
         [Fact, LogIfTooSlow]
-        public void WaitsForASlotFromTheRateLimiter()
-        {
-            var scheduler = new TestScheduler();
-            var delay = TimeSpan.FromSeconds(1);
-            RateLimiter.WaitForFreeSlot().Returns(Observable.Return(Unit.Default).Delay(delay, scheduler));
-            var state = (UpdateEntityState<ITestModel, IThreadSafeTestModel>)CreateState();
-            var entity = new TestModel(-1, SyncStatus.SyncFailed);
-
-            state.Start(entity).Subscribe();
-
-            scheduler.AdvanceBy(delay.Ticks - 1);
-            api.DidNotReceive().Update(Arg.Any<ITestModel>());
-            scheduler.AdvanceBy(1);
-            api.Received().Update(Arg.Any<ITestModel>());
-        }
-
-        [Fact, LogIfTooSlow]
         public void ReturnsTheEntityChangedTransitionWhenEntityChangesLocally()
         {
             var state = (UpdateEntityState<ITestModel, IThreadSafeTestModel>)CreateState();
@@ -258,7 +241,7 @@ namespace Toggl.Core.Tests.Sync.States.Push
         {
             var exception = new Exception("SomeRandomMessage");
             var entity = (IThreadSafeTestModel)Substitute.For(new[] { entityType }, new object[0]);
-            var state = new UpdateEntityState<ITestModel, IThreadSafeTestModel>(api, dataSource, analyticsService, LeakyBucket, RateLimiter, _ => null);
+            var state = new UpdateEntityState<ITestModel, IThreadSafeTestModel>(api, dataSource, analyticsService, _ => null);
             var expectedMessage = $"{Update}:{exception.Message}";
             var analyticsEvent = entity.GetType().ToSyncErrorAnalyticsEvent(analyticsService);
             PrepareApiCallFunctionToThrow(exception);
@@ -269,7 +252,7 @@ namespace Toggl.Core.Tests.Sync.States.Push
         }
 
         protected override BasePushEntityState<IThreadSafeTestModel> CreateState()
-            => new UpdateEntityState<ITestModel, IThreadSafeTestModel>(api, dataSource, analyticsService, LeakyBucket, RateLimiter, TestModel.From);
+            => new UpdateEntityState<ITestModel, IThreadSafeTestModel>(api, dataSource, analyticsService, TestModel.From);
 
         protected override void PrepareApiCallFunctionToThrow(Exception e)
         {
