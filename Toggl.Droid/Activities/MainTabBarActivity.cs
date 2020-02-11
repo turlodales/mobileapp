@@ -26,7 +26,7 @@ namespace Toggl.Droid.Activities
     [Activity(Theme = "@style/Theme.Splash",
               ScreenOrientation = ScreenOrientation.Portrait,
               ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
-    public sealed partial class MainTabBarActivity : ReactiveActivity<MainTabBarViewModel>
+    public sealed partial class MainTabBarActivity : ReactiveActivity<MainTabBarViewModel>, ITabLayoutReadyListener
     {
         public static readonly string StartingTabExtra = "StartingTabExtra";
         public static readonly string WorkspaceIdExtra = "WorkspaceIdExtra";
@@ -48,21 +48,16 @@ namespace Toggl.Droid.Activities
         {
         }
 
-        protected override void RestoreViewModelStateFromBundle(Bundle bundle)
+        protected override async void RestoreViewModelStateFromBundle(Bundle bundle)
         {
             base.RestoreViewModelStateFromBundle(bundle);
 
             restoreFragmentsViewModels();
-            showInitialFragment(getInitialTab(Intent, bundle));
+            await showInitialFragment(getInitialTab(Intent, bundle));
         }
 
         protected override void InitializeBindings()
         {
-            navigationView
-                .Rx()
-                .ItemSelected()
-                .Subscribe(onTabSelected)
-                .DisposedBy(DisposeBag);
         }
 
         private int getInitialTab(Intent intent, Bundle bundle = null)
@@ -85,6 +80,22 @@ namespace Toggl.Droid.Activities
         {
             outState.PutInt(StartingTabExtra, navigationView.SelectedItemId);
             base.OnSaveInstanceState(outState);
+        }
+
+        public void OnLayoutReady(Type tabType)
+        {
+            readyLayouts.Add(tabType);
+            setPlaceholderVisibility(activeFragment.GetType(), !(activeFragment?.GetType() == tabType));
+        }
+
+        private void setPlaceholderVisibility(Type tabType, bool visible)
+        {
+            if (tabType == null || !placeholderLayoutIds.ContainsKey(tabType))
+                return;
+
+            var placeholderId = placeholderLayoutIds[tabType];
+            var placeholder = FindViewById(placeholderId);
+            placeholder.Visibility = visible.ToVisibility();
         }
 
         private void restoreFragmentsViewModels()
@@ -125,7 +136,8 @@ namespace Toggl.Droid.Activities
 
         private async Task<Fragment> getCachedFragment(int itemId)
         {
-            var cachedFragment = SupportFragmentManager.Fragments.FirstOrDefault(f => f.Tag == itemId.ToString());
+            var cachedFragment = SupportFragmentManager.FindFragmentByTag(itemId.ToString());
+
             if (cachedFragment != null)
                 return cachedFragment;
 
@@ -174,6 +186,7 @@ namespace Toggl.Droid.Activities
 
         private async void onTabSelected(IMenuItem item)
         {
+            if (SupportFragmentManager == null) return;
             if (item.ItemId != navigationView.SelectedItemId)
             {
                 await showFragment(item.ItemId);
@@ -214,20 +227,24 @@ namespace Toggl.Droid.Activities
             if (fragment is MainFragment mainFragmentToShow)
                 mainFragmentToShow.SetFragmentIsVisible(true);
 
+            setPlaceholderVisibility(activeFragment?.GetType(), false);
             activeFragment = fragment;
+            setPlaceholderVisibility(activeFragment.GetType(), !readyLayouts.Contains(activeFragment.GetType()));
         }
 
         private async Task showInitialFragment(int initialTabItemId)
         {
+            readyLayouts.Clear();
             SupportFragmentManager.RemoveAllFragments();
             SupportFragmentManager.ExecutePendingTransactions();
 
             var initialFragment = await getCachedFragment(initialTabItemId);
+            setPlaceholderVisibility(typeof(MainFragment),  initialTabItemId == Resource.Id.MainTabTimerItem && !initialFragment.IsAdded);
             if (!initialFragment.IsAdded)
             {
                 SupportFragmentManager
                     .BeginTransaction()
-                    .Add(Resource.Id.CurrentTabFragmmentContainer, initialFragment, initialTabItemId.ToString())
+                    .Replace(Resource.Id.CurrentTabFragmmentContainer, initialFragment, initialTabItemId.ToString())
                     .Commit();
             }
 
@@ -241,6 +258,12 @@ namespace Toggl.Droid.Activities
 
             navigationView.SelectedItemId = initialTabItemId;
             activeFragment = initialFragment;
+            
+            navigationView
+                .Rx()
+                .ItemSelected()
+                .Subscribe(onTabSelected)
+                .DisposedBy(DisposeBag);
         }
 
         public void ChangeBottomBarVisibility(bool isVisible)
