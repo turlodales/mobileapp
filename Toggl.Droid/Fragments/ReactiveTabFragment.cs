@@ -5,13 +5,14 @@ using System;
 using System.Reactive.Disposables;
 using AndroidX.AppCompat.Widget;
 using AndroidX.Fragment.App;
+using Toggl.Core.Helper;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
 
 namespace Toggl.Droid.Fragments
 {
-    public abstract partial class ReactiveTabFragment<TViewModel> : Fragment, IView, IMenuItemOnMenuItemClickListener 
+    public abstract partial class ReactiveTabFragment<TViewModel> : Fragment, IView, IMenuItemOnMenuItemClickListener
         where TViewModel : class, IViewModel
     {
         protected CompositeDisposable DisposeBag = new CompositeDisposable();
@@ -100,12 +101,12 @@ namespace Toggl.Droid.Fragments
         {
         }
 
-        public IObservable<string> GetGoogleToken()
+        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
         {
-            if (!(Activity is IGoogleTokenProvider tokenProvider))
+            if (!(Activity is IThirdPartyTokenProvider tokenProvider))
                 throw new InvalidOperationException();
 
-            return tokenProvider.GetGoogleToken();
+            return tokenProvider.GetToken(provider);
         }
 
         public bool OnMenuItemClick(IMenuItem item)

@@ -12,6 +12,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
+using Toggl.Core.Helper;
 using Toggl.Core.Interactors;
 using Toggl.Core.Tests.Generators;
 using Toggl.Core.Tests.Helpers;
@@ -406,7 +407,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ViewModel.IsLoading.Subscribe(observer);
 
                     UserAccessManager.SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
-                        Observable.Throw<Unit>(new GoogleLoginException(false)));
+                        Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                     ViewModel.GoogleSignup.Execute();
 
@@ -422,7 +423,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 public void DoesNotNavigateWhenTheLoginFails()
                 {
                     UserAccessManager.SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
-                        Observable.Throw<Unit>(new GoogleLoginException(false)));
+                        Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                     ViewModel.GoogleSignup.Execute();
 
@@ -439,7 +440,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ViewModel.ErrorMessage.Subscribe(errorTextObserver);
 
                     UserAccessManager.SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
-                        Observable.Throw<Unit>(new GoogleLoginException(true)));
+                        Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, true)));
 
                     ViewModel.GoogleSignup.Execute();
 

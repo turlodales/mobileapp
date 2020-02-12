@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Toggl.Core.Exceptions;
+using Toggl.Core.Helper;
 using Toggl.Shared.Extensions;
 using Object = Java.Lang.Object;
 
@@ -26,7 +27,15 @@ namespace Toggl.Droid.Activities
         private GoogleApiClient googleApiClient;
         private Subject<string> loginSubject = new Subject<string>();
 
-        public IObservable<string> GetGoogleToken()
+        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        {
+            if (provider == ThirdPartyLoginProvider.Google)
+                return getGoogleToken();
+
+            throw new InvalidOperationException("You shouldn't be doing this from Android.");
+        }
+
+        private IObservable<string> getGoogleToken()
         {
             ensureApiClientExists();
 
@@ -75,7 +84,7 @@ namespace Toggl.Droid.Activities
                 var signInData = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
                 if (!signInData.IsSuccess)
                 {
-                    loginSubject.OnError(new GoogleLoginException(signInData.Status.IsCanceled));
+                    loginSubject.OnError(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, signInData.Status.IsCanceled));
                     isLoggingIn = false;
                     return;
                 }
@@ -106,7 +115,7 @@ namespace Toggl.Droid.Activities
 
             if (!googleApiClient.IsConnected)
             {
-                throw new GoogleLoginException(false);
+                throw new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false);
             }
 
             var intent = Auth.GoogleSignInApi.GetSignInIntent(googleApiClient);
@@ -117,7 +126,7 @@ namespace Toggl.Droid.Activities
         {
             lock (lockable)
             {
-                loginSubject.OnError(new GoogleLoginException(false));
+                loginSubject.OnError(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false));
                 isLoggingIn = false;
             }
         }

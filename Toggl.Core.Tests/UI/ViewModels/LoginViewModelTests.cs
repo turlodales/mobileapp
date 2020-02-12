@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
+using Toggl.Core.Helper;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Generators;
 using Toggl.Core.UI;
@@ -294,7 +295,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 public void SetsTheErrorMessageToNothingWhenGoogleLoginWasCanceled()
                 {
                     var observer = TestScheduler.CreateObserver<string>();
-                    var exception = new GoogleLoginException(true);
+                    var exception = new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, true);
                     ViewModel.ErrorMessage.Subscribe(observer);
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Throw<Unit>(exception));
@@ -374,7 +375,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DoesNothingWhenThePageIsCurrentlyLoading()
             {
                 var never = Observable.Never<Unit>();
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>()).Returns(never);
                 ViewModel.GoogleLogin();
 
@@ -386,7 +387,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void NavigatesToTheTimeEntriesViewModelWhenTheLoginSucceeds()
             {
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
 
@@ -398,7 +399,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void TracksGoogleLoginEvent()
             {
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
 
@@ -412,9 +413,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                 ViewModel.GoogleLogin();
 
@@ -429,9 +430,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void DoesNotNavigateWhenTheLoginFails()
             {
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                 ViewModel.GoogleLogin();
 
@@ -443,9 +444,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = SchedulerProvider.TestScheduler.CreateObserver<string>();
                 ViewModel.ErrorMessage.Subscribe(observer);
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(true)));
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, true)));
 
                 ViewModel.GoogleLogin();
 
@@ -459,7 +460,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void SavesTheTimeOfLastLogin(DateTimeOffset now)
             {
                 TimeService.CurrentDateTime.Returns(now);
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
                 UserAccessManager.LoginWithGoogle(Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
                 var viewModel = CreateViewModel();

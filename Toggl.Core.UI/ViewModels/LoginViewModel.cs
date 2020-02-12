@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Extensions;
+using Toggl.Core.Helper;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
+using Toggl.Core.UI.Views;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -194,7 +196,7 @@ namespace Toggl.Core.UI.ViewModels
             isLoadingSubject.OnNext(true);
 
             loginDisposable = View?
-                .GetGoogleToken()
+                .GetToken(ThirdPartyLoginProvider.Google)
                 .SelectMany(userAccessManager.LoginWithGoogle)
                 .Track(analyticsService.Login, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
@@ -247,7 +249,7 @@ namespace Toggl.Core.UI.ViewModels
                 case UnauthorizedException forbidden:
                     errorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
                     break;
-                case GoogleLoginException googleEx when googleEx.LoginWasCanceled:
+                case ThirdPartyLoginException googleEx when googleEx.LoginWasCanceled:
                     errorMessageSubject.OnNext("");
                     break;
                 default:

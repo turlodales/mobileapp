@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Extensions;
+using Toggl.Core.Helper;
 using Toggl.Core.Interactors;
 using Toggl.Core.Interactors.Location;
 using Toggl.Core.Interactors.Timezones;
@@ -316,7 +317,7 @@ namespace Toggl.Core.UI.ViewModels
                 case UnauthorizedException forbidden:
                     errorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
                     break;
-                case GoogleLoginException googleEx when googleEx.LoginWasCanceled:
+                case ThirdPartyLoginException googleEx when googleEx.LoginWasCanceled:
                     errorMessageSubject.OnNext(string.Empty);
                     break;
                 case EmailIsAlreadyUsedException _:
@@ -351,7 +352,7 @@ namespace Toggl.Core.UI.ViewModels
             isLoadingSubject.OnNext(true);
             errorMessageSubject.OnNext(string.Empty);
 
-            signupDisposable = View.GetGoogleToken()
+            signupDisposable = View.GetToken(ThirdPartyLoginProvider.Google)
                 .SelectMany(googleToken => userAccessManager
                     .SignUpWithGoogle(googleToken, termsOfServiceAccepted, (int)countryId.Value, timezone))
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
