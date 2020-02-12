@@ -7,6 +7,8 @@ namespace Toggl.Storage.Settings
     {
         IObservable<bool> IsManualModeEnabledObservable { get; }
 
+        IObservable<bool> CalendarIntegrationEnabledObservable { get; }
+
         IObservable<List<string>> EnabledCalendars { get; }
 
         IObservable<bool> CalendarNotificationsEnabled { get; }
@@ -36,6 +38,10 @@ namespace Toggl.Storage.Settings
         void SetStoppedTimerNotifications(bool state);
 
         void Reset();
+
+        bool CalendarIntegrationEnabled();
+
+        void SetCalendarIntegrationEnabled(bool enabled);
 
         List<string> EnabledCalendarIds();
 
