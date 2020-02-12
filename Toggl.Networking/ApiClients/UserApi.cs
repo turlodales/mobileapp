@@ -11,6 +11,7 @@ using Toggl.Networking.Serialization.Converters;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
+using NotImplementedException = System.NotImplementedException;
 
 namespace Toggl.Networking.ApiClients
 {
@@ -36,6 +37,11 @@ namespace Toggl.Networking.ApiClients
         public async Task<IUser> GetWithGoogle()
             => await SendRequest<User>(endPoints.GetWithGoogle, AuthHeader)
                 .ConfigureAwait(false);
+
+        public async Task<IUser> GetWithApple()
+        {
+            throw new NotImplementedException("Sign in with Apple not implemented yet");
+        }
 
         public async Task<IUser> Update(IUser user)
             => await SendRequest(endPoints.Put, AuthHeader, user as User ?? new User(user), SerializationReason.Post)
@@ -103,6 +109,11 @@ namespace Toggl.Networking.ApiClients
             var json = serializer.Serialize(parameters, SerializationReason.Post);
             return await SendRequest<User>(endPoints.PostWithGoogle, new HttpHeader[0], json)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<IUser> SignUpWithApple(string appleToken, bool termsAccepted, int countryId, string timezone)
+        {
+            throw new NotImplementedException("Sign up with Apple not implemented yet");
         }
 
         [Preserve(AllMembers = true)]
