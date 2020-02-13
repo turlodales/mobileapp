@@ -379,7 +379,12 @@ namespace Toggl.iOS.Views.Calendar
 
         private CGRect frameForEditingHour(NSIndexPath indexPath)
         {
-            var attrs = dataSource.LayoutAttributesForItemAtIndexPath(dataSource.IndexPathForSelectedItem);
+            var selectedIndexPath = dataSource.IndexPathForSelectedItem;
+            if (selectedIndexPath == null)
+            {
+                return CGRect.Empty;
+            }
+            var attrs = dataSource.LayoutAttributesForItemAtIndexPath(selectedIndexPath);
 
             var isStartTime = (int)indexPath.Item == 0;
             var time = isStartTime ? attrs.StartTime : attrs.EndTime;
