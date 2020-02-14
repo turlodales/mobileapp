@@ -26,9 +26,6 @@ namespace Toggl.iOS.Views.Calendar
 
         public float HourHeight { get; private set; } = 56;
 
-        private ISubject<Unit> scalingEndedSubject = new Subject<Unit>();
-        public IObservable<Unit> ScalingEnded => scalingEndedSubject.AsObservable();
-
         private static readonly nfloat leftPadding = 76;
         private static readonly nfloat hourSupplementaryLabelHeight = 20;
         private static readonly nfloat currentTimeSupplementaryLeftOffset = -18;
@@ -283,9 +280,6 @@ namespace Toggl.iOS.Views.Calendar
                 return currentTimeLayoutAttributes;
             }
         }
-
-        public void OnScalingEnded()
-            => scalingEndedSubject.OnNext(Unit.Default);
 
         internal CGRect FrameForCurrentTime()
         {
