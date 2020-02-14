@@ -6,7 +6,6 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
-using Toggl.iOS.Views;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -14,7 +13,7 @@ namespace Toggl.iOS.ViewControllers
 	partial class SignupViewController
 	{
 		[Outlet]
-		ActivityIndicatorView ActivityIndicator { get; set; }
+		Toggl.iOS.Views.ActivityIndicatorView ActivityIndicator { get; set; }
 
 		[Outlet]
 		UIKit.UIImageView CountryDropDownCaretImageView { get; set; }
@@ -26,7 +25,7 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint EmailFieldTopConstraint { get; set; }
 
 		[Outlet]
-		LoginTextField EmailTextField { get; set; }
+		Toggl.iOS.Views.LoginTextField EmailTextField { get; set; }
 
 		[Outlet]
 		UIKit.UILabel ErrorLabel { get; set; }
@@ -41,7 +40,7 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UILabel OrLabel { get; set; }
 
 		[Outlet]
-		LoginTextField PasswordTextField { get; set; }
+		Toggl.iOS.Views.LoginTextField PasswordTextField { get; set; }
 
 		[Outlet]
 		UIKit.UIButton SelectCountryButton { get; set; }
@@ -59,8 +58,11 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton SignupShakeTriggerButton { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint TopConstraint { get; set; }
+		UIKit.UIStackView ThirdPartyProvidersContainer { get; set; }
 
+		[Outlet]
+		UIKit.NSLayoutConstraint TopConstraint { get; set; }
+		
 		void ReleaseDesignerOutlets ()
 		{
 			if (ActivityIndicator != null) {
@@ -103,6 +105,11 @@ namespace Toggl.iOS.ViewControllers
 				LoginCard = null;
 			}
 
+			if (OrLabel != null) {
+				OrLabel.Dispose ();
+				OrLabel = null;
+			}
+
 			if (PasswordTextField != null) {
 				PasswordTextField.Dispose ();
 				PasswordTextField = null;
@@ -118,6 +125,16 @@ namespace Toggl.iOS.ViewControllers
 				SignupButton = null;
 			}
 
+			if (SignUpCardLoginLabel != null) {
+				SignUpCardLoginLabel.Dispose ();
+				SignUpCardLoginLabel = null;
+			}
+
+			if (SignUpCardTitleLabel != null) {
+				SignUpCardTitleLabel.Dispose ();
+				SignUpCardTitleLabel = null;
+			}
+
 			if (SignupShakeTriggerButton != null) {
 				SignupShakeTriggerButton.Dispose ();
 				SignupShakeTriggerButton = null;
@@ -128,19 +145,9 @@ namespace Toggl.iOS.ViewControllers
 				TopConstraint = null;
 			}
 
-			if (OrLabel != null) {
-				OrLabel.Dispose ();
-				OrLabel = null;
-			}
-
-			if (SignUpCardTitleLabel != null) {
-				SignUpCardTitleLabel.Dispose ();
-				SignUpCardTitleLabel = null;
-			}
-
-			if (SignUpCardLoginLabel != null) {
-				SignUpCardLoginLabel.Dispose ();
-				SignUpCardLoginLabel = null;
+			if (ThirdPartyProvidersContainer != null) {
+				ThirdPartyProvidersContainer.Dispose ();
+				ThirdPartyProvidersContainer = null;
 			}
 		}
 	}

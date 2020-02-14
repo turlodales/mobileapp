@@ -366,9 +366,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void CallsTheUserAccessManager()
             {
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
-                UserAccessManager.Received().LoginWithGoogle(Arg.Any<string>());
+                UserAccessManager.Received().ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>());
             }
 
             [Fact, LogIfTooSlow]
@@ -376,22 +376,22 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var never = Observable.Never<Unit>();
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>()).Returns(never);
-                ViewModel.GoogleLogin();
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>()).Returns(never);
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
-                UserAccessManager.Received(1).LoginWithGoogle(Arg.Any<string>());
+                UserAccessManager.Received(1).ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>());
             }
 
             [Fact, LogIfTooSlow]
             public void NavigatesToTheTimeEntriesViewModelWhenTheLoginSucceeds()
             {
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>())
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
 
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 NavigationService.Received().Navigate<MainTabBarViewModel>(ViewModel.View);
             }
@@ -400,10 +400,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void TracksGoogleLoginEvent()
             {
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>())
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
 
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 AnalyticsService.Received().Login.Track(AuthenticationMethod.Google);
             }
@@ -414,10 +414,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>())
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
                     .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
@@ -431,10 +431,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DoesNotNavigateWhenTheLoginFails()
             {
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>())
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
                     .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 NavigationService.DidNotReceive().Navigate<MainViewModel>(ViewModel.View);
             }
@@ -445,10 +445,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var observer = SchedulerProvider.TestScheduler.CreateObserver<string>();
                 ViewModel.ErrorMessage.Subscribe(observer);
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>())
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
                     .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, true)));
 
-                ViewModel.GoogleLogin();
+                ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 SchedulerProvider.TestScheduler.Start();
                 observer.Messages.AssertEqual(
@@ -461,12 +461,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 TimeService.CurrentDateTime.Returns(now);
                 View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.LoginWithGoogle(Arg.Any<string>())
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
                 var viewModel = CreateViewModel();
                 viewModel.AttachView(View);
 
-                viewModel.GoogleLogin();
+                viewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 LastTimeUsageStorage.Received().SetLogin(Arg.Is(now));
             }

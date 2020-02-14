@@ -189,15 +189,15 @@ namespace Toggl.Core.UI.ViewModels
         public void TogglePasswordVisibility()
             => isPasswordMaskedSubject.OnNext(!isPasswordMaskedSubject.Value);
 
-        public void GoogleLogin()
+        public void ThirdPartyLogin(ThirdPartyLoginProvider provider)
         {
             if (isLoadingSubject.Value) return;
 
             isLoadingSubject.OnNext(true);
 
             loginDisposable = View?
-                .GetToken(ThirdPartyLoginProvider.Google)
-                .SelectMany(userAccessManager.LoginWithGoogle)
+                .GetToken(provider)
+                .SelectMany(token => userAccessManager.ThirdPartyLogin(provider, token))
                 .Track(analyticsService.Login, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }

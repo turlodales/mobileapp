@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
+using Toggl.Core.Helper;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
@@ -544,7 +545,7 @@ namespace Toggl.Core.Tests.Login
             [Fact, LogIfTooSlow]
             public async Task EmptiesTheDatabaseBeforeTryingToCreateTheUser()
             {
-                await UserAccessManager.LoginWithGoogle(googleToken);
+                await UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken);
 
                 Received.InOrder(async () =>
                 {
@@ -556,7 +557,7 @@ namespace Toggl.Core.Tests.Login
             [Fact, LogIfTooSlow]
             public async Task CallsTheGetWithGoogleOfTheUserApi()
             {
-                await UserAccessManager.LoginWithGoogle(googleToken);
+                await UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken);
 
                 await Api.User.Received().GetWithGoogle();
             }
@@ -564,7 +565,7 @@ namespace Toggl.Core.Tests.Login
             [Fact, LogIfTooSlow]
             public async Task PersistsTheUserToTheDatabase()
             {
-                await UserAccessManager.LoginWithGoogle(googleToken);
+                await UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken);
 
                 await Database.User.Received().Create(Arg.Is<IDatabaseUser>(receivedUser => receivedUser.Id == User.Id));
             }
@@ -572,7 +573,7 @@ namespace Toggl.Core.Tests.Login
             [Fact, LogIfTooSlow]
             public async Task PersistsTheUserWithTheSyncStatusSetToInSync()
             {
-                await UserAccessManager.LoginWithGoogle(googleToken);
+                await UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken);
 
                 await Database.User.Received().Create(Arg.Is<IDatabaseUser>(receivedUser => receivedUser.SyncStatus == SyncStatus.InSync));
             }
@@ -581,14 +582,14 @@ namespace Toggl.Core.Tests.Login
             public async Task AlwaysReturnsASingleResult()
             {
                 await UserAccessManager
-                        .LoginWithGoogle(googleToken)
+                        .ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken)
                         .SingleAsync();
             }
 
             [Fact, LogIfTooSlow]
             public async Task SavesTheApiTokenToPrivateSharedStorage()
             {
-                await UserAccessManager.LoginWithGoogle(googleToken);
+                await UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken);
 
                 PrivateSharedStorageService.Received().SaveApiToken(Arg.Any<string>());
             }
@@ -596,7 +597,7 @@ namespace Toggl.Core.Tests.Login
             [Fact, LogIfTooSlow]
             public async Task SavesTheUserIdToPrivateSharedStorage()
             {
-                await UserAccessManager.LoginWithGoogle(googleToken);
+                await UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, googleToken);
 
                 PrivateSharedStorageService.Received().SaveUserId(Arg.Any<long>());
             }

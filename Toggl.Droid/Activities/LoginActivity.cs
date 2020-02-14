@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.Views;
 using System;
 using System.Reactive.Linq;
+using Toggl.Core.Helper;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
@@ -89,7 +90,7 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             googleLoginButton.Rx().Tap()
-                .Subscribe(ViewModel.GoogleLogin)
+                .Subscribe(_ => ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google))
                 .DisposedBy(DisposeBag);
 
             forgotPasswordView.Rx()

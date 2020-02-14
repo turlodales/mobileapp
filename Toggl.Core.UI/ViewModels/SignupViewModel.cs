@@ -84,6 +84,8 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction Login { get; }
         public ViewAction Signup { get; }
         public ViewAction GoogleSignup { get; }
+
+        public ViewAction AppleSignup { get; }
         public ViewAction PickCountry { get; }
 
         public SignupViewModel(
@@ -124,6 +126,7 @@ namespace Toggl.Core.UI.ViewModels
             Login = rxActionFactory.FromAsync(login);
             Signup = rxActionFactory.FromAsync(signup);
             GoogleSignup = rxActionFactory.FromAsync(googleSignup);
+            AppleSignup = rxActionFactory.FromAsync(appleSignup);
             PickCountry = rxActionFactory.FromAsync(pickCountry);
 
             var emailObservable = emailSubject.Select(email => email.TrimmedEnd());
@@ -354,8 +357,30 @@ namespace Toggl.Core.UI.ViewModels
 
             signupDisposable = View.GetToken(ThirdPartyLoginProvider.Google)
                 .SelectMany(googleToken => userAccessManager
-                    .SignUpWithGoogle(googleToken, termsOfServiceAccepted, (int)countryId.Value, timezone))
+                    .ThirdPartySignUp(ThirdPartyLoginProvider.Google, googleToken, termsOfServiceAccepted, (int)countryId.Value, timezone))
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
+                .Subscribe(_ => onAuthenticated(), onError, onCompleted);
+        }
+
+        private async Task appleSignup()
+        {
+            if (!countryId.HasValue)
+            {
+                shakeSubject.OnNext(ShakeTargets.Country);
+                return;
+            }
+
+            await requestAcceptanceOfTermsAndConditionsIfNeeded();
+
+            if (!termsOfServiceAccepted || isLoadingSubject.Value) return;
+
+            isLoadingSubject.OnNext(true);
+            errorMessageSubject.OnNext(string.Empty);
+
+            signupDisposable = View.GetToken(ThirdPartyLoginProvider.Apple)
+                .SelectMany(appleToken => userAccessManager
+                    .ThirdPartySignUp(ThirdPartyLoginProvider.Apple, appleToken, termsOfServiceAccepted, (int)countryId.Value, timezone))
+                .Track(analyticsService.SignUp, AuthenticationMethod.Apple)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }
 

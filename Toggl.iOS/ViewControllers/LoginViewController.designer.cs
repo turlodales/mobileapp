@@ -6,7 +6,6 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
-using Toggl.iOS.Views;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -14,7 +13,7 @@ namespace Toggl.iOS.ViewControllers
 	partial class LoginViewController
 	{
 		[Outlet]
-		ActivityIndicatorView ActivityIndicator { get; set; }
+		Toggl.iOS.Views.ActivityIndicatorView ActivityIndicator { get; set; }
 
 		[Outlet]
 		UIKit.UILabel DontHaveAnAccountLabel { get; set; }
@@ -24,7 +23,7 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
-		LoginTextField EmailTextField { get; set; }
+		Toggl.iOS.Views.LoginTextField EmailTextField { get; set; }
 
 		[Outlet]
 		UIKit.UILabel ErrorLabel { get; set; }
@@ -50,7 +49,7 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
-		LoginTextField PasswordTextField { get; set; }
+		Toggl.iOS.Views.LoginTextField PasswordTextField { get; set; }
 
 		[Outlet]
 		UIKit.UIButton ShowPasswordButton { get; set; }
@@ -62,13 +61,21 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UILabel SignUpForFreeLabel { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint TopConstraint { get; set; }
+		UIKit.UIStackView ThirdPartyProvidersContainer { get; set; }
 
+		[Outlet]
+		UIKit.NSLayoutConstraint TopConstraint { get; set; }
+		
 		void ReleaseDesignerOutlets ()
 		{
 			if (ActivityIndicator != null) {
 				ActivityIndicator.Dispose ();
 				ActivityIndicator = null;
+			}
+
+			if (DontHaveAnAccountLabel != null) {
+				DontHaveAnAccountLabel.Dispose ();
+				DontHaveAnAccountLabel = null;
 			}
 
 			if (EmailFieldTopConstraint != null) {
@@ -106,6 +113,11 @@ namespace Toggl.iOS.ViewControllers
 				LogoImageView = null;
 			}
 
+			if (OrLabel != null) {
+				OrLabel.Dispose ();
+				OrLabel = null;
+			}
+
 			if (PasswordManagerButton != null) {
 				PasswordManagerButton.Dispose ();
 				PasswordManagerButton = null;
@@ -126,24 +138,19 @@ namespace Toggl.iOS.ViewControllers
 				SignupCard = null;
 			}
 
+			if (SignUpForFreeLabel != null) {
+				SignUpForFreeLabel.Dispose ();
+				SignUpForFreeLabel = null;
+			}
+
 			if (TopConstraint != null) {
 				TopConstraint.Dispose ();
 				TopConstraint = null;
 			}
 
-			if (OrLabel != null) {
-				OrLabel.Dispose ();
-				OrLabel = null;
-			}
-
-			if (DontHaveAnAccountLabel != null) {
-				DontHaveAnAccountLabel.Dispose ();
-				DontHaveAnAccountLabel = null;
-			}
-
-			if (SignUpForFreeLabel != null) {
-				SignUpForFreeLabel.Dispose ();
-				SignUpForFreeLabel = null;
+			if (ThirdPartyProvidersContainer != null) {
+				ThirdPartyProvidersContainer.Dispose ();
+				ThirdPartyProvidersContainer = null;
 			}
 		}
 	}

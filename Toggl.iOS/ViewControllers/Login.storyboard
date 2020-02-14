@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -92,23 +92,23 @@
                                 </state>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oda-oc-dOV" userLabel="OR">
-                                <rect key="frame" x="35.666666666666657" y="487" width="343" height="14.666666666666686"/>
+                                <rect key="frame" x="35.666666666666657" y="487" width="343" height="14.333333333333314"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xxa-E1-qSs">
-                                        <rect key="frame" x="0.0" y="7" width="155" height="1"/>
+                                        <rect key="frame" x="0.0" y="6.6666666666666856" width="154.66666666666666" height="1"/>
                                         <color key="backgroundColor" red="0.90980392160000001" green="0.90980392160000001" blue="0.90980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="ebw-r3-9yD"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7YV-Qv-n2h">
-                                        <rect key="frame" x="163" y="0.0" width="17" height="14.666666666666666"/>
+                                        <rect key="frame" x="162.66666666666669" y="0.0" width="17.333333333333343" height="14.333333333333334"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.80784313730000001" green="0.80784313730000001" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cIf-FL-aNd">
-                                        <rect key="frame" x="188" y="7" width="155" height="1"/>
+                                        <rect key="frame" x="188" y="6.6666666666666856" width="155" height="1"/>
                                         <color key="backgroundColor" red="0.90980392160000001" green="0.90980392160000001" blue="0.90980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="zZb-Oy-PKx"/>
@@ -128,33 +128,38 @@
                                     <constraint firstItem="Xxa-E1-qSs" firstAttribute="centerY" secondItem="oda-oc-dOV" secondAttribute="centerY" id="rWS-as-WJM"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cI-Sa-w2L">
-                                <rect key="frame" x="35.666666666666657" y="517.66666666666663" width="343" height="40"/>
-                                <color key="backgroundColor" name="CellBackground"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="TSi-zH-l5n"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12.600000381469727"/>
-                                <state key="normal" title="Sign in with Google" image="icGoogleColored">
-                                    <color key="titleColor" name="Text1"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <real key="value" value="1.8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="QCj-yu-L0l">
+                                <rect key="frame" x="35.666666666666657" y="517.33333333333337" width="343" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cI-Sa-w2L">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
+                                        <color key="backgroundColor" name="CellBackground"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="TSi-zH-l5n"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12.600000381469727"/>
+                                        <state key="normal" title="Sign in with Google" image="icGoogleColored">
+                                            <color key="titleColor" name="Text1"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <real key="value" value="1.8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6U-zp-jAZ" userLabel="Sign Up Card">
                                 <rect key="frame" x="35.666666666666657" y="790" width="343" height="114"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-As-Eey">
-                                        <rect key="frame" x="16" y="18" width="154.66666666666666" height="17"/>
+                                        <rect key="frame" x="16" y="18" width="154.33333333333334" height="17"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up for free" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ca-NL-Zo4">
-                                        <rect key="frame" x="16" y="39" width="103" height="17"/>
+                                        <rect key="frame" x="15.999999999999993" y="39" width="102.33333333333331" height="17"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                         <color key="textColor" red="0.023529411760000001" green="0.66666666669999997" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -206,12 +211,11 @@
                             <constraint firstItem="lcd-vh-led" firstAttribute="width" secondItem="6xS-n8-fQk" secondAttribute="width" priority="750" constant="-32" id="567-wd-LBH"/>
                             <constraint firstItem="Lsa-g7-i4M" firstAttribute="width" secondItem="lcd-vh-led" secondAttribute="width" id="5Ik-Dj-Ywg"/>
                             <constraint firstItem="oda-oc-dOV" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="63n-mX-XOK"/>
-                            <constraint firstItem="3cI-Sa-w2L" firstAttribute="width" secondItem="oda-oc-dOV" secondAttribute="width" id="995-jz-8Rk"/>
                             <constraint firstItem="FOx-xg-Ol7" firstAttribute="width" secondItem="8e6-Gh-xye" secondAttribute="width" id="AKJ-Lu-88R"/>
                             <constraint firstItem="mES-7Q-qsS" firstAttribute="leading" secondItem="8e6-Gh-xye" secondAttribute="leading" id="HKw-82-Rk9"/>
                             <constraint firstItem="oda-oc-dOV" firstAttribute="top" secondItem="FOx-xg-Ol7" secondAttribute="bottom" constant="12" id="Hlu-IY-jbL"/>
-                            <constraint firstItem="3cI-Sa-w2L" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="JjG-Ba-d7T"/>
                             <constraint firstItem="doe-4h-781" firstAttribute="top" secondItem="lcd-vh-led" secondAttribute="top" constant="12" id="LUa-pm-K9s"/>
+                            <constraint firstItem="QCj-yu-L0l" firstAttribute="top" secondItem="oda-oc-dOV" secondAttribute="bottom" constant="16" id="Lp6-AM-x58"/>
                             <constraint firstItem="zmO-Bb-Zfg" firstAttribute="top" secondItem="6xS-n8-fQk" secondAttribute="top" constant="40" id="MKN-wv-3NI"/>
                             <constraint firstItem="mES-7Q-qsS" firstAttribute="width" secondItem="8e6-Gh-xye" secondAttribute="width" id="OIw-Pt-Bqv"/>
                             <constraint firstItem="lcd-vh-led" firstAttribute="top" secondItem="Lsa-g7-i4M" secondAttribute="bottom" constant="12" id="QPh-HO-hcR"/>
@@ -219,9 +223,8 @@
                             <constraint firstItem="R6U-zp-jAZ" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="R0F-BK-1k3"/>
                             <constraint firstAttribute="bottom" secondItem="R6U-zp-jAZ" secondAttribute="bottom" constant="-8" id="UJU-gS-jgb"/>
                             <constraint firstItem="FOx-xg-Ol7" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="XXS-k2-wA5"/>
-                            <constraint firstItem="R6U-zp-jAZ" firstAttribute="width" secondItem="3cI-Sa-w2L" secondAttribute="width" id="ahq-WZ-wVS"/>
+                            <constraint firstItem="QCj-yu-L0l" firstAttribute="centerX" secondItem="q4a-xJ-Vog" secondAttribute="centerX" id="Ynr-SZ-squ"/>
                             <constraint firstItem="8e6-Gh-xye" firstAttribute="top" secondItem="lcd-vh-led" secondAttribute="bottom" constant="40" id="baW-fh-XAJ"/>
-                            <constraint firstItem="3cI-Sa-w2L" firstAttribute="top" secondItem="oda-oc-dOV" secondAttribute="bottom" constant="16" id="bie-DK-Aj4"/>
                             <constraint firstItem="lcd-vh-led" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="bik-ov-gVd"/>
                             <constraint firstItem="vXI-BS-Qvf" firstAttribute="centerY" secondItem="8e6-Gh-xye" secondAttribute="centerY" id="bwL-8R-P3K"/>
                             <constraint firstItem="doe-4h-781" firstAttribute="bottom" secondItem="lcd-vh-led" secondAttribute="bottom" constant="4" id="gOd-FD-5x5"/>
@@ -231,7 +234,9 @@
                             <constraint firstItem="Lsa-g7-i4M" firstAttribute="top" secondItem="zmO-Bb-Zfg" secondAttribute="bottom" constant="42" id="sA8-cL-MsZ"/>
                             <constraint firstItem="zmO-Bb-Zfg" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="siC-Cj-e4l"/>
                             <constraint firstItem="vXI-BS-Qvf" firstAttribute="centerX" secondItem="8e6-Gh-xye" secondAttribute="centerX" id="ugW-ea-Ujz"/>
+                            <constraint firstItem="QCj-yu-L0l" firstAttribute="width" secondItem="R6U-zp-jAZ" secondAttribute="width" id="xrU-nF-f3a"/>
                             <constraint firstItem="6xS-n8-fQk" firstAttribute="bottom" secondItem="R6U-zp-jAZ" secondAttribute="top" constant="72" id="y4D-h3-2qn"/>
+                            <constraint firstItem="QCj-yu-L0l" firstAttribute="width" secondItem="oda-oc-dOV" secondAttribute="width" id="zU7-Wu-QKU"/>
                             <constraint firstItem="Lsa-g7-i4M" firstAttribute="centerX" secondItem="6xS-n8-fQk" secondAttribute="centerX" id="zjb-xj-QcG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6xS-n8-fQk"/>
@@ -251,6 +256,7 @@
                         <outlet property="ShowPasswordButton" destination="doe-4h-781" id="LIN-0T-SS0"/>
                         <outlet property="SignUpForFreeLabel" destination="9Ca-NL-Zo4" id="xik-W7-acC"/>
                         <outlet property="SignupCard" destination="R6U-zp-jAZ" id="E1X-DY-ynX"/>
+                        <outlet property="ThirdPartyProvidersContainer" destination="QCj-yu-L0l" id="gcI-Qf-rpr"/>
                         <outlet property="TopConstraint" destination="MKN-wv-3NI" id="X7f-gu-VjB"/>
                     </connections>
                 </viewController>
@@ -264,19 +270,19 @@
         <image name="icGoogleColored" width="18" height="18"/>
         <image name="togglLogoBig" width="101" height="31"/>
         <namedColor name="Background">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="CellBackground">
-            <color red="0.10980392247438431" green="0.10980392247438431" blue="0.11764705926179886" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Text">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="CellBackground">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Text">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Text1">
-            <color red="0.94117647409439087" green="0.94117647409439087" blue="0.94117647409439087" alpha="0.78431373834609985" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411852359772" green="0.23529411852359772" blue="0.26274511218070984" alpha="0.78431373834609985" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Text2">
-            <color red="0.92156863212585449" green="0.92156863212585449" blue="0.96078431606292725" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411852359772" green="0.23529411852359772" blue="0.26274511218070984" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

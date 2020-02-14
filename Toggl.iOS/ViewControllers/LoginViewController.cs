@@ -1,6 +1,8 @@
 ﻿using Foundation;
 using System;
 using System.Reactive.Linq;
+using AuthenticationServices;
+using Toggl.Core.Helper;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels;
@@ -26,6 +28,9 @@ namespace Toggl.iOS.ViewControllers
 
         private const int tabletFormOffset = 246;
         private const int tabletLandscapeKeyboardOffset = 90;
+
+        private ASAuthorizationAppleIdButton appleSignInButton;
+        private IDisposable appleSignInButtonDisposable;
 
         public static LoginViewController NewInstance(LoginViewModel viewModel)
         {
@@ -53,6 +58,8 @@ namespace Toggl.iOS.ViewControllers
 
             UIKeyboard.Notifications.ObserveWillShow(KeyboardWillShow);
             UIKeyboard.Notifications.ObserveWillHide(KeyboardWillHide);
+
+            setupSignInWithAppleButton();
 
             //Text
             ViewModel.Email
@@ -113,7 +120,7 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             GoogleLoginButton.Rx().Tap()
-                .Subscribe(ViewModel.GoogleLogin)
+                .Subscribe(_ => ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google))
                 .DisposedBy(DisposeBag);
 
             ForgotPasswordButton.Rx()
@@ -189,6 +196,12 @@ namespace Toggl.iOS.ViewControllers
             ActivityIndicator.Alpha = 0;
             ActivityIndicator.StartSpinning();
             PasswordTextField.ResignFirstResponder();
+        }
+
+        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+        {
+            base.TraitCollectionDidChange(previousTraitCollection);
+            setupSignInWithAppleButton();
         }
 
         private void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
@@ -290,5 +303,31 @@ namespace Toggl.iOS.ViewControllers
 
         private string loginButtonTitle(bool isLoading)
             => isLoading ? "" : Resources.LoginTitle;
+
+        private void setupSignInWithAppleButton()
+        {
+            var style = TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Light
+                ? ASAuthorizationAppleIdButtonStyle.Black
+                : ASAuthorizationAppleIdButtonStyle.White;
+            var newButton = new ASAuthorizationAppleIdButton(ASAuthorizationAppleIdButtonType.SignIn, style);
+
+            if (appleSignInButton == null)
+            {
+                appleSignInButton = newButton;
+                ThirdPartyProvidersContainer.InsertArrangedSubview(appleSignInButton, 0);
+            }
+            else
+            {
+                ThirdPartyProvidersContainer.RemoveArrangedSubview(appleSignInButton);
+                appleSignInButton = newButton;
+                ThirdPartyProvidersContainer.InsertArrangedSubview(appleSignInButton, 0);
+            }
+
+            appleSignInButtonDisposable?.Dispose();
+            appleSignInButtonDisposable = null;
+
+            appleSignInButtonDisposable = newButton.Rx().Tap()
+                .Subscribe(_ => ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Apple));
+        }
     }
 }
