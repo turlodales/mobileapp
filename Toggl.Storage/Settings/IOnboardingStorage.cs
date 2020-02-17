@@ -23,12 +23,10 @@ namespace Toggl.Storage.Settings
         void SetUserSignedUp();
         void SetNavigatedAwayFromMainViewAfterStopButton();
         void SetTimeEntryContinued();
-        void SetCompletedCalendarOnboarding();
 
         DateTimeOffset? GetLastOpened();
         DateTimeOffset? GetFirstOpened();
         bool CompletedOnboarding();
-        bool CompletedCalendarOnboarding();
 
         void StartButtonWasTapped();
         void TimeEntryWasTapped();
@@ -50,6 +48,8 @@ namespace Toggl.Storage.Settings
         bool DidShowSiriClipboardInstruction();
         void SetDidShowSiriClipboardInstruction(bool value);
 
+        bool CalendarPermissionWasAskedBefore();
+        void SetCalendarPermissionWasAskedBefore();
         bool IsFirstTimeConnectingCalendars();
         void SetIsFirstTimeConnectingCalendars();
 

@@ -11,7 +11,7 @@ namespace Toggl.iOS
 {
     public sealed partial class CalendarSettingsTableViewHeader : UIView
     {
-        public IObservable<Unit> EnableCalendarAccessTapped { get; private set; }
+        public IObservable<Unit> LinkCalendarsSwitchTapped { get; private set; }
 
         public CalendarSettingsTableViewHeader(IntPtr handle) : base(handle)
         {
@@ -22,7 +22,7 @@ namespace Toggl.iOS
             base.AwakeFromNib();
             TextLabel.Text = Resources.AllowCalendarAccess;
             DescriptionLabel.Text = Resources.CalendarAccessExplanation;
-            EnableCalendarAccessTapped = EnableCalendarAccessView.Rx().Tap();
+            LinkCalendarsSwitchTapped = LinkCalendarsSwitch.Rx().Changed();
 
             EnableCalendarAccessView.InsertSeparator();
         }
@@ -33,11 +33,10 @@ namespace Toggl.iOS
             return Runtime.GetNSObject<CalendarSettingsTableViewHeader>(arr.ValueAt(0));
         }
 
-        public void SetCalendarPermissionStatus(bool enabled)
+        public void SetCalendarIntegrationStatus(bool enabled)
         {
-            CalendarPermissionStatusLabel.Text = enabled
-                ? Resources.On
-                : Resources.Off;
+            if (LinkCalendarsSwitch.On != enabled)
+                LinkCalendarsSwitch.On = enabled;
         }
     }
 }
