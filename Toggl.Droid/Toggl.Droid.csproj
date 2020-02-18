@@ -114,23 +114,29 @@
       <HintPath>..\packages\Accord.Statistics.3.8.0\lib\netstandard2.0\Accord.Statistics.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.2.6.1\lib\MonoAndroid403\Microsoft.AppCenter.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Microsoft.AppCenter.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter.Analytics, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.Analytics.2.6.1\lib\MonoAndroid403\Microsoft.AppCenter.Analytics.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Microsoft.AppCenter.Analytics.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.Analytics.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter.Analytics.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.Analytics.2.6.1\lib\MonoAndroid403\Microsoft.AppCenter.Analytics.Android.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Analytics.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Microsoft.AppCenter.Analytics.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.Analytics.Android.Bindings.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.2.6.1\lib\MonoAndroid403\Microsoft.AppCenter.Android.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Microsoft.AppCenter.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.Android.Bindings.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter.Crashes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.Crashes.2.6.1\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Microsoft.AppCenter.Crashes.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter.Crashes.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.Crashes.2.6.1\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.Android.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Crashes.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Microsoft.AppCenter.Crashes.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.Android.Bindings.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
@@ -527,6 +533,7 @@
     <Compile Include="Activities\ForgotPasswordActivity.ViewBinds.cs">
       <DependentUpon>ForgotPasswordActivity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Activities\IndependentCalenarSettingsActivity.cs" />
     <Compile Include="Activities\LicensesActivity.cs" />
     <Compile Include="Activities\OutdatedAppActivity.ViewBinds.cs">
       <DependentUpon>OutdatedAppActivity.cs</DependentUpon>
@@ -583,6 +590,7 @@
     <Compile Include="Adapters\ReportsAdapter.cs" />
     <Compile Include="Adapters\DateRangePickerMonthsPagerAdapter.cs" />
     <Compile Include="Helper\ActiveTheme.cs" />
+    <Compile Include="Helper\ITabLayoutReadyListener.cs" />
     <Compile Include="LayoutManagers\UnpredictiveLinearLayoutManager.cs" />
     <Compile Include="Helper\AppWidgetProviderUtils.cs" />
     <Compile Include="Helper\NotificationsConstants.cs" />
@@ -1076,8 +1084,6 @@
     <AndroidResource Include="Resources\layout\UpcomingEventsNotificationSettingsFragment.axml" />
     <AndroidResource Include="Resources\layout\SelectCalendarNotificationsOptionItem.axml" />
     <AndroidResource Include="Resources\layout\CalendarSettingsActivity.axml" />
-    <AndroidResource Include="Resources\layout\SelectUserCalendarsBase.axml" />
-    <AndroidResource Include="Resources\menu\CalendarSettingsMenu.xml" />
     <AndroidResource Include="Resources\layout\CalendarHeaderView.axml" />
     <AndroidResource Include="Resources\drawable\shape_widget_start_button.xml" />
     <AndroidResource Include="Resources\drawable\shape_widget_stop_button.xml" />

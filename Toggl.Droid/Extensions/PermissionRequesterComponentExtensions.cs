@@ -15,7 +15,7 @@ namespace Toggl.Droid.Extensions
     {
         private const int calendarAuthCode = 500;
 
-        public static void ProcessRequestPermissionsResult(this IPermissionRequesterComponent permissionRequester, int requestCode, string[] permissions, Permission[] grantResults)
+        public static void  ProcessRequestPermissionsResult(this IPermissionRequesterComponent permissionRequester, int requestCode, string[] permissions, Permission[] grantResults)
         {
             if (requestCode != calendarAuthCode)
             {
@@ -40,6 +40,29 @@ namespace Toggl.Droid.Extensions
                     return permissionRequester.CalendarAuthorizationSubject.AsObservable();
 
                 permissionRequester.CalendarAuthorizationSubject = new Subject<bool>();
+
+                if (force)
+                {
+                    var doNotAskWasChecked = !permissionRequester.ShouldShowPermissionRationale(Manifest.Permission.ReadCalendar);
+                    if (doNotAskWasChecked)
+                    {
+                        permissionRequester.FireAppSettingsIntent();
+                        IDisposable subscription = null;
+                        subscription = AndroidDependencyContainer.Instance.BackgroundService.AppResumedFromBackground
+                            .Select(_ => permissionRequester.checkPermissions(Manifest.Permission.ReadCalendar))
+                            .Take(1)
+                            .Subscribe(permissionGranted =>
+                            {
+                                permissionRequester.CalendarAuthorizationSubject.OnNext(permissionGranted);
+                                permissionRequester.CalendarAuthorizationSubject.OnCompleted();
+                                permissionRequester.CalendarAuthorizationSubject = null;
+                                subscription?.Dispose();
+                                subscription = null;
+                            });
+                        return permissionRequester.CalendarAuthorizationSubject;
+                    }
+                }
+
                 permissionRequester.RequestPermissions(new[] { Manifest.Permission.ReadCalendar }, calendarAuthCode);
 
                 return permissionRequester.CalendarAuthorizationSubject.AsObservable();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Core.UI.Views;
 using UIKit;
 
@@ -12,6 +13,7 @@ namespace Toggl.iOS.Presentation
         protected override HashSet<Type> AcceptedViewModels { get; } = new HashSet<Type>
         {
             typeof(SettingsViewModel),
+            typeof(IndependentCalendarSettingsViewModel)
         };
 
         public PageSheetPresenter(UIWindow window, AppDelegate appDelegate) : base(window, appDelegate)

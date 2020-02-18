@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
@@ -12,7 +13,10 @@ using Toggl.Core.Interactors;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
+using Toggl.Core.UI.Services;
 using Toggl.Core.UI.Transformations;
+using Toggl.Core.UI.ViewModels.Settings;
+using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
@@ -26,6 +30,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         private const int availableDayCount = 14;
         private const string dateFormat = "dddd, MMM d";
 
+        private readonly CompositeDisposable disposeBag = new CompositeDisposable();
+
         private readonly ITimeService timeService;
         private readonly ITogglDataSource dataSource;
         private readonly IUserPreferences userPreferences;
@@ -33,6 +39,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         private readonly IBackgroundService backgroundService;
         private readonly IInteractorFactory interactorFactory;
         private readonly ISchedulerProvider schedulerProvider;
+        private readonly IOnboardingStorage onboardingStorage;
+        private readonly IPermissionsChecker permissionsChecker;
         private readonly IRxActionFactory rxActionFactory;
 
         private readonly ISubject<Unit> realoadWeekView = new Subject<Unit>();
@@ -58,6 +66,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             IBackgroundService backgroundService,
             IInteractorFactory interactorFactory,
             ISchedulerProvider schedulerProvider,
+            IOnboardingStorage onboardingStorage,
+            IPermissionsChecker permissionsChecker,
             INavigationService navigationService)
             : base(navigationService)
         {
@@ -69,6 +79,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             Ensure.Argument.IsNotNull(backgroundService, nameof(backgroundService));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
+            Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
+            Ensure.Argument.IsNotNull(permissionsChecker, nameof(permissionsChecker));
 
             this.dataSource = dataSource;
             this.timeService = timeService;
@@ -78,6 +90,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             this.backgroundService = backgroundService;
             this.interactorFactory = interactorFactory;
             this.schedulerProvider = schedulerProvider;
+            this.onboardingStorage = onboardingStorage;
+            this.permissionsChecker = permissionsChecker;
 
             OpenSettings = rxActionFactory.FromAsync(openSettings);
             SelectDayFromWeekView = rxActionFactory.FromAction<CalendarWeeklyViewDayViewModel>(selectDayFromWeekView);
@@ -102,6 +116,43 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .DistinctUntilChanged()
                 .Select(date => DateTimeToFormattedString.Convert(date, dateFormat))
                 .AsDriver(schedulerProvider);
+        }
+
+        public override void ViewAppeared()
+        {
+            base.ViewAppeared();
+
+            if (onboardingStorage.CalendarPermissionWasAskedBefore())
+                return;
+
+            permissionsChecker.CalendarPermissionGranted
+                    .Where(calendarPermissionGranted => !calendarPermissionGranted)
+                    .Select(_ => onboardingStorage.CalendarPermissionWasAskedBefore())
+                    .Where(calendarViewWasOpenedBefore => !calendarViewWasOpenedBefore)
+                    .SelectMany(_ => View.RequestCalendarAuthorization(false))
+                    .Subscribe(onCalendarPermission)
+                    .DisposedBy(disposeBag);
+            onboardingStorage.SetCalendarPermissionWasAskedBefore();
+        }
+
+        private void onCalendarPermission(bool granted)
+        {
+            if (granted)
+            {
+                userPreferences.SetCalendarIntegrationEnabled(true);
+                Navigate<IndependentCalendarSettingsViewModel>();
+            }
+            else
+            {
+                Navigate<CalendarPermissionDeniedViewModel>();
+            }
+        }
+
+        public override void ViewDestroyed()
+        {
+            base.ViewDestroyed();
+
+            disposeBag.Dispose();
         }
 
         public void RealoadWeekView()
