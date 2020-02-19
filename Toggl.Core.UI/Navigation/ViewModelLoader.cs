@@ -447,6 +447,30 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.NavigationService);
             }
 
+            if (viewModelType == typeof(OnboardingViewModel))
+            {
+                return new OnboardingViewModel(
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.PlatformInfo,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.NavigationService);
+            }
+
+            if (viewModelType == typeof(TermsAndCountryViewModel))
+            {
+                return new TermsAndCountryViewModel(
+                    dependencyContainer.ApiFactory,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.NavigationService);
+            }
+
             throw new InvalidOperationException($"Trying to locate ViewModel {viewModelType.Name} failed.");
         }
     }
