@@ -26,9 +26,6 @@ namespace Toggl.iOS.Views.Calendar
 
         public float HourHeight { get; private set; } = 56;
 
-        private ISubject<Unit> scalingEndedSubject = new Subject<Unit>();
-        public IObservable<Unit> ScalingEnded => scalingEndedSubject.AsObservable();
-
         private static readonly nfloat leftPadding = 76;
         private static readonly nfloat hourSupplementaryLabelHeight = 20;
         private static readonly nfloat currentTimeSupplementaryLeftOffset = -18;
@@ -284,9 +281,6 @@ namespace Toggl.iOS.Views.Calendar
             }
         }
 
-        public void OnScalingEnded()
-            => scalingEndedSubject.OnNext(Unit.Default);
-
         internal CGRect FrameForCurrentTime()
         {
             var now = timeService.CurrentDateTime.LocalDateTime;
@@ -379,7 +373,12 @@ namespace Toggl.iOS.Views.Calendar
 
         private CGRect frameForEditingHour(NSIndexPath indexPath)
         {
-            var attrs = dataSource.LayoutAttributesForItemAtIndexPath(dataSource.IndexPathForSelectedItem);
+            var selectedIndexPath = dataSource.IndexPathForSelectedItem;
+            if (selectedIndexPath == null)
+            {
+                return CGRect.Empty;
+            }
+            var attrs = dataSource.LayoutAttributesForItemAtIndexPath(selectedIndexPath);
 
             var isStartTime = (int)indexPath.Item == 0;
             var time = isStartTime ? attrs.StartTime : attrs.EndTime;

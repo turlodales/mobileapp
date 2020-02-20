@@ -27,6 +27,8 @@ namespace Toggl.iOS.Presentation
                     return new CalendarViewController(vm);
                 case CalendarPermissionDeniedViewModel vm:
                     return new CalendarPermissionDeniedViewController(vm);
+                case IndependentCalendarSettingsViewModel vm:
+                    return new CalendarSettingsViewController(vm);
                 case CalendarSettingsViewModel vm:
                     return new CalendarSettingsViewController(vm);
                 case EditDurationViewModel vm:

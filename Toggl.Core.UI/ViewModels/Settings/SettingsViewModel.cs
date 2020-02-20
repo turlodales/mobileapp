@@ -313,8 +313,8 @@ namespace Toggl.Core.UI.ViewModels
         }
 
         private async Task openCalendarSettings()
-        { 
-            await Navigate<CalendarSettingsViewModel, bool, string[]>(false);
+        {
+            await Navigate<CalendarSettingsViewModel>();
             interactorFactory.UpdateEventNotificationsSchedules().Execute();
         }
 
@@ -328,8 +328,8 @@ namespace Toggl.Core.UI.ViewModels
         {
             await Navigate<NotificationSettingsViewModel>();
             interactorFactory.UpdateEventNotificationsSchedules().Execute();
-        } 
-            
+        }
+
 
         private IObservable<Unit> logout()
         {
