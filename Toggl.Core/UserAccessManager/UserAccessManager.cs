@@ -22,6 +22,7 @@ namespace Toggl.Core.Login
         private readonly Lazy<ITogglDatabase> database;
         private readonly Lazy<IPrivateSharedStorageService> privateSharedStorageService;
         private readonly Lazy<ITimeService> timeService;
+        private readonly Lazy<IPlatformInfo> platformInfo;
 
         private readonly ISubject<ITogglApi> userLoggedInSubject = new Subject<ITogglApi>();
         private readonly ISubject<Unit> userLoggedOutSubject = new Subject<Unit>();
@@ -33,17 +34,20 @@ namespace Toggl.Core.Login
             Lazy<IApiFactory> apiFactory,
             Lazy<ITogglDatabase> database,
             Lazy<IPrivateSharedStorageService> privateSharedStorageService,
-            Lazy<ITimeService> timeService)
+            Lazy<ITimeService> timeService,
+            Lazy<IPlatformInfo> platformInfo)
         {
             Ensure.Argument.IsNotNull(database, nameof(database));
             Ensure.Argument.IsNotNull(apiFactory, nameof(apiFactory));
             Ensure.Argument.IsNotNull(privateSharedStorageService, nameof(privateSharedStorageService));
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
+            Ensure.Argument.IsNotNull(platformInfo, nameof(platformInfo));
 
             this.database = database;
             this.apiFactory = apiFactory;
             this.privateSharedStorageService = privateSharedStorageService;
             this.timeService = timeService;
+            this.platformInfo = platformInfo;
         }
 
         public IObservable<Unit> Login(Email email, Password password)
@@ -198,7 +202,7 @@ namespace Toggl.Core.Login
             {
                 return provider == ThirdPartyLoginProvider.Google
                     ? api.User.GetWithGoogle()
-                    : api.User.GetWithApple();
+                    : api.User.GetWithApple(platformInfo.Value.SignInWithAppleClientId);
             }
         }
 
@@ -226,7 +230,7 @@ namespace Toggl.Core.Login
             {
                 return provider == ThirdPartyLoginProvider.Google
                     ? api.User.SignUpWithGoogle(token, termsAccepted, countryId, timezone)
-                    : api.User.SignUpWithApple(token, termsAccepted, countryId, timezone);
+                    : api.User.SignUpWithApple(platformInfo.Value.SignInWithAppleClientId, token, termsAccepted, countryId, timezone);
             }
         }
     }

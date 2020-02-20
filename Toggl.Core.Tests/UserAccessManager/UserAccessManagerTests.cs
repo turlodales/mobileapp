@@ -39,6 +39,7 @@ namespace Toggl.Core.Tests.Login
             protected static readonly bool TermsAccepted = true;
             protected static readonly int CountryId = 237;
             protected static readonly string Timezone = "Europe/Tallinn";
+            protected static readonly string SignInWithAppleClientId = "daneel.debug";
 
             protected IUser User { get; } = new User { Id = 10, ApiToken = "ABCDEFG" };
             protected ITogglApi Api { get; } = Substitute.For<ITogglApi>();
@@ -51,6 +52,7 @@ namespace Toggl.Core.Tests.Login
             protected ISyncManager SyncManager { get; } = Substitute.For<ISyncManager>();
             protected IInteractorFactory InteractorFactory { get; } = Substitute.For<IInteractorFactory>();
             protected ITimeService TimeService { get; } = Substitute.For<ITimeService>();
+            protected IPlatformInfo PlatformInfo { get; } = Substitute.For<IPlatformInfo>();
             protected (ISyncManager, IInteractorFactory) Initialize(ITogglApi api) => (SyncManager, InteractorFactory);
             protected virtual IScheduler CreateScheduler => Scheduler;
             protected IAnalyticsService AnalyticsService { get; } = Substitute.For<IAnalyticsService>();
@@ -62,7 +64,8 @@ namespace Toggl.Core.Tests.Login
                     new Lazy<IApiFactory>(() => ApiFactory),
                     new Lazy<ITogglDatabase>(() => Database),
                     new Lazy<IPrivateSharedStorageService>(() => PrivateSharedStorageService),
-                    new Lazy<ITimeService>(() => TimeService)
+                    new Lazy<ITimeService>(() => TimeService),
+                    new Lazy<IPlatformInfo>(() => PlatformInfo)
                 );
 
                 Api.User.Get().ReturnsTaskOf(User);
@@ -70,6 +73,7 @@ namespace Toggl.Core.Tests.Login
                 Api.User.GetWithGoogle().ReturnsTaskOf(User);
                 ApiFactory.CreateApiWith(Arg.Any<Credentials>(), Arg.Any<ITimeService>()).Returns(Api);
                 Database.Clear().Returns(Observable.Return(Unit.Default));
+                PlatformInfo.SignInWithAppleClientId.Returns(SignInWithAppleClientId);
             }
         }
 
@@ -87,15 +91,17 @@ namespace Toggl.Core.Tests.Login
                 bool useApiFactory,
                 bool useDatabase,
                 bool usePrivateSharedStorageService,
-                bool useTimeService)
+                bool useTimeService,
+                bool usePlatformInfo)
             {
                 var database = useDatabase ? new Lazy<ITogglDatabase>(() => Database) : null;
                 var apiFactory = useApiFactory ? new Lazy<IApiFactory>(() => ApiFactory) : null;
                 var privateSharedStorageService = usePrivateSharedStorageService ? new Lazy<IPrivateSharedStorageService>(() => PrivateSharedStorageService) : null;
                 var timeService = useTimeService ? new Lazy<ITimeService>(() => TimeService) : null;
+                var platformInfo = usePlatformInfo ? new Lazy<IPlatformInfo>(() => PlatformInfo) : null;
 
                 Action tryingToConstructWithEmptyParameters =
-                    () => new UserAccessManager(apiFactory, database, privateSharedStorageService, timeService);
+                    () => new UserAccessManager(apiFactory, database, privateSharedStorageService, timeService, platformInfo);
 
                 tryingToConstructWithEmptyParameters
                     .Should().Throw<ArgumentNullException>();

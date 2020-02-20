@@ -49,7 +49,7 @@ namespace Toggl.Networking.Network
         {
             Ensure.Argument.IsNotNull(appleToken, nameof(appleToken));
 
-            var header = authorizationHeaderWithValue($"{appleToken}:apple_access_token");
+            var header = authorizationHeaderWithValue($"{appleToken}:apple_token");
 
             return new Credentials(header);
         }

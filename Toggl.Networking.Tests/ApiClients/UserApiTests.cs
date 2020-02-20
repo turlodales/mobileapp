@@ -84,10 +84,10 @@ namespace Toggl.Networking.Tests.ApiClients
                 => api.GetWithGoogle();
         }
 
-        public class TheGetWithAppleMethod : FailOnPurpose
+        public class TheGetWithAppleMethod : Base
         {
             protected override Task<IUser> CallEndpoint(IUserApi api)
-                => api.GetWithApple();
+                => api.GetWithApple("daneel.debug");
         }
 
         public class TheUpdateMethod : Base
@@ -108,36 +108,10 @@ namespace Toggl.Networking.Tests.ApiClients
                 => api.SignUpWithGoogle("", true, 237, null);
         }
 
-        public class TheSignUpWithAppleMethod : FailOnPurpose
+        public class TheSignUpWithAppleMethod : Base
         {
             protected override Task<IUser> CallEndpoint(IUserApi api)
-                => api.SignUpWithApple("", true, 237, null);
-        }
-
-        public abstract class FailOnPurpose
-        {
-            private readonly IApiClient apiClient = Substitute.For<IApiClient>();
-            private readonly IJsonSerializer jsonSerializer = Substitute.For<IJsonSerializer>();
-            private readonly Credentials credentials = Credentials.None;
-            private readonly UserApi api;
-
-            public FailOnPurpose()
-            {
-                api = new UserApi(
-                    new Endpoints(ApiEnvironment.Staging),
-                    apiClient,
-                    jsonSerializer,
-                    credentials);
-            }
-
-            [Fact, LogIfTooSlow]
-            public void AlwaysFails()
-            {
-                Action signUpAction = () => api.SignUpWithApple("", true, 237, null).Wait();
-                signUpAction.Should().Throw<NotImplementedException>();
-            }
-
-            protected abstract Task<IUser> CallEndpoint(IUserApi api);
+                => api.SignUpWithApple("daneel.debug", "", true, 237, null);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Toggl.Networking.Network
         {
             None = 0,
             Auth,
+            Referer,
             Other
         }
 
@@ -23,5 +24,8 @@ namespace Toggl.Networking.Network
         }
 
         public static HttpHeader None => new HttpHeader(null, null, HeaderType.None);
+
+        public static HttpHeader Referer(string value)
+            => new HttpHeader("Referer", value, HeaderType.Referer);
     }
 }

@@ -36,6 +36,8 @@ namespace Toggl.Droid
             }
         }
 
+        public override string SignInWithAppleClientId => "";
+
         public override string CurrentNativeLanguageCode
             => Locale.Default?.ToString() ?? DefaultLanguageCode;
     }

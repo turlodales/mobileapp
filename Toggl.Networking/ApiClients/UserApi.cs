@@ -18,6 +18,8 @@ namespace Toggl.Networking.ApiClients
     internal sealed class UserApi : BaseApi, IUserApi
     {
         private const string userAlreadyExistsApiErrorMessage = "user with this email already exists";
+        private const string googleProvider = "google";
+        private const string appleProvider = "apple";
 
         private readonly UserEndpoints endPoints;
         private readonly IJsonSerializer serializer;
@@ -38,9 +40,11 @@ namespace Toggl.Networking.ApiClients
             => await SendRequest<User>(endPoints.GetWithGoogle, AuthHeader)
                 .ConfigureAwait(false);
 
-        public async Task<IUser> GetWithApple()
+        public async Task<IUser> GetWithApple(string clientId)
         {
-            throw new NotImplementedException("Sign in with Apple not implemented yet");
+            var headers = new[] {AuthHeader, HttpHeader.Referer(clientId) };
+            return await SendRequest<User>(endPoints.Get, headers)
+                .ConfigureAwait(false);
         }
 
         public async Task<IUser> Update(IUser user)
@@ -94,9 +98,10 @@ namespace Toggl.Networking.ApiClients
         public async Task<IUser> SignUpWithGoogle(string googleToken, bool termsAccepted, int countryId, string timezone)
         {
             Ensure.Argument.IsNotNull(googleToken, nameof(googleToken));
-            var parameters = new GoogleSignUpParameters
+            var parameters = new ThirdPartySignUpParameters
             {
-                GoogleAccessToken = googleToken,
+                Provider = googleProvider,
+                Token = googleToken,
                 Workspace = new WorkspaceParameters
                 {
                     InitialPricingPlan = PricingPlans.Free
@@ -111,9 +116,26 @@ namespace Toggl.Networking.ApiClients
                 .ConfigureAwait(false);
         }
 
-        public async Task<IUser> SignUpWithApple(string appleToken, bool termsAccepted, int countryId, string timezone)
+        public async Task<IUser> SignUpWithApple(string clientId, string appleToken, bool termsAccepted, int countryId, string timezone)
         {
-            throw new NotImplementedException("Sign up with Apple not implemented yet");
+            Ensure.Argument.IsNotNull(appleToken, nameof(appleToken));
+            var parameters = new ThirdPartySignUpParameters
+            {
+                Provider = appleProvider,
+                Token = appleToken,
+                Workspace = new WorkspaceParameters
+                {
+                    InitialPricingPlan = PricingPlans.Free
+                },
+                TermsAccepted = termsAccepted,
+                CountryId = countryId,
+                Timezone = timezone
+            };
+
+            var headers = new[] { HttpHeader.Referer(clientId) };
+            var json = serializer.Serialize(parameters, SerializationReason.Post);
+            return await SendRequest<User>(endPoints.Post, headers, json)
+                .ConfigureAwait(false);
         }
 
         [Preserve(AllMembers = true)]
@@ -144,9 +166,11 @@ namespace Toggl.Networking.ApiClients
         }
 
         [Preserve(AllMembers = true)]
-        private class GoogleSignUpParameters
+        private class ThirdPartySignUpParameters
         {
-            public string GoogleAccessToken { get; set; }
+            public string Token { get; set; }
+
+            public string Provider { get; set; }
 
             public WorkspaceParameters Workspace { get; set; }
 

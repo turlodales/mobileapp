@@ -195,10 +195,14 @@ namespace Toggl.Core.UI.ViewModels
 
             isLoadingSubject.OnNext(true);
 
+            var authenticationMethod = provider == ThirdPartyLoginProvider.Google
+                ? AuthenticationMethod.Google
+                : AuthenticationMethod.Apple;
+
             loginDisposable = View?
                 .GetToken(provider)
                 .SelectMany(token => userAccessManager.ThirdPartyLogin(provider, token))
-                .Track(analyticsService.Login, AuthenticationMethod.Google)
+                .Track(analyticsService.Login, authenticationMethod)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }
 

@@ -148,7 +148,8 @@ namespace Toggl.Core
                 apiFactory,
                 database,
                 privateSharedStorageService,
-                timeService);
+                timeService,
+                platformInfo);
 
             UserAccessManager
                 .UserLoggedIn
