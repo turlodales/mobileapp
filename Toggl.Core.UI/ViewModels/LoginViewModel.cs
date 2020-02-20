@@ -251,6 +251,10 @@ namespace Toggl.Core.UI.ViewModels
                     errorMessageSubject.OnNext("");
                     break;
                 default:
+                    Console.WriteLine($"xxaa ex login: {exception.GetType().FullName}");
+                    Console.WriteLine($"xxaa ex login: {exception.Message}");
+                    Console.WriteLine($"xxaa ex login: {exception.StackTrace");
+
                     analyticsService.UnknownLoginFailure.Track(exception.GetType().FullName, exception.Message);
                     analyticsService.TrackAnonymized(exception);
                     errorMessageSubject.OnNext(Resources.GenericLoginError);
