@@ -186,16 +186,11 @@ namespace Toggl.iOS.ViewSources
 
         public CGRect? FrameOfEditingItem()
         {
-            if (!IsEditing)
+            var indexPath = IndexPathForSelectedItem;
+            if (!IsEditing || indexPath == null)
                 return null;
 
-            var selectedindexPath = IndexPathForSelectedItem;
-            if (selectedindexPath == null)
-            {
-                return null;
-            }
-
-            return layout.LayoutAttributesForItem(selectedindexPath).Frame;
+            return layout.LayoutAttributesForItem(indexPath).Frame;
         }
 
         public List<CalendarItemLayoutAttributes> GapsBetweenTimeEntriesOf2HoursOrLess()
@@ -223,10 +218,21 @@ namespace Toggl.iOS.ViewSources
 
         public void StopEditing()
         {
+            if (!IsEditing)
+                return;
+
             IsEditing = false;
             layout.IsEditing = false;
+            layoutAttributes = calculateLayoutAttributes();
+
+            var indexPath = IndexPathForSelectedItem;
+            if (indexPath != null)
+            {
+                collectionView.ReloadItems(new [] { indexPath });
+            }
+
+            updateEditingHours();
             selectedItemId = null;
-            onCollectionChanges();
         }
 
         public void InsertItemView(DateTimeOffset startTime, TimeSpan duration)
@@ -250,6 +256,9 @@ namespace Toggl.iOS.ViewSources
                 throw new InvalidOperationException("Set IsEditing before calling insert/update/remove");
 
             var position = indexFor(selectedItemId);
+            if (!position.IsInRange(0, calendarItems.Count - 1))
+                return;
+
             calendarItems[position] = itemAt(position)
                 .WithStartTime(startTime)
                 .WithDuration(duration);

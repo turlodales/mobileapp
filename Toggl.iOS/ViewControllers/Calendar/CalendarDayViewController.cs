@@ -156,6 +156,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(dataSource.RemoveItemView)
                 .DisposedBy(DisposeBag);
 
+            ViewModel.ContextualMenuViewModel.CalendarItemUpdated
+                .Subscribe(dataSource.UpdateItemView)
+                .DisposedBy(DisposeBag);
+
             ContextualMenuCloseButton.Rx().Tap()
                 .Subscribe(_ => ViewModel.ContextualMenuViewModel.OnCalendarItemUpdated.Execute(null))
                 .DisposedBy(DisposeBag);
