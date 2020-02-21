@@ -64,7 +64,7 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
             runningTimeEntryRow.Bind(ViewModel.AreRunningTimerNotificationsEnabled, NotificationsRunningTimer, ViewModel.ToggleRunningTimerNotifications)
                 .DisposedBy(DisposeBag);
-            stoppedTimerRow.Bind(ViewModel.AreStoppedTimerNotificationsEnabled, NotificationsRunningTimer, ViewModel.ToggleStoppedTimerNotifications)
+            stoppedTimerRow.Bind(ViewModel.AreStoppedTimerNotificationsEnabled, NotificationsStoppedTimer, ViewModel.ToggleStoppedTimerNotifications)
                 .DisposedBy(DisposeBag);
 
             // calendar section 

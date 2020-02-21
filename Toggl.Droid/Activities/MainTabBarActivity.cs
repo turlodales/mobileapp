@@ -245,7 +245,7 @@ namespace Toggl.Droid.Activities
                 SupportFragmentManager
                     .BeginTransaction()
                     .Replace(Resource.Id.CurrentTabFragmmentContainer, initialFragment, initialTabItemId.ToString())
-                    .Commit();
+                    .CommitAllowingStateLoss();
             }
 
             if (initialFragment is MainFragment mainFragment)

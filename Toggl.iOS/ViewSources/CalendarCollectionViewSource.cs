@@ -132,7 +132,14 @@ namespace Toggl.iOS.ViewSources
             else if (elementKind == CalendarCollectionViewLayout.EditingHourSupplementaryViewKind)
             {
                 var reusableView = collectionView.DequeueReusableSupplementaryView(elementKind, editingHourReuseIdentifier, indexPath) as EditingHourSupplementaryView;
-                var attrs = LayoutAttributesForItemAtIndexPath(IndexPathForSelectedItem);
+
+                var selectedIndexPath = IndexPathForSelectedItem;
+                if (selectedIndexPath == null)
+                {
+                    return collectionView.DequeueReusableSupplementaryView(elementKind, currentTimeReuseIdentifier, indexPath);
+                }
+
+                var attrs = LayoutAttributesForItemAtIndexPath(selectedIndexPath);
                 var hour = (int)indexPath.Item == 0 ? attrs.StartTime.ToLocalTime() : attrs.EndTime.ToLocalTime();
                 reusableView.SetLabel(hour.ToString(editingHourFormat(), DateFormatCultureInfo.CurrentCulture));
                 return reusableView;
@@ -182,7 +189,13 @@ namespace Toggl.iOS.ViewSources
             if (!IsEditing)
                 return null;
 
-            return layout.LayoutAttributesForItem(IndexPathForSelectedItem).Frame;
+            var selectedindexPath = IndexPathForSelectedItem;
+            if (selectedindexPath == null)
+            {
+                return null;
+            }
+
+            return layout.LayoutAttributesForItem(selectedindexPath).Frame;
         }
 
         public List<CalendarItemLayoutAttributes> GapsBetweenTimeEntriesOf2HoursOrLess()
@@ -342,7 +355,13 @@ namespace Toggl.iOS.ViewSources
             var endEditingHour = collectionView
                 .GetSupplementaryView(CalendarCollectionViewLayout.EditingHourSupplementaryViewKind, NSIndexPath.FromItemSection(1, 0)) as EditingHourSupplementaryView;
 
-            var attrs = LayoutAttributesForItemAtIndexPath(IndexPathForSelectedItem);
+            var selectedindexPath = IndexPathForSelectedItem;
+            if (selectedindexPath == null)
+            {
+                return;
+            }
+
+            var attrs = LayoutAttributesForItemAtIndexPath(selectedindexPath);
             if (startEditingHour != null)
             {
                 var hour = attrs.StartTime.ToLocalTime();

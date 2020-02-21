@@ -2,6 +2,7 @@ using Android.App;
 using Android.Appwidget;
 using Android.Content;
 using Android.OS;
+using AndroidX.Work;
 using Toggl.Droid.SystemServices;
 
 namespace Toggl.Droid.Widgets
@@ -56,10 +57,12 @@ namespace Toggl.Droid.Widgets
 
         private void reportInstallationState(Context context, bool installed)
         {
-            var intent = new Intent(context, typeof(WidgetsAnalyticsService));
-            intent.SetAction(WidgetsAnalyticsService.SuggestionsWidgetInstallAction);
-            intent.PutExtra(WidgetsAnalyticsService.SuggestionsWidgetInstallStateParameter, installed);
-            WidgetsAnalyticsService.EnqueueWork(context, intent);
+            var inputData = new Data.Builder()
+                .PutString(WidgetsAnalyticsWorker.WidgetsAnalyticsWorkerAction, WidgetsAnalyticsWorker.SuggestionsWidgetInstallAction)
+                .PutBoolean(WidgetsAnalyticsWorker.SuggestionsWidgetInstallStateParameter, installed)
+                .Build();
+
+            WidgetsAnalyticsWorker.EnqueueWork(context, inputData);
         }
     }
 }
