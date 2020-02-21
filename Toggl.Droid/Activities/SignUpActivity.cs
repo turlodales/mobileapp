@@ -16,7 +16,7 @@ namespace Toggl.Droid.Activities
               ScreenOrientation = ScreenOrientation.Portrait,
               WindowSoftInputMode = SoftInput.AdjustPan | SoftInput.StateHidden,
               ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
-    public sealed partial class SignUpActivity : ReactiveActivity<SignupViewModel>
+    public sealed partial class SignUpActivity : ReactiveActivity<OldSignUpViewModel>
     {
         public SignUpActivity() : base(
             Resource.Layout.SignUpActivity,

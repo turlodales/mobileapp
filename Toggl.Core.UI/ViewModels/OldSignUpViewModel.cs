@@ -27,7 +27,7 @@ using Toggl.Storage.Settings;
 namespace Toggl.Core.UI.ViewModels
 {
     [Preserve(AllMembers = true)]
-    public sealed class SignupViewModel : ViewModelWithInput<CredentialsParameter>
+    public sealed class OldSignUpViewModel : ViewModelWithInput<CredentialsParameter>
     {
         [Flags]
         public enum ShakeTargets
@@ -85,7 +85,7 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction GoogleSignup { get; }
         public ViewAction PickCountry { get; }
 
-        public SignupViewModel(
+        public OldSignUpViewModel(
             IApiFactory apiFactory,
             IUserAccessManager userAccessManager,
             IAnalyticsService analyticsService,

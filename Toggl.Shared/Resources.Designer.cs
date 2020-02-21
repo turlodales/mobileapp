@@ -52,6 +52,30 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string InvalidEmailError {
+            get {
+                return ResourceManager.GetString("InvalidEmailError", resourceCulture);
+            }
+        }
+        
+        public static string NoEmailError {
+            get {
+                return ResourceManager.GetString("NoEmailError", resourceCulture);
+            }
+        }
+        
+        public static string NoPasswordError {
+            get {
+                return ResourceManager.GetString("NoPasswordError", resourceCulture);
+            }
+        }
+        
+        public static string InvalidPasswordError {
+            get {
+                return ResourceManager.GetString("InvalidPasswordError", resourceCulture);
+            }
+        }
+        
         public static string LoginTitle {
             get {
                 return ResourceManager.GetString("LoginTitle", resourceCulture);

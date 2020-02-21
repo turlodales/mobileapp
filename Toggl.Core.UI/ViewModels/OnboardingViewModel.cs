@@ -95,7 +95,7 @@ namespace Toggl.Core.UI.ViewModels
             isLoadingSubject.OnNext(true);
             if (lastTimeUsageStorage.LastLogin == null)
             {
-                return Navigate<SignupViewModel, CredentialsParameter>(CredentialsParameter.Empty);
+                return Navigate<SignUpViewModel, CredentialsParameter>(CredentialsParameter.Empty);
             }
             else
             {

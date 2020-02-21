@@ -124,6 +124,22 @@
 
     <!-- Login, SignUp, Forgot Password -->
 
+    <data name="InvalidEmailError" xml:space="preserve">
+        <value>Please enter a valid email address</value>
+        <comment>Displayed when the user tries to login or sign up with an invalid email address</comment>
+    </data>
+    <data name="NoEmailError" xml:space="preserve">
+        <value>Please enter an email address</value>
+        <comment>Displayed when the user tries to login or sign up without entering an email address</comment>
+    </data>
+    <data name="NoPasswordError" xml:space="preserve">
+        <value>Please enter your password</value>
+        <comment>Displayed when the user tries to login or sign up without entering a password</comment>
+    </data>
+    <data name="InvalidPasswordError" xml:space="preserve">
+        <value>Password should be at least 6 characters</value>
+        <comment>Displayed when the user tries to login or sign up with an invalid password (less than 6 characters)</comment>
+    </data>
     <data name="LoginTitle" xml:space="preserve">
         <value>Log in</value>
         <comment>Title of the login view</comment>

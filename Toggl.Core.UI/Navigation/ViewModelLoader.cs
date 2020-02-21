@@ -1,4 +1,5 @@
 ﻿using System;
+using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.DateRangePicker;
@@ -205,9 +206,9 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.RxActionFactory);
             }
 
-            if (viewModelType == typeof(SignupViewModel))
+            if (viewModelType == typeof(OldSignUpViewModel))
             {
-                return new SignupViewModel(
+                return new OldSignUpViewModel(
                     dependencyContainer.ApiFactory,
                     dependencyContainer.UserAccessManager,
                     dependencyContainer.AnalyticsService,
@@ -219,6 +220,22 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory,
                     dependencyContainer.PlatformInfo);
+            }
+
+            if (viewModelType == typeof(SignUpViewModel))
+            {
+                return new SignUpViewModel(
+                    dependencyContainer.TimeService,
+                    dependencyContainer.PlatformInfo,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.ErrorHandlingService);
             }
 
             if (viewModelType == typeof(StartTimeEntryViewModel))

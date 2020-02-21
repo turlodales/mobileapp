@@ -26,13 +26,13 @@ using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
 using Xunit;
-using static Toggl.Core.UI.ViewModels.SignupViewModel;
+using static Toggl.Core.UI.ViewModels.OldSignUpViewModel;
 
 namespace Toggl.Core.Tests.UI.ViewModels
 {
-    public sealed class SignupViewModelTests
+    public sealed class OldSignUpViewModelTests
     {
-        public abstract class SignupViewModelTest : BaseViewModelWithInputTests<SignupViewModel, CredentialsParameter>
+        public abstract class OldSignUpViewModelTest : BaseViewModelWithInputTests<OldSignUpViewModel, CredentialsParameter>
         {
             protected CredentialsParameter DefaultParameters { get; } = CredentialsParameter.Empty;
 
@@ -43,10 +43,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
             protected Password InvalidPassword { get; } = Password.Empty;
 
             protected ILocation Location { get; } = Substitute.For<ILocation>();
-            protected ILastTimeUsageStorage LastTimeUsageStorage { get; } = Substitute.For<ILastTimeUsageStorage>();
 
-            protected override SignupViewModel CreateViewModel()
-                => new SignupViewModel(
+            protected override OldSignUpViewModel CreateViewModel()
+                => new OldSignUpViewModel(
                     ApiFactory,
                     UserAccessManager,
                     AnalyticsService,
@@ -73,7 +72,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheConstructor : SignupViewModelTest
+        public sealed class TheConstructor : OldSignUpViewModelTest
         {
             [Xunit.Theory, LogIfTooSlow]
             [ConstructorData]
@@ -103,7 +102,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var timezoneService = usePlatformInfo ? PlatformInfo : null;
 
                 Action tryingToConstructWithEmptyParameters =
-                    () => new SignupViewModel(
+                    () => new OldSignUpViewModel(
                         apiFactory,
                         userAccessManager,
                         analyticsSerivce,
@@ -121,7 +120,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheInitializeMethod : SignupViewModelTest
+        public sealed class TheInitializeMethod : OldSignUpViewModelTest
         {
             [FsCheck.Xunit.Property]
             public void SetsTheEmail(NonEmptyString emailString)
@@ -214,7 +213,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class ThePickCountryMethod : SignupViewModelTest
+        public sealed class ThePickCountryMethod : OldSignUpViewModelTest
         {
             [Fact, LogIfTooSlow]
             public async Task NavigatesToSelectCountryViewModelPassingNullIfLocationApiFailed()
@@ -290,7 +289,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheGoogleSignupMethod : SignupViewModelTest
+        public sealed class TheGoogleOldSignUpMethod : OldSignUpViewModelTest
         {
             protected override void AdditionalViewModelSetup()
             {
@@ -333,7 +332,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 NavigationService.Received(1).Navigate<TermsOfServiceViewModel, bool>(ViewModel.View);
             }
 
-            public sealed class WhenUserAcceptsTheTermsOfService : SignupViewModelTest
+            public sealed class WhenUserAcceptsTheTermsOfService : OldSignUpViewModelTest
             {
                 protected override void AdditionalSetup()
                 {
@@ -453,7 +452,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     );
                 }
 
-                public sealed class WhenSignupSucceeds : SuccessfulSignupTest
+                public sealed class WhenOldSignUpSucceeds : SuccessfulOldSignUpTest
                 {
                     protected override void ExecuteCommand()
                     {
@@ -506,7 +505,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheTogglePasswordVisibilityMethod : SignupViewModelTest
+        public sealed class TheTogglePasswordVisibilityMethod : OldSignUpViewModelTest
         {
             [Fact, LogIfTooSlow]
             public void SetsIsPasswordMaskedToFalseWhenItIsTrue()
@@ -541,7 +540,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheLoginMethod : SignupViewModelTest
+        public sealed class TheLoginMethod : OldSignUpViewModelTest
         {
             [FsCheck.Xunit.Property]
             public void NavigatesToLoginViewModel(
@@ -598,7 +597,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheShakeFlags : SignupViewModelTest
+        public sealed class TheShakeFlags : OldSignUpViewModelTest
         {
             [Fact, LogIfTooSlow]
             public async Task ReturnsNothingWhenEmailPasswordAndCountryAreValid()
@@ -652,7 +651,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheSignupMethod : SignupViewModelTest
+        public sealed class TheOldSignUpMethod : OldSignUpViewModelTest
         {
             protected override void AdditionalViewModelSetup()
             {
@@ -704,7 +703,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 NavigationService.Received(1).Navigate<TermsOfServiceViewModel, bool>(ViewModel.View);
             }
 
-            public sealed class WhenUserAcceptsTheTermsOfService : SignupViewModelTest
+            public sealed class WhenUserAcceptsTheTermsOfService : OldSignUpViewModelTest
             {
                 protected override void AdditionalSetup()
                 {
@@ -753,7 +752,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     AnalyticsService.SignUp.Received().Track(AuthenticationMethod.EmailAndPassword);
                 }
 
-                public sealed class WhenSignupSucceeds : SuccessfulSignupTest
+                public sealed class WhenOldSignUpSucceeds : SuccessfulOldSignUpTest
                 {
                     protected override void ExecuteCommand()
                     {
@@ -809,7 +808,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     }
                 }
 
-                public sealed class WhenSignupFails : SignupViewModelTest
+                public sealed class WhenOldSignUpFails : OldSignUpViewModelTest
                 {
                     private void prepareException(Exception exception)
                     {
@@ -939,7 +938,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public abstract class SuccessfulSignupTest : SignupViewModelTest
+        public abstract class SuccessfulOldSignUpTest : OldSignUpViewModelTest
         {
             protected abstract void ExecuteCommand();
 
@@ -971,7 +970,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheSignupEnabledProperty : SignupViewModelTest
+        public sealed class TheOldSignUpEnabledProperty : OldSignUpViewModelTest
         {
             protected override void AdditionalViewModelSetup()
             {

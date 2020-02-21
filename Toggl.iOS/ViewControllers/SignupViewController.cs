@@ -16,7 +16,7 @@ using CoreGraphics;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public sealed partial class SignupViewController : ReactiveViewController<SignupViewModel>
+    public sealed partial class SignupViewController : ReactiveViewController<OldSignUpViewModel>
     {
         private const int iPhoneSeScreenHeight = 568;
         private const string adjustSignupEventToken = "b1qugc";
@@ -34,7 +34,7 @@ namespace Toggl.iOS.ViewControllers
 
         private UIButton showPasswordButton;
 
-        public SignupViewController(SignupViewModel viewModel) : base(viewModel, nameof(SignupViewController))
+        public SignupViewController(OldSignUpViewModel viewModel) : base(viewModel, nameof(SignupViewController))
         {
         }
 
@@ -154,13 +154,13 @@ namespace Toggl.iOS.ViewControllers
             ViewModel.Shake
                 .Subscribe(shakeTargets =>
                 {
-                    if (shakeTargets.HasFlag(SignupViewModel.ShakeTargets.Email))
+                    if (shakeTargets.HasFlag(OldSignUpViewModel.ShakeTargets.Email))
                         EmailTextField.Shake();
 
-                    if (shakeTargets.HasFlag(SignupViewModel.ShakeTargets.Password))
+                    if (shakeTargets.HasFlag(OldSignUpViewModel.ShakeTargets.Password))
                         PasswordTextField.Shake();
 
-                    if (shakeTargets.HasFlag(SignupViewModel.ShakeTargets.Country))
+                    if (shakeTargets.HasFlag(OldSignUpViewModel.ShakeTargets.Country))
                         SelectCountryButton.Shake();
                 })
                 .DisposedBy(DisposeBag);
