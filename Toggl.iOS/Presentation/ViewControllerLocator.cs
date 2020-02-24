@@ -51,6 +51,8 @@ namespace Toggl.iOS.Presentation
                     return new NotificationSettingsViewController(vm);
                 case NoWorkspaceViewModel vm:
                     return new NoWorkspaceViewController(vm);
+                case OnboardingViewModel vm:
+                    return new OnboardingViewController(vm);
                 case OutdatedAppViewModel vm:
                     return new OutdatedAppViewController(vm);
                 case PasteFromClipboardViewModel vm:

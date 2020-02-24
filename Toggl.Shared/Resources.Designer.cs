@@ -52,6 +52,24 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string OnboardingMessageVariantA {
+            get {
+                return ResourceManager.GetString("OnboardingMessageVariantA", resourceCulture);
+            }
+        }
+        
+        public static string ContinueWithGoogle {
+            get {
+                return ResourceManager.GetString("ContinueWithGoogle", resourceCulture);
+            }
+        }
+        
+        public static string ContinueWithEmail {
+            get {
+                return ResourceManager.GetString("ContinueWithEmail", resourceCulture);
+            }
+        }
+        
         public static string InvalidEmailError {
             get {
                 return ResourceManager.GetString("InvalidEmailError", resourceCulture);

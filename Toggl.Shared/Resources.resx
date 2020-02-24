@@ -122,8 +122,21 @@
         <comment>@Invariant</comment>
     </data>
 
-    <!-- Login, SignUp, Forgot Password -->
+    <!-- Onboarding, Login, SignUp, Forgot Password -->
 
+    <data name="OnboardingMessageVariantA" xml:space="preserve">
+        <value>Simple time tracking.
+Powerful reporting.</value>
+        <comment>Message shown in the onboarding view</comment>
+    </data>
+    <data name="ContinueWithGoogle" xml:space="preserve">
+        <value>Continue with Google</value>
+        <comment>Text of the button that allows to enter your account using Google from the onboarding view</comment>
+    </data>
+    <data name="ContinueWithEmail" xml:space="preserve">
+        <value>Continue with Email</value>
+        <comment>Text of the button that allows to enter your account using email and password from the onboarding view</comment>
+    </data>
     <data name="InvalidEmailError" xml:space="preserve">
         <value>Please enter a valid email address</value>
         <comment>Displayed when the user tries to login or sign up with an invalid email address</comment>

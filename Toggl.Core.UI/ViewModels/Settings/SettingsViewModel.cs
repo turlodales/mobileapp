@@ -338,7 +338,7 @@ namespace Toggl.Core.UI.ViewModels
 
             return interactorFactory.Logout(LogoutSource.Settings)
                 .Execute()
-                .Do(_ => Navigate<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty));
+                .Do(_ => Navigate<OnboardingViewModel>());
         }
 
         private IObservable<bool> isSynced()
