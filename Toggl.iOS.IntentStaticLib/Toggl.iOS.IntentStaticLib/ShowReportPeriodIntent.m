@@ -6,6 +6,8 @@
 
 #import "ShowReportPeriodIntent.h"
 
+#if __has_include(<Intents/Intents.h>) && (!TARGET_OS_OSX || TARGET_OS_IOSMAC) && !TARGET_OS_TV
+
 @implementation ShowReportPeriodIntent
 
 @dynamic period, workspace;
@@ -40,3 +42,5 @@
 }
 
 @end
+
+#endif

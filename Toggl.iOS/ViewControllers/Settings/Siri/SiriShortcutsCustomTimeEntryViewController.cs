@@ -251,10 +251,16 @@ namespace Toggl.iOS.ViewControllers.Settings.Siri
             var invocationName = selectedWorkspace.Name;
 
             INObject project = null;
+            INObject task = null;
             if (ViewModel.Project.Value is IThreadSafeProject selectedProject)
             {
                 project = new INObject(selectedProject.Id.ToString(), selectedProject.Name);
                 invocationName = selectedProject.Name;
+
+                if (ViewModel.Task.Value is IThreadSafeTask selectedTask)
+                {
+                    task = new INObject(selectedTask.Id.ToString(), selectedTask.Name);
+                }
             }
 
             INObject[] tags = null;
@@ -274,6 +280,7 @@ namespace Toggl.iOS.ViewControllers.Settings.Siri
                 {
                     Workspace = workspace,
                     ProjectId = project,
+                    TaskId = task,
                     Tags = tags,
                     Billable = billable
                 };
@@ -288,6 +295,7 @@ namespace Toggl.iOS.ViewControllers.Settings.Siri
             {
                 Workspace = workspace,
                 ProjectId = project,
+                TaskId = task,
                 Tags = tags,
                 Billable = billable,
                 EntryDescription = ViewModel.Description.Value,

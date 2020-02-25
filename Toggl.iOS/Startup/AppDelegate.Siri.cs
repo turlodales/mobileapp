@@ -71,6 +71,7 @@ namespace Toggl.iOS
                 string.IsNullOrEmpty(intent.Workspace?.Identifier) ? null : (long?)Convert.ToDouble(intent.Workspace?.Identifier),
                 intent.EntryDescription ?? "",
                 string.IsNullOrEmpty(intent.ProjectId?.Identifier) ? null : (long?)Convert.ToDouble(intent.ProjectId?.Identifier),
+                string.IsNullOrEmpty(intent.TaskId?.Identifier) ? null : (long?)Convert.ToDouble(intent.TaskId?.Identifier),
                 tags,
                 TimeEntryStartOrigin.Siri
             );

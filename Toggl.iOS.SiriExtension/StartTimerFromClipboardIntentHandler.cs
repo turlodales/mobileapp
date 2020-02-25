@@ -70,7 +70,7 @@ namespace SiriExtension
             return new TimeEntry(
                 workspaceId,
                 stringToLong(intent.ProjectId?.Identifier),
-                null,
+                stringToLong(intent.TaskId?.Identifier),
                 intent.Billable != null && intent.Billable.Identifier == "True",
                 DateTimeOffset.Now,
                 null,

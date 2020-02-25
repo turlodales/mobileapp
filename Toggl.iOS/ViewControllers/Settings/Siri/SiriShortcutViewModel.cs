@@ -12,6 +12,7 @@ namespace Toggl.iOS.ViewControllers.Settings
         public string Description { get; }
         public string WorkspaceName { get; }
         public string ProjectName { get; }
+        public string TaskName { get; }
         public string ClientName { get; }
         public string ProjectColor { get; }
         public bool HasTags { get; }
@@ -21,7 +22,7 @@ namespace Toggl.iOS.ViewControllers.Settings
         public SiriShortcutType Type { get; }
         public INVoiceShortcut VoiceShortcut { get; }
 
-        public SiriShortcutViewModel(SiriShortcut siriShortcut, IThreadSafeProject project = null)
+        public SiriShortcutViewModel(SiriShortcut siriShortcut, IThreadSafeProject project = null, IThreadSafeTask task = null)
         {
             if (siriShortcut.VoiceShortcut != null)
             {
@@ -37,6 +38,7 @@ namespace Toggl.iOS.ViewControllers.Settings
                 IsBillable = siriShortcut.Parameters.Billable;
 
                 ProjectName = project?.Name;
+                TaskName = task?.Name;
                 ClientName = project?.Client?.Name;
                 ProjectColor = project?.Color;
 
