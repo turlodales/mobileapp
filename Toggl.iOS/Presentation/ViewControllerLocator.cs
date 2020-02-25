@@ -97,6 +97,8 @@ namespace Toggl.iOS.Presentation
                     return new UpcomingEventsNotificationSettingsViewController(vm);
                 case DateRangePickerViewModel vm:
                     return new DateRangePickerViewController(vm);
+                case TermsAndCountryViewModel vm:
+                    return new TermsAndCountryViewController(vm);
                 default:
                     throw new Exception($"Failed to create ViewController for ViewModel of type {viewModel.GetType().Name}");
             }

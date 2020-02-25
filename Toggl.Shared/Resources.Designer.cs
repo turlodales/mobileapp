@@ -10,6 +10,7 @@
 
 namespace Toggl.Shared {
     using System;
+    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -244,6 +245,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string ReviewTheTerms {
+            get {
+                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
+            }
+        }
+        
         public static string TermsOfServiceDialogMessage {
             get {
                 return ResourceManager.GetString("TermsOfServiceDialogMessage", resourceCulture);
@@ -253,12 +260,6 @@ namespace Toggl.Shared {
         public static string CountryOfResidence {
             get {
                 return ResourceManager.GetString("CountryOfResidence", resourceCulture);
-            }
-        }
-        
-        public static string ReviewTheTerms {
-            get {
-                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
             }
         }
         
