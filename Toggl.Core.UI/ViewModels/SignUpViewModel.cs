@@ -24,6 +24,7 @@ using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels
 {
+    [Preserve(AllMembers = true)]
     public sealed class SignUpViewModel : ViewModelWithInput<CredentialsParameter>
     {
         private readonly ITimeService timeService;
@@ -132,21 +133,23 @@ namespace Toggl.Core.UI.ViewModels
                 emailErrorSubject.OnNext(Resources.NoEmailError);
             else if (!Email.Value.IsValid)
                 emailErrorSubject.OnNext(Resources.InvalidEmailError);
+            else
+                emailErrorSubject.OnNext(String.Empty);
 
             if (Password.Value.IsEmpty)
                 passwordErrorSubject.OnNext(Resources.NoPasswordError);
             else if (!Password.Value.IsValid)
                 passwordErrorSubject.OnNext(Resources.InvalidPasswordError);
+            else
+                passwordErrorSubject.OnNext(string.Empty);
 
-            if (!credentialsAreValid) return;
+            if (!credentialsAreValid)  return;
 
             countryId = await requestAcceptanceOfTermsAndConditionsAndSetCountry();
 
             if (countryId == null)
                 return;
 
-            emailErrorSubject.OnNext(string.Empty);
-            passwordErrorSubject.OnNext(string.Empty);
             isLoadingSubject.OnNext(true);
 
             var termsOfServiceAccepted = countryId.HasValue;

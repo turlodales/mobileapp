@@ -18,7 +18,6 @@ namespace Toggl.iOS.Presentation
             typeof(MainTabBarViewModel),
             typeof(OnboardingViewModel),
             typeof(LoginViewModel),
-            typeof(OldSignUpViewModel),
             typeof(TokenResetViewModel),
             typeof(OutdatedAppViewModel),
         };
@@ -98,7 +97,7 @@ namespace Toggl.iOS.Presentation
                 case LoginViewController loginViewController:
                     detachViewModel(loginViewController.ViewModel);
                     break;
-                case SignupViewController signupViewController:
+                case SignUpViewController signupViewController:
                     detachViewModel(signupViewController.ViewModel);
                     break;
                 case TokenResetViewController tokenResetViewController:

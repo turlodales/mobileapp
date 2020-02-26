@@ -1427,7 +1427,6 @@
     <InterfaceDefinition Include="ViewControllers\SelectCountryViewController.xib" />
     <InterfaceDefinition Include="Views\CountrySelection\CountryViewCell.xib" />
     <InterfaceDefinition Include="ViewControllers\ForgotPasswordViewController.xib" />
-    <InterfaceDefinition Include="ViewControllers\SignupViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\TermsOfServiceViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\Login.storyboard" />
     <InterfaceDefinition Include="Cells\SyncFailures\SyncFailureCell.xib" />
@@ -1484,6 +1483,7 @@
     <InterfaceDefinition Include="Cells\MainLog\SuggestionLogViewCell.xib" />
     <InterfaceDefinition Include="Cells\MainLog\SuggestionsHeaderView.xib" />
     <InterfaceDefinition Include="Cells\MainLog\UserFeedbackTableViewCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\SignUpViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\TermsAndCountryViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
   </ItemGroup>
@@ -1828,10 +1828,6 @@
     <Compile Include="ViewControllers\ForgotPasswordViewController.designer.cs">
       <DependentUpon>ForgotPasswordViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewControllers\SignupViewController.cs" />
-    <Compile Include="ViewControllers\SignupViewController.designer.cs">
-      <DependentUpon>SignupViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\LoginSignupViewExtensions.cs" />
     <Compile Include="ViewControllers\TermsOfServiceViewController.cs" />
     <Compile Include="ViewControllers\TermsOfServiceViewController.designer.cs">
@@ -2109,6 +2105,10 @@
     <Compile Include="Cells\MainLog\UserFeedbackTableViewCell.cs" />
     <Compile Include="Cells\MainLog\UserFeedbackTableViewCell.designer.cs">
       <DependentUpon>UserFeedbackTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\SignUpViewController.cs" />
+    <Compile Include="ViewControllers\SignUpViewController.designer.cs">
+      <DependentUpon>SignUpViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewControllers\TermsAndCountryViewController.cs" />
     <Compile Include="ViewControllers\TermsAndCountryViewController.designer.cs">

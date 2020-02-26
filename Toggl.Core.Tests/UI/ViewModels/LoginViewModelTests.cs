@@ -510,7 +510,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
         public sealed class TheSignupCommand : LoginViewModelTest
         {
             [FsCheck.Xunit.Property]
-            public void NavigatesToTheSignupViewModel(
+            public void NavigatesToTheSignUpViewModel(
                 NonEmptyString emailString, NonEmptyString passwordString)
             {
                 var email = Email.From(emailString.Get);
@@ -523,7 +523,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 NavigationService
                     .Received()
-                    .Navigate<OldSignUpViewModel, CredentialsParameter>(
+                    .Navigate<SignUpViewModel, CredentialsParameter>(
                         Arg.Is<CredentialsParameter>(parameter
                             => parameter.Email.Equals(email)
                             && parameter.Password.Equals(password)

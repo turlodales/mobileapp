@@ -77,8 +77,8 @@ namespace Toggl.iOS.Presentation
                     return new SendFeedbackViewController(vm);
                 case SettingsViewModel vm:
                     return new SettingsViewController(vm);
-                case OldSignUpViewModel vm:
-                    return new SignupViewController(vm);
+                case SignUpViewModel vm:
+                    return new SignUpViewController(vm);
                 case SiriShortcutsCustomTimeEntryViewModel vm:
                     return new SiriShortcutsCustomTimeEntryViewController(vm);
                 case SiriShortcutsSelectReportPeriodViewModel vm:

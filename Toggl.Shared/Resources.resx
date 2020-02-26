@@ -124,6 +124,15 @@
 
     <!-- Onboarding, Login, SignUp, Forgot Password -->
 
+    <data name="SignUp" xml:space="preserve">
+        <value>Sign up</value>
+        <comment>Shown on the button to sign up</comment>
+    </data>
+    <data name="SignUpWelcomeMessage" xml:space="preserve">
+        <value>Welcome to Toggl!
+Let’s get you set up to start tracking.</value>
+        <comment>Displayed in the sign up view right above the email text field</comment>
+    </data>
     <data name="OnboardingMessageVariantA" xml:space="preserve">
         <value>Simple time tracking.
 Powerful reporting.</value>
@@ -195,10 +204,18 @@ Powerful reporting.</value>
     </data>
     <data name="Email" xml:space="preserve">
         <value>Email</value>
-        <comment>Label for emails in the Login, SignUp, Forgot Password and Settings screens</comment>
+    <comment>Label for emails in the Login, SignUp, Forgot Password and Settings screens</comment>
+    </data>
+    <data name="SetPassword" xml:space="preserve">
+        <value>Set password</value>
+        <comment>A placeholder for the password input field when user is signing up</comment>
     </data>
     <data name="AlreadyHaveAnAccountQuestionMark" xml:space="preserve">
         <value>Already have an account?</value>
+        <comment>Message shown in the sign up view to link to the login page</comment>
+    </data>
+    <data name="HaveAnAccountQuestionMark" xml:space="preserve">
+        <value>Have an account?</value>
         <comment>Message shown in the sign up view to link to the login page</comment>
     </data>
     <data name="GetPasswordResetLink" xml:space="preserve">

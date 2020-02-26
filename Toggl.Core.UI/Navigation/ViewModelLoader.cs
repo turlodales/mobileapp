@@ -206,22 +206,6 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.RxActionFactory);
             }
 
-            if (viewModelType == typeof(OldSignUpViewModel))
-            {
-                return new OldSignUpViewModel(
-                    dependencyContainer.ApiFactory,
-                    dependencyContainer.UserAccessManager,
-                    dependencyContainer.AnalyticsService,
-                    dependencyContainer.OnboardingStorage,
-                    dependencyContainer.NavigationService,
-                    dependencyContainer.ErrorHandlingService,
-                    dependencyContainer.LastTimeUsageStorage,
-                    dependencyContainer.TimeService,
-                    dependencyContainer.SchedulerProvider,
-                    dependencyContainer.RxActionFactory,
-                    dependencyContainer.PlatformInfo);
-            }
-
             if (viewModelType == typeof(SignUpViewModel))
             {
                 return new SignUpViewModel(
@@ -236,6 +220,22 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.OnboardingStorage,
                     dependencyContainer.LastTimeUsageStorage,
                     dependencyContainer.ErrorHandlingService);
+            }
+
+            if (viewModelType == typeof(OldSignUpViewModel))
+            {
+                return new OldSignUpViewModel(
+                    dependencyContainer.ApiFactory,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.ErrorHandlingService,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.PlatformInfo);
             }
 
             if (viewModelType == typeof(StartTimeEntryViewModel))

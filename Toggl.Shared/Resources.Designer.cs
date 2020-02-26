@@ -53,6 +53,18 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SignUp {
+            get {
+                return ResourceManager.GetString("SignUp", resourceCulture);
+            }
+        }
+        
+        public static string SignUpWelcomeMessage {
+            get {
+                return ResourceManager.GetString("SignUpWelcomeMessage", resourceCulture);
+            }
+        }
+        
         public static string OnboardingMessageVariantA {
             get {
                 return ResourceManager.GetString("OnboardingMessageVariantA", resourceCulture);
@@ -161,9 +173,21 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SetPassword {
+            get {
+                return ResourceManager.GetString("SetPassword", resourceCulture);
+            }
+        }
+        
         public static string AlreadyHaveAnAccountQuestionMark {
             get {
                 return ResourceManager.GetString("AlreadyHaveAnAccountQuestionMark", resourceCulture);
+            }
+        }
+        
+        public static string HaveAnAccountQuestionMark {
+            get {
+                return ResourceManager.GetString("HaveAnAccountQuestionMark", resourceCulture);
             }
         }
         

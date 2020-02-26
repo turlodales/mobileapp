@@ -206,7 +206,7 @@ namespace Toggl.Core.UI.ViewModels
                 return Task.CompletedTask;
 
             var parameter = CredentialsParameter.With(emailSubject.Value, passwordSubject.Value);
-            return Navigate<OldSignUpViewModel, CredentialsParameter>(parameter);
+            return Navigate<SignUpViewModel, CredentialsParameter>(parameter);
         }
 
         private async Task forgotPassword()
