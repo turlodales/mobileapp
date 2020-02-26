@@ -88,7 +88,10 @@ namespace Toggl.Core.UI.ViewModels
         }
 
         private void continueWithGoogle()
-            => tryLoggingInWithGoogle();
+        {
+            analyticsService.ContinueWithGoogle.Track();
+            tryLoggingInWithGoogle();
+        }
 
         private Task continueWithEmail()
         {
