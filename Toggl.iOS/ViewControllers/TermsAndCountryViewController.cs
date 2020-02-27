@@ -82,15 +82,6 @@ namespace Toggl.iOS.ViewControllers
             ConfirmButton.Rx()
                 .BindAction(ViewModel.Accept)
                 .DisposedBy(DisposeBag);
-
-            CloseButton.Rx()
-                .BindAction(ViewModel.Cancel)
-                .DisposedBy(DisposeBag);
-        }
-
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
         }
 
         private void prepareTextView()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsAndCountryViewController">
             <connections>
-                <outlet property="CloseButton" destination="ivQ-u1-Kmk" id="k8I-L2-nVv"/>
                 <outlet property="ConfirmButton" destination="QQ5-Aj-kaC" id="cpN-et-LiZ"/>
                 <outlet property="CountryOfResidenceLabel" destination="xaZ-D1-Wcb" id="uLt-KR-viD"/>
                 <outlet property="CountrySelectionButton" destination="lls-E0-dPq" id="CZa-tk-77U"/>
@@ -27,15 +26,6 @@
             <rect key="frame" x="0.0" y="0.0" width="343" height="577"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivQ-u1-Kmk">
-                    <rect key="frame" x="299" y="4" width="40" height="40"/>
-                    <accessibility key="accessibilityConfiguration" label="SignUpGdprCancelButton"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="Kor-pl-EG7"/>
-                        <constraint firstAttribute="width" constant="40" id="MDY-fR-Htz"/>
-                    </constraints>
-                    <state key="normal" image="icClose"/>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just one more thing. Please review the details below." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJC-bA-eam">
                     <rect key="frame" x="39" y="120" width="265" height="100.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="28"/>
@@ -105,7 +95,6 @@
                 <constraint firstItem="lls-E0-dPq" firstAttribute="leading" secondItem="PmH-Ml-R9N" secondAttribute="leading" id="Bek-7e-VDQ"/>
                 <constraint firstItem="PmH-Ml-R9N" firstAttribute="trailing" secondItem="Grp-N8-qhZ" secondAttribute="trailing" constant="15.5" id="FBI-7N-rm6"/>
                 <constraint firstItem="pWI-Wv-1cb" firstAttribute="trailing" secondItem="PmH-Ml-R9N" secondAttribute="trailing" id="HLN-V6-lGZ"/>
-                <constraint firstItem="ivQ-u1-Kmk" firstAttribute="top" secondItem="Qyk-Yx-Tae" secondAttribute="top" constant="4" id="HWN-kd-4IN"/>
                 <constraint firstItem="uL7-Rd-Lk1" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" constant="1" id="IYC-Ow-5WH"/>
                 <constraint firstItem="xaZ-D1-Wcb" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" id="KcZ-eG-nDl"/>
                 <constraint firstItem="Qyk-Yx-Tae" firstAttribute="bottom" secondItem="QQ5-Aj-kaC" secondAttribute="bottom" constant="32" id="L3d-cS-bXy"/>
@@ -121,7 +110,6 @@
                 <constraint firstItem="pWI-Wv-1cb" firstAttribute="leading" secondItem="PmH-Ml-R9N" secondAttribute="leading" id="s3I-5h-fHH"/>
                 <constraint firstItem="QQ5-Aj-kaC" firstAttribute="top" secondItem="pWI-Wv-1cb" secondAttribute="bottom" constant="32" id="sCa-77-AC9"/>
                 <constraint firstItem="bJC-bA-eam" firstAttribute="leading" secondItem="Qyk-Yx-Tae" secondAttribute="leading" constant="39" id="uVZ-Ag-W8H"/>
-                <constraint firstItem="Qyk-Yx-Tae" firstAttribute="trailing" secondItem="ivQ-u1-Kmk" secondAttribute="trailing" constant="4" id="vvI-0m-sdi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Qyk-Yx-Tae"/>
@@ -129,7 +117,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icClose" width="10" height="10"/>
         <image name="icDownS" width="8" height="5"/>
         <image name="icErrorSmall" width="11" height="11"/>
         <namedColor name="Background">

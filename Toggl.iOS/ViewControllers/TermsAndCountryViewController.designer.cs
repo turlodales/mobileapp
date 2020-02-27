@@ -13,9 +13,6 @@ namespace Toggl.iOS.ViewControllers
 	partial class TermsAndCountryViewController
 	{
 		[Outlet]
-		UIKit.UIButton CloseButton { get; set; }
-
-		[Outlet]
 		UIKit.UIButton ConfirmButton { get; set; }
 
 		[Outlet]
@@ -38,24 +35,14 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (CloseButton != null) {
-				CloseButton.Dispose ();
-				CloseButton = null;
-			}
-
-			if (HeaderLabel != null) {
-				HeaderLabel.Dispose ();
-				HeaderLabel = null;
+			if (ConfirmButton != null) {
+				ConfirmButton.Dispose ();
+				ConfirmButton = null;
 			}
 
 			if (CountryOfResidenceLabel != null) {
 				CountryOfResidenceLabel.Dispose ();
 				CountryOfResidenceLabel = null;
-			}
-
-			if (CountrySelectionErrorView != null) {
-				CountrySelectionErrorView.Dispose ();
-				CountrySelectionErrorView = null;
 			}
 
 			if (CountrySelectionButton != null) {
@@ -68,14 +55,19 @@ namespace Toggl.iOS.ViewControllers
 				CountrySelectionCaret = null;
 			}
 
+			if (CountrySelectionErrorView != null) {
+				CountrySelectionErrorView.Dispose ();
+				CountrySelectionErrorView = null;
+			}
+
+			if (HeaderLabel != null) {
+				HeaderLabel.Dispose ();
+				HeaderLabel = null;
+			}
+
 			if (TextView != null) {
 				TextView.Dispose ();
 				TextView = null;
-			}
-
-			if (ConfirmButton != null) {
-				ConfirmButton.Dispose ();
-				ConfirmButton = null;
 			}
 		}
 	}

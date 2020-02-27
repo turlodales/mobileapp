@@ -45,7 +45,6 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction ViewTermsOfService { get; }
         public ViewAction ViewPrivacyPolicy { get; }
         public ViewAction Accept { get; }
-        public ViewAction Cancel { get; }
 
         public TermsAndCountryViewModel(
             IApiFactory apiFactory,
@@ -67,7 +66,6 @@ namespace Toggl.Core.UI.ViewModels
             ViewPrivacyPolicy = rxActionFactory.FromAsync(openPrivacyPolicy);
             ViewTermsOfService = rxActionFactory.FromAsync(openTermsOfService);
             Accept = rxActionFactory.FromAction(accept);
-            Cancel = rxActionFactory.FromAction(cancel);
 
             FormattedDialogText = string.Format(
                 Resources.TermsOfServiceDialogMessage,
@@ -105,11 +103,6 @@ namespace Toggl.Core.UI.ViewModels
                         getCountrySubscription = null;
                     }
                 );
-        }
-
-        private void cancel()
-        {
-            Close(null);
         }
 
         private void accept()

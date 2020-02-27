@@ -220,7 +220,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private async Task<long?> requestAcceptanceOfTermsAndConditionsAndSetCountry()
         {
-            return countryId ?? (await Navigate<TermsAndCountryViewModel, ICountry?>()).Id;
+            return countryId ?? (await Navigate<TermsAndCountryViewModel, ICountry?>())?.Id;
         }
     }
 }
