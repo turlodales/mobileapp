@@ -86,6 +86,21 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.InteractorFactory);
             }
 
+            if (viewModelType == typeof(EmailLoginViewModel))
+            {
+                return new EmailLoginViewModel(
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.ErrorHandlingService,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.InteractorFactory);
+            }
+
             if (viewModelType == typeof(MainTabBarViewModel))
             {
                 return new MainTabBarViewModel(dependencyContainer);
