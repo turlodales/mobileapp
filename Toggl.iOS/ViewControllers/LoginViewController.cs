@@ -13,6 +13,12 @@ namespace Toggl.iOS.ViewControllers
 {
     public partial class LoginViewController : ReactiveViewController<EmailLoginViewModel>
     {
+        private UIStringAttributes plainTextAttributes = new UIStringAttributes
+        {
+            ForegroundColor = ColorAssets.Text,
+            Font = UIFont.SystemFontOfSize(15, UIFontWeight.Regular)
+        };
+
         public LoginViewController(EmailLoginViewModel vm) : base(vm, nameof(LoginViewController))
         {
         }
@@ -145,11 +151,7 @@ namespace Toggl.iOS.ViewControllers
                     underlineStyle: NSUnderlineStyle.Single
                 );
             forgotPasswordTitle.AddAttributes(
-                new UIStringAttributes
-                {
-                    ForegroundColor = ColorAssets.Text,
-                    Font = UIFont.SystemFontOfSize(15, UIFontWeight.Regular)
-                },
+                plainTextAttributes,
                 new NSRange(0, forgotPasswordTitle.Length)
             );
             ForgotPasswordButton.SetAttributedTitle(
@@ -164,11 +166,7 @@ namespace Toggl.iOS.ViewControllers
             buttonTitle.Append(new NSAttributedString(" "));
             buttonTitle.Append(new NSMutableAttributedString(Resources.SignUp, underlineStyle: NSUnderlineStyle.Single));
             buttonTitle.AddAttributes(
-                new UIStringAttributes
-                {
-                    ForegroundColor = ColorAssets.Text,
-                    Font = UIFont.SystemFontOfSize(15, UIFontWeight.Regular)
-                },
+                plainTextAttributes,
                 new NSRange(0, buttonTitle.Length)
             );
 
