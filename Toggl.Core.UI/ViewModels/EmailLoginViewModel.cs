@@ -16,6 +16,7 @@ using Toggl.Core.UI.Parameters;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Extensions.Reactive;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels
@@ -35,29 +36,29 @@ namespace Toggl.Core.UI.ViewModels
         private IDisposable loginDisposable;
 
         private readonly Subject<Unit> shakeEmailSubject = new Subject<Unit>();
-        private readonly Subject<bool> isShowPasswordButtonVisibleSubject = new Subject<bool>();
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
         private readonly BehaviorSubject<string> emailErrorMessageSubject = new BehaviorSubject<string>("");
         private readonly BehaviorSubject<string> passwordErrorMessageSubject = new BehaviorSubject<string>("");
         private readonly BehaviorSubject<string> loginErrorMessageSubject = new BehaviorSubject<string>("");
-        private readonly BehaviorSubject<Email> emailSubject = new BehaviorSubject<Email>(Shared.Email.Empty);
-        private readonly BehaviorSubject<Password> passwordSubject = new BehaviorSubject<Password>(Shared.Password.Empty);
+        private readonly BehaviorSubject<bool> passwordVisibleSubject = new BehaviorSubject<bool>(false);
 
         private bool credentialsAreValid
-             => emailSubject.Value.IsValid && !passwordSubject.Value.IsEmpty;
+             => Email.Value.IsValid && !Password.Value.IsEmpty;
 
-        public IObservable<string> Email { get; }
-        public IObservable<string> Password { get; }
+        public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
+        public BehaviorRelay<Password> Password { get; } = new BehaviorRelay<Password>(Shared.Password.Empty);
+
+        public IObservable<bool> PasswordVisible { get; }
         public IObservable<bool> IsLoading { get; }
         public IObservable<bool> LoginEnabled { get; }
         public IObservable<Unit> ShakeEmail { get; }
         public IObservable<string> EmailErrorMessage { get; }
         public IObservable<string> PasswordErrorMessage { get; }
         public IObservable<string> LoginErrorMessage { get; }
-        public IObservable<bool> IsShowPasswordButtonVisible { get; }
 
         public ViewAction Signup { get; }
         public ViewAction ForgotPassword { get; }
+        public ViewAction TogglePasswordVisibility { get; }
 
         public EmailLoginViewModel(
             IUserAccessManager userAccessManager,
@@ -91,22 +92,12 @@ namespace Toggl.Core.UI.ViewModels
             this.schedulerProvider = schedulerProvider;
             this.interactorFactory = interactorFactory;
 
-            var emailObservable = emailSubject.Select(email => email.TrimmedEnd());
-
             Signup = rxActionFactory.FromAsync(signup);
             ForgotPassword = rxActionFactory.FromAsync(forgotPassword);
+            TogglePasswordVisibility = rxActionFactory.FromAction(togglePasswordVisibility);
 
             ShakeEmail = shakeEmailSubject.AsDriver(this.schedulerProvider);
-
-            Email = emailObservable
-                .Select(email => email.ToString())
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
-
-            Password = passwordSubject
-                .Select(password => password.ToString())
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
+            PasswordVisible = passwordVisibleSubject.AsObservable();
 
             IsLoading = isLoadingSubject
                 .DistinctUntilChanged()
@@ -124,52 +115,39 @@ namespace Toggl.Core.UI.ViewModels
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
 
-            IsShowPasswordButtonVisible = Password
-                .Select(password => password.Length > 1)
-                .CombineLatest(isShowPasswordButtonVisibleSubject.AsObservable(), CommonFunctions.And)
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
-
-            LoginEnabled = emailObservable
+            LoginEnabled = Email
                 .CombineLatest(
-                    passwordSubject.AsObservable(),
+                    Password,
                     IsLoading,
                     (email, password, isLoading) => email.IsValid && password.IsValid && !isLoading)
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
+
+            loginErrorMessageSubject.OnNext(Resources.GenericLoginError);
         }
 
         public override Task Initialize(CredentialsParameter parameter)
         {
-            emailSubject.OnNext(parameter.Email);
-            passwordSubject.OnNext(parameter.Password);
+            Email.Accept(parameter.Email);
+            Password.Accept(parameter.Password);
 
             return base.Initialize(parameter);
         }
 
-        public void SetEmail(Email email)
-            => emailSubject.OnNext(email);
-
-        public void SetPassword(Password password)
-            => passwordSubject.OnNext(password);
-
-        public void SetIsShowPasswordButtonVisible(bool visible)
-            => isShowPasswordButtonVisibleSubject.OnNext(visible);
-
         public void Login()
         {
-            if (emailSubject.Value.IsEmpty)
+            if (Email.Value.IsEmpty)
             {
                 emailErrorMessageSubject.OnNext(Resources.NoEmailError);
                 shakeEmailSubject.OnNext(Unit.Default);
             }
-            else if (!emailSubject.Value.IsValid)
+            else if (!Email.Value.IsValid)
             {
                 emailErrorMessageSubject.OnNext(Resources.InvalidEmailError);
                 shakeEmailSubject.OnNext(Unit.Default);
             }
 
-            if (passwordSubject.Value.IsEmpty)
+            if (Password.Value.IsEmpty)
             {
                 passwordErrorMessageSubject.OnNext(Resources.NoPasswordError);
             }
@@ -183,7 +161,7 @@ namespace Toggl.Core.UI.ViewModels
 
             loginDisposable =
                 userAccessManager
-                    .Login(emailSubject.Value, passwordSubject.Value)
+                    .Login(Email.Value, Password.Value)
                     .Track(analyticsService.Login, AuthenticationMethod.EmailAndPassword)
                     .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }
@@ -193,7 +171,7 @@ namespace Toggl.Core.UI.ViewModels
             if (isLoadingSubject.Value)
                 return Task.CompletedTask;
 
-            var parameter = CredentialsParameter.With(emailSubject.Value, passwordSubject.Value);
+            var parameter = CredentialsParameter.With(Email.Value, Password.Value);
             return Navigate<SignUpViewModel, CredentialsParameter>(parameter);
         }
 
@@ -201,11 +179,14 @@ namespace Toggl.Core.UI.ViewModels
         {
             if (isLoadingSubject.Value) return;
 
-            var emailParameter = EmailParameter.With(emailSubject.Value);
+            var emailParameter = EmailParameter.With(Email.Value);
             emailParameter = await Navigate<ForgotPasswordViewModel, EmailParameter, EmailParameter>(emailParameter);
             if (emailParameter != null)
-                emailSubject.OnNext(emailParameter.Email);
+                Email.Accept(emailParameter.Email);
         }
+
+        private void togglePasswordVisibility()
+            => passwordVisibleSubject.OnNext(!passwordVisibleSubject.Value);
 
         private async void onAuthenticated()
         {
