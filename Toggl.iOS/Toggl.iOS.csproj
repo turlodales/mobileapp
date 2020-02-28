@@ -1428,7 +1428,6 @@
     <InterfaceDefinition Include="Views\CountrySelection\CountryViewCell.xib" />
     <InterfaceDefinition Include="ViewControllers\ForgotPasswordViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\TermsOfServiceViewController.xib" />
-    <InterfaceDefinition Include="ViewControllers\Login.storyboard" />
     <InterfaceDefinition Include="Cells\SyncFailures\SyncFailureCell.xib" />
     <InterfaceDefinition Include="Cells\Settings\LicensesHeaderViewCell.xib" />
     <InterfaceDefinition Include="Cells\Settings\LicensesViewCell.xib" />
@@ -1486,6 +1485,7 @@
     <InterfaceDefinition Include="ViewControllers\SignUpViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\TermsAndCountryViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
+    <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -1731,10 +1731,6 @@
       <DependentUpon>TokenResetViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\LayoutConstraintExtensions.cs" />
-    <Compile Include="ViewControllers\LoginViewController.cs" />
-    <Compile Include="ViewControllers\LoginViewController.designer.cs">
-      <DependentUpon>LoginViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Color\ColorSelectionViewCell.cs" />
     <Compile Include="Views\Color\ColorSelectionViewCell.designer.cs">
       <DependentUpon>ColorSelectionViewCell.cs</DependentUpon>
@@ -2117,6 +2113,10 @@
     <Compile Include="ViewControllers\OnboardingViewController.cs" />
     <Compile Include="ViewControllers\OnboardingViewController.designer.cs">
       <DependentUpon>OnboardingViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\LoginViewController.cs" />
+    <Compile Include="ViewControllers\LoginViewController.designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

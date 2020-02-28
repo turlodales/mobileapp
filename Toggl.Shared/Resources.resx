@@ -133,6 +133,10 @@
 Let’s get you set up to start tracking.</value>
         <comment>Displayed in the sign up view right above the email text field</comment>
     </data>
+    <data name="LoginWelcomeMessage" xml:space="preserve">
+        <value>Welcome back!</value>
+        <comment>Displayed in the login view right above the email text field</comment>
+    </data>
     <data name="OnboardingMessageVariantA" xml:space="preserve">
         <value>Simple time tracking.
 Powerful reporting.</value>
@@ -164,7 +168,7 @@ Powerful reporting.</value>
     </data>
     <data name="LoginTitle" xml:space="preserve">
         <value>Log in</value>
-        <comment>Title of the login view</comment>
+        <comment>Title of the login button</comment>
     </data>
     <data name="EmailAddress" xml:space="preserve">
         <value>Email Address</value>
@@ -288,6 +292,10 @@ the details below.</value>
     <data name="IAgree" xml:space="preserve">
         <value>I agree</value>
         <comment>Used in the popup that prompts users to agree with our terms of service and privacy policy during signup</comment>
+    </data>
+    <data name="Loading" xml:space="preserve">
+        <value>Loading</value>
+        <comment>Used to show when the login view is loading.</comment>
     </data>
 
     <!-- MainTabBar -->

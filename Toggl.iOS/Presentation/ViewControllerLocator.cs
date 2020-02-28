@@ -41,8 +41,8 @@ namespace Toggl.iOS.Presentation
                     return new ForgotPasswordViewController(vm);
                 case LicensesViewModel vm:
                     return new LicensesViewController(vm);
-                case LoginViewModel vm:
-                    return LoginViewController.NewInstance(vm);
+                case EmailLoginViewModel vm:
+                    return new LoginViewController(vm);
                 case MainTabBarViewModel vm:
                     return new MainTabBarController(vm);
                 case MainViewModel vm:

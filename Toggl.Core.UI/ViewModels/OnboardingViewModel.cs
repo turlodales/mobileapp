@@ -102,7 +102,7 @@ namespace Toggl.Core.UI.ViewModels
             }
             else
             {
-                return Navigate<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty);
+                return Navigate<EmailLoginViewModel, CredentialsParameter>(CredentialsParameter.Empty);
             }
         }
 
