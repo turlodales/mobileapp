@@ -122,8 +122,6 @@ namespace Toggl.Core.UI.ViewModels
                     (email, password, isLoading) => email.IsValid && password.IsValid && !isLoading)
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
-
-            loginErrorMessageSubject.OnNext(Resources.GenericLoginError);
         }
 
         public override Task Initialize(CredentialsParameter parameter)
