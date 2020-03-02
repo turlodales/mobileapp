@@ -6,9 +6,11 @@
 
 #import "StartTimerFromClipboardIntent.h"
 
+#if __has_include(<Intents/Intents.h>) && (!TARGET_OS_OSX || TARGET_OS_IOSMAC) && !TARGET_OS_TV
+
 @implementation StartTimerFromClipboardIntent
 
-@dynamic workspace, billable, projectId, tags;
+@dynamic workspace, billable, projectId, taskId, tags;
 
 @end
 
@@ -32,3 +34,5 @@
 }
 
 @end
+
+#endif

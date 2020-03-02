@@ -109,11 +109,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>oufd6M</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>19B88</string>
+	<string>19D76</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>11B53</string>
+	<string>11C505</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>11.2.1</string>
+	<string>11.3.1</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -420,7 +420,7 @@
 			<key>INIntentDescriptionID</key>
 			<string>kSGACm</string>
 			<key>INIntentLastParameterTag</key>
-			<integer>15</integer>
+			<integer>17</integer>
 			<key>INIntentName</key>
 			<string>StartTimer</string>
 			<key>INIntentParameterCombinations</key>
@@ -450,6 +450,19 @@
 					<string>Start timer: ${entryDescription}</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>IUEfYE</string>
+				</dict>
+				<key>billable,entryDescription,workspace,projectId,taskId,tags</key>
+				<dict>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>in ${workspace}</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>bawR0n</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Start timer: ${entryDescription}</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>HBYhoP</string>
 				</dict>
 				<key>billable,projectId,entryDescription,workspace</key>
 				<dict>
@@ -489,6 +502,19 @@
 					<string>Start timer: ${entryDescription}</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>ArvZvi</string>
+				</dict>
+				<key>billable,workspace,entryDescription,projectId,taskId</key>
+				<dict>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>in ${workspace}</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>izvvEN</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Start timer: ${entryDescription}</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>SH1ObC</string>
 				</dict>
 				<key>entryDescription,workspace</key>
 				<dict>
@@ -569,6 +595,16 @@
 				<dict>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>5</integer>
+					<key>INIntentParameterName</key>
+					<string>taskId</string>
+					<key>INIntentParameterTag</key>
+					<integer>17</integer>
+					<key>INIntentParameterType</key>
+					<string>Object</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>6</integer>
 					<key>INIntentParameterName</key>
 					<string>tags</string>
 					<key>INIntentParameterSupportsMultipleValues</key>
@@ -717,7 +753,7 @@
 			<key>INIntentDescriptionID</key>
 			<string>Rv6kvt</string>
 			<key>INIntentLastParameterTag</key>
-			<integer>9</integer>
+			<integer>11</integer>
 			<key>INIntentName</key>
 			<string>StartTimerFromClipboard</string>
 			<key>INIntentParameterCombinations</key>
@@ -734,6 +770,32 @@
 					<string>Start timer from clipboard</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>JErccw</string>
+				</dict>
+				<key>billable,tags,workspace,projectId,taskId</key>
+				<dict>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>for ${projectId} in ${workspace}</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>owHapN</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Start timer from clipboard</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>XGyheZ</string>
+				</dict>
+				<key>billable,workspace,projectId,taskId</key>
+				<dict>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>for ${projectId} in ${workspace}</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>Q0PSce</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Start timer from clipboard</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>BuORR0</string>
 				</dict>
 				<key>projectId,tags,billable,workspace</key>
 				<dict>
@@ -838,6 +900,16 @@
 				<dict>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>4</integer>
+					<key>INIntentParameterName</key>
+					<string>taskId</string>
+					<key>INIntentParameterTag</key>
+					<integer>11</integer>
+					<key>INIntentParameterType</key>
+					<string>Object</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>5</integer>
 					<key>INIntentParameterName</key>
 					<string>tags</string>
 					<key>INIntentParameterSupportsMultipleValues</key>

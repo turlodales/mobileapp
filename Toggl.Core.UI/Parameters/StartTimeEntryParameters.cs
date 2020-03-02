@@ -22,6 +22,8 @@ namespace Toggl.Core.UI.Parameters
 
         public long? ProjectId { get; }
 
+        public long? TaskId { get; }
+
         public IEnumerable<long> TagIds { get; }
 
         public TimeEntryStartOrigin? Origin { get; }
@@ -33,6 +35,7 @@ namespace Toggl.Core.UI.Parameters
             long? workspaceId,
             string entryDescription = "",
             long? projectId = null,
+            long? taskId = null,
             IEnumerable<long> tagIds = null,
             TimeEntryStartOrigin? origin = null)
         {
@@ -42,6 +45,7 @@ namespace Toggl.Core.UI.Parameters
             WorkspaceId = workspaceId;
             EntryDescription = entryDescription;
             ProjectId = projectId;
+            TaskId = taskId;
             TagIds = tagIds;
             Origin = origin;
         }
