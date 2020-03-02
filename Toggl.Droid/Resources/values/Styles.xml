@@ -20,6 +20,10 @@
     <style name="AppTheme" parent="@style/BaseAppTheme">
     </style>
 
+    <style name="AppTheme.Onboarding">
+        <item name="android:statusBarColor">@color/onboardingStatusBarColor</item>
+    </style>
+
     <style name="AppTheme.OutdatedAppStatusBarColor">
         <item name="android:statusBarColor">@color/outdatedStatusBar</item>
         <item name="android:windowBackground">@color/outdatedStatusBar</item>

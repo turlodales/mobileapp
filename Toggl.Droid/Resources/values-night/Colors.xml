@@ -39,5 +39,13 @@
 
   <!-- Login/Sign Up -->
   <color name="loginSignUpOptionsDivider">#616161</color>
+
+  <!-- Onboarding -->
+  <color name="onboardingOverlayBackgroundColor">#1A9DDDD3</color>
+  <color name="onboardingOutlineButtonTextColor">#000000</color>
+  <color name="onboardingOutlineButtonStrokeColor">#000000</color>
+  <color name="onboardingContainedButtonBackgroundColor">#000000</color>
+  <color name="onboardingContainedButtonTextColor">#FFFFFF</color>
+  <color name="onboardingTitleTextColor">#000000</color>
   
 </resources>

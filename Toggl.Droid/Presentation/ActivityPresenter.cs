@@ -35,7 +35,8 @@ namespace Toggl.Droid.Presentation
             typeof(StartTimeEntryViewModel),
             typeof(TokenResetViewModel),
             typeof(SettingsViewModel),
-            typeof(IndependentCalendarSettingsViewModel)
+            typeof(IndependentCalendarSettingsViewModel),
+            typeof(OnboardingViewModel)
         };
 
         private readonly Dictionary<Type, ActivityPresenterInfo> presentableActivitiesInfos = new Dictionary<Type, ActivityPresenterInfo>
@@ -59,7 +60,8 @@ namespace Toggl.Droid.Presentation
             [typeof(IndependentCalendarSettingsViewModel)] = new ActivityPresenterInfo(typeof(IndependentCalendarSettingsActivity)),
             [typeof(OldSignUpViewModel)] = new ActivityPresenterInfo(typeof(SignUpActivity), clearBackStackFlags),
             [typeof(StartTimeEntryViewModel)] = new ActivityPresenterInfo(typeof(StartTimeEntryActivity)),
-            [typeof(TokenResetViewModel)] = new ActivityPresenterInfo(typeof(TokenResetActivity), clearBackStackFlags)
+            [typeof(TokenResetViewModel)] = new ActivityPresenterInfo(typeof(TokenResetActivity), clearBackStackFlags),
+            [typeof(OnboardingViewModel)] = new ActivityPresenterInfo(typeof(OnboardingActivity), clearBackStackFlags)
         };
 
         protected override void PresentOnMainThread<TInput, TOutput>(ViewModel<TInput, TOutput> viewModel, IView sourceView)

@@ -535,6 +535,10 @@
     </Compile>
     <Compile Include="Activities\IndependentCalenarSettingsActivity.cs" />
     <Compile Include="Activities\LicensesActivity.cs" />
+    <Compile Include="Activities\OnboardingActivity.cs" />
+    <Compile Include="Activities\OnboardingActivity.ViewBinds.cs">
+      <DependentUpon>OnboardingActivity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Activities\OutdatedAppActivity.ViewBinds.cs">
       <DependentUpon>OutdatedAppActivity.cs</DependentUpon>
     </Compile>
@@ -895,6 +899,7 @@
     <GoogleServicesJson Include="google-services.json" />
     <AndroidResource Include="Resources\color\FlatButtonTextColor.xml" />
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
+    <AndroidResource Include="Resources\drawable\contained_button.xml" />
     <AndroidResource Include="Resources\drawable\ic_calendar.xml" />
     <AndroidResource Include="Resources\drawable\ic_copy_time_entry.xml" />
     <AndroidResource Include="Resources\drawable\ic_delete.xml" />
@@ -905,11 +910,13 @@
     <AndroidResource Include="Resources\drawable\background_timer_widget.xml" />
     <AndroidResource Include="Resources\drawable\ic_close.xml" />
     <AndroidResource Include="Resources\drawable\ic_stop_big.xml" />
+    <AndroidResource Include="Resources\drawable\outline_button.xml" />
     <AndroidResource Include="Resources\drawable\shape_dot.xml" />
     <AndroidResource Include="Resources\drawable\ic_archived.xml" />
     <AndroidResource Include="Resources\drawable\splash_screen.xml" />
     <AndroidResource Include="Resources\drawable\text_placeholder.xml" />
     <AndroidResource Include="Resources\layout\AboutActivity.axml" />
+    <AndroidResource Include="Resources\layout\OnboardingActivity.axml" />
     <AndroidResource Include="Resources\layout\ReportSummaryElement.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayViewPageFragmentContextualMenu.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayViewPageFragmentDayView.axml" />
@@ -945,6 +952,7 @@
     <AndroidResource Include="Resources\menu\SettingsMenu.xml" />
     <AndroidResource Include="Resources\menu\DoneOrClearMenu.xml" />
     <AndroidResource Include="Resources\menu\OneButtonMenu.xml" />
+    <AndroidResource Include="Resources\raw\togglman.mp4" />
     <AndroidResource Include="Resources\values-night\Environment.xml" />
     <AndroidResource Include="Resources\values-v23\Styles.xml" />
     <AndroidResource Include="Resources\values-v27\Styles.xml" />
@@ -1079,7 +1087,7 @@
     <AndroidResource Include="Resources\layout\MainTabBarActivity.axml" />
     <AndroidResource Include="Resources\menu\MainTabBarBottomMenu.xml" />
     <AndroidResource Include="Resources\color\MainTabBarItemTextColor.xml" />
-    <AndroidResource Include="Resources\drawable\raised_button.axml" />
+    <AndroidResource Include="Resources\drawable\raised_button.xml" />
     <AndroidResource Include="Resources\layout\CalendarPermissionDeniedFragment.axml" />
     <AndroidResource Include="Resources\layout\UpcomingEventsNotificationSettingsFragment.axml" />
     <AndroidResource Include="Resources\layout\SelectCalendarNotificationsOptionItem.axml" />
