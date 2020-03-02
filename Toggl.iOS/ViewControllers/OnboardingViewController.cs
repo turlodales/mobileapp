@@ -32,8 +32,8 @@ namespace Toggl.iOS.ViewControllers
             configureMessageAppearance();
             configureButtonsAppearance();
 
-            ContinueWithEmailButton.Rx().Tap()
-                .Subscribe(ViewModel.ContinueWithEmail.Inputs)
+            ContinueWithEmailButton.Rx()
+                .BindAction(ViewModel.ContinueWithEmail)
                 .DisposedBy(DisposeBag);
 
             ContinueWithGoogleButton.Rx().Tap()

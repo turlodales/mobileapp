@@ -12,8 +12,6 @@ namespace Toggl.iOS.Presentation
     {
         protected override HashSet<Type> AcceptedViewModels { get; } = new HashSet<Type>
         {
-            typeof(SignUpViewModel),
-            typeof(EmailLoginViewModel),
             typeof(SettingsViewModel),
             typeof(IndependentCalendarSettingsViewModel)
         };

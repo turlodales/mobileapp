@@ -1523,6 +1523,7 @@
     <Compile Include="Presentation\NavigationPresenter.cs" />
     <Compile Include="Presentation\ModalDialogPresenter.cs" />
     <Compile Include="Presentation\ModalCardPresenter.cs" />
+    <Compile Include="Presentation\OnboardingPresenter.cs" />
     <Compile Include="Presentation\RootPresenter.cs" />
     <Compile Include="Presentation\ViewControllerLocator.cs" />
     <Compile Include="Services\PermissionsCheckerIos.cs" />
