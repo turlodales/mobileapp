@@ -560,6 +560,12 @@
     <Compile Include="Activities\SettingsActivity.ViewBinds.cs">
       <DependentUpon>SettingsActivity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Activities\BaseTermsAndCountryActivity.cs" />
+    <Compile Include="Activities\BaseTermsAndCountryActivity.ViewBinds.cs">
+      <DependentUpon>BaseTermsAndCountryActivity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Activities\TermsAndCountryFullActivity.cs" />
+    <Compile Include="Activities\TermsAndCountryModalActivity.cs" />
     <Compile Include="Adapters\DiffingStrategies\EquatableDiffingStrategy.cs" />
     <Compile Include="Adapters\DiffingStrategies\IdentifierEqualityDiffingStrategy.cs" />
     <Compile Include="Adapters\DiffingStrategies\IDiffingStrategy.cs" />
@@ -900,6 +906,7 @@
     <AndroidResource Include="Resources\color\FlatButtonTextColor.xml" />
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
     <AndroidResource Include="Resources\drawable\contained_button.xml" />
+    <AndroidResource Include="Resources\drawable\country_picker_outline.xml" />
     <AndroidResource Include="Resources\drawable\ic_calendar.xml" />
     <AndroidResource Include="Resources\drawable\ic_copy_time_entry.xml" />
     <AndroidResource Include="Resources\drawable\ic_delete.xml" />
@@ -911,6 +918,7 @@
     <AndroidResource Include="Resources\drawable\ic_close.xml" />
     <AndroidResource Include="Resources\drawable\ic_stop_big.xml" />
     <AndroidResource Include="Resources\drawable\outline_button.xml" />
+    <AndroidResource Include="Resources\drawable\modal_activity_background.xml" />
     <AndroidResource Include="Resources\drawable\shape_dot.xml" />
     <AndroidResource Include="Resources\drawable\ic_archived.xml" />
     <AndroidResource Include="Resources\drawable\splash_screen.xml" />
@@ -930,6 +938,8 @@
     <AndroidResource Include="Resources\layout\SettingsNavigationRowView.axml" />
     <AndroidResource Include="Resources\layout\SettingsToggleRowView.axml" />
     <AndroidResource Include="Resources\layout\SettingsToggleRowWithDescription.axml" />
+    <AndroidResource Include="Resources\layout\TermsAndCountryActivity.axml" />
+    <AndroidResource Include="Resources\layout\TermsAndCountryModalActivity.axml" />
     <AndroidResource Include="Resources\layout\WidgetLoading.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayFragmentPage.axml" />
     <AndroidResource Include="Resources\layout\ContextualMenuActionCell.axml" />
