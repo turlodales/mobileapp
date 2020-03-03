@@ -103,22 +103,29 @@ namespace Toggl.Droid.Views.Calendar
 
         private void updateItemsAndRecalculateEventsAttrs(ImmutableList<CalendarItem> newItems)
         {
+            var validItems = newItems;
+            var invalidItemsCount = calendarItems.Count(item => item.Id == "");
+            if (!itemEditInEditMode.IsValid && invalidItemsCount > 0)
+            {
+                validItems = calendarItems.Where(item => item.Id != "").ToImmutableList();
+            }
+
             if (availableWidth > 0)
             {
                 if (itemEditInEditMode.IsValid && itemEditInEditMode.HasChanged)
-                    newItems = newItems.Sort(calendarItemComparer);
+                    validItems = validItems.Sort(calendarItemComparer);
 
                 calendarItemLayoutAttributes = calendarLayoutCalculator
-                    .CalculateLayoutAttributes(newItems)
+                    .CalculateLayoutAttributes(validItems)
                     .Select(calculateCalendarItemRect)
                     .ToImmutableList();
 
                 textLayouts.Clear();
             }
 
-            var runningIndex = newItems.IndexOf(item => item.Duration == null);
+            var runningIndex = validItems.IndexOf(item => item.Duration == null);
             runningTimeEntryIndex = runningIndex >= 0 ? runningIndex : (int?)null;
-            calendarItems = newItems;
+            calendarItems = validItems;
             updateItemInEditMode();
 
             PostInvalidate();

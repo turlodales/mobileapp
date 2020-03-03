@@ -84,10 +84,6 @@ namespace Toggl.iOS.Views.Calendar
             {
                 Delegate = this
             };
-
-            Layout.ScalingEnded
-                .Subscribe(onLayoutScalingEnded)
-                .DisposedBy(disposeBag);
         }
 
         public CalendarCollectionViewEditItemHelper(IntPtr handle) : base(handle)
@@ -191,6 +187,11 @@ namespace Toggl.iOS.Views.Calendar
             previousEndTime = calendarItem.EndTime;
 
             var itemIndexPath = dataSource.IndexPathForSelectedItem;
+            if (itemIndexPath == null)
+            {
+                stopEditingCurrentCell();
+                return;
+            }
             var cell = CollectionView.CellForItem(itemIndexPath) as CalendarItemView;
             if (cell == null)
             {
@@ -236,7 +237,6 @@ namespace Toggl.iOS.Views.Calendar
 
             onCurrentPointChanged(null);
             StopAutoScroll();
-            stopEditingCurrentCellIfNotVisible();
         }
 
         private void changeOffset(CGPoint point)
@@ -384,27 +384,10 @@ namespace Toggl.iOS.Views.Calendar
             }
         }
 
-        private void onLayoutScalingEnded()
-        {
-            if (!isActive) return;
-
-            stopEditingCurrentCellIfNotVisible();
-        }
-
-        public void stopEditingCurrentCell()
+        private void stopEditingCurrentCell()
         {
             resignActive();
             dataSource.StopEditing();
-        }
-
-        private void stopEditingCurrentCellIfNotVisible()
-        {
-            var itemIndexPath = dataSource.IndexPathForSelectedItem;
-            var cellNotVisible = CollectionView.CellForItem(itemIndexPath) == null;
-            if (cellNotVisible)
-            {
-                stopEditingCurrentCell();
-            }
         }
     }
 }

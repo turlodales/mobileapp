@@ -105,6 +105,12 @@ namespace Toggl.iOS.Services
                 {
                     var projectINObject = new INObject(timeEntry.ProjectId.ToString(), timeEntry.Project.Name);
                     startTimerIntent.ProjectId = projectINObject;
+
+                    if (timeEntry.TaskId is long taskId)
+                    {
+                        var taskINObject = new INObject(timeEntry.TaskId.ToString(), timeEntry.Task.Name);
+                        startTimerIntent.TaskId = taskINObject;
+                    }
                 }
 
                 startTimerIntent.EntryDescription = timeEntry.Description;

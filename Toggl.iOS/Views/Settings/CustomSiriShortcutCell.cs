@@ -49,7 +49,7 @@ namespace Toggl.iOS.Views.Settings
             if (Item.ProjectName == null)
                 DetailsLabel.Text = string.Format(Resources.CustomSiriShortcutCellIn, Item.WorkspaceName);
             else
-                DetailsLabel.AttributedText = projectTaskClientToAttributedString.Convert(Item.ProjectName, null, Item.ClientName, projectColor);
+                DetailsLabel.AttributedText = projectTaskClientToAttributedString.Convert(Item.ProjectName, Item.TaskName, Item.ClientName, projectColor);
 
             InvocationLabel.Text = $"\"{Item.InvocationPhrase}\"";
             InvocationLabel.TextColor = ColorAssets.Text2;

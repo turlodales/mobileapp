@@ -124,16 +124,17 @@ namespace Toggl.Core.UI.Services
 
         private DeeplinkParameters parseNewTimeEntry(Dictionary<string, string> args)
         {
-            // e.g: toggl://tracker/timeEntry/new?workspaceId=1&startTime="2019-04-18T09:35:47Z"&stopTime="2019-04-18T09:45:47Z"&duration=600&description="Toggl"&projectId=1&tags=[]
+            // e.g: toggl://tracker/timeEntry/new?workspaceId=1&startTime="2019-04-18T09:35:47Z"&stopTime="2019-04-18T09:45:47Z"&duration=600&description="Toggl"&projectId=1&taskId=1&tags=[]
             var workspaceId = args.GetValueAsLong(ApplicationUrls.TimeEntry.WorkspaceId);
             var startTime = args.GetValueAsDateTimeOffset(ApplicationUrls.TimeEntry.StartTime);
             var stopTime = args.GetValueAsDateTimeOffset(ApplicationUrls.TimeEntry.StopTime);
             var duration = args.GetValueAsTimeSpan(ApplicationUrls.TimeEntry.Duration);
             var description = args.GetValueAsString(ApplicationUrls.TimeEntry.Description);
             var projectId = args.GetValueAsLong(ApplicationUrls.TimeEntry.ProjectId);
+            var taskId = args.GetValueAsLong(ApplicationUrls.TimeEntry.TaskId);
             var tags = args.GetValueAsLongs(ApplicationUrls.TimeEntry.Tags);
 
-            return DeeplinkParameters.WithNewTimeEntry(description, startTime, stopTime, duration, workspaceId, projectId, tags);
+            return DeeplinkParameters.WithNewTimeEntry(description, startTime, stopTime, duration, workspaceId, projectId, taskId, tags);
         }
 
         private DeeplinkParameters parseEditTimeEntry(Dictionary<string, string> args)

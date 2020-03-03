@@ -47,6 +47,18 @@ namespace Toggl.Droid.Extensions
                     if (doNotAskWasChecked)
                     {
                         permissionRequester.FireAppSettingsIntent();
+                        IDisposable subscription = null;
+                        subscription = AndroidDependencyContainer.Instance.BackgroundService.AppResumedFromBackground
+                            .Select(_ => permissionRequester.checkPermissions(Manifest.Permission.ReadCalendar))
+                            .Take(1)
+                            .Subscribe(permissionGranted =>
+                            {
+                                permissionRequester.CalendarAuthorizationSubject.OnNext(permissionGranted);
+                                permissionRequester.CalendarAuthorizationSubject.OnCompleted();
+                                permissionRequester.CalendarAuthorizationSubject = null;
+                                subscription?.Dispose();
+                                subscription = null;
+                            });
                         return permissionRequester.CalendarAuthorizationSubject;
                     }
                 }

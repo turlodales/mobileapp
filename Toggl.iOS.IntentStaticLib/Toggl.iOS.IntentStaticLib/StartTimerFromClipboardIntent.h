@@ -4,16 +4,19 @@
 // This file was automatically generated and should not be edited.
 //
 
+#if __has_include(<Intents/Intents.h>)
+
 #import <Intents/Intents.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface StartTimerFromClipboardIntent : INIntent
 
 @property (readwrite, copy, nullable, nonatomic) INObject *workspace;
 @property (readwrite, copy, nullable, nonatomic) INObject *billable;
 @property (readwrite, copy, nullable, nonatomic) INObject *projectId;
+@property (readwrite, copy, nullable, nonatomic) INObject *taskId;
 @property (readwrite, copy, nullable, nonatomic) NSArray<INObject *> *tags;
 
 @end
@@ -24,7 +27,7 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
  @abstract Protocol to declare support for handling a StartTimerFromClipboardIntent. By implementing this protocol, a class can provide logic for resolving, confirming and handling the intent.
  @discussion The minimum requirement for an implementing class is that it should be able to handle the intent. The confirmation method is optional. The handling method is always called last, after confirming the intent.
  */
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @protocol StartTimerFromClipboardIntentHandling <NSObject>
 
 @required
@@ -68,9 +71,9 @@ typedef NS_ENUM(NSInteger, StartTimerFromClipboardIntentResponseCode) {
     StartTimerFromClipboardIntentResponseCodeFailureRequiringAppLaunch,
     StartTimerFromClipboardIntentResponseCodeFailureNoApiToken = 100,
     StartTimerFromClipboardIntentResponseCodeFailureSyncConflict
-} API_AVAILABLE(ios(12.0), watchos(5.0));
+} API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos);
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface StartTimerFromClipboardIntentResponse : INIntentResponse
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -84,8 +87,6 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
  */
 - (instancetype)initWithCode:(StartTimerFromClipboardIntentResponseCode)code userActivity:(nullable NSUserActivity *)userActivity NS_DESIGNATED_INITIALIZER;
 
-
-
 /*!
  @abstract The response code indicating your success or failure in confirming or handling the intent.
  */
@@ -94,3 +95,5 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif
