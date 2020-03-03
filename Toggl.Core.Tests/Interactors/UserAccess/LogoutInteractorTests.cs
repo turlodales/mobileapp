@@ -73,11 +73,11 @@ namespace Toggl.Core.Tests.Interactors.UserAccess
         }
 
         [Fact, LogIfTooSlow]
-        public async Task ResetsTheAppCenterId()
+        public async Task ResetsTheAnalyticsUserId()
         {
             await interactor.Execute();
 
-            AnalyticsService.Received().ResetAppCenterUserId();
+            AnalyticsService.Received().ResetUserId();
         }
 
         [Fact, LogIfTooSlow]
@@ -158,7 +158,7 @@ namespace Toggl.Core.Tests.Interactors.UserAccess
             PushNotificationsTokenService.Received().InvalidateCurrentToken();
             PushNotificationsTokenStorage.Received().Clear();
         }
-        
+
         [Fact, LogIfTooSlow]
         public async Task ClearsOnboardingStorage()
         {

@@ -80,7 +80,7 @@ namespace Toggl.Core.Interactors.UserAccess
                         .Catch(Observable.Return(Unit.Default)))
                 .SelectMany(interactorFactory.UnsubscribeFromPushNotifications().Execute())
                 .Do(userAccessManager.OnUserLoggedOut)
-                .Do(analyticsService.ResetAppCenterUserId)
+                .Do(analyticsService.ResetUserId)
                 .FirstAsync();
     }
 }

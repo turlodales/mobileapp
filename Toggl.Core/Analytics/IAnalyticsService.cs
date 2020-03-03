@@ -217,8 +217,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
-        void SetAppCenterUserId(long id);
-        void ResetAppCenterUserId();
+        void SetUserId(long id);
+        void ResetUserId();
 
         void Track(string eventName, Dictionary<string, string> parameters = null);
 

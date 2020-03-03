@@ -206,7 +206,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 }
 
                 [Fact, LogIfTooSlow]
-                public void ReportsUserIdToAppCenter()
+                public void ReportsUserIdToAnalytics()
                 {
                     var id = 1234567890L;
                     var user = Substitute.For<IThreadSafeUser>();
@@ -216,7 +216,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                     ViewModel.Login();
 
-                    AnalyticsService.Received().SetAppCenterUserId(id);
+                    AnalyticsService.Received().SetUserId(id);
                 }
 
                 [FsCheck.Xunit.Property]
