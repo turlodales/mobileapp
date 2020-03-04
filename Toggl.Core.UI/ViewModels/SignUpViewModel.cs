@@ -13,6 +13,7 @@ using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
+using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Networking.Exceptions;
@@ -102,11 +103,11 @@ namespace Toggl.Core.UI.ViewModels
                 .DistinctUntilChanged()
                 .AsDriver(false, schedulerProvider);
 
-            IsLoading = isLoadingSubject.AsObservable();
-            EmailError = emailErrorSubject.AsObservable();
-            SignUpError = signUpErrorSubject.AsObservable();
-            PasswordError = passwordErrorSubject.AsObservable();
-            PasswordVisible = passwordVisibleSubject.AsObservable();
+            IsLoading = isLoadingSubject.AsDriver(schedulerProvider);
+            EmailError = emailErrorSubject.AsDriver(schedulerProvider);
+            SignUpError = signUpErrorSubject.AsDriver(schedulerProvider);
+            PasswordError = passwordErrorSubject.AsDriver(schedulerProvider);
+            PasswordVisible = passwordVisibleSubject.AsDriver(schedulerProvider);
 
             Login = rxActionFactory.FromAsync(login);
             SignUp = rxActionFactory.FromAsync(signUp);

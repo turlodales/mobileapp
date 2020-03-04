@@ -289,6 +289,10 @@ the details below.</value>
         <value>I agree</value>
         <comment>Used in the popup that prompts users to agree with our terms of service and privacy policy during signup</comment>
     </data>
+    <data name="Loading" xml:space="preserve">
+        <value>Loading...</value>
+        <comment>Used in the login/signup screens during the first sync before the user is redirected to the main screen</comment>
+    </data>
 
     <!-- MainTabBar -->
 

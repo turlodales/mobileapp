@@ -237,22 +237,6 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.ErrorHandlingService);
             }
 
-            if (viewModelType == typeof(OldSignUpViewModel))
-            {
-                return new OldSignUpViewModel(
-                    dependencyContainer.ApiFactory,
-                    dependencyContainer.UserAccessManager,
-                    dependencyContainer.AnalyticsService,
-                    dependencyContainer.OnboardingStorage,
-                    dependencyContainer.NavigationService,
-                    dependencyContainer.ErrorHandlingService,
-                    dependencyContainer.LastTimeUsageStorage,
-                    dependencyContainer.TimeService,
-                    dependencyContainer.SchedulerProvider,
-                    dependencyContainer.RxActionFactory,
-                    dependencyContainer.PlatformInfo);
-            }
-
             if (viewModelType == typeof(StartTimeEntryViewModel))
             {
                 return new StartTimeEntryViewModel(

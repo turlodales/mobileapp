@@ -303,11 +303,14 @@
     <Reference Include="Xamarin.AndroidX.ViewPager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Xamarin.AndroidX.ViewPager.1.0.0\lib\monoandroid90\Xamarin.AndroidX.ViewPager.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.AndroidX.ViewPager2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Xamarin.AndroidX.ViewPager2.1.0.0\lib\monoandroid90\Xamarin.AndroidX.ViewPager2.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.AndroidX.Work.Runtime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Xamarin.AndroidX.Work.Runtime.2.2.0\lib\monoandroid90\Xamarin.AndroidX.Work.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Android.Material, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Xamarin.Google.Android.Material.1.0.0-preview02\lib\monoandroid90\Xamarin.Google.Android.Material.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.Android.Material.1.1.0-rc2\lib\monoandroid90\Xamarin.Google.Android.Material.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Guava.ListenableFuture, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Xamarin.Google.Guava.ListenableFuture.1.0.0.2\lib\monoandroid50\Xamarin.Google.Guava.ListenableFuture.dll</HintPath>
@@ -596,6 +599,7 @@
     <Compile Include="DebugHelpers\ErrorTriggeringFragmentShortcut.cs" />
     <Compile Include="Extensions\PaintExtensions.cs" />
     <Compile Include="Extensions\Reactive\PagerViewExtensions.cs" />
+    <Compile Include="Extensions\Reactive\ToolbarExtensions.cs" />
     <Compile Include="Extensions\SnackbarExtensions.cs" />
     <Compile Include="Extensions\SpannableExtensions.cs" />
     <Compile Include="Fragments\Calendar\CalendarDayViewPageFragment.cs" />
@@ -921,6 +925,7 @@
     <None Include="FodyWeavers.xml" />
     <GoogleServicesJson Include="google-services.json" />
     <AndroidResource Include="Resources\color\FlatButtonTextColor.xml" />
+    <AndroidResource Include="Resources\color\outline_text_input_color.xml" />
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
     <AndroidResource Include="Resources\drawable\contained_button.xml" />
     <AndroidResource Include="Resources\drawable\country_picker_outline.xml" />
@@ -1221,12 +1226,13 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.8.0\build\Accord.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.Google.Android.Material.1.0.0-preview02\build\monoandroid90\Xamarin.Google.Android.Material.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Google.Android.Material.1.0.0-preview02\build\monoandroid90\Xamarin.Google.Android.Material.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.AndroidX.Room.Common.2.2.2\build\monoandroid90\Xamarin.AndroidX.Room.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.AndroidX.Room.Common.2.2.2\build\monoandroid90\Xamarin.AndroidX.Room.Common.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.AndroidX.Sqlite.2.0.1\build\monoandroid90\Xamarin.AndroidX.Sqlite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.AndroidX.Sqlite.2.0.1\build\monoandroid90\Xamarin.AndroidX.Sqlite.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.AndroidX.Sqlite.Framework.2.0.1\build\monoandroid90\Xamarin.AndroidX.Sqlite.Framework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.AndroidX.Sqlite.Framework.2.0.1\build\monoandroid90\Xamarin.AndroidX.Sqlite.Framework.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.AndroidX.Room.Runtime.2.2.2\build\monoandroid90\Xamarin.AndroidX.Room.Runtime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.AndroidX.Room.Runtime.2.2.2\build\monoandroid90\Xamarin.AndroidX.Room.Runtime.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.AndroidX.Work.Runtime.2.2.0\build\monoandroid90\Xamarin.AndroidX.Work.Runtime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.AndroidX.Work.Runtime.2.2.0\build\monoandroid90\Xamarin.AndroidX.Work.Runtime.targets'))" />
+    <Error Condition="!Exists('..\packages\Xamarin.AndroidX.ViewPager2.1.0.0\build\monoandroid90\Xamarin.AndroidX.ViewPager2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.AndroidX.ViewPager2.1.0.0\build\monoandroid90\Xamarin.AndroidX.ViewPager2.targets'))" />
+    <Error Condition="!Exists('..\packages\Xamarin.Google.Android.Material.1.1.0-rc2\build\monoandroid90\Xamarin.Google.Android.Material.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Google.Android.Material.1.1.0-rc2\build\monoandroid90\Xamarin.Google.Android.Material.targets'))" />
   </Target>
   <Import Project="..\packages\Xamarin.Android.Support.Annotations.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Annotations.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.Annotations.targets')" />
   <Import Project="..\packages\Xamarin.Android.Arch.Core.Common.1.1.1.3\build\monoandroid90\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\packages\Xamarin.Android.Arch.Core.Common.1.1.1.3\build\monoandroid90\Xamarin.Android.Arch.Core.Common.targets')" />
@@ -1289,7 +1295,6 @@
   <Import Project="..\packages\Xamarin.GooglePlayServices.Phenotype.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Phenotype.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Phenotype.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Phenotype.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Config.71.1610.0\build\MonoAndroid90\Xamarin.Firebase.Config.targets" Condition="Exists('..\packages\Xamarin.Firebase.Config.71.1610.0\build\MonoAndroid90\Xamarin.Firebase.Config.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Clearcut.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Clearcut.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Clearcut.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Clearcut.targets')" />
-  <Import Project="..\packages\Xamarin.Google.Android.Material.1.0.0-preview02\build\monoandroid90\Xamarin.Google.Android.Material.targets" Condition="Exists('..\packages\Xamarin.Google.Android.Material.1.0.0-preview02\build\monoandroid90\Xamarin.Google.Android.Material.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.MultiDex.2.0.1\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets" Condition="Exists('..\packages\Xamarin.AndroidX.MultiDex.2.0.1\build\monoandroid90\Xamarin.AndroidX.MultiDex.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Migration.1.0.0\build\monoandroid90\Xamarin.AndroidX.Migration.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Migration.1.0.0\build\monoandroid90\Xamarin.AndroidX.Migration.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Annotation.1.1.0\build\monoandroid90\Xamarin.AndroidX.Annotation.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Annotation.1.1.0\build\monoandroid90\Xamarin.AndroidX.Annotation.targets')" />
@@ -1342,4 +1347,6 @@
   <Import Project="..\packages\Xamarin.AndroidX.Sqlite.Framework.2.0.1\build\monoandroid90\Xamarin.AndroidX.Sqlite.Framework.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Sqlite.Framework.2.0.1\build\monoandroid90\Xamarin.AndroidX.Sqlite.Framework.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Room.Runtime.2.2.2\build\monoandroid90\Xamarin.AndroidX.Room.Runtime.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Room.Runtime.2.2.2\build\monoandroid90\Xamarin.AndroidX.Room.Runtime.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Work.Runtime.2.2.0\build\monoandroid90\Xamarin.AndroidX.Work.Runtime.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Work.Runtime.2.2.0\build\monoandroid90\Xamarin.AndroidX.Work.Runtime.targets')" />
+  <Import Project="..\packages\Xamarin.AndroidX.ViewPager2.1.0.0\build\monoandroid90\Xamarin.AndroidX.ViewPager2.targets" Condition="Exists('..\packages\Xamarin.AndroidX.ViewPager2.1.0.0\build\monoandroid90\Xamarin.AndroidX.ViewPager2.targets')" />
+  <Import Project="..\packages\Xamarin.Google.Android.Material.1.1.0-rc2\build\monoandroid90\Xamarin.Google.Android.Material.targets" Condition="Exists('..\packages\Xamarin.Google.Android.Material.1.1.0-rc2\build\monoandroid90\Xamarin.Google.Android.Material.targets')" />
 </Project>
