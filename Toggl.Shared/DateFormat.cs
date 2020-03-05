@@ -44,8 +44,8 @@ namespace Toggl.Shared
                 .Trim('.', '-', '/');
 
             return new DateFormat(
-                longDateFormat,
-                shortDateFormat,
+                longDateFormat.Replace("/", "'/'"),
+                shortDateFormat.Replace("/", "'/'"),
                 localizedDateFormat);
         }
 
