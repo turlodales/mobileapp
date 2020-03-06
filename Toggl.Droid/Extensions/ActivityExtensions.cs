@@ -179,5 +179,8 @@ namespace Toggl.Droid.Extensions
 
         public static bool IsResumed(this Fragment fragment)
             => fragment.Lifecycle.CurrentState.IsAtLeast(Lifecycle.State.Resumed);
+
+        public static bool IsAtLeastStarted(this AppCompatActivity activity)
+            => activity.Lifecycle.CurrentState.IsAtLeast(Lifecycle.State.Started);
     }
 }
