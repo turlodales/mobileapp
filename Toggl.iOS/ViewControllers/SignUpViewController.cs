@@ -76,6 +76,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(SignUpErrorLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.ShakeEmailField
+                .Subscribe(EmailTextField.Rx().Shake())
+                .DisposedBy(DisposeBag);
+
             //Actions
             ShowPasswordButton.Rx()
                 .BindAction(ViewModel.TogglePasswordVisibility)

@@ -1,14 +1,11 @@
 using System;
-using System.Collections.ObjectModel;
-using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using Toggl.Core.UI.Extensions;
 using Toggl.Core.Analytics;
-using Toggl.Core.Exceptions;
 using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
@@ -37,8 +34,8 @@ namespace Toggl.Core.UI.ViewModels
         private readonly ILastTimeUsageStorage lastTimeUsageStorage;
         private readonly IErrorHandlingService errorHandlingService;
 
+        private readonly ISubject<Unit> shakeEmailFieldSubject = new Subject<Unit>();
         private readonly BehaviorSubject<bool> passwordVisibleSubject = new BehaviorSubject<bool>(false);
-
         private readonly BehaviorSubject<string> emailErrorSubject = new BehaviorSubject<string>(string.Empty);
         private readonly BehaviorSubject<string> passwordErrorSubject = new BehaviorSubject<string>(string.Empty);
         private readonly BehaviorSubject<string> signUpErrorSubject = new BehaviorSubject<string>(string.Empty);
@@ -59,6 +56,7 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<string> EmailError { get; }
         public IObservable<string> PasswordError { get; }
         public IObservable<bool> IsLoading { get; }
+        public IObservable<Unit> ShakeEmailField { get; }
 
         public ViewAction SignUp { get; }
         public ViewAction Login { get; }
@@ -103,11 +101,12 @@ namespace Toggl.Core.UI.ViewModels
                 .DistinctUntilChanged()
                 .AsDriver(false, schedulerProvider);
 
-            IsLoading = isLoadingSubject.AsDriver(schedulerProvider);
-            EmailError = emailErrorSubject.AsDriver(schedulerProvider);
-            SignUpError = signUpErrorSubject.AsDriver(schedulerProvider);
-            PasswordError = passwordErrorSubject.AsDriver(schedulerProvider);
-            PasswordVisible = passwordVisibleSubject.AsDriver(schedulerProvider);
+            IsLoading = isLoadingSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
+            EmailError = emailErrorSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
+            SignUpError = signUpErrorSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
+            PasswordError = passwordErrorSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
+            PasswordVisible = passwordVisibleSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
+            ShakeEmailField = shakeEmailFieldSubject.AsDriver(schedulerProvider);
 
             Login = rxActionFactory.FromAsync(login);
             SignUp = rxActionFactory.FromAsync(signUp);
@@ -144,7 +143,11 @@ namespace Toggl.Core.UI.ViewModels
             else
                 passwordErrorSubject.OnNext(string.Empty);
 
-            if (!credentialsAreValid)  return;
+            if (!credentialsAreValid)
+            {
+                shakeEmailFieldSubject.OnNext(Unit.Default);
+                return;
+            }
 
             countryId = await requestAcceptanceOfTermsAndConditionsAndSetCountry();
 
@@ -196,6 +199,8 @@ namespace Toggl.Core.UI.ViewModels
 
             if (errorHandlingService.TryHandleDeprecationError(exception))
                 return;
+
+            shakeEmailFieldSubject.OnNext(Unit.Default);
 
             switch (exception)
             {
