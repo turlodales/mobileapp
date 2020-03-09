@@ -41,6 +41,14 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.Email.Accept)
                 .DisposedBy(DisposeBag);
 
+            ViewModel.EmailError
+                .Merge(ViewModel.PasswordError)
+                .Merge(ViewModel.SignUpError)
+                .Where(error => !string.IsNullOrEmpty(error))
+                .SelectUnit()
+                .Subscribe(EmailTextField.Rx().Shake())
+                .DisposedBy(DisposeBag);
+
             //Password
             ViewModel.Password
                 .Select(password => password.ToString().Length > 0)

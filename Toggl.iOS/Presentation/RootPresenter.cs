@@ -17,7 +17,6 @@ namespace Toggl.iOS.Presentation
         {
             typeof(MainTabBarViewModel),
             typeof(OnboardingViewModel),
-            typeof(LoginViewModel),
             typeof(TokenResetViewModel),
             typeof(OutdatedAppViewModel),
         };

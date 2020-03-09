@@ -53,7 +53,8 @@ namespace Toggl.iOS
                 new NavigationPresenter(window, appDelegate),
                 new ModalDialogPresenter(window, appDelegate),
                 new ModalCardPresenter(window, appDelegate),
-                new PageSheetPresenter(window, appDelegate)
+                new PageSheetPresenter(window, appDelegate),
+                new OnboardingPresenter(window, appDelegate)
             );
 
             Instance = new IosDependencyContainer(viewPresenter, environment, Platform.Daneel, version);

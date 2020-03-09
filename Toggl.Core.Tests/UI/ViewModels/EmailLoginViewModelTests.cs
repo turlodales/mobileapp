@@ -13,6 +13,7 @@ using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Generators;
+using Toggl.Core.Tests.TestExtensions;
 using Toggl.Core.UI;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
@@ -27,7 +28,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 {
     public sealed class EmailLoginViewModelTests
     {
-        public abstract class EmailLoginViewModelTest : BaseViewModelWithInputTests<EmailLoginViewModel, CredentialsParameter>
+        public abstract class EmailLoginViewModelTest : BaseViewModelWithInputTests<LoginViewModel, CredentialsParameter>
         {
             protected Email ValidEmail { get; } = Email.From("person@company.com");
             protected Email InvalidEmail { get; } = Email.From("this is not an email");
@@ -37,8 +38,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             protected ILastTimeUsageStorage LastTimeUsageStorage { get; } = Substitute.For<ILastTimeUsageStorage>();
 
-            protected override EmailLoginViewModel CreateViewModel()
-                => new EmailLoginViewModel(
+            protected override LoginViewModel CreateViewModel()
+                => new LoginViewModel(
                     UserAccessManager,
                     AnalyticsService,
                     OnboardingStorage,
@@ -85,7 +86,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var interactorFactory = useInteractorFactory ? InteractorFactory : null;
 
                 Action tryingToConstructWithEmptyParameters =
-                    () => new EmailLoginViewModel(userAccessManager,
+                    () => new LoginViewModel(userAccessManager,
                                              analyticsSerivce,
                                              onboardingStorage,
                                              navigationService,
@@ -111,8 +112,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.LoginEnabled.Subscribe(observer);
-                ViewModel.SetEmail(Email.From(email));
-                ViewModel.SetPassword(Password.From(password));
+                ViewModel.Email.Accept(Email.From(email));
+                ViewModel.Password.Accept(Password.From(password));
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
@@ -129,13 +130,13 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.LoginEnabled.Subscribe(observer);
 
-                ViewModel.SetEmail(Email.From(email));
-                ViewModel.SetPassword(Password.From(password));
+                ViewModel.Email.Accept(Email.From(email));
+                ViewModel.Password.Accept(Password.From(password));
                 //Make sure isloading is true
                 UserAccessManager
                     .Login(Arg.Any<Email>(), Arg.Any<Password>())
                     .Returns(Observable.Never<Unit>());
-                ViewModel.Login();
+                ViewModel.Login.Execute();
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
@@ -149,10 +150,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void CallsTheUserAccessManagerWhenTheEmailAndPasswordAreValid()
             {
-                ViewModel.SetEmail(ValidEmail);
-                ViewModel.SetPassword(ValidPassword);
+                ViewModel.Email.Accept(ValidEmail);
+                ViewModel.Password.Accept(ValidPassword);
 
-                ViewModel.Login();
+                ViewModel.Login.Execute();
 
                 UserAccessManager.Received().Login(Arg.Is(ValidEmail), Arg.Is(ValidPassword));
             }
@@ -162,11 +163,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var never = Observable.Never<Unit>();
                 UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>()).Returns(never);
-                ViewModel.SetEmail(ValidEmail);
-                ViewModel.SetPassword(ValidPassword);
-                ViewModel.Login();
+                ViewModel.Email.Accept(ValidEmail);
+                ViewModel.Password.Accept(ValidPassword);
+                ViewModel.Login.Execute();
 
-                ViewModel.Login();
+                ViewModel.Login.Execute();
 
                 UserAccessManager.Received(1).Login(Arg.Any<Email>(), Arg.Any<Password>());
             }
@@ -175,8 +176,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 public WhenLoginSucceeds()
                 {
-                    ViewModel.SetEmail(ValidEmail);
-                    ViewModel.SetPassword(ValidPassword);
+                    ViewModel.Email.Accept(ValidEmail);
+                    ViewModel.Password.Accept(ValidPassword);
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Return(Unit.Default));
                 }
@@ -184,7 +185,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 [Fact, LogIfTooSlow]
                 public void SetsIsNewUserToFalse()
                 {
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     OnboardingStorage.Received().SetIsNewUser(false);
                 }
@@ -192,7 +193,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 [Fact, LogIfTooSlow]
                 public void NavigatesToTheTimeEntriesViewModel()
                 {
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     NavigationService.Received().Navigate<MainTabBarViewModel>(ViewModel.View);
                 }
@@ -200,7 +201,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 [Fact, LogIfTooSlow]
                 public void TracksTheLoginEvent()
                 {
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     AnalyticsService.Received().Login.Track(AuthenticationMethod.EmailAndPassword);
                 }
@@ -214,21 +215,21 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var observable = Observable.Return(user);
                     InteractorFactory.GetCurrentUser().Execute().Returns(observable);
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     AnalyticsService.Received().SetAppCenterUserId(id);
                 }
 
-                [FsCheck.Xunit.Property]
+                [FsCheck.Xunit.Property(MaxTest = 1)]
                 public void SavesTheTimeOfLastLogin(DateTimeOffset now)
                 {
                     TimeService.CurrentDateTime.Returns(now);
                     var viewModel = CreateViewModel();
                     viewModel.AttachView(View);
-                    viewModel.SetEmail(ValidEmail);
-                    viewModel.SetPassword(ValidPassword);
+                    viewModel.Email.Accept(ValidEmail);
+                    viewModel.Password.Accept(ValidPassword);
 
-                    viewModel.Login();
+                    ViewModel.Login.Execute();
 
                     LastTimeUsageStorage.Received().SetLogin(Arg.Is(now));
                 }
@@ -238,8 +239,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 public WhenLoginFails()
                 {
-                    ViewModel.SetEmail(ValidEmail);
-                    ViewModel.SetPassword(ValidPassword);
+                    ViewModel.Email.Accept(ValidEmail);
+                    ViewModel.Password.Accept(ValidPassword);
                 }
 
                 [Fact, LogIfTooSlow]
@@ -250,7 +251,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Throw<Unit>(new Exception()));
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     TestScheduler.Start();
                     observer.Messages.AssertEqual(
@@ -266,7 +267,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Throw<Unit>(new Exception()));
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     NavigationService.DidNotReceive().Navigate<MainViewModel>(ViewModel.View);
                 }
@@ -281,7 +282,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Throw<Unit>(exception));
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     TestScheduler.Start();
                     observer.Messages.AssertEqual(
@@ -299,7 +300,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Throw<Unit>(exception));
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     TestScheduler.Start();
                     observer.Messages.AssertEqual(
@@ -319,7 +320,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ErrorHandlingService.TryHandleDeprecationError(Arg.Any<Exception>())
                         .Returns(true);
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     TestScheduler.Start();
                     observer.Messages.AssertEqual(
@@ -334,7 +335,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
                         .Returns(Observable.Throw<Unit>(exception));
 
-                    ViewModel.Login();
+                    ViewModel.Login.Execute();
 
                     AnalyticsService.UnknownLoginFailure.Received()
                         .Track(exception.GetType().FullName, exception.Message);
@@ -351,10 +352,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var email = Email.From(emailString.Get);
                 var password = Password.From(passwordString.Get);
-                ViewModel.SetEmail(email);
-                ViewModel.SetPassword(password);
+                ViewModel.Email.Accept(email);
+                ViewModel.Password.Accept(password);
 
-                ViewModel.Signup.Execute();
+                ViewModel.SignUp.Execute();
 
                 TestScheduler.Start();
                 NavigationService
@@ -370,40 +371,47 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
         public sealed class ThePrepareMethod : EmailLoginViewModelTest
         {
-            [FsCheck.Xunit.Property]
-            public void SetsTheEmail(NonEmptyString emailString)
+            [Xunit.Theory]
+            [InlineData("valid.email@company.com")]
+            [InlineData("not a valid email")]
+            [InlineData("almost.valid@company")]
+            public void SetsTheEmail(string emailString)
             {
                 var viewModel = CreateViewModel();
                 viewModel.AttachView(View);
-                var email = Email.From(emailString.Get);
+                var email = Email.From(emailString);
                 var password = Password.Empty;
                 var parameter = CredentialsParameter.With(email, password);
-                var expectedValues = new[] { Email.Empty.ToString(), email.TrimmedEnd().ToString() }.Distinct();
-                var actualValues = new List<string>();
-                viewModel.Email.Subscribe(actualValues.Add);
+                var expectedValues = new[] { Email.Empty, email.TrimmedEnd() };
+                var observer = TestScheduler.CreateObserver<Email>();
+                viewModel.Email.Subscribe(observer);
 
                 viewModel.Initialize(parameter);
-
                 TestScheduler.Start();
-                CollectionAssert.AreEqual(expectedValues, actualValues);
+
+                observer.Values().Should().BeEquivalentTo(expectedValues);
             }
 
-            [FsCheck.Xunit.Property]
-            public void SetsThePassword(NonEmptyString passwordString)
+            [Xunit.Theory]
+            [InlineData("")]
+            [InlineData("1")]
+            [InlineData("12")]
+            [InlineData("qwertyASDF123^*)k.")]
+            public void SetsThePassword(string passwordString)
             {
                 var viewModel = CreateViewModel();
                 viewModel.AttachView(View);
                 var email = Email.Empty;
-                var password = Password.From(passwordString.Get);
+                var password = Password.From(passwordString);
                 var parameter = CredentialsParameter.With(email, password);
-                var expectedValues = new[] { Password.Empty.ToString(), password.ToString() };
-                var actualValues = new List<string>();
-                viewModel.Password.Subscribe(actualValues.Add);
+                var expectedValues = new[] { Password.Empty, password };
+                var observer = TestScheduler.CreateObserver<Password>();
+                viewModel.Password.Subscribe(observer);
 
                 viewModel.Initialize(parameter);
 
                 TestScheduler.Start();
-                CollectionAssert.AreEqual(expectedValues, actualValues);
+                observer.Values().Should().BeEquivalentTo(expectedValues);
             }
         }
     }

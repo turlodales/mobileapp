@@ -86,9 +86,9 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.InteractorFactory);
             }
 
-            if (viewModelType == typeof(EmailLoginViewModel))
+            if (viewModelType == typeof(LoginViewModel))
             {
-                return new EmailLoginViewModel(
+                return new LoginViewModel(
                     dependencyContainer.UserAccessManager,
                     dependencyContainer.AnalyticsService,
                     dependencyContainer.OnboardingStorage,
