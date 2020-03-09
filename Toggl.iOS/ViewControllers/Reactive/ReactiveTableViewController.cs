@@ -96,7 +96,7 @@ namespace Toggl.iOS.ViewControllers
             DisposeBag?.Dispose();
         }
 
-        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
             => throw new InvalidOperationException();
 
         protected virtual void ConfigureKeyCommands()

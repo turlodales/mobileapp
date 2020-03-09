@@ -101,12 +101,12 @@ namespace Toggl.Droid.Fragments
         {
         }
 
-        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
         {
             if (!(Activity is IThirdPartyTokenProvider tokenProvider))
                 throw new InvalidOperationException();
 
-            return tokenProvider.GetToken(provider);
+            return tokenProvider.GetLoginInfo(provider);
         }
 
         public bool OnMenuItemClick(IMenuItem item)

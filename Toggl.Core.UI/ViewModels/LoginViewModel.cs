@@ -200,8 +200,8 @@ namespace Toggl.Core.UI.ViewModels
                 : AuthenticationMethod.Apple;
 
             loginDisposable = View?
-                .GetToken(provider)
-                .SelectMany(token => userAccessManager.ThirdPartyLogin(provider, token))
+                .GetLoginInfo(provider)
+                .SelectMany(loginInfo => userAccessManager.ThirdPartyLogin(provider, loginInfo))
                 .Track(analyticsService.Login, authenticationMethod)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }

@@ -108,10 +108,19 @@ namespace Toggl.Networking.Tests.ApiClients
                 => api.SignUpWithGoogle("", true, 237, null);
         }
 
-        public class TheSignUpWithAppleMethod : Base
+        public class TheSignUpWithAppleMethod
         {
-            protected override Task<IUser> CallEndpoint(IUserApi api)
-                => api.SignUpWithApple("daneel.debug", "", true, 237, null);
+            public class WithFullname : Base
+            {
+                protected override Task<IUser> CallEndpoint(IUserApi api)
+                    => api.SignUpWithApple("daneel.debug", "", "John Appleseed", true, 237, null);
+            }
+
+            public class WithoutFullname : Base
+            {
+                protected override Task<IUser> CallEndpoint(IUserApi api)
+                    => api.SignUpWithApple("daneel.debug", "", null, true, 237, null);
+            }
         }
     }
 }

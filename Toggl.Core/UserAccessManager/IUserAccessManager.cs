@@ -19,10 +19,10 @@ namespace Toggl.Core.Login
 
         void LoginWithSavedCredentials();
 
-        IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, string token);
+        IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo);
         IObservable<Unit> Login(Email email, Password password);
 
-        IObservable<Unit> ThirdPartySignUp(ThirdPartyLoginProvider provider, string token, bool termsAccepted, int countryId, string timezone);
+        IObservable<Unit> ThirdPartySignUp(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo, bool termsAccepted, int countryId, string timezone);
         IObservable<Unit> SignUp(Email email, Password password, bool termsAccepted, int countryId, string timezone);
 
         IObservable<Unit> RefreshToken(Password password);

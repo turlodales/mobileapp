@@ -116,13 +116,14 @@ namespace Toggl.Networking.ApiClients
                 .ConfigureAwait(false);
         }
 
-        public async Task<IUser> SignUpWithApple(string clientId, string appleToken, bool termsAccepted, int countryId, string timezone)
+        public async Task<IUser> SignUpWithApple(string clientId, string appleToken, string fullname, bool termsAccepted, int countryId, string timezone)
         {
             Ensure.Argument.IsNotNull(appleToken, nameof(appleToken));
             var parameters = new ThirdPartySignUpParameters
             {
                 Provider = appleProvider,
                 Token = appleToken,
+                Fullname = fullname,
                 Workspace = new WorkspaceParameters
                 {
                     InitialPricingPlan = PricingPlans.Free
@@ -171,6 +172,9 @@ namespace Toggl.Networking.ApiClients
             public string Token { get; set; }
 
             public string Provider { get; set; }
+
+            [JsonProperty("full_name", NullValueHandling = NullValueHandling.Ignore)]
+            public string? Fullname { get; set; }
 
             public WorkspaceParameters Workspace { get; set; }
 

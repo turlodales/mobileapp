@@ -368,27 +368,27 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
-                UserAccessManager.Received().ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>());
+                UserAccessManager.Received().ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>());
             }
 
             [Fact, LogIfTooSlow]
             public void DoesNothingWhenThePageIsCurrentlyLoading()
             {
                 var never = Observable.Never<Unit>();
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>()).Returns(never);
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>()).Returns(never);
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
 
-                UserAccessManager.Received(1).ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>());
+                UserAccessManager.Received(1).ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>());
             }
 
             [Fact, LogIfTooSlow]
             public void NavigatesToTheTimeEntriesViewModelWhenTheLoginSucceeds()
             {
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Return(Unit.Default));
 
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
@@ -399,8 +399,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void TracksGoogleLoginEvent()
             {
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Return(Unit.Default));
 
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
@@ -413,8 +413,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
@@ -430,8 +430,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void DoesNotNavigateWhenTheLoginFails()
             {
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
@@ -444,8 +444,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = SchedulerProvider.TestScheduler.CreateObserver<string>();
                 ViewModel.ErrorMessage.Subscribe(observer);
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, true)));
 
                 ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google);
@@ -460,8 +460,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void SavesTheTimeOfLastLogin(DateTimeOffset now)
             {
                 TimeService.CurrentDateTime.Returns(now);
-                View.GetToken(ThirdPartyLoginProvider.Google).Returns(Observable.Return(""));
-                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<string>())
+                View.GetLoginInfo(ThirdPartyLoginProvider.Google).Returns(Observable.Return(new ThirdPartyLoginInfo("")));
+                UserAccessManager.ThirdPartyLogin(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Return(Unit.Default));
                 var viewModel = CreateViewModel();
                 viewModel.AttachView(View);

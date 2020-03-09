@@ -25,17 +25,17 @@ namespace Toggl.Droid.Activities
 
         private bool isLoggingIn;
         private GoogleApiClient googleApiClient;
-        private Subject<string> loginSubject = new Subject<string>();
+        private Subject<ThirdPartyLoginInfo> loginSubject = new Subject<ThirdPartyLoginInfo>();
 
-        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
         {
             if (provider == ThirdPartyLoginProvider.Google)
-                return getGoogleToken();
+                return getGoogleLoginInfo();
 
             throw new InvalidOperationException("You shouldn't be doing this from Android.");
         }
 
-        private IObservable<string> getGoogleToken()
+        private IObservable<ThirdPartyLoginInfo> getGoogleLoginInfo()
         {
             ensureApiClientExists();
 
@@ -55,7 +55,7 @@ namespace Toggl.Droid.Activities
                 return logoutSubject.AsObservable();
             }
 
-            IObservable<string> getGoogleToken(Unit _)
+            IObservable<ThirdPartyLoginInfo> getGoogleToken(Unit _)
             {
                 lock (lockable)
                 {
@@ -63,7 +63,7 @@ namespace Toggl.Droid.Activities
                         return loginSubject.AsObservable();
 
                     isLoggingIn = true;
-                    loginSubject = new Subject<string>();
+                    loginSubject = new Subject<ThirdPartyLoginInfo>();
 
                     if (googleApiClient.IsConnected)
                     {
@@ -94,7 +94,8 @@ namespace Toggl.Droid.Activities
                     try
                     {
                         var token = GoogleAuthUtil.GetToken(Application.Context, signInData.SignInAccount.Account, scope);
-                        loginSubject.OnNext(token);
+                        var loginInfo = new ThirdPartyLoginInfo(token);
+                        loginSubject.OnNext(loginInfo);
                         loginSubject.OnCompleted();
                     }
                     catch (Exception e)

@@ -135,7 +135,7 @@ namespace Toggl.Droid.Fragments
         public IObservable<bool> RequestNotificationAuthorization(bool force = false)
             => throw new InvalidOperationException("You shouldn't be doing this from the Dialog. Use the parent activity/fragment");
 
-        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
             => throw new InvalidOperationException("You shouldn't be doing this from the Dialog. Use the parent activity/fragment");
     }
 }

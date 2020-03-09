@@ -316,7 +316,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.GoogleSignup.Execute();
 
                 TestScheduler.Start();
-                UserAccessManager.DidNotReceive().ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>());
+                UserAccessManager.DidNotReceive().ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>());
             }
 
             [Fact, LogIfTooSlow]
@@ -324,7 +324,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 NavigationService.Navigate<TermsOfServiceViewModel, bool>(ViewModel.View).Returns(true);
                 UserAccessManager
-                    .ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
+                    .ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Throw<Unit>(new Exception()));
 
                 ViewModel.GoogleSignup.Execute();
@@ -355,19 +355,19 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ViewModel.GoogleSignup.Execute();
 
                     TestScheduler.Start();
-                    UserAccessManager.Received().ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), true, Arg.Any<int>(), Arg.Any<string>());
+                    UserAccessManager.Received().ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), true, Arg.Any<int>(), Arg.Any<string>());
                 }
 
                 [Fact, LogIfTooSlow]
                 public void DoesNothingWhenThePageIsCurrentlyLoading()
                 {
                     var never = Observable.Never<Unit>();
-                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(never);
+                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(never);
                     ViewModel.GoogleSignup.Execute();
                     ViewModel.GoogleSignup.Execute();
 
                     TestScheduler.Start();
-                    UserAccessManager.Received(1).ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>());
+                    UserAccessManager.Received(1).ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>());
                 }
 
                 [Fact, LogIfTooSlow]
@@ -376,7 +376,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var observer = TestScheduler.CreateObserver<bool>();
                     ViewModel.IsLoading.Subscribe(observer);
 
-                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), true, Arg.Any<int>(), Arg.Any<string>()).Returns(
+                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), true, Arg.Any<int>(), Arg.Any<string>()).Returns(
                         Observable.Never<Unit>());
 
                     ViewModel.GoogleSignup.Execute();
@@ -391,7 +391,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 [Fact, LogIfTooSlow]
                 public void TracksGoogleSignupEvent()
                 {
-                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), true, Arg.Any<int>(), Arg.Any<string>()).Returns(
+                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), true, Arg.Any<int>(), Arg.Any<string>()).Returns(
                         Observable.Return(Unit.Default));
 
                     ViewModel.GoogleSignup.Execute();
@@ -406,7 +406,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var observer = TestScheduler.CreateObserver<bool>();
                     ViewModel.IsLoading.Subscribe(observer);
 
-                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
+                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
                         Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                     ViewModel.GoogleSignup.Execute();
@@ -422,7 +422,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 [Fact, LogIfTooSlow]
                 public void DoesNotNavigateWhenTheLoginFails()
                 {
-                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
+                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
                         Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false)));
 
                     ViewModel.GoogleSignup.Execute();
@@ -439,7 +439,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var errorTextObserver = TestScheduler.CreateObserver<string>();
                     ViewModel.ErrorMessage.Subscribe(errorTextObserver);
 
-                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
+                    UserAccessManager.ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>()).Returns(
                         Observable.Throw<Unit>(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, true)));
 
                     ViewModel.GoogleSignup.Execute();
@@ -468,7 +468,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         ViewModel.Initialize(DefaultParameters).Wait();
 
                         UserAccessManager
-                            .ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<string>(), true, Arg.Any<int>(), Arg.Any<string>())
+                            .ThirdPartySignUp(ThirdPartyLoginProvider.Google, Arg.Any<ThirdPartyLoginInfo>(), true, Arg.Any<int>(), Arg.Any<string>())
                             .Returns(Observable.Return(Unit.Default));
 
                         NavigationService.Navigate<TermsOfServiceViewModel, bool>(ViewModel.View).Returns(true);

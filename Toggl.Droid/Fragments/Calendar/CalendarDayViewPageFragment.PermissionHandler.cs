@@ -36,12 +36,12 @@ namespace Toggl.Droid.Fragments.Calendar
         public void OpenAppSettings()
             => this.FireAppSettingsIntent();
 
-        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
         {
             if (!(Activity is IThirdPartyTokenProvider tokenProvider))
                 throw new InvalidOperationException();
 
-            return tokenProvider.GetToken(provider);
+            return tokenProvider.GetLoginInfo(provider);
         }
 
         public void Close()

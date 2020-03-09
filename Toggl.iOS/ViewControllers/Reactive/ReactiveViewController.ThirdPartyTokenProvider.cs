@@ -16,22 +16,22 @@ namespace Toggl.iOS.ViewControllers
         private const int cancelErrorCode = -5;
 
         private bool loggingIn;
-        private Subject<string> tokenSubject = new Subject<string>();
+        private Subject<ThirdPartyLoginInfo> tokenSubject = new Subject<ThirdPartyLoginInfo>();
         private ASAuthorizationAppleIdProvider appleIdProvider;
 
-        public IObservable<string> GetToken(ThirdPartyLoginProvider provider)
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
         {
             switch (provider)
             {
-                case ThirdPartyLoginProvider.Google: return getGoogleToken();
-                case ThirdPartyLoginProvider.Apple: return getAppleToken();
+                case ThirdPartyLoginProvider.Google: return getGoogleLoginInfo();
+                case ThirdPartyLoginProvider.Apple: return getAppleLoginInfo();
                 default: throw new NotSupportedException($"Cannot handle case {provider}");
             }
         }
 
         # region Google login
 
-        private IObservable<string> getGoogleToken()
+        private IObservable<ThirdPartyLoginInfo> getGoogleLoginInfo()
         {
             if (loggingIn)
                 return tokenSubject.AsObservable();
@@ -56,11 +56,12 @@ namespace Toggl.iOS.ViewControllers
             else
             {
                 var token = user.Authentication.AccessToken;
+                var loginInfo = new ThirdPartyLoginInfo(token);
                 signIn.DisconnectUser();
-                tokenSubject.CompleteWith(token);
+                tokenSubject.CompleteWith(loginInfo);
             }
 
-            tokenSubject = new Subject<string>();
+            tokenSubject = new Subject<ThirdPartyLoginInfo>();
             loggingIn = false;
         }
 
@@ -80,7 +81,7 @@ namespace Toggl.iOS.ViewControllers
 
         #region Apple sign in
 
-        private IObservable<string> getAppleToken()
+        private IObservable<ThirdPartyLoginInfo> getAppleLoginInfo()
         {
             if (loggingIn)
                 return tokenSubject.AsObservable();
@@ -104,7 +105,15 @@ namespace Toggl.iOS.ViewControllers
             {
                 var jwtData = appleIdCredential.IdentityToken;
                 var jwt = jwtData.ToString(NSStringEncoding.UTF8).ToString();
-                tokenSubject.CompleteWith(jwt);
+
+                // Try to get the fullname, send null if it's not possible so backend defaults to the email address
+                var nameFormatter = new NSPersonNameComponentsFormatter();
+                nameFormatter.Style = NSPersonNameComponentsFormatterStyle.Default;
+                var fullname = nameFormatter.StringFor(appleIdCredential.FullName);
+                fullname = string.IsNullOrEmpty(fullname) ? null : fullname;
+
+                var loginInfo = new ThirdPartyLoginInfo(jwt, fullname);
+                tokenSubject.CompleteWith(loginInfo);
             }
 
             finishAppleLogin();
@@ -123,7 +132,7 @@ namespace Toggl.iOS.ViewControllers
 
         private void finishAppleLogin()
         {
-            tokenSubject = new Subject<string>();
+            tokenSubject = new Subject<ThirdPartyLoginInfo>();
             loggingIn = false;
         }
 

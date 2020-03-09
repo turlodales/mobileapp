@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using Accord;
 using Toggl.Core.Helper;
 using Toggl.Core.Models;
 using Toggl.Core.Services;
@@ -69,10 +70,10 @@ namespace Toggl.Core.Login
                 .SelectUnit();
         }
 
-        public IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, string token)
+        public IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
             => database.Value
                 .Clear()
-                .SelectMany(_ => thirdPartyLogin(provider, token));
+                .SelectMany(_ => thirdPartyLogin(provider, loginInfo));
 
         public IObservable<Unit> SignUp(Email email, Password password, bool termsAccepted, int countryId, string timezone)
         {
@@ -91,10 +92,10 @@ namespace Toggl.Core.Login
                 .SelectUnit();
         }
 
-        public IObservable<Unit> ThirdPartySignUp(ThirdPartyLoginProvider provider, string token, bool termsAccepted, int countryId, string timezone)
+        public IObservable<Unit> ThirdPartySignUp(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo, bool termsAccepted, int countryId, string timezone)
             => database.Value
                 .Clear()
-                .SelectMany(_ => thirdPartySignUp(provider, token, termsAccepted, countryId, timezone));
+                .SelectMany(_ => thirdPartySignUp(provider, loginInfo, termsAccepted, countryId, timezone));
 
         public IObservable<string> ResetPassword(Email email)
         {
@@ -183,11 +184,11 @@ namespace Toggl.Core.Login
             privateSharedStorageService.Value.SaveUserId(user.Id);
         }
 
-        private IObservable<Unit> thirdPartyLogin(ThirdPartyLoginProvider provider, string token)
+        private IObservable<Unit> thirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
         {
             var credentials = provider == ThirdPartyLoginProvider.Google
-                ? Credentials.WithGoogleToken(token)
-                : Credentials.WithAppleToken(token);
+                ? Credentials.WithGoogleToken(loginInfo.Token)
+                : Credentials.WithAppleToken(loginInfo.Token);
 
             return Observable
                 .Return(apiFactory.Value.CreateApiWith(credentials, timeService.Value))
@@ -215,10 +216,10 @@ namespace Toggl.Core.Login
                 .ToObservable();
         }
 
-        private IObservable<Unit> thirdPartySignUp(ThirdPartyLoginProvider provider, string token, bool termsAccepted, int countryId, string timezone)
+        private IObservable<Unit> thirdPartySignUp(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo, bool termsAccepted, int countryId, string timezone)
         {
             var api = apiFactory.Value.CreateApiWith(Credentials.None, timeService.Value);
-            return createUser(provider, api, token, termsAccepted, countryId, timezone)
+            return createUser(provider, api, loginInfo, termsAccepted, countryId, timezone)
                 .ToObservable()
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Create)
@@ -226,11 +227,11 @@ namespace Toggl.Core.Login
                 .Do(userLoggedInSubject.OnNext)
                 .SelectUnit();
 
-            Task<IUser> createUser(ThirdPartyLoginProvider provider, ITogglApi api, string token, bool termsAccepted, int countryId, string timezone)
+            Task<IUser> createUser(ThirdPartyLoginProvider provider, ITogglApi api, ThirdPartyLoginInfo loginInfo, bool termsAccepted, int countryId, string timezone)
             {
                 return provider == ThirdPartyLoginProvider.Google
-                    ? api.User.SignUpWithGoogle(token, termsAccepted, countryId, timezone)
-                    : api.User.SignUpWithApple(platformInfo.Value.SignInWithAppleClientId, token, termsAccepted, countryId, timezone);
+                    ? api.User.SignUpWithGoogle(loginInfo.Token, termsAccepted, countryId, timezone)
+                    : api.User.SignUpWithApple(platformInfo.Value.SignInWithAppleClientId, loginInfo.Token, loginInfo.Fullname, termsAccepted, countryId, timezone);
             }
         }
     }

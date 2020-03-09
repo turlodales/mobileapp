@@ -355,9 +355,9 @@ namespace Toggl.Core.UI.ViewModels
             isLoadingSubject.OnNext(true);
             errorMessageSubject.OnNext(string.Empty);
 
-            signupDisposable = View.GetToken(ThirdPartyLoginProvider.Google)
-                .SelectMany(googleToken => userAccessManager
-                    .ThirdPartySignUp(ThirdPartyLoginProvider.Google, googleToken, termsOfServiceAccepted, (int)countryId.Value, timezone))
+            signupDisposable = View.GetLoginInfo(ThirdPartyLoginProvider.Google)
+                .SelectMany(loginInfo => userAccessManager
+                    .ThirdPartySignUp(ThirdPartyLoginProvider.Google, loginInfo, termsOfServiceAccepted, (int)countryId.Value, timezone))
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }
@@ -377,9 +377,9 @@ namespace Toggl.Core.UI.ViewModels
             isLoadingSubject.OnNext(true);
             errorMessageSubject.OnNext(string.Empty);
 
-            signupDisposable = View.GetToken(ThirdPartyLoginProvider.Apple)
-                .SelectMany(appleToken => userAccessManager
-                    .ThirdPartySignUp(ThirdPartyLoginProvider.Apple, appleToken, termsOfServiceAccepted, (int)countryId.Value, timezone))
+            signupDisposable = View.GetLoginInfo(ThirdPartyLoginProvider.Apple)
+                .SelectMany(loginInfo => userAccessManager
+                    .ThirdPartySignUp(ThirdPartyLoginProvider.Apple, loginInfo, termsOfServiceAccepted, (int)countryId.Value, timezone))
                 .Track(analyticsService.SignUp, AuthenticationMethod.Apple)
                 .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }
