@@ -20,7 +20,7 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<SignUpErrorSource> SignUpError { get; }
 
-        public IAnalyticsEvent ContinueWithGoogle { get;  }
+        public IAnalyticsEvent ContinueWithGoogle { get; }
 
         public IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
@@ -157,6 +157,32 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent<string, string, string> BackgroundSyncFailed { get; }
 
         public IAnalyticsEvent BackgroundSyncMustStopExcecution { get; }
+
+        public IAnalyticsEvent EmailIsAlreadyInUsedSignUpFailure { get; }
+
+        public IAnalyticsEvent<bool> LocalEmailValidationSignUpCheck { get; }
+
+        public IAnalyticsEvent<bool> LocalPasswordValidationSignUpCheck { get; }
+
+        public IAnalyticsEvent<bool> LocalCountryValidationSignUpCheck { get; }
+
+        public IAnalyticsEvent IncorrectEmailOrPasswordSignUpFailure { get; }
+
+        public IAnalyticsEvent IncorrectEmailOrPasswordLoginFailure { get; }
+
+        public IAnalyticsEvent<bool> LocalEmailValidationLoginCheck { get; }
+
+        public IAnalyticsEvent<bool> LocalPasswordValidationLoginCheck { get; }
+
+        public IAnalyticsEvent OnboardingCountryNotSelected { get; }
+
+        public IAnalyticsEvent<string> OnboardingSelectedCountry { get; }
+
+        public IAnalyticsEvent OnboardingPrivacyPolicyOpened { get; }
+
+        public IAnalyticsEvent OnboardingTermsOfServiceOpened { get; }
+
+        public IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
 
         public IAnalyticsEvent<string, string> UnknownLoginFailure { get; }
 
@@ -299,6 +325,19 @@ namespace Toggl.Core.Analytics
             BackgroundSyncFinished = new AnalyticsEvent<string>(this, nameof(BackgroundSyncFinished), "BackgroundSyncFinishedWithOutcome");
             BackgroundSyncFailed = new AnalyticsEvent<string, string, string>(this, nameof(BackgroundSyncFailed), "Type", "Message", "StackTrace");
             BackgroundSyncMustStopExcecution = new AnalyticsEvent(this, nameof(BackgroundSyncMustStopExcecution));
+            EmailIsAlreadyInUsedSignUpFailure = new AnalyticsEvent(this, nameof(EmailIsAlreadyInUsedSignUpFailure));
+            LocalEmailValidationSignUpCheck = new AnalyticsEvent<bool>(this, nameof(LocalEmailValidationSignUpCheck), "IsValid");
+            LocalPasswordValidationSignUpCheck = new AnalyticsEvent<bool>(this, nameof(LocalPasswordValidationSignUpCheck), "IsValid");
+            LocalCountryValidationSignUpCheck = new AnalyticsEvent<bool>(this, nameof(LocalCountryValidationSignUpCheck), "IsProvided");
+            IncorrectEmailOrPasswordSignUpFailure = new AnalyticsEvent(this, nameof(IncorrectEmailOrPasswordSignUpFailure));
+            IncorrectEmailOrPasswordLoginFailure = new AnalyticsEvent(this, nameof(IncorrectEmailOrPasswordLoginFailure));
+            LocalEmailValidationLoginCheck = new AnalyticsEvent<bool>(this, nameof(LocalEmailValidationLoginCheck), "IsValid");
+            LocalPasswordValidationLoginCheck = new AnalyticsEvent<bool>(this, nameof(LocalPasswordValidationLoginCheck), "IsValid");
+            OnboardingCountryNotSelected = new AnalyticsEvent(this, nameof(OnboardingCountryNotSelected));
+            OnboardingSelectedCountry = new AnalyticsEvent<string>(this, nameof(OnboardingSelectedCountry), "Country");
+            OnboardingPrivacyPolicyOpened = new AnalyticsEvent(this, nameof(OnboardingPrivacyPolicyOpened));
+            OnboardingTermsOfServiceOpened = new AnalyticsEvent(this, nameof(OnboardingTermsOfServiceOpened));
+            OnboardingAgreeButtonTapped = new AnalyticsEvent(this, nameof(OnboardingAgreeButtonTapped));
             UnknownLoginFailure = new AnalyticsEvent<string, string>(this, nameof(UnknownLoginFailure), "Type", "Message");
             UnknownSignUpFailure = new AnalyticsEvent<string, string>(this, nameof(UnknownSignUpFailure), "Type", "Message");
             RateLimitingDelayDuringSyncing = new AnalyticsEvent<int>(this, nameof(RateLimitingDelayDuringSyncing), "DelayDurationSeconds");

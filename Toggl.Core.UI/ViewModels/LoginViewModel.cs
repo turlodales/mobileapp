@@ -139,16 +139,31 @@ namespace Toggl.Core.UI.ViewModels
             loginErrorMessageSubject.OnNext(string.Empty);
 
             if (Email.Value.IsEmpty)
+            {
                 emailErrorMessageSubject.OnNext(Resources.NoEmailError);
+                analyticsService.LocalEmailValidationLoginCheck.Track(false);
+            }
             else if (!Email.Value.IsValid)
+            {
                 emailErrorMessageSubject.OnNext(Resources.InvalidEmailError);
+                analyticsService.LocalEmailValidationLoginCheck.Track(false);
+            }
             else
+            {
                 emailErrorMessageSubject.OnNext(string.Empty);
+                analyticsService.LocalEmailValidationLoginCheck.Track(true);
+            }
 
             if (Password.Value.IsEmpty)
+            {
                 passwordErrorMessageSubject.OnNext(Resources.NoPasswordError);
+                analyticsService.LocalPasswordValidationLoginCheck.Track(false);
+            }
             else
+            {
                 passwordErrorMessageSubject.OnNext(string.Empty);
+                analyticsService.LocalPasswordValidationLoginCheck.Track(true);
+            }
 
             if (!credentialsAreValid)
             {
@@ -216,6 +231,7 @@ namespace Toggl.Core.UI.ViewModels
             {
                 case UnauthorizedException forbidden:
                     loginErrorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
+                    analyticsService.IncorrectEmailOrPasswordLoginFailure.Track();
                     break;
                 default:
                     analyticsService.UnknownLoginFailure.Track(exception.GetType().FullName, exception.Message);

@@ -28,7 +28,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
         public abstract class SignUpViewModelTest : BaseViewModelWithInputTests<SignUpViewModel, CredentialsParameter>
         {
             protected Email ValidEmail { get; } = Email.From("person@company.com");
+            protected Email InvalidEmail { get; } = Email.From("peon@compan");
             protected Password ValidPassword { get; } = Password.From("123456");
+            protected Password InvalidPassword { get; } = Password.From("123");
 
             protected override SignUpViewModel CreateViewModel()
                 => new SignUpViewModel(
@@ -405,6 +407,18 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
+            public void TracksFalseForLocalCountryValidationSignUpCheckWhenCountryIsNotProvided()
+            {
+                ViewModel.Email.Accept(ValidEmail);
+                ViewModel.Password.Accept(ValidPassword);
+                NavigationService.Navigate<TermsAndCountryViewModel, Unit, ICountry?>(Unit.Default, ViewModel.View).Returns((ICountry?)null);
+
+                ViewModel.SignUp.Execute();
+
+                AnalyticsService.LocalCountryValidationSignUpCheck.Received().Track(false);
+            }
+
+            [Fact, LogIfTooSlow]
             public async Task ShowsTheTermsOfServiceViewModelOnlyOnceIfUserAcceptsTheTerms()
             {
                 ViewModel.Email.Accept(ValidEmail);
@@ -593,6 +607,69 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         AnalyticsService.UnknownSignUpFailure.Received()
                             .Track(exception.GetType().FullName, exception.Message);
                         AnalyticsService.Received().TrackAnonymized(exception);
+                    }
+
+                    [Fact, LogIfTooSlow]
+                    public void TracksIncorrectEmailOrPasswordSignUpFailureWhenReceivedUnauthorizedException()
+                    {
+                        var exception = new UnauthorizedException(
+                            Substitute.For<IRequest>(), Substitute.For<IResponse>());
+                        prepareException(exception);
+
+                        ViewModel.SignUp.Execute();
+
+                        AnalyticsService.IncorrectEmailOrPasswordSignUpFailure.Received().Track();
+                    }
+
+                    [Fact, LogIfTooSlow]
+                    public void TracksTrueForLocalEmailValidationSignUpCheckWhenEmailIsValid()
+                    {
+                        ViewModel.Email.Accept(ValidEmail);
+                        ViewModel.SignUp.Execute();
+
+                        AnalyticsService.LocalEmailValidationSignUpCheck.Received().Track(true);
+                    }
+
+                    [Fact, LogIfTooSlow]
+                    public void TracksFalseForLocalEmailValidationSignUpCheckWhenEmailIsNotValid()
+                    {
+                        ViewModel.Email.Accept(InvalidEmail);
+
+                        ViewModel.SignUp.Execute();
+
+                        AnalyticsService.LocalEmailValidationSignUpCheck.Received().Track(false);
+                    }
+
+                    [Fact, LogIfTooSlow]
+                    public void TracksTrueForLocalPasswordValidationSignUpCheckWhenEmailIsValid()
+                    {
+                        ViewModel.Password.Accept(ValidPassword);
+
+                        ViewModel.SignUp.Execute();
+
+                        AnalyticsService.LocalPasswordValidationSignUpCheck.Received().Track(true);
+                    }
+
+                    [Fact, LogIfTooSlow]
+                    public void TracksFalseForLocalPasswordValidationSignUpCheckWhenEmailIsNotValid()
+                    {
+                        ViewModel.Password.Accept(InvalidPassword);
+
+                        ViewModel.SignUp.Execute();
+
+                        AnalyticsService.LocalPasswordValidationSignUpCheck.Received().Track(false);
+                    }
+
+                    [Fact, LogIfTooSlow]
+                    public void TracksTrueForLocalCountryValidationSignUpCheckWhenCountryIsProvided()
+                    {
+                        ViewModel.Email.Accept(ValidEmail);
+                        ViewModel.Password.Accept(ValidPassword);
+                        NavigationService.Navigate<TermsAndCountryViewModel, Unit, ICountry?>(Unit.Default, ViewModel.View).Returns(new Country("Latvia", "LV", 70));
+
+                        ViewModel.SignUp.Execute();
+
+                        AnalyticsService.LocalCountryValidationSignUpCheck.Received().Track(true);
                     }
                 }
             }

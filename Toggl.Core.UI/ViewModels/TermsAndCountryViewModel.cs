@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using Toggl.Core.Analytics;
 using Toggl.Core.Interactors;
 using Toggl.Core.Interactors.Location;
 using Toggl.Core.Login;
@@ -27,6 +28,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private readonly IApiFactory apiFactory;
         private readonly ITimeService timeService;
+        private readonly IAnalyticsService analyticsService;
 
         private readonly BehaviorSubject<string> countryNameSubject = new BehaviorSubject<string>(Resources.SelectCountry);
         private readonly BehaviorSubject<bool> isCountryErrorVisibleSubject = new BehaviorSubject<bool>(false);
@@ -51,16 +53,19 @@ namespace Toggl.Core.UI.ViewModels
             ITimeService timeService,
             ISchedulerProvider schedulerProvider,
             IRxActionFactory rxActionFactory,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IAnalyticsService analyticsService)
             : base(navigationService)
         {
             Ensure.Argument.IsNotNull(apiFactory, nameof(apiFactory));
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
+            Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
 
             this.apiFactory = apiFactory;
             this.timeService = timeService;
+            this.analyticsService = analyticsService;
 
             PickCountry = rxActionFactory.FromAsync(pickCountry);
             ViewPrivacyPolicy = rxActionFactory.FromAsync(openPrivacyPolicy);
@@ -107,6 +112,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private void accept()
         {
+            analyticsService.OnboardingAgreeButtonTapped.Track();
             Close(country);
         }
 
@@ -120,6 +126,8 @@ namespace Toggl.Core.UI.ViewModels
         private void setCountryErrorIfNeeded()
         {
             if (country != null) return;
+
+            analyticsService.OnboardingCountryNotSelected.Track();
 
             isCountryErrorVisibleSubject.OnNext(true);
         }
@@ -142,15 +150,23 @@ namespace Toggl.Core.UI.ViewModels
             var selectedCountry = allCountries
                 .Single(country => country.Id == selectedCountryId.Value);
 
+            analyticsService.OnboardingSelectedCountry.Track(selectedCountry.CountryCode);
+
             isCountryErrorVisibleSubject.OnNext(false);
             country = selectedCountry;
             countryNameSubject.OnNext(selectedCountry.Name);
         }
 
         private Task openPrivacyPolicy()
-            => Browser.OpenAsync(privacyPolicyUrl, BrowserLaunchMode.External);
+        {
+            analyticsService.OnboardingPrivacyPolicyOpened.Track();
+            return Browser.OpenAsync(privacyPolicyUrl, BrowserLaunchMode.External);
+        }
 
         private Task openTermsOfService()
-            => Browser.OpenAsync(termsOfServiceUrl, BrowserLaunchMode.External);
+        {
+            analyticsService.OnboardingTermsOfServiceOpened.Track();
+            return Browser.OpenAsync(termsOfServiceUrl, BrowserLaunchMode.External);
+        }
     }
 }

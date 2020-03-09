@@ -484,7 +484,8 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.TimeService,
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory,
-                    dependencyContainer.NavigationService);
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.AnalyticsService);
             }
 
             throw new InvalidOperationException($"Trying to locate ViewModel {viewModelType.Name} failed.");

@@ -26,15 +26,16 @@ using Xunit;
 
 namespace Toggl.Core.Tests.UI.ViewModels
 {
-    public sealed class EmailLoginViewModelTests
+    public sealed class LoginViewModelTests
     {
-        public abstract class EmailLoginViewModelTest : BaseViewModelWithInputTests<LoginViewModel, CredentialsParameter>
+        public abstract class LoginViewModelTest : BaseViewModelWithInputTests<LoginViewModel, CredentialsParameter>
         {
             protected Email ValidEmail { get; } = Email.From("person@company.com");
             protected Email InvalidEmail { get; } = Email.From("this is not an email");
 
             protected Password ValidPassword { get; } = Password.From("T0t4lly s4afe p4$$");
             protected Password InvalidPassword { get; } = Password.From("123");
+            protected Password EmptyPassword { get; } = Password.From("");
 
             protected ILastTimeUsageStorage LastTimeUsageStorage { get; } = Substitute.For<ILastTimeUsageStorage>();
 
@@ -58,7 +59,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheConstructor : EmailLoginViewModelTest
+        public sealed class TheConstructor : LoginViewModelTest
         {
             [Xunit.Theory, LogIfTooSlow]
             [ConstructorData]
@@ -102,7 +103,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheLoginEnabledObservable : EmailLoginViewModelTest
+        public sealed class TheLoginEnabledObservable : LoginViewModelTest
         {
             [Xunit.Theory]
             [InlineData("invalid email address", "123")]
@@ -145,7 +146,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheLoginMethod : EmailLoginViewModelTest
+        public sealed class TheLoginMethod : LoginViewModelTest
         {
             [Fact, LogIfTooSlow]
             public void CallsTheUserAccessManagerWhenTheEmailAndPasswordAreValid()
@@ -172,7 +173,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 UserAccessManager.Received(1).Login(Arg.Any<Email>(), Arg.Any<Password>());
             }
 
-            public sealed class WhenLoginSucceeds : EmailLoginViewModelTest
+            public sealed class WhenLoginSucceeds : LoginViewModelTest
             {
                 public WhenLoginSucceeds()
                 {
@@ -235,7 +236,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 }
             }
 
-            public sealed class WhenLoginFails : EmailLoginViewModelTest
+            public sealed class WhenLoginFails : LoginViewModelTest
             {
                 public WhenLoginFails()
                 {
@@ -292,6 +293,55 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 }
 
                 [Fact, LogIfTooSlow]
+                public void TracksIncorrectEmailOrPasswordLoginFailureWhenReceivedUnauthorizedException()
+                {
+                    var exception = new UnauthorizedException(
+                        Substitute.For<IRequest>(), Substitute.For<IResponse>());
+                    UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
+                        .Returns(Observable.Throw<Unit>(exception));
+
+                    ViewModel.Login.Execute();
+
+                    AnalyticsService.IncorrectEmailOrPasswordLoginFailure.Received().Track();
+                }
+
+                [Fact, LogIfTooSlow]
+                public void TracksTrueForLocalEmailValidationLoginCheckWhenEmailIsValid()
+                {
+                    ViewModel.Login.Execute();
+
+                    AnalyticsService.LocalEmailValidationLoginCheck.Received().Track(true);
+                }
+
+                [Fact, LogIfTooSlow]
+                public void TracksFalseForLocalEmailValidationLoginCheckWhenEmailIsNotValid()
+                {
+                    ViewModel.Email.Accept(InvalidEmail);
+
+                    ViewModel.Login.Execute();
+
+                    AnalyticsService.LocalEmailValidationLoginCheck.Received().Track(false);
+                }
+
+                [Fact, LogIfTooSlow]
+                public void TracksTrueForLocalPasswordValidationLoginCheckWhenEmailIsValid()
+                {
+                    ViewModel.Login.Execute();
+
+                    AnalyticsService.LocalPasswordValidationLoginCheck.Received().Track(true);
+                }
+
+                [Fact, LogIfTooSlow]
+                public void TracksFalseForLocalPasswordValidationLoginCheckWhenEmailIsNotValid()
+                {
+                    ViewModel.Password.Accept(EmptyPassword);
+
+                    ViewModel.Login.Execute();
+
+                    AnalyticsService.LocalPasswordValidationLoginCheck.Received().Track(false);
+                }
+
+                [Fact, LogIfTooSlow]
                 public void SetsTheErrorMessageToGenericLoginErrorForAnyOtherException()
                 {
                     var observer = TestScheduler.CreateObserver<string>();
@@ -344,7 +394,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheSignupCommand : EmailLoginViewModelTest
+        public sealed class TheSignupCommand : LoginViewModelTest
         {
             [FsCheck.Xunit.Property]
             public void NavigatesToTheSignUpViewModel(
@@ -369,7 +419,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class ThePrepareMethod : EmailLoginViewModelTest
+        public sealed class ThePrepareMethod : LoginViewModelTest
         {
             [Xunit.Theory]
             [InlineData("valid.email@company.com")]

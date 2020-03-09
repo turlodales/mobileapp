@@ -29,7 +29,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     TimeService,
                     SchedulerProvider,
                     RxActionFactory,
-                    NavigationService);
+                    NavigationService,
+                    AnalyticsService);
 
             protected override void AdditionalSetup()
             {
@@ -54,13 +55,15 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 bool useTimeService,
                 bool useSchedulerProvider,
                 bool useRxActionFactory,
-                bool useNavigationService)
+                bool useNavigationService,
+                bool useAnalyticsService)
             {
                 var apiFactory = useApiFactory ? ApiFactory : null;
                 var timeService = useTimeService ? TimeService : null;
                 var schedulerProvider = useSchedulerProvider ? SchedulerProvider : null;
                 var rxActionFactory = useRxActionFactory ? RxActionFactory : null;
                 var navigationService = useNavigationService ? NavigationService : null;
+                var snalyticsService = useAnalyticsService ? AnalyticsService : null;
 
                 Action tryingToConstructWithEmptyParameters =
                     () => new TermsAndCountryViewModel(
@@ -68,7 +71,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         timeService,
                         schedulerProvider,
                         rxActionFactory,
-                        navigationService);
+                        navigationService,
+                        snalyticsService);
 
                 tryingToConstructWithEmptyParameters
                     .Should().Throw<ArgumentNullException>();
@@ -131,6 +135,39 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ReactiveTest.OnNext(1, false),
                     ReactiveTest.OnNext(2, true)
                 );
+            }
+        }
+
+        public sealed class TheViewActions : TermsAndCountryViewModelTest
+        {
+            [Fact, LogIfTooSlow]
+            public async Task TracksOnboardingPrivacyPolicyOpened()
+            {
+                Api.Location.Get().ReturnsThrowingTaskOf(new Exception());
+
+                ViewModel.ViewPrivacyPolicy.Execute();
+
+                AnalyticsService.OnboardingPrivacyPolicyOpened.Received().Track();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task TracksOnboardingTermsOfServiceOpened()
+            {
+                Api.Location.Get().ReturnsThrowingTaskOf(new Exception());
+
+                ViewModel.ViewTermsOfService.Execute();
+
+                AnalyticsService.OnboardingTermsOfServiceOpened.Received().Track();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task TracksOnboardingAgreeButtonTapped()
+            {
+                Api.Location.Get().ReturnsThrowingTaskOf(new Exception());
+
+                ViewModel.Accept.Execute();
+
+                AnalyticsService.OnboardingAgreeButtonTapped.Received().Track();
             }
         }
 
@@ -209,6 +246,38 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ReactiveTest.OnNext(2, true),
                     ReactiveTest.OnNext(3, false)
                 );
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task TracksOnboardingSelectedCountryWhenCountryNotSelected()
+            {
+                Api.Location.Get().ReturnsThrowingTaskOf(new Exception());
+                NavigationService
+                    .Navigate<SelectCountryViewModel, long?, long?>(Arg.Any<long?>(), ViewModel.View)
+                    .Returns(1);
+                await ViewModel.Initialize();
+
+                ViewModel.PickCountry.Execute();
+
+                AnalyticsService.OnboardingCountryNotSelected.Received().Track();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task TracksSelectedCountryCode()
+            {
+                var selectedCountry = await new GetAllCountriesInteractor()
+                    .Execute()
+                    .Select(countries => countries.Single(country => country.Id == 1));
+
+                NavigationService
+                    .Navigate<SelectCountryViewModel, long?, long?>(Arg.Any<long?>(), ViewModel.View)
+                    .Returns(selectedCountry.Id);
+
+                await ViewModel.Initialize();
+
+                ViewModel.PickCountry.Execute();
+
+                AnalyticsService.OnboardingSelectedCountry.Received().Track(selectedCountry.CountryCode);
             }
         }
     }
