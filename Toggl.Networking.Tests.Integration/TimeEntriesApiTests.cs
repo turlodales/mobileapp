@@ -64,7 +64,7 @@ namespace Toggl.Networking.Tests.Integration
                 => te => te.Id == model.Id && te.Description == model.Description;
         }
 
-        public sealed class TheGetAllBetweenStartAndEndDatesMethod : AuthenticatedGetEndpointBaseTests<List<ITimeEntry>>
+        public sealed class TheGetAllBetweenStartAndEndDatesMethod : AuthenticatedGetAllEndpointBaseTests<ITimeEntry>
         {
             private static readonly DateTimeOffset start = DateTimeOffset.Now.Subtract(TimeSpan.FromDays(75));
             private static readonly DateTimeOffset end = start.AddDays(60);
