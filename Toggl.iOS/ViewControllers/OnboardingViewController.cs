@@ -1,9 +1,7 @@
 ﻿using System;
-using AVFoundation;
+using System.Reactive.Linq;
 using CoreGraphics;
-using CoreMedia;
 using Foundation;
-using ObjCRuntime;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
@@ -15,8 +13,17 @@ namespace Toggl.iOS.ViewControllers
 {
     public sealed partial class OnboardingViewController : ReactiveViewController<OnboardingViewModel>
     {
-        private AVPlayer player;
-        private AVPlayerLayer playerLayer;
+        private UIView containerView;
+        private OnboardingPageView page1;
+        private OnboardingPageView page2;
+        private OnboardingPageView page3;
+
+        private const double duration = 0.3;
+        private UISwipeGestureRecognizer swipeLeftGesture;
+        private UISwipeGestureRecognizer swipeRightGesture;
+
+        private const int totalPages = 3;
+        private int currentPage = 0;
 
         public OnboardingViewController(OnboardingViewModel viewModel) : base(viewModel, nameof(OnboardingViewController))
         {
@@ -26,10 +33,7 @@ namespace Toggl.iOS.ViewControllers
         {
             base.ViewDidLoad();
 
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, restartVideo);
-
-            configureVideo();
-            configureMessageAppearance();
+            configureOnboardingPages();
             configureButtonsAppearance();
 
             ContinueWithEmailButton.Rx().Tap()
@@ -44,8 +48,9 @@ namespace Toggl.iOS.ViewControllers
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
-            playerLayer.Frame = TogglmanView.Bounds;
-            restartVideo(null);
+            page1.Frame = View.Bounds;
+            page2.Frame = View.Bounds;
+            page3.Frame = View.Bounds;
         }
 
         public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
@@ -56,39 +61,43 @@ namespace Toggl.iOS.ViewControllers
             configureButtonsAppearance();
         }
 
-        private void configureVideo()
+        private void configureOnboardingPages()
         {
-            var url = NSBundle.MainBundle.GetUrlForResource("togglman", "mp4");
-            player = AVPlayer.FromUrl(url);
-            NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, restartVideo, player.CurrentItem);
+            swipeLeftGesture = new UISwipeGestureRecognizer(moveToNextPage);
+            swipeLeftGesture.Direction = UISwipeGestureRecognizerDirection.Left;
 
-            playerLayer = AVPlayerLayer.FromPlayer(player);
-            TogglmanView.Layer.AddSublayer(playerLayer);
+            swipeRightGesture = new UISwipeGestureRecognizer(moveToPreviousPage);
+            swipeRightGesture.Direction = UISwipeGestureRecognizerDirection.Right;
 
-            playerLayer.Frame = TogglmanView.Bounds;
-            restartVideo(null);
-        }
+            containerView = new UIView();
+            containerView.TranslatesAutoresizingMaskIntoConstraints = false;
+            View.InsertSubview(containerView, 0);
+            containerView.TopAnchor.ConstraintEqualTo(View.TopAnchor).Active = true;
+            containerView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor).Active = true;
+            containerView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor).Active = true;
+            containerView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor).Active = true;
 
-        private void restartVideo(NSNotification notification)
-        {
-            player.Seek(CMTime.Zero);
-            player.Play();
-        }
+            page1 = OnboardingPageView.Create();
+            page1.BackgroundColor = ColorAssets.OnboardingPage1BackgroundColor;
+            page1.SetVideo(NSBundle.MainBundle.GetUrlForResource("togglman", "mp4"));
+            page1.Message = Resources.OnboardingMessagePage1;
 
-        private void configureMessageAppearance()
-        {
-            var message = Resources.OnboardingMessageVariantA;
-            var paragraphStyle = new NSMutableParagraphStyle();
-            paragraphStyle.LineSpacing = (nfloat)1.18;
+            page2 = OnboardingPageView.Create();
+            page2.BackgroundColor = ColorAssets.OnboardingPage2BackgroundColor;
+            page2.SetContentView(new PeriscopeView());
+            page2.Message = Resources.OnboardingMessagePage2;
 
-            var attributes = new UIStringAttributes();
-            attributes.ForegroundColor = ColorAssets.InverseText;
-            attributes.Font = UIFont.SystemFontOfSize(28);
-            attributes.ParagraphStyle = paragraphStyle;
+            page3 = OnboardingPageView.Create();
+            page3.BackgroundColor = ColorAssets.OnboardingPage3BackgroundColor;
+            page3.SetImageView(UIImage.FromBundle("ic_hand"));
+            page3.Message = Resources.OnboardingMessagePage3;
 
-            var messageAttributedString = new NSMutableAttributedString(message);
-            messageAttributedString.AddAttributes(attributes, new NSRange(0, message.Length));
-            MessageLabel.AttributedText = messageAttributedString;
+            containerView.InsertSubview(page3, 0);
+            containerView.InsertSubview(page2, 1);
+            containerView.InsertSubview(page1, 2);
+
+            View.AddGestureRecognizer(swipeLeftGesture);
+            View.AddGestureRecognizer(swipeRightGesture);
         }
 
         private void configureButtonsAppearance()
@@ -113,13 +122,79 @@ namespace Toggl.iOS.ViewControllers
             ContinueWithGoogleButton.Layer.ShadowOffset = new CGSize(0, 2);
         }
 
-        protected override void Dispose(bool disposing)
+        private void moveToNextPage(UISwipeGestureRecognizer swipe)
         {
-            base.Dispose(disposing);
-            if (disposing)
+            var next = nextPageView();
+            var frame = View.Bounds;
+            frame.Offset(View.Bounds.Width, 0);
+            next.Frame = frame;
+            containerView.BringSubviewToFront(next);
+
+            UIView.Animate(
+                duration,
+                () => { animatePage(next); },
+                moveIndicatorToNextPage
+                );
+        }
+
+        private void moveToPreviousPage(UISwipeGestureRecognizer swipe)
+        {
+            var previous = previousPageView();
+            var frame = View.Bounds;
+            frame.Offset(-View.Bounds.Width, 0);
+            previous.Frame = frame;
+            containerView.BringSubviewToFront(previous);
+
+            UIView.Animate(
+                duration,
+                () => { animatePage(previous); },
+                moveIndicatorToPreviousPage
+            );
+        }
+
+        private void animatePage(OnboardingPageView page)
+        {
+            page.Frame = View.Bounds;
+        }
+
+        private void moveIndicatorToNextPage()
+        {
+            currentPage = currentPage < totalPages - 1
+                ? currentPage + 1
+                : 0;
+            PageControl.CurrentPage = currentPage;
+        }
+
+        private void moveIndicatorToPreviousPage()
+        {
+            currentPage = currentPage > 0
+                ? currentPage - 1
+                : totalPages - 1;
+            PageControl.CurrentPage = currentPage;
+        }
+
+        private OnboardingPageView nextPageView()
+        {
+            switch (currentPage)
             {
-                NSNotificationCenter.DefaultCenter.RemoveObserver(this, AVPlayerItem.DidPlayToEndTimeNotification, player.CurrentItem);
+                case 0: return page2;
+                case 1: return page3;
+                case 2: return page1;
             }
+
+            throw new IndexOutOfRangeException();
+        }
+
+        private OnboardingPageView previousPageView()
+        {
+            switch (currentPage)
+            {
+                case 0: return page3;
+                case 1: return page1;
+                case 2: return page2;
+            }
+
+            throw new IndexOutOfRangeException();
         }
     }
 }

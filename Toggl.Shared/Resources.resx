@@ -137,10 +137,18 @@ Let’s get you set up to start tracking.</value>
         <value>Welcome back!</value>
         <comment>Displayed in the login view right above the email text field</comment>
     </data>
-    <data name="OnboardingMessageVariantA" xml:space="preserve">
+    <data name="OnboardingMessagePage1" xml:space="preserve">
         <value>Simple time tracking.
 Powerful reporting.</value>
         <comment>Message shown in the onboarding view</comment>
+    </data>
+    <data name="OnboardingMessagePage2" xml:space="preserve">
+        <value>Find out where
+the time goes</value>
+    </data>
+    <data name="OnboardingMessagePage3" xml:space="preserve">
+        <value>Works where you do -
+mobile, desktop or web</value>
     </data>
     <data name="ContinueWithGoogle" xml:space="preserve">
         <value>Continue with Google</value>

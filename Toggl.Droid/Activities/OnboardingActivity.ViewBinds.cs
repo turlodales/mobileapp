@@ -16,7 +16,7 @@ namespace Toggl.Droid.Activities
         private TextView loginGoogleLoginLabel;
 
         private MediaPlayer mediaPlayer;
-        
+
         protected override void InitializeViews()
         {
             onboardingSurfaceView = FindViewById<SurfaceView>(Resource.Id.togglMan);
@@ -25,12 +25,11 @@ namespace Toggl.Droid.Activities
             onboardingMessage = FindViewById<TextView>(Resource.Id.message);
             loginGoogleLoginLabel = FindViewById<TextView>(Resource.Id.LoginGoogleLoginLabel);
 
-            onboardingMessage.Text = Shared.Resources.OnboardingMessageVariantA;
             continueWithEmailButton.Text = Shared.Resources.ContinueWithEmail;
             loginGoogleLoginLabel.Text = Shared.Resources.ContinueWithGoogle;
-            
+
             onboardingSurfaceView.Holder.AddCallback(this);
-            continueWithEmailButton.FitBottomMarginInset(); 
+            continueWithEmailButton.FitBottomMarginInset();
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, Format format, int width, int height)

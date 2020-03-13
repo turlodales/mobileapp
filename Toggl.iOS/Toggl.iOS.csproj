@@ -1386,7 +1386,19 @@
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo%403x.png" />
-    <ImageAsset Include="Resources\Colors.xcassets\OnboardingBackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage1BackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage2BackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage3BackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\eyeball%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\pupil%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1486,6 +1498,7 @@
     <InterfaceDefinition Include="ViewControllers\TermsAndCountryViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
+    <InterfaceDefinition Include="Views\Onboarding\OnboardingPageView.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -1674,6 +1687,7 @@
     <Compile Include="Views\Log\RefreshControl.cs" />
     <Compile Include="Views\Log\TimeEntriesLogTableView.cs" />
     <Compile Include="Views\MarqueeView.cs" />
+    <Compile Include="Views\Onboarding\PeriscopeView.cs" />
     <Compile Include="Views\Onboarding\TrackPage.cs" />
     <Compile Include="Views\Onboarding\TrackPage.designer.cs">
       <DependentUpon>TrackPage.cs</DependentUpon>
@@ -2119,6 +2133,11 @@
     <Compile Include="ViewControllers\LoginViewController.designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Onboarding\OnboardingPageView.cs" />
+    <Compile Include="Views\Onboarding\OnboardingStepView.designer.cs">
+      <DependentUpon>OnboardingPageView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Onboarding\VideoView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">
@@ -2252,7 +2271,13 @@
     <Folder Include="Resources\Colors.xcassets\OnboardingButtonBackground.colorset\" />
     <Folder Include="Resources\Images.xcassets\gifTogglman.imageset\" />
     <Folder Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\" />
-    <Folder Include="Resources\Colors.xcassets\OnboardingBackgroundColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingPage1BackgroundColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingPage2BackgroundColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingPage3BackgroundColor.colorset\" />
+    <Folder Include="Resources\Images.xcassets\ic_periscope.imageset\" />
+    <Folder Include="Resources\Images.xcassets\ic_eyeball.imageset\" />
+    <Folder Include="Resources\Images.xcassets\ic_pupil.imageset\" />
+    <Folder Include="Resources\Images.xcassets\ic_hand.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

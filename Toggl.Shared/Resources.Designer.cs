@@ -70,9 +70,21 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string OnboardingMessageVariantA {
+        public static string OnboardingMessagePage1 {
             get {
-                return ResourceManager.GetString("OnboardingMessageVariantA", resourceCulture);
+                return ResourceManager.GetString("OnboardingMessagePage1", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage2 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage2", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage3 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage3", resourceCulture);
             }
         }
         

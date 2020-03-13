@@ -22,13 +22,10 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton ContinueWithGoogleButton { get; set; }
 
 		[Outlet]
-		UIKit.UILabel MessageLabel { get; set; }
+		UIKit.UIPageControl PageControl { get; set; }
 
 		[Outlet]
 		UIKit.UIImageView TogglLogo { get; set; }
-
-		[Outlet]
-		UIKit.UIView TogglmanView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -47,19 +44,14 @@ namespace Toggl.iOS.ViewControllers
 				ContinueWithGoogleButton = null;
 			}
 
-			if (MessageLabel != null) {
-				MessageLabel.Dispose ();
-				MessageLabel = null;
+			if (PageControl != null) {
+				PageControl.Dispose ();
+				PageControl = null;
 			}
 
 			if (TogglLogo != null) {
 				TogglLogo.Dispose ();
 				TogglLogo = null;
-			}
-
-			if (TogglmanView != null) {
-				TogglmanView.Dispose ();
-				TogglmanView = null;
 			}
 		}
 	}
