@@ -10,3 +10,4 @@ using Xunit;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleTo("Toggl.Core.Tests.Sync")]
+[assembly: CollectionBehavior(MaxParallelThreads = 8)]

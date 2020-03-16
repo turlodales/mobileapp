@@ -371,6 +371,10 @@ namespace Toggl.iOS.ViewControllers
             {
                 height = nonScrollableContentHeight + ScrollViewContent.Bounds.Height;
                 height += UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
+                if (keyboardHeight > 0)
+                {
+                    height += keyboardHeight;
+                }
             }
             else
             {

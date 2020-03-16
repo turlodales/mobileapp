@@ -33,8 +33,9 @@ namespace Toggl.iOS.Services
                 {
                     INVoiceShortcutCenter.SharedCenter.GetAllVoiceShortcuts((shortcuts, error) =>
                     {
-                        var siriShortcuts = shortcuts
-                            .Select(shortcut => new SiriShortcut(shortcut));
+                        var siriShortcuts =
+                            shortcuts?.Select(shortcut => new SiriShortcut(shortcut))
+                            ?? Enumerable.Empty<SiriShortcut>();
 
                         observer.OnNext(siriShortcuts);
                     });

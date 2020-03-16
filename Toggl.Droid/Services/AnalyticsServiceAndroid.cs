@@ -78,21 +78,22 @@ namespace Toggl.Droid.Services
         private string trimForAppCenter(string text)
             => text.Length > maxAppCenterStringLength ? text.Substring(0, maxAppCenterStringLength) : text;
 
-        public override void SetAppCenterUserId(long id)
+        public override void SetUserId(long id)
         {
-            setAppCenterUserId(id.ToString());
+            setUserId(id.ToString());
         }
 
-        public override void ResetAppCenterUserId()
+        public override void ResetUserId()
         {
-            setAppCenterUserId("");
+            setUserId("");
         }
 
-        private void setAppCenterUserId(string id)
+        private void setUserId(string id)
         {
             try
             {
                 AppCenter.SetUserId(id);
+                firebaseAnalytics.SetUserId(id);
             }
             catch
             {

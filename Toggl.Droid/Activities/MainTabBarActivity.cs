@@ -202,6 +202,9 @@ namespace Toggl.Droid.Activities
 
         private async Task showFragment(int fragmentId)
         {
+            if (!this.IsAtLeastStarted())
+                return;
+            
             SupportFragmentManager.ExecutePendingTransactions();
             var transaction = SupportFragmentManager.BeginTransaction();
             var fragment = await getCachedFragment(fragmentId);
@@ -222,6 +225,9 @@ namespace Toggl.Droid.Activities
                     .Hide(activeFragment);
             }
 
+            if (!this.IsAtLeastStarted())
+                return;
+            
             transaction.Commit();
 
             if (fragment is MainFragment mainFragmentToShow)

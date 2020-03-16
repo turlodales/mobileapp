@@ -17,7 +17,7 @@ namespace Toggl.Droid.Presentation
             {
                 var subClass = cache.Keys.FirstOrDefault(t => t.IsSubclassOf(type));
                 if (subClass == null)
-                    throw new InvalidOperationException($"Requested VM {type.Name} not in cache");
+                    return null;
                 cache.TryGetValue(subClass, out cachedViewModel);
             }
             return (TViewModel)cachedViewModel;

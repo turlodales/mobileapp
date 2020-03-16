@@ -2,6 +2,7 @@
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Toggl.Droid.Adapters;
+using Toggl.Droid.Extensions;
 
 namespace Toggl.Droid.Activities
 {
@@ -38,6 +39,8 @@ namespace Toggl.Droid.Activities
             selectCalendarsMessage.Text = Shared.Resources.SelectCalendarsMessage;
 
             SetupToolbar(Shared.Resources.CalendarSettingsTitle);
+            
+            calendarsRecyclerView.FitBottomMarginInset();
         }
     }
 }

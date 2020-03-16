@@ -75,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TokenResetMessageEnterPasswordLabel" />
     <TextView
+        android:background="?attr/selectableItemBackground"
         android:id="@+id/TokenResetSignOutLabel"
         android:textSize="14sp"
         android:clickable="true"
@@ -85,6 +86,7 @@
         android:lineSpacingExtra="6sp"
         android:textColor="@color/secondaryText"
         android:layout_marginLeft="16dp"
+        android:padding="8dp"
         android:layout_marginBottom="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
