@@ -1507,6 +1507,8 @@
     <None Include="packages.config" />
     <None Include="FodyWeavers.xml" />
     <BundleResource Include="RemoteConfigDefaults.plist" />
+    <BundleResource Include="Resources\spinner-dark.gif" />
+    <BundleResource Include="Resources\spinner-light.gif" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analytics\SiriIntentErrorTrackingEvent.cs" />
@@ -1688,6 +1690,7 @@
     <Compile Include="Views\Log\TimeEntriesLogTableView.cs" />
     <Compile Include="Views\MarqueeView.cs" />
     <Compile Include="Views\Onboarding\PeriscopeView.cs" />
+    <Compile Include="Views\Onboarding\OnboardingLoadingView.cs" />
     <Compile Include="Views\Onboarding\TrackPage.cs" />
     <Compile Include="Views\Onboarding\TrackPage.designer.cs">
       <DependentUpon>TrackPage.cs</DependentUpon>

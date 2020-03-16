@@ -168,7 +168,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void SetsIsLoadingToFalseWhenLoginFails()
+            public void DoesntSetIsLoadingToFalseWhenLoginFails()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -181,9 +181,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false),
-                    ReactiveTest.OnNext(2, true),
-                    ReactiveTest.OnNext(3, false)
+                    ReactiveTest.OnNext(1, false)
                 );
             }
 
@@ -251,7 +249,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void SetsIsLoadingToFalseWhenSignupFails()
+            public void DoesntSetIsLoadingToFalseWhenSignupFails()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -268,9 +266,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false),
-                    ReactiveTest.OnNext(2, true),
-                    ReactiveTest.OnNext(3, false)
+                    ReactiveTest.OnNext(1, false)
                 );
             }
 
@@ -353,7 +349,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void SetsIsLoadingToTrueWhenContinuing()
+            public void DoesntSetIsLoadingToTrueWhenContinuing()
             {
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
@@ -362,8 +358,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false),
-                    ReactiveTest.OnNext(2, true)
+                    ReactiveTest.OnNext(1, false)
                 );
             }
         }

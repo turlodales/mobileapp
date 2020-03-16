@@ -25,6 +25,8 @@ namespace Toggl.iOS.ViewControllers
         private const int totalPages = 3;
         private int currentPage = 0;
 
+        private OnboardingLoadingView loadingView;
+
         public OnboardingViewController(OnboardingViewModel viewModel) : base(viewModel, nameof(OnboardingViewController))
         {
         }
@@ -32,6 +34,8 @@ namespace Toggl.iOS.ViewControllers
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            loadingView = new OnboardingLoadingView();
+            loadingView.TranslatesAutoresizingMaskIntoConstraints = false;
 
             configureOnboardingPages();
             configureButtonsAppearance();
@@ -42,6 +46,10 @@ namespace Toggl.iOS.ViewControllers
 
             ContinueWithGoogleButton.Rx().Tap()
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Subscribe(toggleLoadingView)
                 .DisposedBy(DisposeBag);
         }
 
@@ -195,6 +203,22 @@ namespace Toggl.iOS.ViewControllers
             }
 
             throw new IndexOutOfRangeException();
+        }
+
+        private void toggleLoadingView(bool isLoading)
+        {
+            if (!isLoading)
+            {
+                loadingView.RemoveFromSuperview();
+            }
+            else
+            {
+                View.AddSubview(loadingView);
+                loadingView.TopAnchor.ConstraintEqualTo(View.TopAnchor).Active = true;
+                loadingView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor).Active = true;
+                loadingView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor).Active = true;
+                loadingView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor).Active = true;
+            }
         }
     }
 }

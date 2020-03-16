@@ -95,7 +95,6 @@ namespace Toggl.Core.UI.ViewModels
 
         private Task continueWithEmail()
         {
-            isLoadingSubject.OnNext(true);
             if (lastTimeUsageStorage.LastLogin == null)
             {
                 return Navigate<SignUpViewModel, CredentialsParameter>(CredentialsParameter.Empty);
@@ -108,7 +107,6 @@ namespace Toggl.Core.UI.ViewModels
 
         private void tryLoggingInWithGoogle()
         {
-            isLoadingSubject.OnNext(true);
             View?.GetGoogleToken()
                 .SelectMany(userAccessManager.LoginWithGoogle)
                 .Track(analyticsService.Login, AuthenticationMethod.Google)
@@ -118,6 +116,8 @@ namespace Toggl.Core.UI.ViewModels
 
         private async void onAuthenticated()
         {
+            isLoadingSubject.OnNext(true);
+
             lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
 
             interactorFactory.GetCurrentUser().Execute()
