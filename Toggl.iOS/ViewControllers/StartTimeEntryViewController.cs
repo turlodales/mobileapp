@@ -2,6 +2,7 @@
 using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -85,6 +86,16 @@ namespace Toggl.iOS.ViewControllers
             {
                 View.ClipsToBounds = true;
             }
+        }
+
+        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+        {
+            base.TraitCollectionDidChange(previousTraitCollection);
+
+            if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular)
+                PreferredContentSize = new CGSize(0, desiredIpadHeight);
+            else
+                PreferredContentSize = new CGSize(0, 0);
         }
 
         public override void ViewDidLoad()
@@ -290,6 +301,9 @@ namespace Toggl.iOS.ViewControllers
             if (inTheMiddleOfAHack)
                 return;
 
+            if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular)
+                return;
+
             BottomDistanceConstraint.Constant = e.FrameEnd.Height;
             UIView.Animate(Animation.Timings.EnterTiming, () => View.LayoutIfNeeded());
         }
@@ -317,9 +331,7 @@ namespace Toggl.iOS.ViewControllers
         private void prepareViews()
         {
             if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular)
-            {
                 PreferredContentSize = new CGSize(0, desiredIpadHeight);
-            }
 
             //This is needed for the ImageView.TintColor bindings to work
             foreach (var button in getButtons())

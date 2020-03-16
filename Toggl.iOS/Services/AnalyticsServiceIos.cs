@@ -66,21 +66,22 @@ namespace Toggl.iOS.Services
             return validParameters;
         }
 
-        public override void SetAppCenterUserId(long id)
+        public override void SetUserId(long id)
         {
-            setAppCenterUserId(id.ToString());
+            setUserId(id.ToString());
         }
 
-        public override void ResetAppCenterUserId()
+        public override void ResetUserId()
         {
-            setAppCenterUserId("");
+            setUserId("");
         }
 
-        private void setAppCenterUserId(string id)
+        private void setUserId(string id)
         {
             try
             {
                 AppCenter.SetUserId(id);
+                FirebaseAnalytics.SetUserId(id);
             }
             catch
             {

@@ -22,11 +22,11 @@ namespace Toggl.Shared.Tests
             }
 
             [Theory]
-            [InlineData("MM/DD/YYYY", "MM/dd/yyyy")]
+            [InlineData("MM/DD/YYYY", "MM'/'dd'/'yyyy")]
             [InlineData("DD-MM-YYYY", "dd-MM-yyyy")]
             [InlineData("MM-DD-YYYY", "MM-dd-yyyy")]
             [InlineData("YYYY-MM-DD", "yyyy-MM-dd")]
-            [InlineData("DD/MM/YYYY", "dd/MM/yyyy")]
+            [InlineData("DD/MM/YYYY", "dd'/'MM'/'yyyy")]
             [InlineData("DD.MM.YYYY", "dd.MM.yyyy")]
             public void SetsTheCorrectLongFormat(
                 string localizedFormat, string expectedLongFormat)
@@ -37,11 +37,11 @@ namespace Toggl.Shared.Tests
             }
 
             [Theory]
-            [InlineData("MM/DD/YYYY", "MM/dd")]
+            [InlineData("MM/DD/YYYY", "MM'/'dd")]
             [InlineData("DD-MM-YYYY", "dd-MM")]
             [InlineData("MM-DD-YYYY", "MM-dd")]
             [InlineData("YYYY-MM-DD", "MM-dd")]
-            [InlineData("DD/MM/YYYY", "dd/MM")]
+            [InlineData("DD/MM/YYYY", "dd'/'MM")]
             [InlineData("DD.MM.YYYY", "dd.MM")]
             public void SetsTheCorrectShortFormat(
                 string localizedFormat, string expectedShortFormat)

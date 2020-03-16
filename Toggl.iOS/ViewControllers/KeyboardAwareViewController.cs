@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using System.Diagnostics;
+using Foundation;
 using Toggl.Core.UI.ViewModels;
 using UIKit;
 
@@ -21,9 +22,6 @@ namespace Toggl.iOS.ViewControllers
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-            if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular)
-                return;
 
             willShowNotification = UIKeyboard.Notifications.ObserveWillShow(KeyboardWillShow);
             willHideNotification = UIKeyboard.Notifications.ObserveWillHide(KeyboardWillHide);
