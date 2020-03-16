@@ -14,6 +14,8 @@ namespace Toggl.Shared
 
         public bool IsValid { get; }
 
+        public bool IsEmpty => string.IsNullOrEmpty(email);
+
         private Email(string email)
         {
             this.email = email;

@@ -48,8 +48,8 @@ namespace Toggl.Core.Login
         {
             if (!email.IsValid)
                 throw new ArgumentException($"A valid {nameof(email)} must be provided when trying to login");
-            if (!password.IsValid)
-                throw new ArgumentException($"A valid {nameof(password)} must be provided when trying to login");
+            if (password.IsEmpty)
+                throw new ArgumentException($"A non-empty {nameof(password)} must be provided when trying to login");
 
             var credentials = Credentials.WithPassword(email, password);
 

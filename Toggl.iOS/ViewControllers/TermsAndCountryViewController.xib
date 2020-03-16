@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsAndCountryViewController">
+            <connections>
+                <outlet property="ConfirmButton" destination="QQ5-Aj-kaC" id="cpN-et-LiZ"/>
+                <outlet property="CountryOfResidenceLabel" destination="xaZ-D1-Wcb" id="uLt-KR-viD"/>
+                <outlet property="CountrySelectionButton" destination="lls-E0-dPq" id="CZa-tk-77U"/>
+                <outlet property="CountrySelectionCaret" destination="Grp-N8-qhZ" id="ggV-hi-xIo"/>
+                <outlet property="CountrySelectionErrorView" destination="uL7-Rd-Lk1" id="46a-Mu-lGF"/>
+                <outlet property="HeaderLabel" destination="bJC-bA-eam" id="eiU-5Y-C7u"/>
+                <outlet property="TextView" destination="pWI-Wv-1cb" id="tdH-aA-KsL"/>
+                <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2">
+            <rect key="frame" x="0.0" y="0.0" width="343" height="577"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just one more thing. Please review the details below." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJC-bA-eam">
+                    <rect key="frame" x="39" y="120" width="265" height="100.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                    <color key="textColor" name="Text"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your country of residence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaZ-D1-Wcb">
+                    <rect key="frame" x="39" y="252.5" width="265" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" name="Text2"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icErrorSmall" translatesAutoresizingMaskIntoConstraints="NO" id="uL7-Rd-Lk1">
+                    <rect key="frame" x="40" y="288.5" width="11" height="11"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lls-E0-dPq">
+                    <rect key="frame" x="39" y="272" width="265" height="44"/>
+                    <accessibility key="accessibilityConfiguration" identifier="SelectCountry"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="y0g-km-sQR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="26" maxY="0.0"/>
+                    <state key="normal" title="The longest country name ever">
+                        <color key="titleColor" name="Text"/>
+                    </state>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="icDownS" translatesAutoresizingMaskIntoConstraints="NO" id="Grp-N8-qhZ">
+                    <rect key="frame" x="278.5" y="291" width="10" height="6"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Grp-N8-qhZ" secondAttribute="height" multiplier="8:5" id="Z8z-vp-ZOf"/>
+                        <constraint firstAttribute="width" constant="10" id="rFt-A8-b3S"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PmH-Ml-R9N" userLabel="Separator">
+                    <rect key="frame" x="39" y="316" width="265" height="1"/>
+                    <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="lxv-aE-cSS"/>
+                    </constraints>
+                </view>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="By tapping I Agree, you understand and agree to Toggl’s Terms of Service and Privacy Policy." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pWI-Wv-1cb">
+                    <rect key="frame" x="39" y="348" width="265" height="121"/>
+                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QQ5-Aj-kaC">
+                    <rect key="frame" x="40" y="501" width="263" height="44"/>
+                    <color key="backgroundColor" name="OnboardingButtonBackground"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="263" id="1nI-ks-JTI"/>
+                        <constraint firstAttribute="height" constant="44" id="hpv-lB-Pny"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <state key="normal" title="I agree">
+                        <color key="titleColor" name="Background"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" name="Background"/>
+            <constraints>
+                <constraint firstItem="uL7-Rd-Lk1" firstAttribute="centerY" secondItem="lls-E0-dPq" secondAttribute="centerY" id="1uB-dJ-kKy"/>
+                <constraint firstItem="bJC-bA-eam" firstAttribute="top" secondItem="Qyk-Yx-Tae" secondAttribute="top" constant="120" id="1zi-3c-KdX"/>
+                <constraint firstItem="Qyk-Yx-Tae" firstAttribute="trailing" secondItem="bJC-bA-eam" secondAttribute="trailing" constant="39" id="8VF-TI-XHd"/>
+                <constraint firstItem="PmH-Ml-R9N" firstAttribute="trailing" secondItem="bJC-bA-eam" secondAttribute="trailing" id="Amc-FT-Yq5"/>
+                <constraint firstItem="lls-E0-dPq" firstAttribute="leading" secondItem="PmH-Ml-R9N" secondAttribute="leading" id="Bek-7e-VDQ"/>
+                <constraint firstItem="PmH-Ml-R9N" firstAttribute="trailing" secondItem="Grp-N8-qhZ" secondAttribute="trailing" constant="15.5" id="FBI-7N-rm6"/>
+                <constraint firstItem="pWI-Wv-1cb" firstAttribute="trailing" secondItem="PmH-Ml-R9N" secondAttribute="trailing" id="HLN-V6-lGZ"/>
+                <constraint firstItem="uL7-Rd-Lk1" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" constant="1" id="IYC-Ow-5WH"/>
+                <constraint firstItem="xaZ-D1-Wcb" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" id="KcZ-eG-nDl"/>
+                <constraint firstItem="Qyk-Yx-Tae" firstAttribute="bottom" secondItem="QQ5-Aj-kaC" secondAttribute="bottom" constant="32" id="L3d-cS-bXy"/>
+                <constraint firstItem="pWI-Wv-1cb" firstAttribute="top" secondItem="PmH-Ml-R9N" secondAttribute="top" constant="32" id="PdB-Ov-GqU"/>
+                <constraint firstItem="xaZ-D1-Wcb" firstAttribute="trailing" secondItem="bJC-bA-eam" secondAttribute="trailing" id="Sst-A7-mAN"/>
+                <constraint firstItem="PmH-Ml-R9N" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" id="VkS-95-OWG"/>
+                <constraint firstItem="lls-E0-dPq" firstAttribute="top" secondItem="xaZ-D1-Wcb" secondAttribute="bottom" constant="5" id="Zd8-Op-ugN"/>
+                <constraint firstItem="xaZ-D1-Wcb" firstAttribute="top" secondItem="bJC-bA-eam" secondAttribute="bottom" constant="32" id="apn-GP-kGQ"/>
+                <constraint firstItem="PmH-Ml-R9N" firstAttribute="top" secondItem="lls-E0-dPq" secondAttribute="bottom" id="bAZ-oC-RNR"/>
+                <constraint firstItem="QQ5-Aj-kaC" firstAttribute="centerX" secondItem="Qyk-Yx-Tae" secondAttribute="centerX" id="lYc-hI-kcP"/>
+                <constraint firstItem="PmH-Ml-R9N" firstAttribute="trailing" secondItem="lls-E0-dPq" secondAttribute="trailing" id="n3O-ee-rk0"/>
+                <constraint firstItem="Grp-N8-qhZ" firstAttribute="centerY" secondItem="lls-E0-dPq" secondAttribute="centerY" id="ojn-4c-h7g"/>
+                <constraint firstItem="pWI-Wv-1cb" firstAttribute="leading" secondItem="PmH-Ml-R9N" secondAttribute="leading" id="s3I-5h-fHH"/>
+                <constraint firstItem="QQ5-Aj-kaC" firstAttribute="top" secondItem="pWI-Wv-1cb" secondAttribute="bottom" constant="32" id="sCa-77-AC9"/>
+                <constraint firstItem="bJC-bA-eam" firstAttribute="leading" secondItem="Qyk-Yx-Tae" secondAttribute="leading" constant="39" id="uVZ-Ag-W8H"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="Qyk-Yx-Tae"/>
+            <point key="canvasLocation" x="89" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icDownS" width="8" height="5"/>
+        <image name="icErrorSmall" width="11" height="11"/>
+        <namedColor name="Background">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="OnboardingButtonBackground">
+            <color red="1" green="0.17647059261798859" blue="0.3333333432674408" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Text">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Text2">
+            <color red="0.23529411852359772" green="0.23529411852359772" blue="0.26274511218070984" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

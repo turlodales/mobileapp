@@ -15,6 +15,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<SignUpErrorSource> SignUpError { get; }
 
+        IAnalyticsEvent ContinueWithGoogle { get;  }
+
         IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
         IAnalyticsEvent<string> OnboardingSkip { get; }
@@ -152,6 +154,32 @@ namespace Toggl.Core.Analytics
         IAnalyticsEvent BackgroundSyncMustStopExcecution { get; }
 
         IAnalyticsEvent<int> RateLimitingDelayDuringSyncing { get; }
+
+        IAnalyticsEvent EmailIsAlreadyInUsedSignUpFailure { get; }
+
+        IAnalyticsEvent<bool> LocalEmailValidationSignUpCheck { get; }
+
+        IAnalyticsEvent<bool> LocalPasswordValidationSignUpCheck { get; }
+
+        IAnalyticsEvent<bool> LocalCountryValidationSignUpCheck { get; }
+
+        IAnalyticsEvent OnboardingCountryNotSelected { get; }
+
+        IAnalyticsEvent<string> OnboardingSelectedCountry { get; }
+
+        IAnalyticsEvent OnboardingPrivacyPolicyOpened { get; }
+
+        IAnalyticsEvent OnboardingTermsOfServiceOpened { get; }
+
+        IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
+
+        IAnalyticsEvent IncorrectEmailOrPasswordSignUpFailure { get; }
+
+        IAnalyticsEvent IncorrectEmailOrPasswordLoginFailure { get; }
+
+        IAnalyticsEvent<bool> LocalEmailValidationLoginCheck { get; }
+
+        IAnalyticsEvent<bool> LocalPasswordValidationLoginCheck { get; }
 
         IAnalyticsEvent<string, string> UnknownLoginFailure { get; }
 

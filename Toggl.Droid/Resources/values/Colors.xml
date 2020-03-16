@@ -105,5 +105,20 @@
   
   <!-- Login/Sign Up -->
   <color name="loginSignUpOptionsDivider">#F3F3F3</color>
+  <color name="countryPickerOutlineColor">#61000000</color>
+  <color name="dropdownColor">#61000000</color>
+  <color name="onboardingButtonBackgroundColor">#FF5273</color>
+  <color name="loginSignUpEditTextOutlineColor">#61000000</color>
+
+  <!-- Onboarding -->
+  <color name="onboardingBackgroundColor">#91DCD0</color>
+  <color name="onboardingStatusBarColor">#7AB9AF</color>
+  <color name="onboardingOverlayBackgroundColor">#1A9DDDD3</color>
+  <color name="onboardingOutlineButtonTextColor">#FFFFFF</color>
+  <color name="onboardingOutlineButtonStrokeColor">#FFFFFF</color>
+  <color name="onboardingContainedButtonBackgroundColor">#FFFFFF</color>
+  <color name="onboardingContainedButtonTextColor">#000000</color>
+  <color name="onboardingTitleTextColor">#FFFFFF</color>
+  <color name="loadingOverlay">#77FFFFFF</color>
 
 </resources>

@@ -11,7 +11,7 @@ namespace Toggl.Shared.Extensions
             return num;
         }
 
-        public static bool IsInRange(this int number, int min, int max)
-            => number >= min && number <= max;
+public static bool IsInRange(this int number, int min, int max)
+    => number >= min && number <= max;
     }
 }

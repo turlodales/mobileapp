@@ -20,6 +20,7 @@ namespace Toggl.iOS.Presentation
             typeof(SiriShortcutsSelectReportPeriodViewModel),
             typeof(SiriShortcutsViewModel),
             typeof(SyncFailuresViewModel),
+            typeof(TermsAndCountryViewModel)
         };
 
         public NavigationPresenter(UIWindow window, AppDelegate appDelegate) : base(window, appDelegate)

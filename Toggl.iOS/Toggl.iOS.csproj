@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" />
   <PropertyGroup>
@@ -1381,6 +1381,24 @@
     <ImageAsset Include="Resources\Images.xcassets\icErrorBadData.imageset\error_baddata-1.png" />
     <ImageAsset Include="Resources\Images.xcassets\icErrorBadData.imageset\error_baddata.png" />
     <ImageAsset Include="Resources\Images.xcassets\icErrorBadData.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingButtonBackground.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo%403x.png" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage1BackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage2BackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage3BackgroundColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\eyeball%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\pupil%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1421,9 +1439,7 @@
     <InterfaceDefinition Include="ViewControllers\SelectCountryViewController.xib" />
     <InterfaceDefinition Include="Views\CountrySelection\CountryViewCell.xib" />
     <InterfaceDefinition Include="ViewControllers\ForgotPasswordViewController.xib" />
-    <InterfaceDefinition Include="ViewControllers\SignupViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\TermsOfServiceViewController.xib" />
-    <InterfaceDefinition Include="ViewControllers\Login.storyboard" />
     <InterfaceDefinition Include="Cells\SyncFailures\SyncFailureCell.xib" />
     <InterfaceDefinition Include="Cells\Settings\LicensesHeaderViewCell.xib" />
     <InterfaceDefinition Include="Cells\Settings\LicensesViewCell.xib" />
@@ -1478,13 +1494,21 @@
     <InterfaceDefinition Include="Cells\MainLog\SuggestionLogViewCell.xib" />
     <InterfaceDefinition Include="Cells\MainLog\SuggestionsHeaderView.xib" />
     <InterfaceDefinition Include="Cells\MainLog\UserFeedbackTableViewCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\SignUpViewController.xib" />
+    <InterfaceDefinition Include="ViewControllers\TermsAndCountryViewController.xib" />
+    <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
+    <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
+    <InterfaceDefinition Include="Views\Onboarding\OnboardingPageView.xib" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Resources\togglman.mp4" />
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
     <None Include="FodyWeavers.xml" />
     <BundleResource Include="RemoteConfigDefaults.plist" />
+    <BundleResource Include="Resources\spinner-dark.gif" />
+    <BundleResource Include="Resources\spinner-light.gif" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analytics\SiriIntentErrorTrackingEvent.cs" />
@@ -1514,6 +1538,7 @@
     <Compile Include="Presentation\NavigationPresenter.cs" />
     <Compile Include="Presentation\ModalDialogPresenter.cs" />
     <Compile Include="Presentation\ModalCardPresenter.cs" />
+    <Compile Include="Presentation\OnboardingPresenter.cs" />
     <Compile Include="Presentation\RootPresenter.cs" />
     <Compile Include="Presentation\ViewControllerLocator.cs" />
     <Compile Include="Services\PermissionsCheckerIos.cs" />
@@ -1664,6 +1689,8 @@
     <Compile Include="Views\Log\RefreshControl.cs" />
     <Compile Include="Views\Log\TimeEntriesLogTableView.cs" />
     <Compile Include="Views\MarqueeView.cs" />
+    <Compile Include="Views\Onboarding\PeriscopeView.cs" />
+    <Compile Include="Views\Onboarding\OnboardingLoadingView.cs" />
     <Compile Include="Views\Onboarding\TrackPage.cs" />
     <Compile Include="Views\Onboarding\TrackPage.designer.cs">
       <DependentUpon>TrackPage.cs</DependentUpon>
@@ -1722,10 +1749,6 @@
       <DependentUpon>TokenResetViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\LayoutConstraintExtensions.cs" />
-    <Compile Include="ViewControllers\LoginViewController.cs" />
-    <Compile Include="ViewControllers\LoginViewController.designer.cs">
-      <DependentUpon>LoginViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Color\ColorSelectionViewCell.cs" />
     <Compile Include="Views\Color\ColorSelectionViewCell.designer.cs">
       <DependentUpon>ColorSelectionViewCell.cs</DependentUpon>
@@ -1818,10 +1841,6 @@
     <Compile Include="ViewControllers\ForgotPasswordViewController.cs" />
     <Compile Include="ViewControllers\ForgotPasswordViewController.designer.cs">
       <DependentUpon>ForgotPasswordViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewControllers\SignupViewController.cs" />
-    <Compile Include="ViewControllers\SignupViewController.designer.cs">
-      <DependentUpon>SignupViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\LoginSignupViewExtensions.cs" />
     <Compile Include="ViewControllers\TermsOfServiceViewController.cs" />
@@ -2101,6 +2120,27 @@
     <Compile Include="Cells\MainLog\UserFeedbackTableViewCell.designer.cs">
       <DependentUpon>UserFeedbackTableViewCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewControllers\SignUpViewController.cs" />
+    <Compile Include="ViewControllers\SignUpViewController.designer.cs">
+      <DependentUpon>SignUpViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\TermsAndCountryViewController.cs" />
+    <Compile Include="ViewControllers\TermsAndCountryViewController.designer.cs">
+      <DependentUpon>TermsAndCountryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\OnboardingViewController.cs" />
+    <Compile Include="ViewControllers\OnboardingViewController.designer.cs">
+      <DependentUpon>OnboardingViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\LoginViewController.cs" />
+    <Compile Include="ViewControllers\LoginViewController.designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Onboarding\OnboardingPageView.cs" />
+    <Compile Include="Views\Onboarding\OnboardingStepView.designer.cs">
+      <DependentUpon>OnboardingPageView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Onboarding\VideoView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">
@@ -2231,6 +2271,16 @@
     <Folder Include="Resources\Colors.xcassets\ReportsBarChartTotal.colorset\" />
     <Folder Include="Resources\Colors.xcassets\ReportsBarChartFilledPlaceholder.colorset\" />
     <Folder Include="Resources\Colors.xcassets\ReportsBarChartTotalPlaceholder.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingButtonBackground.colorset\" />
+    <Folder Include="Resources\Images.xcassets\gifTogglman.imageset\" />
+    <Folder Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingPage1BackgroundColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingPage2BackgroundColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingPage3BackgroundColor.colorset\" />
+    <Folder Include="Resources\Images.xcassets\ic_periscope.imageset\" />
+    <Folder Include="Resources\Images.xcassets\ic_eyeball.imageset\" />
+    <Folder Include="Resources\Images.xcassets\ic_pupil.imageset\" />
+    <Folder Include="Resources\Images.xcassets\ic_hand.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

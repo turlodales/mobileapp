@@ -1,4 +1,5 @@
 ﻿using System;
+using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.DateRangePicker;
@@ -68,6 +69,21 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.NavigationService,
                     dependencyContainer.RxActionFactory);
+            }
+
+            if (viewModelType == typeof(LoginViewModel))
+            {
+                return new LoginViewModel(
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.ErrorHandlingService,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.InteractorFactory);
             }
 
             if (viewModelType == typeof(LoginViewModel))
@@ -205,20 +221,20 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.RxActionFactory);
             }
 
-            if (viewModelType == typeof(SignupViewModel))
+            if (viewModelType == typeof(SignUpViewModel))
             {
-                return new SignupViewModel(
-                    dependencyContainer.ApiFactory,
-                    dependencyContainer.UserAccessManager,
-                    dependencyContainer.AnalyticsService,
-                    dependencyContainer.OnboardingStorage,
-                    dependencyContainer.NavigationService,
-                    dependencyContainer.ErrorHandlingService,
-                    dependencyContainer.LastTimeUsageStorage,
+                return new SignUpViewModel(
                     dependencyContainer.TimeService,
-                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.PlatformInfo,
                     dependencyContainer.RxActionFactory,
-                    dependencyContainer.PlatformInfo);
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.ErrorHandlingService);
             }
 
             if (viewModelType == typeof(StartTimeEntryViewModel))
@@ -445,6 +461,31 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.RxActionFactory,
                     dependencyContainer.OnboardingStorage,
                     dependencyContainer.NavigationService);
+            }
+
+            if (viewModelType == typeof(OnboardingViewModel))
+            {
+                return new OnboardingViewModel(
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.PlatformInfo,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.NavigationService);
+            }
+
+            if (viewModelType == typeof(TermsAndCountryViewModel))
+            {
+                return new TermsAndCountryViewModel(
+                    dependencyContainer.ApiFactory,
+                    dependencyContainer.TimeService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.AnalyticsService);
             }
 
             throw new InvalidOperationException($"Trying to locate ViewModel {viewModelType.Name} failed.");

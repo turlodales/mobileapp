@@ -10,6 +10,7 @@
 
 namespace Toggl.Shared {
     using System;
+    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -49,6 +50,78 @@ namespace Toggl.Shared {
         public static string AppTitle {
             get {
                 return ResourceManager.GetString("AppTitle", resourceCulture);
+            }
+        }
+        
+        public static string SignUp {
+            get {
+                return ResourceManager.GetString("SignUp", resourceCulture);
+            }
+        }
+        
+        public static string SignUpWelcomeMessage {
+            get {
+                return ResourceManager.GetString("SignUpWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        public static string LoginWelcomeMessage {
+            get {
+                return ResourceManager.GetString("LoginWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage1 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage1", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage2 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage2", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage3 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage3", resourceCulture);
+            }
+        }
+        
+        public static string ContinueWithGoogle {
+            get {
+                return ResourceManager.GetString("ContinueWithGoogle", resourceCulture);
+            }
+        }
+        
+        public static string ContinueWithEmail {
+            get {
+                return ResourceManager.GetString("ContinueWithEmail", resourceCulture);
+            }
+        }
+        
+        public static string InvalidEmailError {
+            get {
+                return ResourceManager.GetString("InvalidEmailError", resourceCulture);
+            }
+        }
+        
+        public static string NoEmailError {
+            get {
+                return ResourceManager.GetString("NoEmailError", resourceCulture);
+            }
+        }
+        
+        public static string NoPasswordError {
+            get {
+                return ResourceManager.GetString("NoPasswordError", resourceCulture);
+            }
+        }
+        
+        public static string InvalidPasswordError {
+            get {
+                return ResourceManager.GetString("InvalidPasswordError", resourceCulture);
             }
         }
         
@@ -118,9 +191,21 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SetPassword {
+            get {
+                return ResourceManager.GetString("SetPassword", resourceCulture);
+            }
+        }
+        
         public static string AlreadyHaveAnAccountQuestionMark {
             get {
                 return ResourceManager.GetString("AlreadyHaveAnAccountQuestionMark", resourceCulture);
+            }
+        }
+        
+        public static string HaveAnAccountQuestionMark {
+            get {
+                return ResourceManager.GetString("HaveAnAccountQuestionMark", resourceCulture);
             }
         }
         
@@ -202,6 +287,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string ReviewTheTerms {
+            get {
+                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
+            }
+        }
+        
         public static string TermsOfServiceDialogMessage {
             get {
                 return ResourceManager.GetString("TermsOfServiceDialogMessage", resourceCulture);
@@ -214,15 +305,15 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string ReviewTheTerms {
-            get {
-                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
-            }
-        }
-        
         public static string IAgree {
             get {
                 return ResourceManager.GetString("IAgree", resourceCulture);
+            }
+        }
+        
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
         

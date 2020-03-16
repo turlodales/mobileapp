@@ -1,4 +1,6 @@
-using System;
+﻿using System;
+using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ using Toggl.Core.UI.Parameters;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Extensions.Reactive;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels
@@ -21,14 +24,6 @@ namespace Toggl.Core.UI.ViewModels
     [Preserve(AllMembers = true)]
     public sealed class LoginViewModel : ViewModelWithInput<CredentialsParameter>
     {
-        [Flags]
-        public enum ShakeTargets
-        {
-            None = 0,
-            Email = 1,
-            Password = 2
-        }
-
         private readonly IUserAccessManager userAccessManager;
         private readonly IAnalyticsService analyticsService;
         private readonly IOnboardingStorage onboardingStorage;
@@ -36,31 +31,35 @@ namespace Toggl.Core.UI.ViewModels
         private readonly ILastTimeUsageStorage lastTimeUsageStorage;
         private readonly ITimeService timeService;
         private readonly ISchedulerProvider schedulerProvider;
-        private readonly IRxActionFactory rxActionFactory;
         private readonly IInteractorFactory interactorFactory;
 
         private IDisposable loginDisposable;
 
-        private readonly Subject<ShakeTargets> shakeSubject = new Subject<ShakeTargets>();
-        private readonly Subject<bool> isShowPasswordButtonVisibleSubject = new Subject<bool>();
+        private readonly Subject<Unit> shakeEmailSubject = new Subject<Unit>();
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
-        private readonly BehaviorSubject<string> errorMessageSubject = new BehaviorSubject<string>("");
-        private readonly BehaviorSubject<bool> isPasswordMaskedSubject = new BehaviorSubject<bool>(true);
-        private readonly BehaviorSubject<Email> emailSubject = new BehaviorSubject<Email>(Shared.Email.Empty);
-        private readonly BehaviorSubject<Password> passwordSubject = new BehaviorSubject<Password>(Shared.Password.Empty);
+        private readonly BehaviorSubject<string> emailErrorMessageSubject = new BehaviorSubject<string>("");
+        private readonly BehaviorSubject<string> passwordErrorMessageSubject = new BehaviorSubject<string>("");
+        private readonly BehaviorSubject<string> loginErrorMessageSubject = new BehaviorSubject<string>("");
+        private readonly BehaviorSubject<bool> passwordVisibleSubject = new BehaviorSubject<bool>(false);
 
-        public IObservable<string> Email { get; }
-        public IObservable<string> Password { get; }
-        public IObservable<bool> HasError { get; }
+        private bool credentialsAreValid
+             => Email.Value.IsValid && !Password.Value.IsEmpty;
+
+        public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
+        public BehaviorRelay<Password> Password { get; } = new BehaviorRelay<Password>(Shared.Password.Empty);
+
+        public IObservable<bool> PasswordVisible { get; }
         public IObservable<bool> IsLoading { get; }
         public IObservable<bool> LoginEnabled { get; }
-        public IObservable<ShakeTargets> Shake { get; }
-        public IObservable<string> ErrorMessage { get; }
-        public IObservable<bool> IsPasswordMasked { get; }
-        public IObservable<bool> IsShowPasswordButtonVisible { get; }
+        public IObservable<Unit> ShakeEmail { get; }
+        public IObservable<string> EmailErrorMessage { get; }
+        public IObservable<string> PasswordErrorMessage { get; }
+        public IObservable<string> LoginErrorMessage { get; }
 
-        public ViewAction Signup { get; }
+        public ViewAction Login { get; }
+        public ViewAction SignUp { get; }
         public ViewAction ForgotPassword { get; }
+        public ViewAction TogglePasswordVisibility { get; }
 
         public LoginViewModel(
             IUserAccessManager userAccessManager,
@@ -94,49 +93,33 @@ namespace Toggl.Core.UI.ViewModels
             this.schedulerProvider = schedulerProvider;
             this.interactorFactory = interactorFactory;
 
-            var emailObservable = emailSubject.Select(email => email.TrimmedEnd());
-
-            Signup = rxActionFactory.FromAsync(signup);
+            Login = rxActionFactory.FromAction(login);
+            SignUp = rxActionFactory.FromAsync(signUp);
             ForgotPassword = rxActionFactory.FromAsync(forgotPassword);
+            TogglePasswordVisibility = rxActionFactory.FromAction(togglePasswordVisibility);
 
-            Shake = shakeSubject.AsDriver(this.schedulerProvider);
-
-            Email = emailObservable
-                .Select(email => email.ToString())
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
-
-            Password = passwordSubject
-                .Select(password => password.ToString())
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
+            ShakeEmail = shakeEmailSubject.AsDriver(this.schedulerProvider);
+            PasswordVisible = passwordVisibleSubject.AsObservable();
 
             IsLoading = isLoadingSubject
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
 
-            ErrorMessage = errorMessageSubject
+            EmailErrorMessage = emailErrorMessageSubject
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
 
-            IsPasswordMasked = isPasswordMaskedSubject
+            PasswordErrorMessage = passwordErrorMessageSubject
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
 
-            IsShowPasswordButtonVisible = Password
-                .Select(password => password.Length > 1)
-                .CombineLatest(isShowPasswordButtonVisibleSubject.AsObservable(), CommonFunctions.And)
+            LoginErrorMessage = loginErrorMessageSubject
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
 
-            HasError = ErrorMessage
-                .Select(string.IsNullOrEmpty)
-                .Select(CommonFunctions.Invert)
-                .AsDriver(this.schedulerProvider);
-
-            LoginEnabled = emailObservable
+            LoginEnabled = Email
                 .CombineLatest(
-                    passwordSubject.AsObservable(),
+                    Password,
                     IsLoading,
                     (email, password, isLoading) => email.IsValid && password.IsValid && !isLoading)
                 .DistinctUntilChanged()
@@ -145,79 +128,81 @@ namespace Toggl.Core.UI.ViewModels
 
         public override Task Initialize(CredentialsParameter parameter)
         {
-            emailSubject.OnNext(parameter.Email);
-            passwordSubject.OnNext(parameter.Password);
+            Email.Accept(parameter.Email);
+            Password.Accept(parameter.Password);
 
             return base.Initialize(parameter);
         }
 
-        public void SetEmail(Email email)
-            => emailSubject.OnNext(email);
-
-        public void SetPassword(Password password)
-            => passwordSubject.OnNext(password);
-
-        public void SetIsShowPasswordButtonVisible(bool visible)
-            => isShowPasswordButtonVisibleSubject.OnNext(visible);
-
-        public void Login()
+        private void login()
         {
-            var shakeTargets = ShakeTargets.None;
-            shakeTargets |= emailSubject.Value.IsValid ? ShakeTargets.None : ShakeTargets.Email;
-            shakeTargets |= passwordSubject.Value.IsValid ? ShakeTargets.None : ShakeTargets.Password;
+            loginErrorMessageSubject.OnNext(string.Empty);
 
-            if (shakeTargets != ShakeTargets.None)
+            if (Email.Value.IsEmpty)
             {
-                shakeSubject.OnNext(shakeTargets);
+                emailErrorMessageSubject.OnNext(Resources.NoEmailError);
+                analyticsService.LocalEmailValidationLoginCheck.Track(false);
+            }
+            else if (!Email.Value.IsValid)
+            {
+                emailErrorMessageSubject.OnNext(Resources.InvalidEmailError);
+                analyticsService.LocalEmailValidationLoginCheck.Track(false);
+            }
+            else
+            {
+                emailErrorMessageSubject.OnNext(string.Empty);
+                analyticsService.LocalEmailValidationLoginCheck.Track(true);
+            }
+
+            if (Password.Value.IsEmpty)
+            {
+                passwordErrorMessageSubject.OnNext(Resources.NoPasswordError);
+                analyticsService.LocalPasswordValidationLoginCheck.Track(false);
+            }
+            else
+            {
+                passwordErrorMessageSubject.OnNext(string.Empty);
+                analyticsService.LocalPasswordValidationLoginCheck.Track(true);
+            }
+
+            if (!credentialsAreValid)
+            {
+                shakeEmailSubject.OnNext(Unit.Default);
                 return;
             }
 
             if (isLoadingSubject.Value) return;
 
             isLoadingSubject.OnNext(true);
-            errorMessageSubject.OnNext("");
 
             loginDisposable =
                 userAccessManager
-                    .Login(emailSubject.Value, passwordSubject.Value)
+                    .Login(Email.Value, Password.Value)
                     .Track(analyticsService.Login, AuthenticationMethod.EmailAndPassword)
                     .Subscribe(_ => onAuthenticated(), onError, onCompleted);
         }
 
-        public void TogglePasswordVisibility()
-            => isPasswordMaskedSubject.OnNext(!isPasswordMaskedSubject.Value);
-
-        public void GoogleLogin()
-        {
-            if (isLoadingSubject.Value) return;
-
-            isLoadingSubject.OnNext(true);
-
-            loginDisposable = View?
-                .GetGoogleToken()
-                .SelectMany(userAccessManager.LoginWithGoogle)
-                .Track(analyticsService.Login, AuthenticationMethod.Google)
-                .Subscribe(_ => onAuthenticated(), onError, onCompleted);
-        }
-
-        private Task signup()
+        private Task signUp()
         {
             if (isLoadingSubject.Value)
                 return Task.CompletedTask;
 
-            var parameter = CredentialsParameter.With(emailSubject.Value, passwordSubject.Value);
-            return Navigate<SignupViewModel, CredentialsParameter>(parameter);
+            var parameter = CredentialsParameter.With(Email.Value, Password.Value);
+            return Navigate<SignUpViewModel, CredentialsParameter>(parameter);
         }
 
         private async Task forgotPassword()
         {
             if (isLoadingSubject.Value) return;
 
-            var emailParameter = EmailParameter.With(emailSubject.Value);
+            var emailParameter = EmailParameter.With(Email.Value);
             emailParameter = await Navigate<ForgotPasswordViewModel, EmailParameter, EmailParameter>(emailParameter);
             if (emailParameter != null)
-                emailSubject.OnNext(emailParameter.Email);
+                Email.Accept(emailParameter.Email);
         }
+
+        private void togglePasswordVisibility()
+            => passwordVisibleSubject.OnNext(!passwordVisibleSubject.Value);
 
         private async void onAuthenticated()
         {
@@ -245,15 +230,13 @@ namespace Toggl.Core.UI.ViewModels
             switch (exception)
             {
                 case UnauthorizedException forbidden:
-                    errorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
-                    break;
-                case GoogleLoginException googleEx when googleEx.LoginWasCanceled:
-                    errorMessageSubject.OnNext("");
+                    loginErrorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
+                    analyticsService.IncorrectEmailOrPasswordLoginFailure.Track();
                     break;
                 default:
                     analyticsService.UnknownLoginFailure.Track(exception.GetType().FullName, exception.Message);
                     analyticsService.TrackAnonymized(exception);
-                    errorMessageSubject.OnNext(Resources.GenericLoginError);
+                    loginErrorMessageSubject.OnNext(Resources.GenericLoginError);
                     break;
             }
         }
