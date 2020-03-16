@@ -8,6 +8,7 @@ using Toggl.iOS.Extensions.Reactive;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
+using ColorAssets = Toggl.iOS.Shared.Extensions.ColorAssets;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -135,7 +136,7 @@ namespace Toggl.iOS.ViewControllers
             buttonTitle.AddAttributes(
                 new UIStringAttributes
                 {
-                    ForegroundColor = UIColor.Black,
+                    ForegroundColor = ColorAssets.Text,
                     Font = UIFont.SystemFontOfSize(15, UIFontWeight.Regular)
                 },
                 new NSRange(0, buttonTitle.Length)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
 using CoreGraphics;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
@@ -71,6 +70,9 @@ namespace Toggl.iOS.ViewControllers
 
         private void configureOnboardingPages()
         {
+            PageControl.CurrentPageIndicatorTintColor = ColorAssets.Background;
+            PageControl.PageIndicatorTintColor = ColorAssets.Background.ColorWithAlpha((nfloat)0.5);
+
             swipeLeftGesture = new UISwipeGestureRecognizer(moveToNextPage);
             swipeLeftGesture.Direction = UISwipeGestureRecognizerDirection.Left;
 
