@@ -143,6 +143,9 @@ namespace Toggl.iOS.ViewControllers.Settings.Siri
 
         protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
         {
+            if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular)
+                return;
+
             UIEdgeInsets contentInsets = new UIEdgeInsets(0, 0, e.FrameEnd.Height, 0);
             ScrollView.ContentInset = contentInsets;
             ScrollView.ScrollIndicatorInsets = contentInsets;
