@@ -122,7 +122,7 @@ namespace Toggl.Core.UI.ViewModels
 
             interactorFactory.GetCurrentUser().Execute()
                 .Select(u => u.Id)
-                .Subscribe(analyticsService.SetAppCenterUserId)
+                .Subscribe(analyticsService.SetUserId)
                 .DisposedBy(disposeBag);
 
             await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
