@@ -142,11 +142,6 @@ namespace Toggl.iOS.ViewControllers
 
             ViewModel.IsLoading
                 .Select(CommonFunctions.Invert)
-                .Subscribe(LoginButton.Rx().Enabled())
-                .DisposedBy(DisposeBag);
-
-            ViewModel.IsLoading
-                .Select(CommonFunctions.Invert)
                 .Subscribe(PasswordTextField.Rx().Enabled())
                 .DisposedBy(DisposeBag);
 

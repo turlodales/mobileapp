@@ -461,7 +461,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     ViewModel.SignUp.Execute();
                     TestScheduler.Start();
 
-                    observer.Values().Should().BeEquivalentTo(new[] { false, true });
+                    observer.Values().Should().BeEquivalentTo(new[] { false, true, false });
                 }
 
                 [Fact, LogIfTooSlow]
