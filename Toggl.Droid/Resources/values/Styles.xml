@@ -21,7 +21,7 @@
     </style>
 
     <style name="AppTheme.Onboarding">
-        <item name="android:statusBarColor">@color/onboardingStatusBarColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.OutdatedAppStatusBarColor">

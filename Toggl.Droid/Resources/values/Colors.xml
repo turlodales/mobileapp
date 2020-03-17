@@ -111,8 +111,9 @@
   <color name="loginSignUpEditTextOutlineColor">#61000000</color>
 
   <!-- Onboarding -->
-  <color name="onboardingBackgroundColor">#91DCD0</color>
-  <color name="onboardingStatusBarColor">#7AB9AF</color>
+  <color name="onboardingFirstSlideBackgroundColor">#91DCD0</color>
+  <color name="onboardingSecondSlideBackgroundColor">#F2CA66</color>
+  <color name="onboardingThirdSlideBackgroundColor">#DEABF3</color>
   <color name="onboardingOverlayBackgroundColor">#1A9DDDD3</color>
   <color name="onboardingOutlineButtonTextColor">#FFFFFF</color>
   <color name="onboardingOutlineButtonStrokeColor">#FFFFFF</color>
@@ -120,5 +121,7 @@
   <color name="onboardingContainedButtonTextColor">#000000</color>
   <color name="onboardingTitleTextColor">#FFFFFF</color>
   <color name="loadingOverlay">#77FFFFFF</color>
+  <color name="onBoardingTabIndicatorSelected">#B3FFFFFF</color>
+  <color name="onBoardingTabIndicatorDeselected">#33FFFFFF</color>
 
 </resources>

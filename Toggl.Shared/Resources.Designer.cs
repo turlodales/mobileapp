@@ -10,7 +10,6 @@
 
 namespace Toggl.Shared {
     using System;
-    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -68,6 +67,24 @@ namespace Toggl.Shared {
         public static string LoginWelcomeMessage {
             get {
                 return ResourceManager.GetString("LoginWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessageVariantA {
+            get {
+                return ResourceManager.GetString("OnboardingMessageVariantA", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessageSecondSlideVariantA {
+            get {
+                return ResourceManager.GetString("OnboardingMessageSecondSlideVariantA", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessageThirdSlideVariantA {
+            get {
+                return ResourceManager.GetString("OnboardingMessageThirdSlideVariantA", resourceCulture);
             }
         }
         
