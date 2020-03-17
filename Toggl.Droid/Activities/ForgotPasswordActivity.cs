@@ -43,11 +43,13 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             ViewModel.Reset.Executing
-                .Subscribe(loadingProgressBar.Rx().IsVisible())
+                .Subscribe(loadingOverlay.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
             ViewModel.Reset.Executing
-                .Select(resetting => resetting ? "" : Shared.Resources.GetPasswordResetLink)
+                .Select(resetting => resetting 
+                    ? Shared.Resources.Loading 
+                    : Shared.Resources.GetPasswordResetLink)
                 .Subscribe(resetPasswordButton.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
@@ -67,6 +69,10 @@ namespace Toggl.Droid.Activities
 
             resetPasswordButton.Rx().Tap()
                 .Subscribe(ViewModel.Reset.Inputs)
+                .DisposedBy(DisposeBag);
+            
+            loadingOverlay.Rx().Tap()
+                .Subscribe(CommonFunctions.DoNothing)
                 .DisposedBy(DisposeBag);
 
             void onErrorMessage(string errorMessage)

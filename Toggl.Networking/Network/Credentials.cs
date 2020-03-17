@@ -19,8 +19,8 @@ namespace Toggl.Networking.Network
         {
             if (!email.IsValid)
                 throw new ArgumentException($"A valid {nameof(email)} must be provided when creating credentials");
-            if (!password.IsValid)
-                throw new ArgumentException($"A valid {nameof(password)} must be provided when creating credentials");
+            if (password.IsEmpty)
+                throw new ArgumentException($"A non empty {nameof(password)} must be provided when creating credentials");
 
             var header = authorizationHeaderWithValue($"{email}:{password}");
 

@@ -233,6 +233,7 @@ namespace Toggl.Core.UI.ViewModels
                     loginErrorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
                     analyticsService.IncorrectEmailOrPasswordLoginFailure.Track();
                     break;
+                
                 default:
                     analyticsService.UnknownLoginFailure.Track(exception.GetType().FullName, exception.Message);
                     analyticsService.TrackAnonymized(exception);
