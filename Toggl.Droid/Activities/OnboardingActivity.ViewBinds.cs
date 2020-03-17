@@ -1,7 +1,10 @@
 using System;
 using Android.Runtime;
+using Android.Graphics.Drawables;
+using Android.Media;
 using Android.Views;
 using Android.Widget;
+using AndroidX.ConstraintLayout.Widget;
 using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
 using Google.Android.Material.Tabs;
@@ -15,11 +18,16 @@ namespace Toggl.Droid.Activities
         private View continueWithGoogleButton;
         private Button continueWithEmailButton;
         private TextView loginGoogleLoginLabel;
+        private Group notLoadingViewViews;
+        private ImageView loadingViewIndicator;
+        private AnimationDrawable loadingAnimation;
         private ViewPager onboardingViewPager;
         private TabLayout onboardingTabIndicator;
 
         protected override void InitializeViews()
         {
+            notLoadingViewViews = FindViewById<Group>(Resource.Id.notLoadingViewsViewGroup);
+            loadingViewIndicator = FindViewById<ImageView>(Resource.Id.loadingIndicator);
             continueWithGoogleButton = FindViewById(Resource.Id.continueWithGoogleButton);
             continueWithEmailButton = FindViewById<Button>(Resource.Id.continueWithEmailButton);
             loginGoogleLoginLabel = FindViewById<TextView>(Resource.Id.LoginGoogleLoginLabel);
@@ -41,6 +49,7 @@ namespace Toggl.Droid.Activities
             onboardingViewPager.Adapter = new ScreenSlidePagerAdapter(SupportFragmentManager);
             onboardingTabIndicator.SetupWithViewPager(onboardingViewPager);
             continueWithEmailButton.FitBottomMarginInset();
+            loadingAnimation = (AnimationDrawable) loadingViewIndicator.Drawable;
         }
 
         private class ScreenSlidePagerAdapter : FragmentPagerAdapter

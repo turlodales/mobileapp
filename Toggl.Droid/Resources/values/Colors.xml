@@ -123,5 +123,6 @@
   <color name="loadingOverlay">#77FFFFFF</color>
   <color name="onBoardingTabIndicatorSelected">#B3FFFFFF</color>
   <color name="onBoardingTabIndicatorDeselected">#33FFFFFF</color>
+  <color name="onboardingLoadingIndicatorColor">#CBF2F0</color>
 
 </resources>

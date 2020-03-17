@@ -112,7 +112,7 @@ namespace Toggl.Droid
                     navigationService.Navigate<OutdatedAppViewModel>(null);
                     return;
                 case AccessLevel.NotLoggedIn:
-                    navigationService.Navigate<LoginViewModel, CredentialsParameter>(new CredentialsParameter(), null);
+                    navigationService.Navigate<OnboardingViewModel>(null);
                     return;
                 case AccessLevel.TokenRevoked:
                     navigationService.Navigate<TokenResetViewModel>(null);

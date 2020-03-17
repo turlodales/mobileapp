@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
@@ -71,8 +72,12 @@ namespace Toggl.Droid.Activities
                 .Subscribe(errorLabel.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
-            signUpLabel.Rx()
-                .BindAction(ViewModel.SignUp)
+            signUpLabel.Rx().Tap()
+                .Subscribe(_ =>
+                {
+                    ViewModel.SignUp.Inputs.OnNext(Unit.Default);
+                    ViewModel.CloseWithDefaultResult();
+                })
                 .DisposedBy(DisposeBag);
 
             loginButton.Rx()

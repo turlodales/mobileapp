@@ -70,10 +70,10 @@
             android:layout_marginStart="12dp"
             android:fontFamily="sans-serif-medium"
             android:letterSpacing="0.02"
-            tools:text="Sign in With Google"
             android:textColor="@color/onboardingContainedButtonTextColor"
             android:textSize="17sp"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            tools:text="Sign in With Google" />
     </LinearLayout>
 
     <Button
@@ -85,12 +85,29 @@
         android:layout_marginBottom="28dp"
         android:background="@drawable/outline_button"
         android:letterSpacing="0.02"
-        tools:text="Continue with email"
         android:textAllCaps="false"
         android:textColor="@color/onboardingOutlineButtonTextColor"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="Continue with email" />
+
+    <androidx.constraintlayout.widget.Group
+        app:constraint_referenced_ids="togglMan,togglLogo,message,continueWithGoogleButton,continueWithEmailButton"
+        android:id="@+id/notLoadingViewsViewGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/toggl_loading_logo"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
