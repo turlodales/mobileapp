@@ -36,6 +36,8 @@ namespace Toggl.Droid.Activities
             SupportActionBar.Title = string.Empty;
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetDisplayShowHomeEnabled(true);
+
+            resetPasswordButton.FitBottomMarginInset();
         }
     }
 }
