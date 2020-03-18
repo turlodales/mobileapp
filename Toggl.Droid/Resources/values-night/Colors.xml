@@ -51,5 +51,8 @@
   <color name="countryPickerOutlineColor">#61FFFFFF</color>
   <color name="dropdownColor">#BDFFFFFF</color>
   <color name="loadingOverlay">#33FFFFFF</color>
+  <color name="onboardingLoadingIndicatorColor">#32A69E</color>
+  <color name="onBoardingTabIndicatorSelected">#B3000000</color>
+  <color name="onBoardingTabIndicatorDeselected">#33000000</color>
   
 </resources>

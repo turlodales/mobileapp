@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
+using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
@@ -27,6 +28,7 @@ namespace Toggl.Droid.Activities
         protected override void InitializeViews()
         {
             base.InitializeViews();
+            FindViewById(Resource.Id.background).FitBottomMarginInset();
             closeButton = FindViewById(Resource.Id.close);
         }
 

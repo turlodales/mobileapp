@@ -51,11 +51,10 @@ namespace Toggl.Core.Login
             if (password.IsEmpty)
                 throw new ArgumentException($"A non-empty {nameof(password)} must be provided when trying to login");
 
-            var credentials = Credentials.WithPassword(email, password);
-
             return database.Value
                 .Clear()
-                .SelectMany(_ => apiFactory.Value.CreateApiWith(credentials, timeService.Value).User.Get())
+                .Select(_ => Credentials.WithPassword(email, password))
+                .SelectMany(credentials => apiFactory.Value.CreateApiWith(credentials, timeService.Value).User.Get())
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Create)
                 .Select(apiFromUser)
@@ -142,8 +141,8 @@ namespace Toggl.Core.Login
 
         public IObservable<Unit> RefreshToken(Password password)
         {
-            if (!password.IsValid)
-                throw new ArgumentException($"A valid {nameof(password)} must be provided when trying to refresh token");
+            if (password.IsEmpty)
+                throw new ArgumentException($"A non empty {nameof(password)} must be provided when trying to refresh token");
 
             return database.Value.User
                 .Single()

@@ -38,7 +38,7 @@ namespace Toggl.Droid.Activities
 
             welcomeMessage.Text = Shared.Resources.SignUpWelcomeMessage;
             emailInputLayout.Hint = Shared.Resources.Email;
-            passwordInputLayout.Hint = Shared.Resources.SetPassword;
+            passwordInputLayout.Hint = Shared.Resources.Password;
             signUpButton.Text = Shared.Resources.SignUp;
 
             var loginLabelText = new SpannableStringBuilder();
