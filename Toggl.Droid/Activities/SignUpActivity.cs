@@ -33,13 +33,13 @@ namespace Toggl.Droid.Activities
             ViewModel.Email
                 .Select(email => email.ToString())
                 .Take(1)
-                .Subscribe(emailEditText.Rx().TextObserver())
+                .Subscribe(emailEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
             ViewModel.Password
                 .Select(password => password.ToString())
                 .Take(1)
-                .Subscribe(passwordEditText.Rx().TextObserver())
+                .Subscribe(passwordEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
             emailEditText.Rx().Text()

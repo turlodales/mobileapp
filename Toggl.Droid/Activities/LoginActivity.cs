@@ -4,7 +4,6 @@ using Android.Runtime;
 using Android.Views;
 using System;
 using System.Reactive.Linq;
-using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
@@ -35,13 +34,13 @@ namespace Toggl.Droid.Activities
             ViewModel.Email.FirstAsync()
                 .Select(email => email.ToString())
                 .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
-                .Subscribe(emailEditText.Rx().TextObserver())
+                .Subscribe(emailEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
             ViewModel.Password.FirstAsync()
                 .Select(password => password.ToString())
                 .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
-                .Subscribe(passwordEditText.Rx().TextObserver())
+                .Subscribe(passwordEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
             //Text
