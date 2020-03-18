@@ -105,7 +105,7 @@ namespace Toggl.Core.UI.ViewModels
             }
         }
 
-        private void tryLoggingInWithGoogle()
+        private async void tryLoggingInWithGoogle()
         {
             View?.GetGoogleToken()
                 .SelectMany(userAccessManager.LoginWithGoogle)
@@ -130,25 +130,30 @@ namespace Toggl.Core.UI.ViewModels
             await Navigate<MainTabBarViewModel>();
         }
 
-        private async void onGoogleLoginFailure(Exception exception)
+        private void onGoogleLoginFailure(Exception exception)
         {
             var e = exception as GoogleLoginException;
+            
             if (e == null)
             {
-                onLoginError(exception);
-                return;
+                isLoadingSubject.OnNext(false);
+                analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
+                analyticsService.TrackAnonymized(exception);
             }
-            if (e.LoginWasCanceled) return;
 
+            if (e != null && e.LoginWasCanceled) return;
+
+            signUpWithGoogle();
+        }
+
+        private async void signUpWithGoogle()
+        {
             var country = await confirmCountryAndTermsOfService();
 
             if (country == null) return;
 
-            signUpWithGoogle(country);
-        }
+            isLoadingSubject.OnNext(true);
 
-        private void signUpWithGoogle(ICountry country)
-        {
             interactorFactory.GetSupportedTimezones().Execute()
                 .Select(supportedTimezones =>
                     supportedTimezones.FirstOrDefault(tz => platformInfo.TimezoneIdentifier == tz)
@@ -160,14 +165,6 @@ namespace Toggl.Core.UI.ViewModels
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onSignUpError)
                 .DisposedBy(disposeBag);
-        }
-
-        private void onLoginError(Exception exception)
-        {
-            isLoadingSubject.OnNext(false);
-            analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
-            analyticsService.TrackAnonymized(exception);
-            View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
         }
 
         private void onSignUpError(Exception exception)
