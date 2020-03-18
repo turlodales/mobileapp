@@ -15,7 +15,7 @@ namespace Toggl.Droid.Fragments.Onboarding
             pupilView = view.FindViewById(Resource.Id.imgPupil);
             periscopeView = view.FindViewById(Resource.Id.imgPeriscope);
 
-            onboardingMessage.Text = Shared.Resources.OnboardingMessageSecondSlideVariantA;
+            onboardingMessage.Text = Shared.Resources.OnboardingMessagePage2;
         }
     }
 }

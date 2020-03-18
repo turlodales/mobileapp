@@ -34,16 +34,20 @@ namespace Toggl.Droid.Activities
 
         protected override void InitializeBindings()
         {
-            forgotPasswordLabel.Rx().Tap()
-                .Subscribe(ViewModel.ForgotPassword.Inputs)
-                .DisposedBy(DisposeBag);
 
-            ViewModel.Email
+            ViewModel.Email.FirstAsync()
                 .Select(email => email.ToString())
-                .Take(1)
-                .Subscribe(emailEditText.Rx().TextObserver())
+                .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
+                .Subscribe(emailEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
+            ViewModel.Password.FirstAsync()
+                .Select(password => password.ToString())
+                .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
+                .Subscribe(passwordEditText.Rx().TextObserver(true))
+                .DisposedBy(DisposeBag);
+
+            //Text
             emailEditText.Rx().Text()
                 .Select(Email.From)
                 .Subscribe(ViewModel.Email.Accept)

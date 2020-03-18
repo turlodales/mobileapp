@@ -4,6 +4,7 @@
       "idiom": "universal"
     },
     {
+      "filename": "eyeball.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -13,6 +14,7 @@
       "idiom": "universal"
     },
     {
+      "filename": "eyeball@3x.png",
       "scale": "3x",
       "idiom": "universal"
     },
