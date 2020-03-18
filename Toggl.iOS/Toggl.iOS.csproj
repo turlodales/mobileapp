@@ -1390,15 +1390,21 @@
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage2BackgroundColor.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage3BackgroundColor.colorset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\eyeball%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\pupil%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand.png" />
-    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%402x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_hand.imageset\ic_hand%403x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\pupil.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\pupil%402x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_pupil.imageset\pupil%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\eyeball.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\eyeball%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyeball.imageset\eyeball%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

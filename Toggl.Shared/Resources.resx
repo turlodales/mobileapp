@@ -153,8 +153,8 @@ mobile, desktop or web.</value>
         <comment>Message shown in the third slide of the onboarding view</comment>
     </data>
     <data name="OnboardingMessagePage1" xml:space="preserve">
-        <value>Simple time tracking.
-Powerful reporting.</value>
+        <value>Time tracking so simple
+you’ll actually use it</value>
         <comment>Message shown in the onboarding view</comment>
     </data>
     <data name="OnboardingMessagePage2" xml:space="preserve">
