@@ -20,7 +20,7 @@ namespace Toggl.Droid.Fragments.Onboarding
             onboardingSurfaceView = view.FindViewById<SurfaceView>(Resource.Id.togglMan);
 
             onboardingSurfaceView.Holder.AddCallback(this);
-            onboardingMessage.Text = Shared.Resources.OnboardingMessageVariantA;
+            onboardingMessage.Text = Shared.Resources.OnboardingMessagePage1;
         }
         public void SurfaceChanged(ISurfaceHolder holder, Format format, int width, int height)
         {

@@ -11,7 +11,7 @@ namespace Toggl.Droid.Fragments.Onboarding
         {
             onboardingMessage = view.FindViewById<TextView>(Resource.Id.message);
 
-            onboardingMessage.Text = Shared.Resources.OnboardingMessageThirdSlideVariantA;
+            onboardingMessage.Text = Shared.Resources.OnboardingMessagePage3;
         }
     }
 }

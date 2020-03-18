@@ -137,21 +137,6 @@ Let’s get you set up to start tracking.</value>
         <value>Welcome back!</value>
         <comment>Displayed in the login view right above the email text field</comment>
     </data>
-    <data name="OnboardingMessageVariantA" xml:space="preserve">
-        <value>Time tracking so simple
-you'll actually use it.</value>
-        <comment>Message shown in the first slide of the onboarding view</comment>
-    </data>
-    <data name="OnboardingMessageSecondSlideVariantA" xml:space="preserve">
-        <value>Find out where
-the time goes...</value>
-        <comment>Message shown in the second slide of the onboarding view</comment>
-    </data>
-    <data name="OnboardingMessageThirdSlideVariantA" xml:space="preserve">
-        <value>Works where you do -
-mobile, desktop or web.</value>
-        <comment>Message shown in the third slide of the onboarding view</comment>
-    </data>
     <data name="OnboardingMessagePage1" xml:space="preserve">
         <value>Time tracking so simple
 you’ll actually use it</value>
