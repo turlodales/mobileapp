@@ -41,7 +41,6 @@
         <item name="contentInsetStartWithNavigation">2dp</item>
     </style>
 
-
     <style name="TextInputLayoutErrorAppearance" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/errorText</item>
         <item name="android:textSize">12sp</item>
@@ -127,13 +126,7 @@
     <style name="ModalActivityTheme" parent="@style/BaseAppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="LoginSignUpTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
