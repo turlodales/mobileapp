@@ -137,6 +137,7 @@ namespace Toggl.Core.UI.ViewModels
         {
             if (exception is GoogleLoginException)
             {
+                isLoadingSubject.OnNext(false);
                 View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
                 return;
             }
