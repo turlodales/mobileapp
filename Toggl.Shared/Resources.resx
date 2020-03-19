@@ -230,8 +230,8 @@ mobile, desktop or web</value>
         <value>Have an account?</value>
         <comment>Message shown in the sign up view to link to the login page</comment>
     </data>
-    <data name="GetPasswordResetLink" xml:space="preserve">
-        <value>Get password reset link</value>
+    <data name="ForgotPasswordSendEmail" xml:space="preserve">
+        <value>Send email</value>
         <comment>Message shown in the button to get a "reset password link" in forgot password screen</comment>
     </data>
     <data name="PasswordResetSuccess" xml:space="preserve">

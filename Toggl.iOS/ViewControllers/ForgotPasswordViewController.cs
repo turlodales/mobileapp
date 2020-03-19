@@ -29,7 +29,7 @@ namespace Toggl.iOS.ViewControllers
             base.ViewDidLoad();
 
             Title = Resources.LoginForgotPassword;
-            ResetPasswordButton.SetTitle(Resources.GetPasswordResetLink, UIControlState.Normal);
+            ResetPasswordButton.SetTitle(Resources.ForgotPasswordSendEmail, UIControlState.Normal);
             EmailTextField.Placeholder = Resources.EmailAddress;
             SuccessMessageLabel.Text = Resources.PasswordResetSuccess;
 
@@ -56,7 +56,7 @@ namespace Toggl.iOS.ViewControllers
                         ResetPasswordButton,
                         Animation.Timings.EnterTiming,
                         UIViewAnimationOptions.TransitionCrossDissolve,
-                        () => ResetPasswordButton.SetTitle(loading ? "" : Resources.GetPasswordResetLink, UIControlState.Normal),
+                        () => ResetPasswordButton.SetTitle(loading ? "" : Resources.ForgotPasswordSendEmail, UIControlState.Normal),
                         null
                     );
                 })
