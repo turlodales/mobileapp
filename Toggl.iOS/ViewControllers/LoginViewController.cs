@@ -31,12 +31,19 @@ namespace Toggl.iOS.ViewControllers
 
             var signUpButton = createSignUpButton();
             var closeButton = new UIBarButtonItem(
-                UIImage.FromBundle("icClose"),
+                UIImage.FromBundle("icClose").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate),
                 UIBarButtonItemStyle.Plain,
                 (sender, args) => ViewModel.Close());
+            closeButton.TintColor = ColorAssets.IconTint;
+
+            var backButton = new UIBarButtonItem("",
+                UIBarButtonItemStyle.Plain,
+                (sender, args) => ViewModel.Close());
+            backButton.TintColor = ColorAssets.IconTint;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(signUpButton);
             NavigationItem.LeftBarButtonItem = closeButton;
+            NavigationItem.BackBarButtonItem = backButton;
 
             //E-mail
             ViewModel.Email

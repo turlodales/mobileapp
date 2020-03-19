@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using CoreText;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
@@ -8,7 +7,6 @@ using Toggl.iOS.Extensions.Reactive;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
-using ColorAssets = Toggl.iOS.Shared.Extensions.ColorAssets;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -26,12 +24,19 @@ namespace Toggl.iOS.ViewControllers
 
             var loginButton = createLoginButton();
             var closeButton = new UIBarButtonItem(
-                UIImage.FromBundle("icClose"),
+                UIImage.FromBundle("icClose").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate),
                 UIBarButtonItemStyle.Plain,
                 (sender, args) => ViewModel.Close());
+            closeButton.TintColor = ColorAssets.IconTint;
+
+            var backButton = new UIBarButtonItem("",
+                UIBarButtonItemStyle.Plain,
+                (sender, args) => ViewModel.Close());
+            backButton.TintColor = ColorAssets.IconTint;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(loginButton);
             NavigationItem.LeftBarButtonItem = closeButton;
+            NavigationItem.BackBarButtonItem = backButton;
 
             //E-mail
             ViewModel.Email

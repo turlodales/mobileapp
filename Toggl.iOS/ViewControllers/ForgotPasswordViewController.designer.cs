@@ -6,7 +6,6 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
-using Toggl.iOS.Views;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -14,16 +13,19 @@ namespace Toggl.iOS.ViewControllers
 	partial class ForgotPasswordViewController
 	{
 		[Outlet]
-		ActivityIndicatorView ActivityIndicator { get; set; }
+		Toggl.iOS.Views.ActivityIndicatorView ActivityIndicator { get; set; }
 
 		[Outlet]
 		UIKit.UIView DoneCard { get; set; }
 
 		[Outlet]
-		LoginTextField EmailTextField { get; set; }
+		Toggl.iOS.Views.LoginTextField EmailTextField { get; set; }
 
 		[Outlet]
 		UIKit.UILabel ErrorLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel MessageLabel { get; set; }
 
 		[Outlet]
 		UIKit.UIButton ResetPasswordButton { get; set; }
@@ -33,7 +35,7 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.UILabel SuccessMessageLabel { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
 			if (ActivityIndicator != null) {
@@ -49,6 +51,11 @@ namespace Toggl.iOS.ViewControllers
 			if (EmailTextField != null) {
 				EmailTextField.Dispose ();
 				EmailTextField = null;
+			}
+
+			if (MessageLabel != null) {
+				MessageLabel.Dispose ();
+				MessageLabel = null;
 			}
 
 			if (ErrorLabel != null) {
