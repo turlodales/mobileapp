@@ -160,7 +160,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                View.DidNotReceive()
+                View.Received()
                     .Alert(
                         Arg.Any<string>(),
                         Arg.Any<string>(),
@@ -287,9 +287,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false),
-                    ReactiveTest.OnNext(2, true),
-                    ReactiveTest.OnNext(3, false)
+                    ReactiveTest.OnNext(1, false)
                 );
             }
 
