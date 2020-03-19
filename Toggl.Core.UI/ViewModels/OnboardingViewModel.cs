@@ -28,6 +28,7 @@ namespace Toggl.Core.UI.ViewModels
         private readonly IUserAccessManager userAccessManager;
         private readonly ILastTimeUsageStorage lastTimeUsageStorage;
         private readonly IInteractorFactory interactorFactory;
+        private readonly ISchedulerProvider schedulerProvider;
 
         private CompositeDisposable disposeBag = new CompositeDisposable();
 
@@ -68,6 +69,7 @@ namespace Toggl.Core.UI.ViewModels
             this.userAccessManager = userAccessManager;
             this.lastTimeUsageStorage = lastTimeUsageStorage;
             this.interactorFactory = interactorFactory;
+            this.schedulerProvider = schedulerProvider;
 
             ContinueWithApple = rxActionFactory.FromAction(continueWithApple);
             ContinueWithGoogle = rxActionFactory.FromAction(continueWithGoogle);
@@ -133,11 +135,11 @@ namespace Toggl.Core.UI.ViewModels
             await Navigate<MainTabBarViewModel>();
         }
 
-        private void onGoogleLoginFailure(Exception exception)
+        private async void onGoogleLoginFailure(Exception exception)
         {
-            if (exception is GoogleLoginException)
+            if (exception is GoogleLoginException googleException && !googleException.LoginWasCanceled)
             {
-                View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
+                await View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
                 return;
             }
 
@@ -165,17 +167,18 @@ namespace Toggl.Core.UI.ViewModels
                 )
                 .Merge()
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
+                .ObserveOn(schedulerProvider.MainScheduler)
                 .Subscribe(_ => onAuthenticated(), onSignUpError)
                 .DisposedBy(disposeBag);
         }
 
-        private void onSignUpError(Exception exception)
+        private async void onSignUpError(Exception exception)
         {
             isLoadingSubject.OnNext(false);
 
             analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
             analyticsService.TrackAnonymized(exception);
-            View.Alert(Resources.Oops, Resources.GenericSignUpError, Resources.Ok);
+            await View.Alert(Resources.Oops, Resources.GenericSignUpError, Resources.Ok);
         }
 
         private async Task<ICountry?> confirmCountryAndTermsOfService()
