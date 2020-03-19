@@ -298,9 +298,15 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string ReviewTheTerms {
+        public static string ReviewTheTermsWelcome {
             get {
-                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
+                return ResourceManager.GetString("ReviewTheTermsWelcome", resourceCulture);
+            }
+        }
+        
+        public static string ReviewTheTermsOneMoreThing {
+            get {
+                return ResourceManager.GetString("ReviewTheTermsOneMoreThing", resourceCulture);
             }
         }
         

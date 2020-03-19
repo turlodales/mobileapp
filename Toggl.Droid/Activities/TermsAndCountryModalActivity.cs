@@ -28,6 +28,7 @@ namespace Toggl.Droid.Activities
         protected override void InitializeViews()
         {
             base.InitializeViews();
+            WelcomeMessage.Text = Shared.Resources.ReviewTheTermsWelcome;
             FindViewById(Resource.Id.background).FitBottomMarginInset();
             closeButton = FindViewById(Resource.Id.close);
         }

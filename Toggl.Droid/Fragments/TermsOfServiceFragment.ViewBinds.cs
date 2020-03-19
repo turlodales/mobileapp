@@ -16,7 +16,7 @@ namespace Toggl.Droid.Fragments
             acceptButton = fragmentView.FindViewById<Button>(Resource.Id.AcceptButton);
             
             acceptButton.Text = Shared.Resources.IAgree;
-            reviewTheTermsTextView.Text = Shared.Resources.ReviewTheTerms;
+            reviewTheTermsTextView.Text = Shared.Resources.ReviewTheTermsWelcome;
         }
     }
 }

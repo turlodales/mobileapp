@@ -25,6 +25,8 @@ namespace Toggl.Droid.Activities
         {
             base.InitializeViews();
             
+            WelcomeMessage.Text = Shared.Resources.ReviewTheTermsOneMoreThing;
+
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             SupportActionBar.Title = "";
