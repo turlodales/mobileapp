@@ -33,6 +33,8 @@ namespace Toggl.Core.UI.ViewModels
 
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
 
+        private string googleToken;
+
         public IObservable<bool> IsLoading { get; }
 
         public ViewAction ContinueWithApple { get; }
@@ -108,6 +110,7 @@ namespace Toggl.Core.UI.ViewModels
         private async void tryLoggingInWithGoogle()
         {
             View?.GetGoogleToken()
+                .Do(token => googleToken = token)
                 .SelectMany(userAccessManager.LoginWithGoogle)
                 .Track(analyticsService.Login, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onGoogleLoginFailure)
@@ -133,7 +136,7 @@ namespace Toggl.Core.UI.ViewModels
         private void onGoogleLoginFailure(Exception exception)
         {
             var e = exception as GoogleLoginException;
-            
+
             if (e == null)
             {
                 isLoadingSubject.OnNext(false);
@@ -158,8 +161,8 @@ namespace Toggl.Core.UI.ViewModels
                 .Select(supportedTimezones =>
                     supportedTimezones.FirstOrDefault(tz => platformInfo.TimezoneIdentifier == tz)
                 )
-                .CombineLatest(View.GetGoogleToken(), (timezone, token) =>
-                    userAccessManager.SignUpWithGoogle(token, true, (int) country.Id, timezone)
+                .Select(timezone =>
+                    userAccessManager.SignUpWithGoogle(googleToken, true, (int) country.Id, timezone)
                 )
                 .Merge()
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
