@@ -137,14 +137,12 @@ namespace Toggl.Core.UI.ViewModels
         {
             if (exception is GoogleLoginException)
             {
-                isLoadingSubject.OnNext(false);
                 View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
                 return;
             }
 
             if (exception != null)
             {
-                isLoadingSubject.OnNext(false);
                 analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
                 analyticsService.TrackAnonymized(exception);
             }
@@ -158,14 +156,12 @@ namespace Toggl.Core.UI.ViewModels
 
             if (country == null) return;
 
-            isLoadingSubject.OnNext(true);
-
             interactorFactory.GetSupportedTimezones().Execute()
                 .Select(supportedTimezones =>
                     supportedTimezones.FirstOrDefault(tz => platformInfo.TimezoneIdentifier == tz)
                 )
                 .Select(timezone =>
-                    userAccessManager.SignUpWithGoogle(googleToken, true, (int) country.Id, timezone)
+                    userAccessManager.SignUpWithGoogle(googleToken, true, (int)country.Id, timezone)
                 )
                 .Merge()
                 .Track(analyticsService.SignUp, AuthenticationMethod.Google)
