@@ -10,6 +10,7 @@ using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
+using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
@@ -149,7 +150,26 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void DisplaysErrorWhenLoginFails()
+            public void DisplaysAnErrorWhenLoginFailsWithGoogleError()
+            {
+                UserAccessManager
+                    .LoginWithGoogle(Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+
+                ViewModel.ContinueWithGoogle.Execute();
+
+                TestScheduler.Start();
+
+                View.Received()
+                    .Alert(
+                        Arg.Any<string>(),
+                        Arg.Any<string>(),
+                        Arg.Any<string>())
+                    .Wait();
+            }
+
+            [Fact, LogIfTooSlow]
+            public void DoesntDisplayAnErrorWhenLoginFailsWithGenericError()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -159,16 +179,16 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                View.Received()
+                View.DidNotReceive()
                     .Alert(
-                        Arg.Is(Resources.Oops),
-                        Arg.Is(Resources.GenericLoginError),
-                        Arg.Is(Resources.Ok))
+                        Arg.Any<string>(),
+                        Arg.Any<string>(),
+                        Arg.Any<string>())
                     .Wait();
             }
 
             [Fact, LogIfTooSlow]
-            public void DoesntSetIsLoadingToFalseWhenLoginFails()
+            public void SetIsLoadingToTrueWhenLoginFails()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -181,7 +201,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false)
+                    ReactiveTest.OnNext(1, false),
+                    ReactiveTest.OnNext(2, true)
                 );
             }
 
@@ -190,7 +211,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -230,7 +251,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -249,7 +270,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void DoesntSetIsLoadingToFalseWhenSignupFails()
+            public void SetIsLoadingToFalseWhenSignupFails()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -297,7 +318,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Core.UI.Views;
+using Toggl.iOS.Presentation.Transition;
 using UIKit;
 
 namespace Toggl.iOS.Presentation
 {
     public sealed class NavigationPresenter : IosPresenter
     {
+        private readonly FromBottomTransitionDelegate fromBottomTransitionDelegate = new FromBottomTransitionDelegate();
         protected override HashSet<Type> AcceptedViewModels { get; } = new HashSet<Type>
         {
             typeof(AboutViewModel),
@@ -42,6 +44,14 @@ namespace Toggl.iOS.Presentation
 
                 if (!tryPushOnViewController(selectedController, viewController))
                     throw new Exception($"Failed to find a navigation controller to present view controller of type {viewController.GetType().Name}");
+            }
+            else
+            {
+                viewController.ModalPresentationStyle = UIModalPresentationStyle.Custom;
+                viewController.TransitioningDelegate = fromBottomTransitionDelegate;
+
+                UIViewController topmostViewController = FindPresentedViewController();
+                topmostViewController.PresentViewController(viewController, true, null);
             }
         }
 
