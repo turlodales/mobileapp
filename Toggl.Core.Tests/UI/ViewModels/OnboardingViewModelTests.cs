@@ -10,6 +10,7 @@ using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
+using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
@@ -149,7 +150,26 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void DoesntDisplayAnErrorWhenLoginFails()
+            public void DisplaysAnErrorWhenLoginFailsWithGoogleError()
+            {
+                UserAccessManager
+                    .LoginWithGoogle(Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+
+                ViewModel.ContinueWithGoogle.Execute();
+
+                TestScheduler.Start();
+
+                View.DidNotReceive()
+                    .Alert(
+                        Arg.Any<string>(),
+                        Arg.Any<string>(),
+                        Arg.Any<string>())
+                    .Wait();
+            }
+
+            [Fact, LogIfTooSlow]
+            public void DoesntDisplayAnErrorWhenLoginFailsWithGenericError()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -191,7 +211,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -231,7 +251,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -300,7 +320,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));

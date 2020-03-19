@@ -135,16 +135,18 @@ namespace Toggl.Core.UI.ViewModels
 
         private void onGoogleLoginFailure(Exception exception)
         {
-            var e = exception as GoogleLoginException;
+            if (exception is GoogleLoginException)
+            {
+                View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
+                return;
+            }
 
-            if (e == null)
+            if (exception != null)
             {
                 isLoadingSubject.OnNext(false);
                 analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
                 analyticsService.TrackAnonymized(exception);
             }
-
-            if (e != null && e.LoginWasCanceled) return;
 
             signUpWithGoogle();
         }
@@ -174,14 +176,8 @@ namespace Toggl.Core.UI.ViewModels
         {
             isLoadingSubject.OnNext(false);
 
-            var e = exception as GoogleLoginException;
-            if (e == null)
-            {
-                analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
-                analyticsService.TrackAnonymized(exception);
-            }
-            else if (e.LoginWasCanceled) return;
-
+            analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
+            analyticsService.TrackAnonymized(exception);
             View.Alert(Resources.Oops, Resources.GenericSignUpError, Resources.Ok);
         }
 
