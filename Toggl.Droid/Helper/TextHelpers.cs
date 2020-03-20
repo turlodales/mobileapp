@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Linq;
+using Toggl.Core.UI.Extensions;
 
 namespace Toggl.Droid.Helper
 {
@@ -19,6 +20,7 @@ namespace Toggl.Droid.Helper
             => Observable
                 .Interval(TimeSpan.FromMilliseconds(loadingMessageDotChangeIntervalInMilliseconds))
                 .Select(millis => millis % loadingMessages.Length)
-                .Select(dotIndex => loadingMessages[dotIndex]);
+                .Select(dotIndex => loadingMessages[dotIndex])
+                .AsDriver(AndroidDependencyContainer.Instance.SchedulerProvider);
     }
 }
