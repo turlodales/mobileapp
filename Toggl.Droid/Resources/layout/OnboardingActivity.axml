@@ -104,6 +104,22 @@
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="togglMan,togglLogo,message,continueWithGoogleButton,continueWithEmailButton" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/loadingViewsViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="loadingBackground,loadingIndicator" />
+
+        <FrameLayout
+            android:id="@+id/loadingBackground"
+            android:background="@color/onboardingFirstSlideBackgroundColor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        
         <ImageView
             android:id="@+id/loadingIndicator"
             android:layout_width="wrap_content"

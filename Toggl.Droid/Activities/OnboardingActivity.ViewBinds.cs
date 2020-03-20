@@ -19,6 +19,7 @@ namespace Toggl.Droid.Activities
         private Button continueWithEmailButton;
         private TextView loginGoogleLoginLabel;
         private Group notLoadingViewViews;
+        private Group loadingViewViews;
         private ImageView loadingViewIndicator;
         private AnimationDrawable loadingAnimation;
         private ViewPager onboardingViewPager;
@@ -27,6 +28,7 @@ namespace Toggl.Droid.Activities
         protected override void InitializeViews()
         {
             notLoadingViewViews = FindViewById<Group>(Resource.Id.notLoadingViewsViewGroup);
+            loadingViewViews = FindViewById<Group>(Resource.Id.loadingViewsViewGroup);
             loadingViewIndicator = FindViewById<ImageView>(Resource.Id.loadingIndicator);
             continueWithGoogleButton = FindViewById(Resource.Id.continueWithGoogleButton);
             continueWithEmailButton = FindViewById<Button>(Resource.Id.continueWithEmailButton);
