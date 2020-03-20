@@ -637,6 +637,7 @@
     </Compile>
     <Compile Include="Helper\ActiveTheme.cs" />
     <Compile Include="Helper\ITabLayoutReadyListener.cs" />
+    <Compile Include="Helper\TextHelpers.cs" />
     <Compile Include="LayoutManagers\UnpredictiveLinearLayoutManager.cs" />
     <Compile Include="Helper\AppWidgetProviderUtils.cs" />
     <Compile Include="Helper\NotificationsConstants.cs" />

@@ -130,7 +130,8 @@
     </data>
     <data name="SignUpWelcomeMessage" xml:space="preserve">
         <value>Welcome to Toggl!
-Let’s get you set up to start tracking.</value>
+Let’s get you set up
+to start tracking.</value>
         <comment>Displayed in the sign up view right above the email text field</comment>
     </data>
     <data name="LoginWelcomeMessage" xml:space="preserve">
