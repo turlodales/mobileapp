@@ -42,7 +42,7 @@ namespace Toggl.Droid.Activities
             signUpButton.Text = Shared.Resources.SignUp;
 
             var loginLabelText = new SpannableStringBuilder();
-            loginLabelText.Append(Shared.Resources.HaveAnAccountQuestionMark, new TypefaceSpan(Typeface.SansSerif), SpanTypes.ExclusiveExclusive);
+            loginLabelText.Append(Shared.Resources.HaveAnAccountQuestionMark, new TypefaceSpan("sans-serif"), SpanTypes.ExclusiveExclusive);
             loginLabelText.Append(" ");
             loginLabelText.Append(Shared.Resources.LoginTitle, new TypefaceSpan("sans-serif-medium"), SpanTypes.ExclusiveExclusive);
             loginLabelText.SetSpan(new UnderlineSpan(), Shared.Resources.HaveAnAccountQuestionMark.Length + 1, loginLabelText.Length(), SpanTypes.ExclusiveExclusive);
