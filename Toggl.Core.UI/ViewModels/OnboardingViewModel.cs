@@ -113,6 +113,7 @@ namespace Toggl.Core.UI.ViewModels
         {
             View?.GetGoogleToken()
                 .Do(token => googleToken = token)
+                .Do(_ => isLoadingSubject.OnNext(true))
                 .SelectMany(userAccessManager.LoginWithGoogle)
                 .Track(analyticsService.Login, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onGoogleLoginFailure)
@@ -121,8 +122,6 @@ namespace Toggl.Core.UI.ViewModels
 
         private async void onAuthenticated()
         {
-            isLoadingSubject.OnNext(true);
-
             lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
 
             interactorFactory.GetCurrentUser().Execute()
@@ -137,9 +136,13 @@ namespace Toggl.Core.UI.ViewModels
 
         private async void onGoogleLoginFailure(Exception exception)
         {
-            if (exception is GoogleLoginException googleException && !googleException.LoginWasCanceled)
+            if (exception is GoogleLoginException googleException)
             {
-                await View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
+                isLoadingSubject.OnNext(false);
+                if (!googleException.LoginWasCanceled)
+                {
+                    await View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
+                }
                 return;
             }
 
@@ -156,7 +159,11 @@ namespace Toggl.Core.UI.ViewModels
         {
             var country = await confirmCountryAndTermsOfService();
 
-            if (country == null) return;
+            if (country == null)
+            {
+                isLoadingSubject.OnNext(false);
+                return;
+            }
 
             interactorFactory.GetSupportedTimezones().Execute()
                 .Select(supportedTimezones =>
