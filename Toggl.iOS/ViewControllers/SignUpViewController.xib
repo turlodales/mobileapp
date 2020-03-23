@@ -12,6 +12,7 @@
             <connections>
                 <outlet property="EmailErrorLabel" destination="MbC-bd-XyU" id="SWq-vG-f7f"/>
                 <outlet property="EmailTextField" destination="hEQ-Vf-Gmg" id="7qu-hb-MMc"/>
+                <outlet property="LogoImageView" destination="pkl-Qo-4zi" id="29R-ep-s77"/>
                 <outlet property="PasswordErrorLabel" destination="Nuw-iI-A7t" id="aSu-k2-3iy"/>
                 <outlet property="PasswordTextField" destination="H0f-jb-3dm" id="Ife-n4-OW6"/>
                 <outlet property="ShowPasswordButton" destination="hAN-UE-n4f" id="0z2-g1-B11"/>
