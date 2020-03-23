@@ -99,6 +99,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private Task continueWithEmail()
         {
+            analyticsService.ContinueWithEmail.Track();
             if (lastTimeUsageStorage.LastLogin == null)
             {
                 return Navigate<SignUpViewModel, CredentialsParameter>(CredentialsParameter.Empty);

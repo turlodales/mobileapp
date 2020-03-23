@@ -245,6 +245,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
+        IAnalyticsEvent ContinueWithEmail { get; }
+
         void SetUserId(long id);
         void ResetUserId();
 
