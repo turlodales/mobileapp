@@ -11,7 +11,7 @@ using UIKit;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public partial class LoginViewController : ReactiveViewController<LoginViewModel>
+    public partial class LoginViewController : KeyboardAwareViewController<LoginViewModel>
     {
         private readonly UIStringAttributes plainTextAttributes = new UIStringAttributes
         {
@@ -195,6 +195,17 @@ namespace Toggl.iOS.ViewControllers
 
 
             EmailTextField.BecomeFirstResponder();
+        }
+
+        protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
+        {
+            var keyboardHeight = e.FrameEnd.Height;
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
+        }
+
+        protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
+        {
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
         }
 
         private float opacityForLoadingState(bool isLoading)

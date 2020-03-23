@@ -11,7 +11,7 @@ using UIKit;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public sealed partial class ForgotPasswordViewController : ReactiveViewController<ForgotPasswordViewModel>
+    public sealed partial class ForgotPasswordViewController : KeyboardAwareViewController<ForgotPasswordViewModel>
     {
         private bool viewInitialized;
 
@@ -24,7 +24,7 @@ namespace Toggl.iOS.ViewControllers
         {
             base.ViewDidLoad();
 
-            ResetPasswordButton.SetTitle(Resources.GetPasswordResetLink, UIControlState.Normal);
+            ResetPasswordButton.SetTitle(Resources.SendEmail, UIControlState.Normal);
             EmailTextField.Placeholder = Resources.EmailAddress;
             SuccessMessageLabel.Text = Resources.PasswordResetSuccess;
 
@@ -107,6 +107,17 @@ namespace Toggl.iOS.ViewControllers
             if (viewInitialized) return;
 
             viewInitialized = true;
+        }
+
+        protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
+        {
+            var keyboardHeight = e.FrameEnd.Height;
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
+        }
+
+        protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
+        {
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
         }
 
         private void prepareViews()

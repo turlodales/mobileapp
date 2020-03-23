@@ -31,13 +31,18 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton ResetPasswordButton { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint ResetPasswordButtonBottomConstraint { get; set; }
+		UIKit.UIScrollView ScrollView { get; set; }
 
 		[Outlet]
 		UIKit.UILabel SuccessMessageLabel { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ScrollView != null) {
+				ScrollView.Dispose ();
+				ScrollView = null;
+			}
+
 			if (ActivityIndicator != null) {
 				ActivityIndicator.Dispose ();
 				ActivityIndicator = null;
@@ -53,24 +58,19 @@ namespace Toggl.iOS.ViewControllers
 				EmailTextField = null;
 			}
 
-			if (MessageLabel != null) {
-				MessageLabel.Dispose ();
-				MessageLabel = null;
-			}
-
 			if (ErrorLabel != null) {
 				ErrorLabel.Dispose ();
 				ErrorLabel = null;
 			}
 
+			if (MessageLabel != null) {
+				MessageLabel.Dispose ();
+				MessageLabel = null;
+			}
+
 			if (ResetPasswordButton != null) {
 				ResetPasswordButton.Dispose ();
 				ResetPasswordButton = null;
-			}
-
-			if (ResetPasswordButtonBottomConstraint != null) {
-				ResetPasswordButtonBottomConstraint.Dispose ();
-				ResetPasswordButtonBottomConstraint = null;
 			}
 
 			if (SuccessMessageLabel != null) {
