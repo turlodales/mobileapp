@@ -14,7 +14,7 @@ namespace Toggl.iOS.ViewControllers
     public partial class TermsAndCountryViewController : ReactiveViewController<TermsAndCountryViewModel>
     {
         private const int fontSize = 15;
-        private const int headerFontSize = 28;
+        private const int headerFontSize = 25;
         private const float headerLineHeight = 38;
 
         private readonly NSRange privacyPolicyRange;

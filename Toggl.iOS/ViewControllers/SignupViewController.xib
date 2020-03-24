@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -40,15 +39,15 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QDR-8j-caJ">
-                            <rect key="frame" x="40" y="87" width="295" height="100.5"/>
+                            <rect key="frame" x="40" y="87" width="295" height="90"/>
                             <string key="text">Welcome to Toggl!
 Let’s get you set up to start tracking.</string>
-                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="28"/>
+                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
                             <color key="textColor" name="Text"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hEQ-Vf-Gmg" customClass="EmailTextField">
-                            <rect key="frame" x="40" y="219.5" width="295" height="52"/>
+                            <rect key="frame" x="40" y="209" width="295" height="52"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="vC6-Ne-j8C"/>
                             </constraints>
@@ -57,13 +56,13 @@ Let’s get you set up to start tracking.</string>
                             <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
                         </textField>
                         <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Set password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H0f-jb-3dm" customClass="LoginTextField">
-                            <rect key="frame" x="40" y="302.5" width="295" height="52"/>
+                            <rect key="frame" x="40" y="292" width="295" height="52"/>
                             <color key="textColor" name="Text"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES" textContentType="new-password"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CHf-dF-04X">
-                            <rect key="frame" x="40" y="400.5" width="295" height="44"/>
+                            <rect key="frame" x="40" y="390" width="295" height="44"/>
                             <color key="backgroundColor" red="1" green="0.1764705882352941" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="QCH-OK-wII"/>
@@ -79,25 +78,25 @@ Let’s get you set up to start tracking.</string>
                             </userDefinedRuntimeAttributes>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid email address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbC-bd-XyU">
-                            <rect key="frame" x="40" y="271.5" width="295" height="15"/>
+                            <rect key="frame" x="40" y="261" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" name="ErrorText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nuw-iI-A7t">
-                            <rect key="frame" x="40" y="354.5" width="295" height="15"/>
+                            <rect key="frame" x="40" y="344" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" name="ErrorText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter correct email/password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YcB-IX-rLm">
-                            <rect key="frame" x="40" y="369.5" width="295" height="15"/>
+                            <rect key="frame" x="40" y="359" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" name="ErrorText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAN-UE-n4f">
-                            <rect key="frame" x="295" y="314.5" width="40" height="40"/>
+                            <rect key="frame" x="295" y="304" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="hAN-UE-n4f" secondAttribute="height" multiplier="1:1" id="QLo-m6-m9Y"/>
                             </constraints>

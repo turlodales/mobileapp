@@ -73,7 +73,7 @@ namespace Toggl.iOS
 
             var attributes = new UIStringAttributes();
             attributes.ForegroundColor = ColorAssets.InverseText;
-            attributes.Font = UIFont.SystemFontOfSize(28);
+            attributes.Font = UIFont.SystemFontOfSize(25);
             attributes.ParagraphStyle = paragraphStyle;
 
             var messageAttributedString = new NSMutableAttributedString(message);
