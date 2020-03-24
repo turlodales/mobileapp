@@ -4,8 +4,10 @@ using System.Reactive.Linq;
 using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using NSubstitute;
+using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Tests.Generators;
+using Toggl.Core.UI.Models;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
@@ -312,6 +314,15 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     .Received()
                     .SetLogin(Arg.Is(now));
             }
+
+            [Fact, LogIfTooSlow]
+            public void TracksTheViewedPages()
+            {
+                TestScheduler.Start();
+
+                ViewModel.ContinueWithEmail.Execute();
+                AnalyticsService.Received().OnboardingPagesViewed.Track(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<bool>());
+            }
         }
 
         public sealed class ContinueWithEmail : OnboardingViewModelTest
@@ -360,6 +371,102 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 observer.Messages.AssertEqual(
                     ReactiveTest.OnNext(1, false)
                 );
+            }
+
+            [Fact, LogIfTooSlow]
+            public void TracksTheViewedPages()
+            {
+                TestScheduler.Start();
+
+                ViewModel.ContinueWithGoogle.Execute();
+                AnalyticsService.Received().OnboardingPagesViewed.Track(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<bool>());
+            }
+        }
+
+        public sealed class TheOnboardingScrollAction : OnboardingViewModelTest
+        {
+            [Fact, LogIfTooSlow]
+            public void TracksTheOnboardingScrolledEvent()
+            {
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.Right,
+                    PageNumber = 0,
+                });
+
+                TestScheduler.Start();
+
+                AnalyticsService.Received().OnboardingPageScroll.Track(OnboardingScrollAction.Automatic, OnboardingScrollDirection.Right, 2);
+            }
+
+            [Fact, LogIfTooSlow]
+            public void TracksFirstPageViewed()
+            {
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.Right,
+                    PageNumber = 0,
+                });
+
+                TestScheduler.Start();
+
+                ViewModel.ContinueWithGoogle.Execute();
+                AnalyticsService.Received().OnboardingPagesViewed.Track(true, false, false);
+            }
+
+            [Fact, LogIfTooSlow]
+            public void TracksFirstTwoPagesViewed()
+            {
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.None,
+                    PageNumber = 0,
+                });
+
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.Right,
+                    PageNumber = 1,
+                });
+
+                TestScheduler.Start();
+
+                ViewModel.ContinueWithGoogle.Execute();
+                AnalyticsService.Received().OnboardingPagesViewed.Track(true, true, false);
+            }
+
+            [Fact, LogIfTooSlow]
+            public void TracksAllTheViewedPages()
+            {
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.None,
+                    PageNumber = 0,
+                });
+
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.Right,
+                    PageNumber = 1,
+                });
+
+                ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+                {
+                    Action = OnboardingScrollAction.Automatic,
+                    Direction = OnboardingScrollDirection.Right,
+                    PageNumber = 2,
+                });
+
+                TestScheduler.Start();
+
+                ViewModel.ContinueWithGoogle.Execute();
+                AnalyticsService.Received().OnboardingPagesViewed.Track(true, true, true);
             }
         }
     }

@@ -173,6 +173,10 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
 
+        IAnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int> OnboardingPageScroll { get; }
+
+        IAnalyticsEvent<bool, bool, bool> OnboardingPagesViewed { get; }
+
         IAnalyticsEvent IncorrectEmailOrPasswordSignUpFailure { get; }
 
         IAnalyticsEvent IncorrectEmailOrPasswordLoginFailure { get; }

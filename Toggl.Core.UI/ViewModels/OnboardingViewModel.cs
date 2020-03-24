@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -11,6 +12,7 @@ using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
+using Toggl.Core.UI.Models;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Shared;
@@ -33,11 +35,15 @@ namespace Toggl.Core.UI.ViewModels
 
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
 
+        private List<bool> onboardingPagesViewed = new List<bool> { false, false, false };
+
         public IObservable<bool> IsLoading { get; }
 
         public ViewAction ContinueWithApple { get; }
         public ViewAction ContinueWithGoogle { get; }
         public ViewAction ContinueWithEmail { get; }
+
+        public InputAction<OnboardingScrollParameters> OnOnboardingScroll { get; }
 
         public OnboardingViewModel(
             ISchedulerProvider schedulerProvider,
@@ -70,6 +76,7 @@ namespace Toggl.Core.UI.ViewModels
             ContinueWithApple = rxActionFactory.FromAction(continueWithApple);
             ContinueWithGoogle = rxActionFactory.FromAction(continueWithGoogle);
             ContinueWithEmail = rxActionFactory.FromAsync(continueWithEmail);
+            OnOnboardingScroll = rxActionFactory.FromAction<OnboardingScrollParameters>(onOnboardingScroll);
 
             IsLoading = isLoadingSubject
                 .DistinctUntilChanged()
@@ -84,17 +91,20 @@ namespace Toggl.Core.UI.ViewModels
 
         private void continueWithApple()
         {
+            trackViewedPages();
             // TODO: Apple login code goes here
         }
 
         private void continueWithGoogle()
         {
+            trackViewedPages();
             analyticsService.ContinueWithGoogle.Track();
             tryLoggingInWithGoogle();
         }
 
         private Task continueWithEmail()
         {
+            trackViewedPages();
             if (lastTimeUsageStorage.LastLogin == null)
             {
                 return Navigate<SignUpViewModel, CredentialsParameter>(CredentialsParameter.Empty);
@@ -187,5 +197,16 @@ namespace Toggl.Core.UI.ViewModels
 
         private async Task<ICountry?> confirmCountryAndTermsOfService()
             => await Navigate<TermsAndCountryViewModel, ICountry?>();
+
+        private void onOnboardingScroll(OnboardingScrollParameters parameters)
+        {
+            onboardingPagesViewed[parameters.PageNumber] = true;
+            analyticsService.OnboardingPageScroll.Track(parameters.Action, parameters.Direction, parameters.PageNumber);
+        }
+
+        private void trackViewedPages()
+        {
+            analyticsService.OnboardingPagesViewed.Track(onboardingPagesViewed[0], onboardingPagesViewed[1], onboardingPagesViewed[2]);
+        }
     }
 }
