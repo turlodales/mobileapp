@@ -975,6 +975,7 @@
     <AndroidResource Include="Resources\drawable\background_timer_widget.xml" />
     <AndroidResource Include="Resources\drawable\ic_close.xml" />
     <AndroidResource Include="Resources\drawable\ic_stop_big.xml" />
+    <AndroidResource Include="Resources\drawable\ic_toggl_logo_onboarding.xml" />
     <AndroidResource Include="Resources\drawable\loadinganimation01_02.xml" />
     <AndroidResource Include="Resources\drawable\loadinganimation01_03.xml" />
     <AndroidResource Include="Resources\drawable\loadinganimation01_04.xml" />
