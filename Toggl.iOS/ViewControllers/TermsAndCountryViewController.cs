@@ -82,6 +82,12 @@ namespace Toggl.iOS.ViewControllers
             ConfirmButton.Rx()
                 .BindAction(ViewModel.Accept)
                 .DisposedBy(DisposeBag);
+
+            BackButton.Rx()
+                .BindAction(ViewModel.Cancel)
+                .DisposedBy(DisposeBag);
+
+            BackButton.Hidden = NavigationController != null;
         }
 
         private void prepareTextView()

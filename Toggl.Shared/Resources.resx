@@ -288,7 +288,7 @@ Please try again.</value>
         <comment>@Invariant</comment>
     </data>
     <data name="ReviewTheTerms" xml:space="preserve">
-        <value>Just one more thing.
+        <value>Welcome to Toggl!
 Please review
 the details below.</value>
         <comment>The header of the terms of service / country selection screen</comment>

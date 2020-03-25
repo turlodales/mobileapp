@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsAndCountryViewController">
             <connections>
+                <outlet property="BackButton" destination="xR6-jD-yPS" id="LvB-Yn-zYq"/>
                 <outlet property="ConfirmButton" destination="QQ5-Aj-kaC" id="cpN-et-LiZ"/>
                 <outlet property="CountryOfResidenceLabel" destination="xaZ-D1-Wcb" id="uLt-KR-viD"/>
                 <outlet property="CountrySelectionButton" destination="lls-E0-dPq" id="CZa-tk-77U"/>
@@ -38,7 +40,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icErrorSmall" translatesAutoresizingMaskIntoConstraints="NO" id="uL7-Rd-Lk1">
-                    <rect key="frame" x="40" y="272.5" width="22" height="22"/>
+                    <rect key="frame" x="40" y="278" width="11" height="11"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lls-E0-dPq">
                     <rect key="frame" x="39" y="261.5" width="265" height="44"/>
@@ -84,6 +86,10 @@
                         <color key="titleColor" name="Background"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xR6-jD-yPS">
+                    <rect key="frame" x="0.0" y="6" width="40" height="40"/>
+                    <state key="normal" image="icBack"/>
+                </button>
             </subviews>
             <color key="backgroundColor" name="Background"/>
             <constraints>
@@ -103,6 +109,8 @@
                 <constraint firstItem="lls-E0-dPq" firstAttribute="top" secondItem="xaZ-D1-Wcb" secondAttribute="bottom" constant="5" id="Zd8-Op-ugN"/>
                 <constraint firstItem="xaZ-D1-Wcb" firstAttribute="top" secondItem="bJC-bA-eam" secondAttribute="bottom" constant="32" id="apn-GP-kGQ"/>
                 <constraint firstItem="PmH-Ml-R9N" firstAttribute="top" secondItem="lls-E0-dPq" secondAttribute="bottom" id="bAZ-oC-RNR"/>
+                <constraint firstItem="xR6-jD-yPS" firstAttribute="leading" secondItem="Qyk-Yx-Tae" secondAttribute="leading" id="gOg-Bk-Oso"/>
+                <constraint firstItem="xR6-jD-yPS" firstAttribute="top" secondItem="Qyk-Yx-Tae" secondAttribute="top" constant="6" id="h2n-1R-9Lm"/>
                 <constraint firstItem="QQ5-Aj-kaC" firstAttribute="centerX" secondItem="Qyk-Yx-Tae" secondAttribute="centerX" id="lYc-hI-kcP"/>
                 <constraint firstItem="PmH-Ml-R9N" firstAttribute="trailing" secondItem="lls-E0-dPq" secondAttribute="trailing" id="n3O-ee-rk0"/>
                 <constraint firstItem="Grp-N8-qhZ" firstAttribute="centerY" secondItem="lls-E0-dPq" secondAttribute="centerY" id="ojn-4c-h7g"/>
@@ -116,6 +124,7 @@
         </view>
     </objects>
     <resources>
+        <image name="icBack" width="40" height="40"/>
         <image name="icDownS" width="8" height="5"/>
         <image name="icErrorSmall" width="11" height="11"/>
         <namedColor name="Background">
