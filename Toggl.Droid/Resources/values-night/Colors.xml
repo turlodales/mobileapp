@@ -27,6 +27,7 @@
   <color name="placeholderBarRegular">#0FFFFFFF</color>
   <color name="placeholderDonut">#FF4E4E4E</color>
   <color name="donutSelectionDurationText">#E0E0E0</color>
+  <color name="nonBillable">#FF2F3B49</color>
 
   <!-- DateRange picker -->
   <color name="dateRangePickerBackground">#323232</color>
