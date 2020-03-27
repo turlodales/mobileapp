@@ -31,6 +31,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
         private readonly BehaviorSubject<DateTimeOffset> currentStartTimeOffset = new BehaviorSubject<DateTimeOffset>(default);
         private readonly ISubject<CalendarItem?> calendarItemInEditMode = new Subject<CalendarItem?>();
         private readonly ISubject<CalendarItem> calendarItemRemoved = new Subject<CalendarItem>();
+        private readonly ISubject<CalendarItem> calendarItemUpdated = new Subject<CalendarItem>();
 
         private readonly IInteractorFactory interactorFactory;
         private readonly ISchedulerProvider schedulerProvider;
@@ -56,6 +57,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
         public IObservable<CalendarItem?> CalendarItemInEditMode { get; }
 
         public IObservable<CalendarItem> CalendarItemRemoved { get; }
+
+        public IObservable<CalendarItem> CalendarItemUpdated { get; }
 
         public InputAction<CalendarItem?> OnCalendarItemUpdated { get; }
 
@@ -98,6 +101,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
             MenuVisible = menuVisibilitySubject.AsDriver(schedulerProvider);
             CalendarItemInEditMode = calendarItemInEditMode.AsDriver(schedulerProvider);
             CalendarItemRemoved = calendarItemRemoved.AsDriver(schedulerProvider);
+            CalendarItemUpdated = calendarItemUpdated.AsDriver(schedulerProvider);
 
             var useTwentyFourHourFormatObservable = interactorFactory
                 .ObserveCurrentPreferences().Execute()
@@ -372,8 +376,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
         private async Task stopTimeEntry(CalendarItem calendarItem)
         {
             var currentDateTime = timeService.CurrentDateTime;
+            calendarItemUpdated.OnNext(calendarItem.WithDuration(currentDateTime - calendarItem.StartTime));
             await interactorFactory.StopTimeEntry(currentDateTime, TimeEntryStopOrigin.CalendarContextualMenu).Execute();
-
             closeMenuWithCommittedChanges();
         }
 

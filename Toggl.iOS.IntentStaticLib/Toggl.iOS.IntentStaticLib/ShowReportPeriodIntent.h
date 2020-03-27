@@ -4,6 +4,8 @@
 // This file was automatically generated and should not be edited.
 //
 
+#if __has_include(<Intents/Intents.h>)
+
 #import <Intents/Intents.h>
 
 typedef NS_ENUM(NSInteger, ShowReportPeriodReportPeriod) {
@@ -16,11 +18,11 @@ typedef NS_ENUM(NSInteger, ShowReportPeriodReportPeriod) {
     ShowReportPeriodReportPeriodLastMonth = 6,
     ShowReportPeriodReportPeriodThisYear = 7,
     ShowReportPeriodReportPeriodLastYear = 8
-} API_AVAILABLE(ios(12.0), watchos(5.0));
+} API_DEPRECATED("ShowReportPeriodReportPeriod is deprecated. Please use ReportPeriod instead. You can update this by tapping the warning icon next to this enum in the Intent Definition file", ios(12.0, 12.0), watchos(5.0, 5.0));
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface ShowReportPeriodIntent : INIntent
 
 @property (readwrite, assign, nonatomic) ShowReportPeriodReportPeriod period;
@@ -34,7 +36,7 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
  @abstract Protocol to declare support for handling a ShowReportPeriodIntent. By implementing this protocol, a class can provide logic for resolving, confirming and handling the intent.
  @discussion The minimum requirement for an implementing class is that it should be able to handle the intent. The confirmation method is optional. The handling method is always called last, after confirming the intent.
  */
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @protocol ShowReportPeriodIntentHandling <NSObject>
 
 @required
@@ -75,10 +77,10 @@ typedef NS_ENUM(NSInteger, ShowReportPeriodIntentResponseCode) {
     ShowReportPeriodIntentResponseCodeInProgress,
     ShowReportPeriodIntentResponseCodeSuccess,
     ShowReportPeriodIntentResponseCodeFailure,
-    ShowReportPeriodIntentResponseCodeFailureRequiringAppLaunch,
-} API_AVAILABLE(ios(12.0), watchos(5.0));
+    ShowReportPeriodIntentResponseCodeFailureRequiringAppLaunch
+} API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos);
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface ShowReportPeriodIntentResponse : INIntentResponse
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -107,3 +109,5 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

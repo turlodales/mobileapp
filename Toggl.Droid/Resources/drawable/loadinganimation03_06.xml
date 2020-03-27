@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:viewportWidth="64"
+    android:viewportHeight="64"
+    android:width="64dp"
+    android:height="64dp">
+    <group
+        android:rotation="-60"
+        android:translateX="-11.71281"
+        android:translateY="43.71281">
+        <path
+            android:pathData="M8 32C8 45.2748735 18.7251265 56 32 56C45.2748735 56 56 45.2748735 56 32C56 18.7251265 45.2344013 8 32 8C18.7655987 8 8 18.7251265 8 32ZM38.0295335 37.4646323C39.3963983 35.9692453 40.2323049 33.96449 40.2323049 31.7606648C40.2323049 28.2105263 38.076225 25.1789474 35.0185118 23.9822715L35.0185118 20.6315789C39.8402904 21.9878116 43.3684211 26.4554017 43.3684211 31.800554C43.3684211 34.7158057 42.3051424 37.3813807 40.5521832 39.4171266C39.6222887 40.4970313 37.3549078 38.202691 38.0295335 37.4646323Z"
+            android:fillType="evenOdd"
+            android:fillColor="@color/onboardingLoadingIndicatorColor" />
+    </group>
+</vector>

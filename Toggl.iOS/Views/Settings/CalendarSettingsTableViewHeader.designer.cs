@@ -13,22 +13,27 @@ namespace Toggl.iOS
 	partial class CalendarSettingsTableViewHeader
 	{
 		[Outlet]
-		UIKit.UILabel CalendarPermissionStatusLabel { get; set; }
-
-		[Outlet]
 		UIKit.UILabel DescriptionLabel { get; set; }
 
 		[Outlet]
 		UIKit.UIView EnableCalendarAccessView { get; set; }
 
 		[Outlet]
-		UIKit.UILabel TextLabel { get; set; }
+		UIKit.UISwitch LinkCalendarsSwitch { get; set; }
 
+		[Outlet]
+		UIKit.UILabel TextLabel { get; set; }
+		
 		void ReleaseDesignerOutlets ()
 		{
-			if (CalendarPermissionStatusLabel != null) {
-				CalendarPermissionStatusLabel.Dispose ();
-				CalendarPermissionStatusLabel = null;
+			if (DescriptionLabel != null) {
+				DescriptionLabel.Dispose ();
+				DescriptionLabel = null;
+			}
+
+			if (LinkCalendarsSwitch != null) {
+				LinkCalendarsSwitch.Dispose ();
+				LinkCalendarsSwitch = null;
 			}
 
 			if (EnableCalendarAccessView != null) {
@@ -39,11 +44,6 @@ namespace Toggl.iOS
 			if (TextLabel != null) {
 				TextLabel.Dispose ();
 				TextLabel = null;
-			}
-
-			if (DescriptionLabel != null) {
-				DescriptionLabel.Dispose ();
-				DescriptionLabel = null;
 			}
 		}
 	}

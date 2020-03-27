@@ -33,8 +33,9 @@ namespace Toggl.iOS.Services
                 {
                     INVoiceShortcutCenter.SharedCenter.GetAllVoiceShortcuts((shortcuts, error) =>
                     {
-                        var siriShortcuts = shortcuts
-                            .Select(shortcut => new SiriShortcut(shortcut));
+                        var siriShortcuts =
+                            shortcuts?.Select(shortcut => new SiriShortcut(shortcut))
+                            ?? Enumerable.Empty<SiriShortcut>();
 
                         observer.OnNext(siriShortcuts);
                     });
@@ -105,6 +106,12 @@ namespace Toggl.iOS.Services
                 {
                     var projectINObject = new INObject(timeEntry.ProjectId.ToString(), timeEntry.Project.Name);
                     startTimerIntent.ProjectId = projectINObject;
+
+                    if (timeEntry.TaskId is long taskId)
+                    {
+                        var taskINObject = new INObject(timeEntry.TaskId.ToString(), timeEntry.Task.Name);
+                        startTimerIntent.TaskId = taskINObject;
+                    }
                 }
 
                 startTimerIntent.EntryDescription = timeEntry.Description;

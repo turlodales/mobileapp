@@ -4,14 +4,14 @@
 // This file was automatically generated and should not be edited.
 //
 
+#if __has_include(<Intents/Intents.h>)
+
 #import <Intents/Intents.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface ShowReportIntent : INIntent
-
-
 
 @end
 
@@ -21,7 +21,7 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
  @abstract Protocol to declare support for handling a ShowReportIntent. By implementing this protocol, a class can provide logic for resolving, confirming and handling the intent.
  @discussion The minimum requirement for an implementing class is that it should be able to handle the intent. The confirmation method is optional. The handling method is always called last, after confirming the intent.
  */
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @protocol ShowReportIntentHandling <NSObject>
 
 @required
@@ -62,10 +62,10 @@ typedef NS_ENUM(NSInteger, ShowReportIntentResponseCode) {
     ShowReportIntentResponseCodeInProgress,
     ShowReportIntentResponseCodeSuccess,
     ShowReportIntentResponseCodeFailure,
-    ShowReportIntentResponseCodeFailureRequiringAppLaunch,
-} API_AVAILABLE(ios(12.0), watchos(5.0));
+    ShowReportIntentResponseCodeFailureRequiringAppLaunch
+} API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos);
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface ShowReportIntentResponse : INIntentResponse
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -79,8 +79,6 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
  */
 - (instancetype)initWithCode:(ShowReportIntentResponseCode)code userActivity:(nullable NSUserActivity *)userActivity NS_DESIGNATED_INITIALIZER;
 
-
-
 /*!
  @abstract The response code indicating your success or failure in confirming or handling the intent.
  */
@@ -89,3 +87,5 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

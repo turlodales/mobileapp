@@ -15,6 +15,10 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<SignUpErrorSource> SignUpError { get; }
 
+        IAnalyticsEvent ContinueWithGoogle { get;  }
+
+        IAnalyticsEvent ContinueWithApple { get;  }
+
         IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
         IAnalyticsEvent<string> OnboardingSkip { get; }
@@ -153,6 +157,36 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<int> RateLimitingDelayDuringSyncing { get; }
 
+        IAnalyticsEvent EmailIsAlreadyInUsedSignUpFailure { get; }
+
+        IAnalyticsEvent<bool> LocalEmailValidationSignUpCheck { get; }
+
+        IAnalyticsEvent<bool> LocalPasswordValidationSignUpCheck { get; }
+
+        IAnalyticsEvent<bool> LocalCountryValidationSignUpCheck { get; }
+
+        IAnalyticsEvent OnboardingCountryNotSelected { get; }
+
+        IAnalyticsEvent<string> OnboardingSelectedCountry { get; }
+
+        IAnalyticsEvent OnboardingPrivacyPolicyOpened { get; }
+
+        IAnalyticsEvent OnboardingTermsOfServiceOpened { get; }
+
+        IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
+
+        IAnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int> OnboardingPageScroll { get; }
+
+        IAnalyticsEvent<bool, bool, bool> OnboardingPagesViewed { get; }
+
+        IAnalyticsEvent IncorrectEmailOrPasswordSignUpFailure { get; }
+
+        IAnalyticsEvent IncorrectEmailOrPasswordLoginFailure { get; }
+
+        IAnalyticsEvent<bool> LocalEmailValidationLoginCheck { get; }
+
+        IAnalyticsEvent<bool> LocalPasswordValidationLoginCheck { get; }
+
         IAnalyticsEvent<string, string> UnknownLoginFailure { get; }
 
         IAnalyticsEvent<string, string> UnknownSignUpFailure { get; }
@@ -217,8 +251,10 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
-        void SetAppCenterUserId(long id);
-        void ResetAppCenterUserId();
+        IAnalyticsEvent ContinueWithEmail { get; }
+
+        void SetUserId(long id);
+        void ResetUserId();
 
         void Track(string eventName, Dictionary<string, string> parameters = null);
 

@@ -27,6 +27,8 @@ namespace Toggl.iOS.Presentation
                     return new CalendarViewController(vm);
                 case CalendarPermissionDeniedViewModel vm:
                     return new CalendarPermissionDeniedViewController(vm);
+                case IndependentCalendarSettingsViewModel vm:
+                    return new CalendarSettingsViewController(vm);
                 case CalendarSettingsViewModel vm:
                     return new CalendarSettingsViewController(vm);
                 case EditDurationViewModel vm:
@@ -40,7 +42,7 @@ namespace Toggl.iOS.Presentation
                 case LicensesViewModel vm:
                     return new LicensesViewController(vm);
                 case LoginViewModel vm:
-                    return LoginViewController.NewInstance(vm);
+                    return new LoginViewController(vm);
                 case MainTabBarViewModel vm:
                     return new MainTabBarController(vm);
                 case MainViewModel vm:
@@ -49,6 +51,8 @@ namespace Toggl.iOS.Presentation
                     return new NotificationSettingsViewController(vm);
                 case NoWorkspaceViewModel vm:
                     return new NoWorkspaceViewController(vm);
+                case OnboardingViewModel vm:
+                    return new OnboardingViewController(vm);
                 case OutdatedAppViewModel vm:
                     return new OutdatedAppViewController(vm);
                 case PasteFromClipboardViewModel vm:
@@ -73,8 +77,8 @@ namespace Toggl.iOS.Presentation
                     return new SendFeedbackViewController(vm);
                 case SettingsViewModel vm:
                     return new SettingsViewController(vm);
-                case SignupViewModel vm:
-                    return new SignupViewController(vm);
+                case SignUpViewModel vm:
+                    return new SignUpViewController(vm);
                 case SiriShortcutsCustomTimeEntryViewModel vm:
                     return new SiriShortcutsCustomTimeEntryViewController(vm);
                 case SiriShortcutsSelectReportPeriodViewModel vm:
@@ -93,6 +97,8 @@ namespace Toggl.iOS.Presentation
                     return new UpcomingEventsNotificationSettingsViewController(vm);
                 case DateRangePickerViewModel vm:
                     return new DateRangePickerViewController(vm);
+                case TermsAndCountryViewModel vm:
+                    return new TermsAndCountryViewController(vm);
                 default:
                     throw new Exception($"Failed to create ViewController for ViewModel of type {viewModel.GetType().Name}");
             }

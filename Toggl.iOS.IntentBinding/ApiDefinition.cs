@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Foundation;
 using Intents;
 using ObjCRuntime;
@@ -154,6 +154,10 @@ namespace Toggl.iOS.Intents
 		[NullAllowed, Export ("projectId", ArgumentSemantic.Copy)]
 		INObject ProjectId { get; set; }
 
+		// @property (readwrite, copy, nonatomic) INObject * _Nullable taskId;
+		[NullAllowed, Export ("taskId", ArgumentSemantic.Copy)]
+		INObject TaskId { get; set; }
+
 		// @property (readwrite, copy, nonatomic) NSArray<INObject *> * _Nullable tags;
 		[NullAllowed, Export ("tags", ArgumentSemantic.Copy)]
 		INObject[] Tags { get; set; }
@@ -208,6 +212,10 @@ namespace Toggl.iOS.Intents
 		// @property (readwrite, copy, nonatomic) INObject * _Nullable projectId;
 		[NullAllowed, Export ("projectId", ArgumentSemantic.Copy)]
 		INObject ProjectId { get; set; }
+
+		// @property (readwrite, copy, nonatomic) INObject * _Nullable taskId;
+		[NullAllowed, Export ("taskId", ArgumentSemantic.Copy)]
+		INObject TaskId { get; set; }
 
 		// @property (readwrite, copy, nonatomic) NSArray<INObject *> * _Nullable tags;
 		[NullAllowed, Export ("tags", ArgumentSemantic.Copy)]

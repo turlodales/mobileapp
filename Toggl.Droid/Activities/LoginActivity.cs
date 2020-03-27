@@ -3,12 +3,12 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using System;
+using System.Reactive;
 using System.Reactive.Linq;
-using Toggl.Core.Helper;
-using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
+using Toggl.Droid.Helper;
 using Toggl.Droid.Presentation;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -16,89 +16,117 @@ using Toggl.Shared.Extensions;
 namespace Toggl.Droid.Activities
 {
     [Activity(Theme = "@style/Theme.Splash",
-              ScreenOrientation = ScreenOrientation.Portrait,
-              WindowSoftInputMode = SoftInput.AdjustPan | SoftInput.StateHidden,
-              ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
+        ScreenOrientation = ScreenOrientation.Portrait,
+        WindowSoftInputMode = SoftInput.AdjustPan | SoftInput.StateHidden,
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public sealed partial class LoginActivity : ReactiveActivity<LoginViewModel>
     {
         public LoginActivity() : base(
             Resource.Layout.LoginActivity,
             Resource.Style.AppTheme,
             Transitions.SlideInFromBottom)
-        { }
+        {
+        }
 
         public LoginActivity(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
         }
+
         protected override void InitializeBindings()
         {
             ViewModel.Email.FirstAsync()
+                .Select(email => email.ToString())
                 .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
-                .Subscribe(emailEditText.Rx().TextObserver())
+                .Subscribe(emailEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
             ViewModel.Password.FirstAsync()
+                .Select(password => password.ToString())
                 .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
-                .Subscribe(passwordEditText.Rx().TextObserver())
+                .Subscribe(passwordEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
             //Text
-            ViewModel.ErrorMessage
-                .Subscribe(errorTextView.Rx().TextObserver())
-                .DisposedBy(DisposeBag);
-
             emailEditText.Rx().Text()
                 .Select(Email.From)
-                .Subscribe(ViewModel.SetEmail)
+                .Subscribe(ViewModel.Email.Accept)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.Password
+                .Select(password => password.ToString())
+                .Take(1)
+                .Subscribe(passwordEditText.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
             passwordEditText.Rx().Text()
                 .Select(Password.From)
-                .Subscribe(ViewModel.SetPassword)
+                .Subscribe(ViewModel.Password.Accept)
                 .DisposedBy(DisposeBag);
 
-            ViewModel.IsLoading
-                .Select(loginButtonTitle)
-                .Subscribe(loginButton.Rx().TextObserver())
+            ViewModel.EmailErrorMessage
+                .Subscribe(emailInputLayout.Rx().ErrorObserver())
                 .DisposedBy(DisposeBag);
 
-            //Visibility
-            ViewModel.HasError
-                .Subscribe(errorTextView.Rx().IsVisible(useGone: false))
+            ViewModel.PasswordErrorMessage
+                .Subscribe(passwordInputLayout.Rx().ErrorObserver())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.IsLoading
-                .Subscribe(progressBar.Rx().IsVisible(useGone: false))
+            ViewModel.LoginErrorMessage
+                .Subscribe(errorLabel.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.LoginEnabled
-                .Subscribe(loginButton.Rx().Enabled())
+            signUpLabel.Rx().Tap()
+                .Subscribe(_ =>
+                {
+                    ViewModel.SignUp.Inputs.OnNext(Unit.Default);
+                    ViewModel.CloseWithDefaultResult();
+                })
                 .DisposedBy(DisposeBag);
 
-            //Commands
-            signupCard.Rx()
-                .BindAction(ViewModel.Signup)
+            loginButton.Rx()
+                .BindAction(ViewModel.Login)
                 .DisposedBy(DisposeBag);
 
-            loginButton.Rx().Tap()
-                .Subscribe(ViewModel.Login)
-                .DisposedBy(DisposeBag);
-
-            passwordEditText.Rx().EditorActionSent()
-                .Subscribe(ViewModel.Login)
-                .DisposedBy(DisposeBag);
-
-            googleLoginButton.Rx().Tap()
-                .Subscribe(_ => ViewModel.ThirdPartyLogin(ThirdPartyLoginProvider.Google))
-                .DisposedBy(DisposeBag);
-
-            forgotPasswordView.Rx()
+            forgotPasswordLabel.Rx()
                 .BindAction(ViewModel.ForgotPassword)
                 .DisposedBy(DisposeBag);
 
-            string loginButtonTitle(bool isLoading)
-                => isLoading ? "" : Shared.Resources.LoginTitle;
+            passwordEditText.Rx().EditorActionSent()
+                .Subscribe(ViewModel.Login.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Subscribe(loadingOverlay.Rx().IsVisible(useGone: false))
+                .DisposedBy(DisposeBag);
+
+            var isNotLoading = ViewModel.IsLoading.Invert();
+            isNotLoading
+                .Subscribe(emailInputLayout.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            isNotLoading
+                .Subscribe(passwordInputLayout.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            isNotLoading
+                .Subscribe(this.Rx().NavigationEnabled())
+                .DisposedBy(DisposeBag);
+
+            loadingOverlay.Rx().Tap()
+                .Subscribe(CommonFunctions.DoNothing)
+                .DisposedBy(DisposeBag);
+
+            var animatedLoadingMessage = TextHelpers.AnimatedLoadingMessage();
+            ViewModel.IsLoading
+                .CombineLatest(animatedLoadingMessage, loginButtonTitle)
+                .Subscribe(loginButton.Rx().TextObserver(true))
+                .DisposedBy(DisposeBag);
+
+            string loginButtonTitle(bool isLoading, string currentLoadingMessage)
+                => isLoading
+                    ? currentLoadingMessage
+                    : Shared.Resources.LoginTitle;
 
             this.CancelAllNotifications();
         }

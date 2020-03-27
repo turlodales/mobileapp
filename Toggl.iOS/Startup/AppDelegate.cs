@@ -12,6 +12,7 @@ using UserNotifications;
 using Firebase.CloudMessaging;
 using Google.SignIn;
 using System.Reactive;
+using Toggl.iOS.ViewControllers;
 
 namespace Toggl.iOS
 {
@@ -105,7 +106,7 @@ namespace Toggl.iOS
             var vc = accessLevel switch
             {
                 AccessLevel.AccessRestricted => loadRootViewController<OutdatedAppViewModel, Unit>(),
-                AccessLevel.NotLoggedIn => loadRootViewController<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty),
+                AccessLevel.NotLoggedIn => loadRootViewController<OnboardingViewModel, Unit>(),
                 AccessLevel.TokenRevoked => loadRootViewController<TokenResetViewModel, Unit>(),
                 AccessLevel.LoggedIn => loadRootViewController<MainTabBarViewModel, Unit>()
             };

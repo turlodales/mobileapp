@@ -241,7 +241,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.TryLogout.Execute();
 
                 await NavigationService.Received()
-                    .Navigate<LoginViewModel, CredentialsParameter>(Arg.Any<CredentialsParameter>(), View);
+                    .Navigate<OnboardingViewModel>(View);
             }
 
             [Fact, LogIfTooSlow]
@@ -305,7 +305,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 InteractorFactory.DidNotReceive().Logout(Arg.Any<LogoutSource>());
                 await NavigationService.DidNotReceive()
-                    .Navigate<LoginViewModel, CredentialsParameter>(Arg.Any<CredentialsParameter>(), View);
+                    .Navigate<OnboardingViewModel>(View);
             }
 
             [Fact, LogIfTooSlow]
@@ -323,7 +323,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 await InteractorFactory.Received().Logout(LogoutSource.Settings).Execute();
                 await NavigationService.Received()
-                    .Navigate<LoginViewModel, CredentialsParameter>(Arg.Any<CredentialsParameter>(), View);
+                    .Navigate<OnboardingViewModel>(View);
             }
 
             private void doNotShowConfirmationDialog()
@@ -581,7 +581,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     Arg.Any<IEnumerable<SelectOption<DateFormat>>>(),
                     Arg.Any<int>())
                 .Returns(Observable.Return(newDateFormat));
-                    
+
                 ViewModel.SelectDateFormat.Execute();
                 TestScheduler.Start();
 
@@ -886,7 +886,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.OpenCalendarSettings.Execute(Unit.Default);
 
                 await NavigationService.Received()
-                    .Navigate<CalendarSettingsViewModel, bool, string[]>(Arg.Any<bool>(), View);
+                    .Navigate<CalendarSettingsViewModel>(View);
             }
         }
 
@@ -936,7 +936,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 await viewModel.Initialize();
                 viewModel.IsCalendarSmartRemindersVisible.Subscribe(observer);
                 TestScheduler.Start();
-                
+
                 observer.Messages.First().Value.Value.Should().BeFalse();
             }
 
@@ -972,7 +972,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 await NavigationService.Received().Navigate<UpcomingEventsNotificationSettingsViewModel>(ViewModel.View);
             }
-            
+
             [Fact, LogIfTooSlow]
             public async Task RefreshesNotificationSettings()
             {
@@ -992,7 +992,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 await NavigationService.Received().Navigate<NotificationSettingsViewModel>(ViewModel.View);
             }
-            
+
             [Fact, LogIfTooSlow]
             public async Task RefreshesNotificationSettings()
             {
@@ -1002,7 +1002,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 InteractorFactory.Received().UpdateEventNotificationsSchedules().Execute();
             }
         }
-        
+
         public sealed class OpenCalendarSettingsMethod : SettingsViewModelTest
         {
             [Fact, LogIfTooSlow]
@@ -1010,15 +1010,15 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 ViewModel.OpenCalendarSettings.Execute();
 
-                await NavigationService.Received().Navigate<CalendarSettingsViewModel, bool, string[]>(false, ViewModel.View);
+                await NavigationService.Received().Navigate<CalendarSettingsViewModel>(ViewModel.View);
             }
-            
+
             [Fact, LogIfTooSlow]
             public async Task RefreshesNotificationSettings()
             {
                 ViewModel.OpenCalendarSettings.Execute();
 
-                await NavigationService.Received().Navigate<CalendarSettingsViewModel, bool, string[]>(false, ViewModel.View);
+                await NavigationService.Received().Navigate<CalendarSettingsViewModel>(ViewModel.View);
                 InteractorFactory.Received().UpdateEventNotificationsSchedules().Execute();
             }
         }

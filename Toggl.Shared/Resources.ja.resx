@@ -142,6 +142,10 @@
         <value>メール/パスワードが違います。
 もう一度お試しください</value>
     </data>
+    <data name="InvalidEmailOrPassword" xml:space="preserve">
+        <value>メール/パスワードは無効です。
+もう一度お試しください</value>
+    </data>
     <data name="GenericLoginError" xml:space="preserve">
         <value>ログインに失敗しました。
 もう一度お試しください</value>
@@ -303,6 +307,10 @@
     </data>
     <data name="PasswordResetExplanation" xml:space="preserve">
         <value>パスワードをリセットするためにメールアドレスを入力してください</value>
+    </data>
+    <data name="PasswordResetMessage" xml:space="preserve">
+        <value>パスワードをリセットするために
+メールアドレスを入力して</value>
     </data>
     <data name="PasswordResetSuccess" xml:space="preserve">
         <value>メールが送信されました。メールを確認してパスワードをリセットしてください</value>
@@ -486,6 +494,9 @@
     </data>
     <data name="GetPasswordResetLink" xml:space="preserve">
         <value>パスワードリセットのリンクを取得</value>
+    </data>
+    <data name="ForgotPasswordSendEmail" xml:space="preserve">
+        <value>メールを送る</value>
     </data>
     <data name="TermsOfServiceDialogMessage" xml:space="preserve">
         <value>「同意します」をタップすることにより、Togglの{0}と{1}を理解し同意したことになります</value>

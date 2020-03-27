@@ -1,59 +1,64 @@
-﻿using Android.Views;
+﻿using Android.Graphics;
+using Android.Text;
+using Android.Text.Style;
+using Android.Views;
 using Android.Widget;
 using Google.Android.Material.TextField;
 using Toggl.Droid.Extensions;
+using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
+
 
 namespace Toggl.Droid.Activities
 {
     public sealed partial class LoginActivity
     {
-        private Button loginButton;
-
-        private TextInputLayout loginEmail;
-        private TextInputLayout loginPassword;
-
-        private ViewGroup signupCard;
-        private ViewGroup loginSignupContainer;
-        private View googleLoginButton;
-
+        private TextInputLayout emailInputLayout;
+        private TextInputLayout passwordInputLayout;
         private EditText emailEditText;
         private EditText passwordEditText;
-
-        private TextView errorTextView;
-        private TextView forgotPasswordView;
-        private TextView googleLoginLabel;
-        private TextView doNotHaveAnAccountLabel;
-        private TextView orLabel;
+        private Button loginButton;
         private TextView signUpLabel;
-
-        private ProgressBar progressBar;
+        private TextView forgotPasswordLabel;
+        private TextView welcomeMessage;
+        private TextView errorLabel;
+        private View loadingOverlay;
+        private Toolbar toolbar;
 
         protected override void InitializeViews()
         {
-            signupCard = FindViewById<ViewGroup>(Resource.Id.LoginSignupCardView);
-            loginSignupContainer = FindViewById<ViewGroup>(Resource.Id.LoginSignupContainer);
-            loginSignupContainer.FitBottomPaddingInset();
-            errorTextView = FindViewById<TextView>(Resource.Id.LoginError);
-            loginButton = FindViewById<Button>(Resource.Id.LoginLoginButton);
-            forgotPasswordView = FindViewById<TextView>(Resource.Id.LoginForgotPassword);
-            orLabel = FindViewById<TextView>(Resource.Id.LoginOrLabel);
-            googleLoginButton = FindViewById<View>(Resource.Id.LoginGoogleLogin);
-            googleLoginLabel = FindViewById<TextView>(Resource.Id.LoginGoogleLoginLabel);
-            doNotHaveAnAccountLabel = FindViewById<TextView>(Resource.Id.DoNotHaveAnAccountLabel);
-            signUpLabel = FindViewById<TextView>(Resource.Id.SignUpLabel);
-            progressBar = FindViewById<ProgressBar>(Resource.Id.LoginProgressBar);
-            loginEmail = FindViewById<TextInputLayout>(Resource.Id.LoginEmail);
-            emailEditText = FindViewById<EditText>(Resource.Id.LoginEmailEditText);
-            loginPassword = FindViewById<TextInputLayout>(Resource.Id.LoginPassword);
-            passwordEditText = FindViewById<EditText>(Resource.Id.LoginPasswordEditText);
+            emailInputLayout = FindViewById<TextInputLayout>(Resource.Id.emailTextInputLayout);
+            passwordInputLayout = FindViewById<TextInputLayout>(Resource.Id.passwordTextInputLayout);
+            emailEditText = FindViewById<TextInputEditText>(Resource.Id.emailEditText);
+            passwordEditText = FindViewById<TextInputEditText>(Resource.Id.passwordEditText);
+            loginButton = FindViewById<Button>(Resource.Id.loginButton);
+            welcomeMessage = FindViewById<TextView>(Resource.Id.welcomeMessage);
+            signUpLabel = FindViewById<TextView>(Resource.Id.signupButton);
+            forgotPasswordLabel = FindViewById<TextView>(Resource.Id.forgotPasswordButton);
+            errorLabel = FindViewById<TextView>(Resource.Id.errorLabel);
+            loadingOverlay = FindViewById(Resource.Id.loadingOverlay);
+            toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
 
-            loginEmail.Hint = Shared.Resources.Email;
-            loginPassword.Hint = Shared.Resources.Password;
-            forgotPasswordView.Text = Shared.Resources.LoginForgotPassword;
-            googleLoginLabel.Text = Shared.Resources.GoogleLogin;
-            doNotHaveAnAccountLabel.Text = Shared.Resources.DoNotHaveAnAccountWithQuestionMark;
-            orLabel.Text = Shared.Resources.Or;
-            signUpLabel.Text = Shared.Resources.SignUpTitle;
+            welcomeMessage.Text = Shared.Resources.LoginWelcomeMessage;
+            emailInputLayout.Hint = Shared.Resources.Email;
+            passwordInputLayout.Hint = Shared.Resources.Password;
+
+            var signUpLabelText = new SpannableStringBuilder();
+            signUpLabelText.Append(Shared.Resources.DoNotHaveAnAccountWithQuestionMark, new TypefaceSpan("sans-serif"), SpanTypes.ExclusiveExclusive);
+            signUpLabelText.Append(" ");
+            signUpLabelText.Append(Shared.Resources.SignUp, new TypefaceSpan("sans-serif-medium"), SpanTypes.ExclusiveExclusive);
+            signUpLabelText.SetSpan(new UnderlineSpan(), Shared.Resources.DoNotHaveAnAccountWithQuestionMark.Length + 1, signUpLabelText.Length(), SpanTypes.ExclusiveExclusive);
+            signUpLabel.TextFormatted = signUpLabelText;
+            
+            var forgotPasswordText = new SpannableStringBuilder(Shared.Resources.LoginForgotPassword);
+            forgotPasswordText.SetSpan(new UnderlineSpan(), 0, forgotPasswordText.Length(), SpanTypes.ExclusiveExclusive);
+            forgotPasswordLabel.TextFormatted = forgotPasswordText;
+            
+            SetSupportActionBar(toolbar);
+            SupportActionBar.Title = string.Empty;
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetDisplayShowHomeEnabled(true);
+            
+            loginButton.FitBottomMarginInset();
         }
     }
 }

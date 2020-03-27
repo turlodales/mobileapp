@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.iOS.Extensions;
@@ -33,6 +34,10 @@ namespace Toggl.iOS.ViewControllers.Settings
             header.HeightAnchor.ConstraintEqualTo(tableViewHeaderHeight).Active = true;
             header.WidthAnchor.ConstraintEqualTo(UserCalendarsTableView.WidthAnchor).Active = true;
 
+            ViewModel.CalendarIntegrationEnabled
+                .Subscribe(header.SetCalendarIntegrationStatus)
+                .DisposedBy(DisposeBag);
+
             var source = new SelectUserCalendarsTableViewSource(UserCalendarsTableView, ViewModel.SelectCalendar);
             UserCalendarsTableView.Source = source;
 
@@ -40,29 +45,31 @@ namespace Toggl.iOS.ViewControllers.Settings
                 .Subscribe(UserCalendarsTableView.Rx().ReloadSections(source))
                 .DisposedBy(DisposeBag);
 
-            ViewModel.PermissionGranted
-                .Subscribe(header.SetCalendarPermissionStatus)
-                .DisposedBy(DisposeBag);
-
-            header.EnableCalendarAccessTapped
-                .Subscribe(ViewModel.RequestAccess.Inputs)
+            header.LinkCalendarsSwitchTapped
+                .Subscribe(ViewModel.ToggleCalendarIntegration.Execute)
                 .DisposedBy(DisposeBag);
 
             source.Rx().ModelSelected()
                 .Subscribe(ViewModel.SelectCalendar.Inputs)
                 .DisposedBy(DisposeBag);
 
-            ViewModel.RequestCalendarPermissionsIfNeeded.Execute();
+            IosDependencyContainer.Instance.BackgroundService
+                .AppResumedFromBackground
+                .Select(_ => IosDependencyContainer.Instance.UserPreferences.CalendarIntegrationEnabled())
+                .Subscribe(header.SetCalendarIntegrationStatus)
+                .DisposedBy(DisposeBag);
+
+            if (ViewModel is IndependentCalendarSettingsViewModel)
+            {
+                NavigationItem.RightBarButtonItem = ReactiveNavigationController.CreateSystemItem(
+                    Resources.Done, UIBarButtonItemStyle.Done, Close);
+            }
         }
 
-        public override void DidMoveToParentViewController(UIViewController parent)
+        public override void ViewDidDisappear(bool animated)
         {
-            base.DidMoveToParentViewController(parent);
-
-            if (parent == null)
-            {
-                ViewModel.Save.Execute();
-            }
+            ViewModel.Save.Execute();
+            base.ViewDidDisappear(animated);
         }
 
         public override Task<bool> DismissFromNavigationController()

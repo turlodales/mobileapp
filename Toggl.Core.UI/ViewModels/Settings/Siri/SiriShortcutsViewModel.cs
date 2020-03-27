@@ -49,6 +49,10 @@ namespace Toggl.Core.UI.ViewModels
             => interactorFactory.GetProjectById(projectId).Execute()
                 .ObserveOn(schedulerProvider.MainScheduler);
 
+        public IObservable<IThreadSafeTask> GetTask(long taskId)
+            => interactorFactory.GetTaskById(taskId).Execute()
+                .ObserveOn(schedulerProvider.MainScheduler);
+
         public IObservable<IEnumerable<IThreadSafeWorkspace>> GetUserWorkspaces()
             => interactorFactory.GetAllWorkspaces().Execute()
                 .Select(ws => ws.ToList()) // <- This is to avoid Realm threading issues

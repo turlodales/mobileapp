@@ -65,7 +65,7 @@
 
   <!-- Start Time entry page-->
   <color name="billable">#FF328FFF</color>
-  <color name="nonBillable">#1E328FFF</color>
+  <color name="nonBillable">#FFE6F1FF</color>
   <color name="runningEntryTimer">#FF328FFF</color>
 
   <!--Project page-->
@@ -105,5 +105,25 @@
   
   <!-- Login/Sign Up -->
   <color name="loginSignUpOptionsDivider">#F3F3F3</color>
+  <color name="countryPickerOutlineColor">#61000000</color>
+  <color name="dropdownColor">#61000000</color>
+  <color name="onboardingButtonBackgroundColor">#FF5273</color>
+  <color name="loginSignUpEditTextOutlineColor">#61000000</color>
+
+  <!-- Onboarding -->
+  <color name="onboardingFirstSlideBackgroundColor">#91DCD0</color>
+  <color name="onboardingSecondSlideBackgroundColor">#F2CA66</color>
+  <color name="onboardingThirdSlideBackgroundColor">#DEABF3</color>
+  <color name="onboardingOverlayBackgroundColor">#1A9DDDD3</color>
+  <color name="onboardingOutlineButtonTextColor">#FFFFFF</color>
+  <color name="onboardingOutlineButtonStrokeColor">#FFFFFF</color>
+  <color name="onboardingContainedButtonBackgroundColor">#FFFFFF</color>
+  <color name="onboardingContainedButtonTextColor">#000000</color>
+  <color name="onboardingTitleTextColor">#FFFFFF</color>
+  <color name="loadingOverlay">#77FFFFFF</color>
+  <color name="onBoardingTabIndicatorSelected">#B3FFFFFF</color>
+  <color name="onBoardingTabIndicatorDeselected">#33FFFFFF</color>
+  <color name="onboardingLoadingIndicatorColor">#CBF2F0</color>
+  <color name="onboardingTogglLogoText">#000000</color>
 
 </resources>
