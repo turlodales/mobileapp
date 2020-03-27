@@ -8,7 +8,7 @@
 
         public bool IsValid { get; }
 
-        public bool IsEmpty => string.IsNullOrEmpty(password);
+        public bool IsEmpty => string.IsNullOrWhiteSpace(password);
 
         public int Length => password.Length;
 

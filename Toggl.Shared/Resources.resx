@@ -211,7 +211,7 @@ mobile, desktop or web</value>
         <comment>Send email to reset password</comment>
     </data>
     <data name="LoginForgotPassword" xml:space="preserve">
-        <value>Forgot your password? </value>
+        <value>Forgot your password?</value>
         <comment>Link to the password reset view</comment>
     </data>
     <data name="LoginGetHelpLoggingIn" xml:space="preserve">
@@ -246,9 +246,18 @@ mobile, desktop or web</value>
         <value>Please enter your email to reset your password.</value>
         <comment>Helper text that appears below the email field in the password reset view</comment>
     </data>
+    <data name="PasswordResetMessage" xml:space="preserve">
+        <value>Enter your email to 
+reset your password</value>
+        <comment>Helper text that appears below the email field in the password reset view</comment>
+    </data>
     <data name="IncorrectEmailOrPassword" xml:space="preserve">
         <value>Incorrect email/password. Please, try again.</value>
         <comment>Error message shown when authentication fails</comment>
+    </data>
+    <data name="InvalidEmailOrPassword" xml:space="preserve">
+        <value>Invalid email/password. Please, try again.</value>
+        <comment>Error message shown when authentication fails because of invalid e-mail/passwords</comment>
     </data>
     <data name="GenericLoginError" xml:space="preserve">
         <value>Sorry, we’re having trouble logging you in.

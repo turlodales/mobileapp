@@ -207,6 +207,9 @@ namespace Toggl.Droid.Fragments
 
         public void ScrollToStart()
         {
+            if (calendarDayAdapter == null || calendarViewPager == null)
+                return;
+            
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
                 return;
             

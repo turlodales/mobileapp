@@ -49,7 +49,6 @@ namespace Toggl.Droid.Presentation
             [typeof(EditProjectViewModel)] = new ActivityPresenterInfo(typeof(EditProjectActivity)),
             [typeof(EditTimeEntryViewModel)] = new ActivityPresenterInfo(typeof(EditTimeEntryActivity)),
             [typeof(ForgotPasswordViewModel)] = new ActivityPresenterInfo(typeof(ForgotPasswordActivity)),
-            [typeof(LoginViewModel)] = new ActivityPresenterInfo(typeof(LoginActivity), clearBackStackFlags),
             [typeof(LicensesViewModel)] = new ActivityPresenterInfo(typeof(LicensesActivity)),
             [typeof(MainTabBarViewModel)] = new ActivityPresenterInfo(typeof(MainTabBarActivity), clearBackStackFlags),
             [typeof(OutdatedAppViewModel)] = new ActivityPresenterInfo(typeof(OutdatedAppActivity), clearBackStackFlags),
@@ -60,9 +59,10 @@ namespace Toggl.Droid.Presentation
             [typeof(SendFeedbackViewModel)] = new ActivityPresenterInfo(typeof(SendFeedbackActivity)),
             [typeof(SettingsViewModel)] = new ActivityPresenterInfo(typeof(SettingsActivity)),
             [typeof(IndependentCalendarSettingsViewModel)] = new ActivityPresenterInfo(typeof(IndependentCalendarSettingsActivity)),
-            [typeof(SignUpViewModel)] = new ActivityPresenterInfo(typeof(SignUpActivity), clearBackStackFlags),
             [typeof(StartTimeEntryViewModel)] = new ActivityPresenterInfo(typeof(StartTimeEntryActivity)),
             [typeof(TokenResetViewModel)] = new ActivityPresenterInfo(typeof(TokenResetActivity), clearBackStackFlags),
+            [typeof(LoginViewModel)] = new ActivityPresenterInfo(typeof(LoginActivity)),
+            [typeof(SignUpViewModel)] = new ActivityPresenterInfo(typeof(SignUpActivity)),
             [typeof(OnboardingViewModel)] = new ActivityPresenterInfo(typeof(OnboardingActivity), clearBackStackFlags)
         };
 

@@ -1,68 +1,81 @@
-using Android.Graphics;
+using System;
+using Android.Runtime;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.Views;
 using Android.Widget;
 using AndroidX.ConstraintLayout.Widget;
+using AndroidX.Fragment.App;
+using AndroidX.ViewPager.Widget;
+using Google.Android.Material.Tabs;
 using Toggl.Droid.Extensions;
+using Toggl.Droid.Fragments.Onboarding;
 
 namespace Toggl.Droid.Activities
 {
-    public partial class OnboardingActivity : ISurfaceHolderCallback
+    public partial class OnboardingActivity
     {
-        private SurfaceView onboardingSurfaceView;
         private View continueWithGoogleButton;
         private Button continueWithEmailButton;
-        private TextView onboardingMessage;
         private TextView loginGoogleLoginLabel;
-
-        private MediaPlayer mediaPlayer;
+        private Group notLoadingViewViews;
+        private ImageView loadingViewIndicator;
+        private AnimationDrawable loadingAnimation;
+        private ViewPager onboardingViewPager;
+        private TabLayout onboardingTabIndicator;
 
         protected override void InitializeViews()
         {
-            onboardingSurfaceView = FindViewById<SurfaceView>(Resource.Id.togglMan);
+            notLoadingViewViews = FindViewById<Group>(Resource.Id.notLoadingViewsViewGroup);
+            loadingViewIndicator = FindViewById<ImageView>(Resource.Id.loadingIndicator);
             continueWithGoogleButton = FindViewById(Resource.Id.continueWithGoogleButton);
             continueWithEmailButton = FindViewById<Button>(Resource.Id.continueWithEmailButton);
-            onboardingMessage = FindViewById<TextView>(Resource.Id.message);
             loginGoogleLoginLabel = FindViewById<TextView>(Resource.Id.LoginGoogleLoginLabel);
 
             continueWithEmailButton.Text = Shared.Resources.ContinueWithEmail;
             loginGoogleLoginLabel.Text = Shared.Resources.ContinueWithGoogle;
 
-            onboardingSurfaceView.Holder.AddCallback(this);
+            onboardingViewPager = FindViewById<ViewPager>(Resource.Id.onboardingViewPager);
+            onboardingTabIndicator = FindViewById<TabLayout>(Resource.Id.onboardingTabIndicator);
+
+            var onboardingHolder = FindViewById(Resource.Id.onboardingHolder);
+            onboardingHolder.DoOnApplyWindowInsets(( view,  insets,  paddingMargin) =>
+                {
+                    insets.ReplaceSystemWindowInsets(insets.SystemWindowInsetLeft, 0, insets.SystemWindowInsetRight,
+                        insets.SystemWindowInsetBottom);
+                }
+            );
+
+            onboardingViewPager.Adapter = new ScreenSlidePagerAdapter(SupportFragmentManager);
+            onboardingTabIndicator.SetupWithViewPager(onboardingViewPager);
             continueWithEmailButton.FitBottomMarginInset();
+            loadingAnimation = (AnimationDrawable) loadingViewIndicator.Drawable;
         }
 
-        public void SurfaceChanged(ISurfaceHolder holder, Format format, int width, int height)
+        private class ScreenSlidePagerAdapter : FragmentPagerAdapter
         {
-        }
+            public override int Count { get; } = 1;
+            public ScreenSlidePagerAdapter(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+            {
+            }
 
-        public void SurfaceCreated(ISurfaceHolder holder)
-        {
-            mediaPlayer?.Release();
-            mediaPlayer = MediaPlayer.Create(ApplicationContext, Resource.Raw.togglman);
-            mediaPlayer.SetVideoScalingMode(VideoScalingMode.ScaleToFitWithCropping);
-            mediaPlayer.SetDisplay(holder);
-            mediaPlayer.Start();
-            mediaPlayer.Looping = true;
-        }
+            public ScreenSlidePagerAdapter(FragmentManager fm) : base(fm)
+            {
+            }
 
-        public void SurfaceDestroyed(ISurfaceHolder holder)
-        {
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-            mediaPlayer?.Release();
-            mediaPlayer = null;
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            mediaPlayer?.Release();
-            onboardingSurfaceView?.Holder?.RemoveCallback(this);
-            mediaPlayer = null;
+            public override Fragment GetItem(int position)
+            {
+                switch (position)
+                {
+                    case 0:
+                        return new OnboardingFirstSlideFragment();
+                    case 1:
+                        return new OnboardingSecondSlideFragment();
+                    case 2:
+                        return new OnboardingThirdSlideFragment();
+                }
+                return null;
+            }
         }
     }
 }

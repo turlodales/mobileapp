@@ -1,6 +1,8 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using Toggl.Core.Analytics;
+using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
@@ -108,6 +110,13 @@ namespace Toggl.iOS.ViewControllers
 
             View.AddGestureRecognizer(swipeLeftGesture);
             View.AddGestureRecognizer(swipeRightGesture);
+
+            ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+            {
+                Action = OnboardingScrollAction.Automatic,
+                Direction = OnboardingScrollDirection.Left,
+                PageNumber = currentPage,
+            });
         }
 
         private void configureButtonsAppearance()
@@ -143,8 +152,7 @@ namespace Toggl.iOS.ViewControllers
             UIView.Animate(
                 duration,
                 () => { animatePage(next); },
-                moveIndicatorToNextPage
-                );
+                () => { moveIndicatorToNextPage(OnboardingScrollAction.Manual); });
         }
 
         private void moveToPreviousPage(UISwipeGestureRecognizer swipe)
@@ -158,8 +166,7 @@ namespace Toggl.iOS.ViewControllers
             UIView.Animate(
                 duration,
                 () => { animatePage(previous); },
-                moveIndicatorToPreviousPage
-            );
+                () => { moveIndicatorToPreviousPage(OnboardingScrollAction.Manual); });
         }
 
         private void animatePage(OnboardingPageView page)
@@ -167,20 +174,32 @@ namespace Toggl.iOS.ViewControllers
             page.Frame = View.Bounds;
         }
 
-        private void moveIndicatorToNextPage()
+        private void moveIndicatorToNextPage(OnboardingScrollAction action)
         {
             currentPage = currentPage < totalPages - 1
                 ? currentPage + 1
                 : 0;
             PageControl.CurrentPage = currentPage;
+            ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+            {
+                Action = action,
+                Direction = OnboardingScrollDirection.Right,
+                PageNumber = currentPage,
+            });
         }
 
-        private void moveIndicatorToPreviousPage()
+        private void moveIndicatorToPreviousPage(OnboardingScrollAction action)
         {
             currentPage = currentPage > 0
                 ? currentPage - 1
                 : totalPages - 1;
             PageControl.CurrentPage = currentPage;
+            ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+            {
+                Action = action,
+                Direction = OnboardingScrollDirection.Left,
+                PageNumber = currentPage,
+            });
         }
 
         private OnboardingPageView nextPageView()

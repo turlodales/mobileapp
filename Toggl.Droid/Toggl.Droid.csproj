@@ -138,6 +138,9 @@
       <HintPath>..\packages\Microsoft.AppCenter.Crashes.2.6.4\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.Android.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Square.OkIO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Square.OkIO.1.17.4\lib\monoandroid44\Square.OkIO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -620,6 +623,18 @@
     <Compile Include="Extensions\JavaExtensions.cs" />
     <Compile Include="Adapters\ReportsAdapter.cs" />
     <Compile Include="Adapters\DateRangePickerMonthsPagerAdapter.cs" />
+    <Compile Include="Fragments\Onboarding\OnboardingFirstSlideFragment.cs" />
+    <Compile Include="Fragments\Onboarding\OnboardingFirstSlideFragment.ViewBinds.cs">
+      <DependentUpon>OnboardingFirstSlideFragment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fragments\Onboarding\OnboardingSecondSlideFragment.cs" />
+    <Compile Include="Fragments\Onboarding\OnboardingSecondSlideFragment.ViewBinds.cs">
+      <DependentUpon>OnboardingSecondSlideFragment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fragments\Onboarding\OnboardingThirdSlideFragment.cs" />
+    <Compile Include="Fragments\Onboarding\OnboardingThirdSlideFragment.ViewBinds.cs">
+      <DependentUpon>OnboardingThirdSlideFragment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper\ActiveTheme.cs" />
     <Compile Include="Helper\ITabLayoutReadyListener.cs" />
     <Compile Include="LayoutManagers\UnpredictiveLinearLayoutManager.cs" />
@@ -927,6 +942,21 @@
     <AndroidResource Include="Resources\color\FlatButtonTextColor.xml" />
     <AndroidResource Include="Resources\color\outline_text_input_color.xml" />
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_periscope.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_periscope.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_slide2_periscope.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_slide2_periscope.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_slide3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_slide2_periscope.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_slide3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_slide2_periscope.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_slide3.png" />
     <AndroidResource Include="Resources\drawable\contained_button.xml" />
     <AndroidResource Include="Resources\drawable\country_picker_outline.xml" />
     <AndroidResource Include="Resources\drawable\ic_calendar.xml" />
@@ -939,14 +969,90 @@
     <AndroidResource Include="Resources\drawable\background_timer_widget.xml" />
     <AndroidResource Include="Resources\drawable\ic_close.xml" />
     <AndroidResource Include="Resources\drawable\ic_stop_big.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_08.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_09.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_10.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_11.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_12.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation01_13.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_01.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_08.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_09.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_10.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_11.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation02_12.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_08.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_09.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_10.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_11.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_12.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation03_13.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_01.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation05_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_01.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation06_08.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_01.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation07_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_01.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_02.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_03.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_04.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_05.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_06.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_07.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_08.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_09.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_10.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_11.xml" />
+    <AndroidResource Include="Resources\drawable\loadinganimation08_12.xml" />
     <AndroidResource Include="Resources\drawable\outline_button.xml" />
     <AndroidResource Include="Resources\drawable\modal_activity_background.xml" />
     <AndroidResource Include="Resources\drawable\shape_dot.xml" />
     <AndroidResource Include="Resources\drawable\ic_archived.xml" />
     <AndroidResource Include="Resources\drawable\splash_screen.xml" />
+    <AndroidResource Include="Resources\drawable\tab_indicator.xml" />
+    <AndroidResource Include="Resources\drawable\tab_indicator_deselected.xml" />
     <AndroidResource Include="Resources\drawable\text_placeholder.xml" />
+    <AndroidResource Include="Resources\drawable\toggl_loading_logo.xml" />
     <AndroidResource Include="Resources\layout\AboutActivity.axml" />
     <AndroidResource Include="Resources\layout\OnboardingActivity.axml" />
+    <AndroidResource Include="Resources\layout\OnboardingFirstSlideFragment.axml" />
+    <AndroidResource Include="Resources\layout\OnboardingSecondSlideFragment.axml" />
+    <AndroidResource Include="Resources\layout\OnboardingThirdSlideFragment.axml" />
     <AndroidResource Include="Resources\layout\ReportSummaryElement.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayViewPageFragmentContextualMenu.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayViewPageFragmentDayView.axml" />
@@ -1214,6 +1320,10 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ReportsBarChartElement.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets" />
+    <Folder Include="Resources\drawable-nodpi" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Fody.2.4.6\build\Fody.targets" Condition="Exists('..\packages\Fody.2.4.6\build\Fody.targets')" />

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Accord.Statistics.Kernels;
 using Toggl.Core.Extensions;
 using Toggl.Core.Suggestions;
 using Toggl.Core.Sync;
@@ -184,6 +182,10 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
 
+        public IAnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int> OnboardingPageScroll { get; }
+
+        public IAnalyticsEvent<bool, bool, bool> OnboardingPagesViewed { get; }
+
         public IAnalyticsEvent<string, string> UnknownLoginFailure { get; }
 
         public IAnalyticsEvent<string, string> UnknownSignUpFailure { get; }
@@ -340,6 +342,8 @@ namespace Toggl.Core.Analytics
             OnboardingPrivacyPolicyOpened = new AnalyticsEvent(this, nameof(OnboardingPrivacyPolicyOpened));
             OnboardingTermsOfServiceOpened = new AnalyticsEvent(this, nameof(OnboardingTermsOfServiceOpened));
             OnboardingAgreeButtonTapped = new AnalyticsEvent(this, nameof(OnboardingAgreeButtonTapped));
+            OnboardingPageScroll = new AnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int>(this, nameof(OnboardingPageScroll), "Action", "Direction", "PageViewed");
+            OnboardingPagesViewed = new AnalyticsEvent<bool, bool, bool>(this, nameof(OnboardingPagesViewed), "Page1", "Page2", "Page3");
             UnknownLoginFailure = new AnalyticsEvent<string, string>(this, nameof(UnknownLoginFailure), "Type", "Message");
             UnknownSignUpFailure = new AnalyticsEvent<string, string>(this, nameof(UnknownSignUpFailure), "Type", "Message");
             RateLimitingDelayDuringSyncing = new AnalyticsEvent<int>(this, nameof(RateLimitingDelayDuringSyncing), "DelayDurationSeconds");

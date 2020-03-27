@@ -27,6 +27,7 @@
   <color name="placeholderBarRegular">#0FFFFFFF</color>
   <color name="placeholderDonut">#FF4E4E4E</color>
   <color name="donutSelectionDurationText">#E0E0E0</color>
+  <color name="nonBillable">#FF2F3B49</color>
 
   <!-- DateRange picker -->
   <color name="dateRangePickerBackground">#323232</color>
@@ -51,5 +52,8 @@
   <color name="countryPickerOutlineColor">#61FFFFFF</color>
   <color name="dropdownColor">#BDFFFFFF</color>
   <color name="loadingOverlay">#33FFFFFF</color>
+  <color name="onboardingLoadingIndicatorColor">#32A69E</color>
+  <color name="onBoardingTabIndicatorSelected">#B3000000</color>
+  <color name="onBoardingTabIndicatorDeselected">#33000000</color>
   
 </resources>
