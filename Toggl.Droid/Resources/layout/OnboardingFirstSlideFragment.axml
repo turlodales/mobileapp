@@ -1,27 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/slideHolder"
     android:background="@color/onboardingFirstSlideBackgroundColor">
 
-        <SurfaceView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/togglMan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="32dp"
+        android:lineSpacingExtra="10dp"
+        android:fontFamily="sans-serif-light"
+        android:maxLines="2"
+        android:textColor="@color/onboardingTitleTextColor"
+        android:textSize="36sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintBottom_toTopOf="@+id/togglMan"
+        tools:text="Simple time tracking.\nPowerful reporting." />
 
-        <TextView
-            android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="96dp"
-            android:layout_marginRight="32dp"
-            android:maxLines="2"
-            android:textColor="@color/onboardingTitleTextColor"
-            android:textSize="38sp"
-            android:fontFamily="sans-serif-light"
-            app:autoSizeTextType="uniform"
-            tools:text="Simple time tracking.\nPowerful reporting." />
-</FrameLayout>
+    <ImageView
+        android:id="@+id/togglMan"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="56dp"
+        android:paddingLeft="20dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintHeight_max="250dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/togglman"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message"
+        app:layout_constraintBottom_toTopOf="@+id/chainTail" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        android:id="@+id/chainTail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/togglMan" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

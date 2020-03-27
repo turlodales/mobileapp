@@ -220,6 +220,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string ForgotPasswordSendEmail {
+            get {
+                return ResourceManager.GetString("ForgotPasswordSendEmail", resourceCulture);
+            }
+        }
+        
         public static string PasswordResetSuccess {
             get {
                 return ResourceManager.GetString("PasswordResetSuccess", resourceCulture);
@@ -304,9 +310,15 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string ReviewTheTerms {
+        public static string ReviewTheTermsWelcome {
             get {
-                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
+                return ResourceManager.GetString("ReviewTheTermsWelcome", resourceCulture);
+            }
+        }
+        
+        public static string ReviewTheTermsOneMoreThing {
+            get {
+                return ResourceManager.GetString("ReviewTheTermsOneMoreThing", resourceCulture);
             }
         }
         

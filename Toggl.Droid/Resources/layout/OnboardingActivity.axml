@@ -42,7 +42,7 @@
             android:layout_height="24dp"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="52dp"
-            android:src="@drawable/ic_toggl_logo"
+            android:src="@drawable/ic_toggl_logo_onboarding"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,8 +76,9 @@
                 android:fontFamily="sans-serif-medium"
                 android:letterSpacing="0.02"
                 android:textColor="@color/onboardingContainedButtonTextColor"
-                android:textSize="17sp"
+                android:textSize="14sp"
                 android:textStyle="normal"
+                android:textAllCaps="true"
                 tools:text="Sign in With Google" />
         </LinearLayout>
 
@@ -90,9 +91,9 @@
             android:layout_marginBottom="28dp"
             android:background="@drawable/outline_button"
             android:letterSpacing="0.02"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/onboardingOutlineButtonTextColor"
-            android:textSize="17sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -104,6 +105,22 @@
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="togglMan,togglLogo,message,continueWithGoogleButton,continueWithEmailButton" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/loadingViewsViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="loadingBackground,loadingIndicator" />
+
+        <FrameLayout
+            android:id="@+id/loadingBackground"
+            android:background="@color/onboardingFirstSlideBackgroundColor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        
         <ImageView
             android:id="@+id/loadingIndicator"
             android:layout_width="wrap_content"

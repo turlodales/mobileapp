@@ -41,10 +41,9 @@ namespace Toggl.Droid.Activities
             welcomeMessage.Text = Shared.Resources.LoginWelcomeMessage;
             emailInputLayout.Hint = Shared.Resources.Email;
             passwordInputLayout.Hint = Shared.Resources.Password;
-            loginButton.Text = Shared.Resources.LoginTitle;
 
             var signUpLabelText = new SpannableStringBuilder();
-            signUpLabelText.Append(Shared.Resources.DoNotHaveAnAccountWithQuestionMark, new TypefaceSpan(Typeface.SansSerif), SpanTypes.ExclusiveExclusive);
+            signUpLabelText.Append(Shared.Resources.DoNotHaveAnAccountWithQuestionMark, new TypefaceSpan("sans-serif"), SpanTypes.ExclusiveExclusive);
             signUpLabelText.Append(" ");
             signUpLabelText.Append(Shared.Resources.SignUp, new TypefaceSpan("sans-serif-medium"), SpanTypes.ExclusiveExclusive);
             signUpLabelText.SetSpan(new UnderlineSpan(), Shared.Resources.DoNotHaveAnAccountWithQuestionMark.Length + 1, signUpLabelText.Length(), SpanTypes.ExclusiveExclusive);

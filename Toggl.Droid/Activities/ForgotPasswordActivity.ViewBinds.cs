@@ -28,9 +28,8 @@ namespace Toggl.Droid.Activities
             loginEmailEditText.SetSelection(loginEmailEditText.Text?.Length ?? 0);
 
             informationMessage.Text = Shared.Resources.PasswordResetMessage;
-            loginEmail.HelperText = Shared.Resources.PasswordResetExplanation;
             loginEmail.Hint = Shared.Resources.Email;
-            resetPasswordButton.Text = Shared.Resources.GetPasswordResetLink;
+            resetPasswordButton.Text = Shared.Resources.ForgotPasswordSendEmail;
             
             SetSupportActionBar(toolbar);
             SupportActionBar.Title = string.Empty;

@@ -58,7 +58,7 @@ namespace Toggl.iOS.ViewControllers
             var paragraphStyle = new NSMutableParagraphStyle();
             paragraphStyle.MinimumLineHeight = headerLineHeight;
             headerTextAttributes.ParagraphStyle = paragraphStyle;
-            HeaderLabel.AttributedText = new NSAttributedString(Resources.ReviewTheTerms, headerTextAttributes);
+            HeaderLabel.AttributedText = new NSAttributedString(Resources.ReviewTheTermsWelcome, headerTextAttributes);
             ConfirmButton.SetTitle(Resources.IAgree, UIControlState.Normal);
             ConfirmButton.Layer.MasksToBounds = true;
             ConfirmButton.Layer.CornerRadius = 6;

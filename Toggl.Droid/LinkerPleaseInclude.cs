@@ -107,5 +107,21 @@ namespace Toggl.Droid
             var include = new Snackbar.SnackbarLayout(null);
             var include2 = new Snackbar.SnackbarLayout(null, null);
         }
+
+        public void Include(System.Globalization.Calendar calendar)
+        {
+            var c = new System.Globalization.ChineseLunisolarCalendar();
+            var c1 = new System.Globalization.HebrewCalendar();
+            var c2 = new System.Globalization.HijriCalendar();
+            var c3 = new System.Globalization.JapaneseCalendar();
+            var c4 = new System.Globalization.JapaneseLunisolarCalendar();
+            var c5 = new System.Globalization.KoreanCalendar();
+            var c6 = new System.Globalization.KoreanLunisolarCalendar();
+            var c7 = new System.Globalization.PersianCalendar();
+            var c8 = new System.Globalization.TaiwanCalendar();
+            var c9 = new System.Globalization.TaiwanLunisolarCalendar();
+            var c10 = new System.Globalization.ThaiBuddhistCalendar();
+            var c11 = new System.Globalization.UmAlQuraCalendar();
+        }
     }
 }

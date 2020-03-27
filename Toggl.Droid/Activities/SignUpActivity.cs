@@ -7,6 +7,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions.Reactive;
+using Toggl.Droid.Helper;
 using Toggl.Droid.Presentation;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -65,8 +66,10 @@ namespace Toggl.Droid.Activities
                  .Subscribe(errorLabel.Rx().TextObserver())
                  .DisposedBy(DisposeBag);
 
+            var animatedLoadingMessage = TextHelpers.AnimatedLoadingMessage();
+            
             ViewModel.IsLoading
-                .Select(signupButtonTitle)
+                .CombineLatest(animatedLoadingMessage, signupButtonTitle)
                 .Subscribe(signUpButton.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
@@ -107,10 +110,10 @@ namespace Toggl.Droid.Activities
                 })
                 .DisposedBy(DisposeBag);
 
-            string signupButtonTitle(bool isLoading)
+            string signupButtonTitle(bool isLoading, string currentLoadingMessage)
                 => isLoading
-                    ? Shared.Resources.Loading
-                    : Shared.Resources.SignUpTitle;
+                    ? currentLoadingMessage
+                    : Shared.Resources.SignUp;
         }
     }
 }

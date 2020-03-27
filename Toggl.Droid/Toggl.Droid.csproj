@@ -637,6 +637,7 @@
     </Compile>
     <Compile Include="Helper\ActiveTheme.cs" />
     <Compile Include="Helper\ITabLayoutReadyListener.cs" />
+    <Compile Include="Helper\TextHelpers.cs" />
     <Compile Include="LayoutManagers\UnpredictiveLinearLayoutManager.cs" />
     <Compile Include="Helper\AppWidgetProviderUtils.cs" />
     <Compile Include="Helper\NotificationsConstants.cs" />
@@ -944,6 +945,11 @@
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_periscope.png" />
     <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\togglman.png" />
     <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_periscope.png" />
     <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_pupil.png" />
     <AndroidResource Include="Resources\drawable-mdpi\onboarding_slide2_periscope.png" />
@@ -969,6 +975,7 @@
     <AndroidResource Include="Resources\drawable\background_timer_widget.xml" />
     <AndroidResource Include="Resources\drawable\ic_close.xml" />
     <AndroidResource Include="Resources\drawable\ic_stop_big.xml" />
+    <AndroidResource Include="Resources\drawable\ic_toggl_logo_onboarding.xml" />
     <AndroidResource Include="Resources\drawable\loadinganimation01_02.xml" />
     <AndroidResource Include="Resources\drawable\loadinganimation01_03.xml" />
     <AndroidResource Include="Resources\drawable\loadinganimation01_04.xml" />
@@ -1090,7 +1097,6 @@
     <AndroidResource Include="Resources\menu\SettingsMenu.xml" />
     <AndroidResource Include="Resources\menu\DoneOrClearMenu.xml" />
     <AndroidResource Include="Resources\menu\OneButtonMenu.xml" />
-    <AndroidResource Include="Resources\raw\togglman.mp4" />
     <AndroidResource Include="Resources\values-night\Environment.xml" />
     <AndroidResource Include="Resources\values-v23\Styles.xml" />
     <AndroidResource Include="Resources\values-v27\Styles.xml" />

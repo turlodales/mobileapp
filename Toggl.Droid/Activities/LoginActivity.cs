@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
+using Toggl.Droid.Helper;
 using Toggl.Droid.Presentation;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -34,7 +35,6 @@ namespace Toggl.Droid.Activities
 
         protected override void InitializeBindings()
         {
-
             ViewModel.Email.FirstAsync()
                 .Select(email => email.ToString())
                 .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
@@ -91,9 +91,9 @@ namespace Toggl.Droid.Activities
             forgotPasswordLabel.Rx()
                 .BindAction(ViewModel.ForgotPassword)
                 .DisposedBy(DisposeBag);
-            
+
             passwordEditText.Rx().EditorActionSent()
-                .Subscribe(ViewModel.SignUp.Inputs)
+                .Subscribe(ViewModel.Login.Inputs)
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
@@ -117,14 +117,15 @@ namespace Toggl.Droid.Activities
                 .Subscribe(CommonFunctions.DoNothing)
                 .DisposedBy(DisposeBag);
 
+            var animatedLoadingMessage = TextHelpers.AnimatedLoadingMessage();
             ViewModel.IsLoading
-                .Select(loginButtonTitle)
-                .Subscribe(loginButton.Rx().TextObserver())
+                .CombineLatest(animatedLoadingMessage, loginButtonTitle)
+                .Subscribe(loginButton.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
-            string loginButtonTitle(bool isLoading)
+            string loginButtonTitle(bool isLoading, string currentLoadingMessage)
                 => isLoading
-                    ? Shared.Resources.Loading
+                    ? currentLoadingMessage
                     : Shared.Resources.LoginTitle;
 
             this.CancelAllNotifications();

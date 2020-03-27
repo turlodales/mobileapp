@@ -43,7 +43,7 @@ namespace Toggl.Droid.Activities
 
             ViewModel.IsLoading
                 .Do(setAnimationStatus)
-                .Subscribe(loadingViewIndicator.Rx().IsVisible())
+                .Subscribe(loadingViewViews.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
         }
 

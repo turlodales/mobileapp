@@ -24,7 +24,6 @@ namespace Toggl.Droid.Activities
             DropdownMenu = FindViewById(Resource.Id.dropdown_menu);
             DropdownOutline = FindViewById(Resource.Id.dropdown_outline);
 
-            WelcomeMessage.Text = Shared.Resources.ReviewTheTerms;
             CountryOfResidenceLegend.Text = Shared.Resources.CountryOfResidence;
             AgreementButton.Text = Shared.Resources.IAgree;
             AgreementButton.FitBottomMarginInset();

@@ -49,7 +49,7 @@ namespace Toggl.iOS.ViewControllers
         {
             base.ViewDidLoad();
 
-            TitleLabel.Text = Resources.ReviewTheTerms;
+            TitleLabel.Text = Resources.ReviewTheTermsWelcome;
             AcceptButton.SetTitle(Resources.IAgree, UIControlState.Normal);
 
             var height = TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular
