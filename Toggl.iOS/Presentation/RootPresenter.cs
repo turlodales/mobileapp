@@ -16,8 +16,7 @@ namespace Toggl.iOS.Presentation
         protected override HashSet<Type> AcceptedViewModels { get; } = new HashSet<Type>
         {
             typeof(MainTabBarViewModel),
-            typeof(LoginViewModel),
-            typeof(SignupViewModel),
+            typeof(OnboardingViewModel),
             typeof(TokenResetViewModel),
             typeof(OutdatedAppViewModel),
         };
@@ -25,6 +24,7 @@ namespace Toggl.iOS.Presentation
         private HashSet<Type> viewModelsNotWrappedInNavigationController { get; } = new HashSet<Type>
         {
             typeof(MainTabBarViewModel),
+            typeof(OnboardingViewModel),
             typeof(OutdatedAppViewModel),
         };
 
@@ -90,10 +90,13 @@ namespace Toggl.iOS.Presentation
                 case MainTabBarController mainTabBarController:
                     detachViewModel(mainTabBarController.ViewModel);
                     break;
+                case OnboardingViewController onboardingViewController:
+                    detachViewModel(onboardingViewController.ViewModel);
+                    break;
                 case LoginViewController loginViewController:
                     detachViewModel(loginViewController.ViewModel);
                     break;
-                case SignupViewController signupViewController:
+                case SignUpViewController signupViewController:
                     detachViewModel(signupViewController.ViewModel);
                     break;
                 case TokenResetViewController tokenResetViewController:

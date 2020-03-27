@@ -9,5 +9,14 @@ namespace Toggl.iOS.Extensions.Reactive
     {
         public static Action<CGSize> PreferredContentSize(this IReactive<UIViewController> reactive)
             => preferredContentSize => reactive.Base.PreferredContentSize = preferredContentSize;
+
+        public static Action<bool> ModalInPresentation(this IReactive<UIViewController> reactive)
+            => modalInPresentation =>
+            {
+                if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+                {
+                    reactive.Base.ModalInPresentation = modalInPresentation;
+                }
+            };
     }
 }

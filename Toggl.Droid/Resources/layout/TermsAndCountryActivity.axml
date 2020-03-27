@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/togglLogo"
+        android:layout_width="76dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_toggl_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/welcome_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="40dp"
+        android:lineHeight="36sp"
+        android:maxLines="3"
+        android:textColor="@color/primaryText"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif-light"
+        android:lineSpacingMultiplier="1.38"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/togglLogo"
+        tools:text="Just one more thing.\nPlease review\nthe details below." />
+
+    <TextView
+        android:id="@+id/country_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/primaryText"
+        app:layout_constraintLeft_toLeftOf="@id/dropdown_outline"
+        app:layout_constraintRight_toLeftOf="@id/dropdown_menu"
+        app:layout_constraintTop_toBottomOf="@id/country_of_residence_label"
+        tools:text="Japan" />
+
+    <ImageView
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/dropdown_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_dropdown"
+        android:tint="@color/dropdownColor"
+        app:layout_constraintBottom_toBottomOf="@id/country_name"
+        app:layout_constraintRight_toRightOf="@id/dropdown_outline"
+        app:layout_constraintTop_toTopOf="@id/country_name" />
+
+    <View
+        android:id="@+id/country_of_residence_bottom"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_name" />
+
+    <View
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/dropdown_outline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/country_picker_outline"
+        app:layout_constraintBottom_toBottomOf="@+id/country_of_residence_bottom"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/country_of_residence_label" />
+
+    <TextView
+        android:id="@+id/country_of_residence_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/background"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/secondaryText"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toLeftOf="@id/welcome_message"
+        app:layout_constraintTop_toBottomOf="@id/welcome_message"
+        tools:text="Your country of residence" />
+
+    <TextView
+        android:id="@+id/terms_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="40dp"
+        android:textColor="@color/primaryText"
+        android:textSize="14sp"
+        android:lineHeight="20sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dropdown_outline"
+        tools:text="By tapping “I agree”, you understand\nand agree to Toggl’s Terms of Service\nand Privacy Policy." />
+
+    <Button
+        android:id="@+id/agreement_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/contained_button"
+        android:backgroundTint="@color/onboardingButtonBackgroundColor"
+        android:textColor="@color/primaryTextOnDarkBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/terms_message"
+        app:layout_constraintVertical_bias="1"
+        tools:text="I agree" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

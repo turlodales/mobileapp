@@ -27,6 +27,9 @@ namespace Toggl.Droid.Fragments.Calendar
         public void StartActivityIntent(Intent intent)
             => StartActivity(intent);
 
+        public bool ShouldShowPermissionRationale(string permission)
+            => ShouldShowRequestPermissionRationale(permission);
+
         public IObservable<bool> RequestCalendarAuthorization(bool force = false)
             => this.ProcessCalendarAuthorizationRequest(force);
 

@@ -33,6 +33,16 @@ namespace Toggl.Droid.Activities
 
         protected override void InitializeBindings()
         {
+            ViewModel.Email
+                .Take(1)
+                .Select(email => email.ToString())
+                .Subscribe(loginEmailEditText.Rx().TextObserver(true))
+                .DisposedBy(DisposeBag);
+
+            ViewModel.PasswordResetWithInvalidEmail
+                .Subscribe(_ => onInvalidEmail())
+                .DisposedBy(DisposeBag);
+
             ViewModel.ErrorMessage
                 .Subscribe(onErrorMessage)
                 .DisposedBy(DisposeBag);
@@ -43,11 +53,13 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             ViewModel.Reset.Executing
-                .Subscribe(loadingProgressBar.Rx().IsVisible())
+                .Subscribe(loadingOverlay.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
             ViewModel.Reset.Executing
-                .Select(resetting => resetting ? "" : Shared.Resources.GetPasswordResetLink)
+                .Select(resetting => resetting 
+                    ? Shared.Resources.Loading 
+                    : Shared.Resources.ForgotPasswordSendEmail)
                 .Subscribe(resetPasswordButton.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
@@ -60,18 +72,26 @@ namespace Toggl.Droid.Activities
                 .Subscribe(resetPasswordButton.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.Reset.Executing.Invert()
-                .CombineLatest(ViewModel.EmailValid, CommonFunctions.And)
-                .Subscribe(resetPasswordButton.Rx().Enabled())
-                .DisposedBy(DisposeBag);
-
             resetPasswordButton.Rx().Tap()
                 .Subscribe(ViewModel.Reset.Inputs)
+                .DisposedBy(DisposeBag);
+            
+            loginEmailEditText.Rx().EditorActionSent()
+                .Subscribe(ViewModel.Reset.Inputs)
+                .DisposedBy(DisposeBag);
+            
+            loadingOverlay.Rx().Tap()
+                .Subscribe(CommonFunctions.DoNothing)
                 .DisposedBy(DisposeBag);
 
             void onErrorMessage(string errorMessage)
             {
                 loginEmail.Error = errorMessage;
+            }
+
+            void onInvalidEmail()
+            {
+                loginEmail.Error = Shared.Resources.InvalidEmailError;
             }
 
             void showResetPasswordSuccessToast()

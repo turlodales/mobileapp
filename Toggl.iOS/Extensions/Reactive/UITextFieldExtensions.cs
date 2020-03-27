@@ -48,5 +48,8 @@ namespace Toggl.iOS.Extensions.Reactive
 
         public static Action<string> PlaceholderText(this IReactive<UITextField> reactive)
             => placeholderText => reactive.Base.Placeholder = placeholderText;
+
+        public static Action<Unit> Shake(this IReactive<UITextField> reactive)
+            => _ => reactive.Base.Shake();
     }
 }

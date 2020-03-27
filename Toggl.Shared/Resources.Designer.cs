@@ -52,6 +52,78 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SignUp {
+            get {
+                return ResourceManager.GetString("SignUp", resourceCulture);
+            }
+        }
+        
+        public static string SignUpWelcomeMessage {
+            get {
+                return ResourceManager.GetString("SignUpWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        public static string LoginWelcomeMessage {
+            get {
+                return ResourceManager.GetString("LoginWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage1 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage1", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage2 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage2", resourceCulture);
+            }
+        }
+        
+        public static string OnboardingMessagePage3 {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage3", resourceCulture);
+            }
+        }
+        
+        public static string ContinueWithGoogle {
+            get {
+                return ResourceManager.GetString("ContinueWithGoogle", resourceCulture);
+            }
+        }
+        
+        public static string ContinueWithEmail {
+            get {
+                return ResourceManager.GetString("ContinueWithEmail", resourceCulture);
+            }
+        }
+        
+        public static string InvalidEmailError {
+            get {
+                return ResourceManager.GetString("InvalidEmailError", resourceCulture);
+            }
+        }
+        
+        public static string NoEmailError {
+            get {
+                return ResourceManager.GetString("NoEmailError", resourceCulture);
+            }
+        }
+        
+        public static string NoPasswordError {
+            get {
+                return ResourceManager.GetString("NoPasswordError", resourceCulture);
+            }
+        }
+        
+        public static string InvalidPasswordError {
+            get {
+                return ResourceManager.GetString("InvalidPasswordError", resourceCulture);
+            }
+        }
+        
         public static string LoginTitle {
             get {
                 return ResourceManager.GetString("LoginTitle", resourceCulture);
@@ -100,6 +172,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SendEmail {
+            get {
+                return ResourceManager.GetString("SendEmail", resourceCulture);
+            }
+        }
+        
         public static string LoginForgotPassword {
             get {
                 return ResourceManager.GetString("LoginForgotPassword", resourceCulture);
@@ -118,15 +196,33 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SetPassword {
+            get {
+                return ResourceManager.GetString("SetPassword", resourceCulture);
+            }
+        }
+        
         public static string AlreadyHaveAnAccountQuestionMark {
             get {
                 return ResourceManager.GetString("AlreadyHaveAnAccountQuestionMark", resourceCulture);
             }
         }
         
+        public static string HaveAnAccountQuestionMark {
+            get {
+                return ResourceManager.GetString("HaveAnAccountQuestionMark", resourceCulture);
+            }
+        }
+        
         public static string GetPasswordResetLink {
             get {
                 return ResourceManager.GetString("GetPasswordResetLink", resourceCulture);
+            }
+        }
+        
+        public static string ForgotPasswordSendEmail {
+            get {
+                return ResourceManager.GetString("ForgotPasswordSendEmail", resourceCulture);
             }
         }
         
@@ -142,9 +238,21 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string PasswordResetMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetMessage", resourceCulture);
+            }
+        }
+        
         public static string IncorrectEmailOrPassword {
             get {
                 return ResourceManager.GetString("IncorrectEmailOrPassword", resourceCulture);
+            }
+        }
+        
+        public static string InvalidEmailOrPassword {
+            get {
+                return ResourceManager.GetString("InvalidEmailOrPassword", resourceCulture);
             }
         }
         
@@ -202,6 +310,18 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string ReviewTheTermsWelcome {
+            get {
+                return ResourceManager.GetString("ReviewTheTermsWelcome", resourceCulture);
+            }
+        }
+        
+        public static string ReviewTheTermsOneMoreThing {
+            get {
+                return ResourceManager.GetString("ReviewTheTermsOneMoreThing", resourceCulture);
+            }
+        }
+        
         public static string TermsOfServiceDialogMessage {
             get {
                 return ResourceManager.GetString("TermsOfServiceDialogMessage", resourceCulture);
@@ -214,15 +334,15 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string ReviewTheTerms {
-            get {
-                return ResourceManager.GetString("ReviewTheTerms", resourceCulture);
-            }
-        }
-        
         public static string IAgree {
             get {
                 return ResourceManager.GetString("IAgree", resourceCulture);
+            }
+        }
+        
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
         

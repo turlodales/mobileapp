@@ -143,7 +143,10 @@ namespace Toggl.Droid.Activities
 
         private void onSelectProjectToolbarButtonLayoutChanged(object sender, View.LayoutChangeEventArgs changeEventArgs)
         {
-            selectProjectToolbarButton.Post(setupStartTimeEntryOnboardingStep);
+            if (changeEventArgs.OldBottom != changeEventArgs.Bottom)
+            {
+                selectProjectToolbarButton.Post(setupStartTimeEntryOnboardingStep);
+            }
         }
 
         protected override void OnStop()

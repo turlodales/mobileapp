@@ -16,6 +16,7 @@ namespace Toggl.iOS.Models
         public bool Billable;
         public IEnumerable<long> Tags;
         public long? ProjectId;
+        public long? TaskId;
         public DateRangePeriod DateRangePeriod;
     }
 
@@ -52,6 +53,7 @@ namespace Toggl.iOS.Models
                     ? null
                     : stringToLongCollection(startTimerIntent.Tags.Select(tag => tag.Identifier));
                 Parameters.ProjectId = stringToLong(startTimerIntent.ProjectId?.Identifier);
+                Parameters.TaskId = stringToLong(startTimerIntent.TaskId?.Identifier);
             }
 
             if (Intent is StartTimerFromClipboardIntent startTimerFromClipboardIntent)
@@ -63,6 +65,7 @@ namespace Toggl.iOS.Models
                     ? null
                     : stringToLongCollection(startTimerFromClipboardIntent.Tags.Select(tag => tag.Identifier));
                 Parameters.ProjectId = stringToLong(startTimerFromClipboardIntent.ProjectId?.Identifier);
+                Parameters.TaskId = stringToLong(startTimerFromClipboardIntent.TaskId?.Identifier);
             }
         }
 

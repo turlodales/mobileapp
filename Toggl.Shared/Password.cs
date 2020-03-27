@@ -8,6 +8,8 @@
 
         public bool IsValid { get; }
 
+        public bool IsEmpty => string.IsNullOrWhiteSpace(password);
+
         public int Length => password.Length;
 
         private Password(string password)

@@ -67,8 +67,9 @@ namespace Toggl.Core.UI.Parameters
             TimeSpan? duration,
             long? workspaceId,
             long? projectId,
+            long? taskId,
             long[] tagIds)
-            => new DeeplinkNewTimeEntryParameters(description, startTime, stopTime, duration, workspaceId, projectId, tagIds);
+            => new DeeplinkNewTimeEntryParameters(description, startTime, stopTime, duration, workspaceId, projectId, taskId, tagIds);
 
         public static DeeplinkParameters WithEditTimeEntry(long timeEntryId)
             => new DeeplinkEditTimeEntryParameters(timeEntryId);

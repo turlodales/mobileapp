@@ -1,6 +1,7 @@
 ﻿using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Toggl.Droid.Adapters;
+using Toggl.Droid.Extensions;
 using static Toggl.Droid.Resource.Id;
 
 namespace Toggl.Droid.Activities
@@ -19,7 +20,7 @@ namespace Toggl.Droid.Activities
             adapter = new SelectProjectRecyclerAdapter();
             recyclerView.SetLayoutManager(new LinearLayoutManager(this));
             recyclerView.SetAdapter(adapter);
-            
+            recyclerView.FitBottomMarginInset();
             SetupToolbar();
         }
     }

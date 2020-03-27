@@ -2,6 +2,7 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Adapters;
+using Toggl.Droid.Extensions;
 using Toggl.Droid.LayoutManagers;
 using Toggl.Droid.ViewHolders.Country;
 
@@ -31,6 +32,8 @@ namespace Toggl.Droid.Activities
             recyclerView.SetAdapter(recyclerAdapter);
             
             SetupToolbar();
+
+            recyclerView.FitBottomMarginInset();
         }
     }
 }

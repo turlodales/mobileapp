@@ -132,6 +132,7 @@ namespace Toggl.Core.UI.Extensions
             var duration = parameters.Duration;
             var description = parameters.Description;
             var projectId = parameters.ProjectId;
+            var taskId = parameters.TaskId;
             var tags = parameters.TagIds;
 
             return new StartTimeEntryParameters(
@@ -141,6 +142,7 @@ namespace Toggl.Core.UI.Extensions
                 workspaceId,
                 description,
                 projectId,
+                taskId,
                 tags
             );
         }

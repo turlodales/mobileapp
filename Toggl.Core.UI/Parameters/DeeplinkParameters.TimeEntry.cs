@@ -186,6 +186,8 @@ namespace Toggl.Core.UI.Parameters
 
         public long? ProjectId { get; }
 
+        public long? TaskId { get; }
+
         public long[] TagIds { get; }
 
         internal DeeplinkNewTimeEntryParameters(
@@ -195,6 +197,7 @@ namespace Toggl.Core.UI.Parameters
             TimeSpan? duration,
             long? workspaceId,
             long? projectId,
+            long? taskId,
             long[] tagIds)
         {
             Description = description;
@@ -203,6 +206,7 @@ namespace Toggl.Core.UI.Parameters
             Duration = duration;
             WorkspaceId = workspaceId;
             ProjectId = projectId;
+            TaskId = taskId;
             TagIds = tagIds;
         }
     }

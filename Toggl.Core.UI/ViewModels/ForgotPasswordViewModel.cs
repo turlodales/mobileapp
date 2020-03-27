@@ -88,7 +88,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private IObservable<Unit> reset()
         {
-            if (!Email.Value.IsValid)
+            if (Email.Value.IsEmpty || !Email.Value.IsValid)
             {
                 passwordResetWithInvalidEmailSubject.OnNext(Unit.Default);
                 return Observable.Empty<Unit>();

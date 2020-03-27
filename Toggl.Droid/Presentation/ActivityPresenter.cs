@@ -6,6 +6,7 @@ using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Core.UI.Views;
 using Toggl.Droid.Activities;
+using Toggl.Droid.Fragments;
 using Fragment = AndroidX.Fragment.App.Fragment;
 
 namespace Toggl.Droid.Presentation
@@ -31,10 +32,13 @@ namespace Toggl.Droid.Presentation
             typeof(SelectProjectViewModel),
             typeof(SelectTagsViewModel),
             typeof(SendFeedbackViewModel),
-            typeof(SignupViewModel),
+            typeof(SignUpViewModel),
             typeof(StartTimeEntryViewModel),
             typeof(TokenResetViewModel),
-            typeof(SettingsViewModel)
+            typeof(SettingsViewModel),
+            typeof(IndependentCalendarSettingsViewModel),
+            typeof(OnboardingViewModel),
+            typeof(TermsAndCountryViewModel)
         };
 
         private readonly Dictionary<Type, ActivityPresenterInfo> presentableActivitiesInfos = new Dictionary<Type, ActivityPresenterInfo>
@@ -45,7 +49,6 @@ namespace Toggl.Droid.Presentation
             [typeof(EditProjectViewModel)] = new ActivityPresenterInfo(typeof(EditProjectActivity)),
             [typeof(EditTimeEntryViewModel)] = new ActivityPresenterInfo(typeof(EditTimeEntryActivity)),
             [typeof(ForgotPasswordViewModel)] = new ActivityPresenterInfo(typeof(ForgotPasswordActivity)),
-            [typeof(LoginViewModel)] = new ActivityPresenterInfo(typeof(LoginActivity), clearBackStackFlags),
             [typeof(LicensesViewModel)] = new ActivityPresenterInfo(typeof(LicensesActivity)),
             [typeof(MainTabBarViewModel)] = new ActivityPresenterInfo(typeof(MainTabBarActivity), clearBackStackFlags),
             [typeof(OutdatedAppViewModel)] = new ActivityPresenterInfo(typeof(OutdatedAppActivity), clearBackStackFlags),
@@ -55,17 +58,29 @@ namespace Toggl.Droid.Presentation
             [typeof(SelectTagsViewModel)] = new ActivityPresenterInfo(typeof(SelectTagsActivity)),
             [typeof(SendFeedbackViewModel)] = new ActivityPresenterInfo(typeof(SendFeedbackActivity)),
             [typeof(SettingsViewModel)] = new ActivityPresenterInfo(typeof(SettingsActivity)),
-            [typeof(SignupViewModel)] = new ActivityPresenterInfo(typeof(SignUpActivity), clearBackStackFlags),
+            [typeof(IndependentCalendarSettingsViewModel)] = new ActivityPresenterInfo(typeof(IndependentCalendarSettingsActivity)),
             [typeof(StartTimeEntryViewModel)] = new ActivityPresenterInfo(typeof(StartTimeEntryActivity)),
-            [typeof(TokenResetViewModel)] = new ActivityPresenterInfo(typeof(TokenResetActivity), clearBackStackFlags)
+            [typeof(TokenResetViewModel)] = new ActivityPresenterInfo(typeof(TokenResetActivity), clearBackStackFlags),
+            [typeof(LoginViewModel)] = new ActivityPresenterInfo(typeof(LoginActivity)),
+            [typeof(SignUpViewModel)] = new ActivityPresenterInfo(typeof(SignUpActivity)),
+            [typeof(OnboardingViewModel)] = new ActivityPresenterInfo(typeof(OnboardingActivity), clearBackStackFlags)
         };
 
         protected override void PresentOnMainThread<TInput, TOutput>(ViewModel<TInput, TOutput> viewModel, IView sourceView)
         {
             var viewModelType = viewModel.GetType();
-
-            if (!presentableActivitiesInfos.TryGetValue(viewModelType, out var presentableInfo))
+            ActivityPresenterInfo presentableInfo;
+            
+            if (viewModelType == typeof(TermsAndCountryViewModel))
+            {
+                presentableInfo = sourceView is SignUpActivity 
+                    ? new ActivityPresenterInfo(typeof(TermsAndCountryFullActivity))
+                    : new ActivityPresenterInfo(typeof(TermsAndCountryModalActivity));
+            }
+            else if (!presentableActivitiesInfos.TryGetValue(viewModelType, out presentableInfo))
+            {
                 throw new Exception($"Failed to start Activity for viewModel with type {viewModelType.Name}");
+            }
 
             var intent = new Intent(Application.Context, presentableInfo.ActivityType).AddFlags(presentableInfo.Flags);
 

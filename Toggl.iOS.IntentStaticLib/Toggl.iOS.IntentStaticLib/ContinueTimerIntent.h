@@ -4,14 +4,14 @@
 // This file was automatically generated and should not be edited.
 //
 
+#if __has_include(<Intents/Intents.h>)
+
 #import <Intents/Intents.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface ContinueTimerIntent : INIntent
-
-
 
 @end
 
@@ -21,7 +21,7 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
  @abstract Protocol to declare support for handling a ContinueTimerIntent. By implementing this protocol, a class can provide logic for resolving, confirming and handling the intent.
  @discussion The minimum requirement for an implementing class is that it should be able to handle the intent. The confirmation method is optional. The handling method is always called last, after confirming the intent.
  */
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @protocol ContinueTimerIntentHandling <NSObject>
 
 @required
@@ -65,9 +65,9 @@ typedef NS_ENUM(NSInteger, ContinueTimerIntentResponseCode) {
     ContinueTimerIntentResponseCodeFailureRequiringAppLaunch,
     ContinueTimerIntentResponseCodeFailureNoApiToken = 100,
     ContinueTimerIntentResponseCodeSuccessWithEntryDescription
-} API_AVAILABLE(ios(12.0), watchos(5.0));
+} API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos);
 
-API_AVAILABLE(ios(12.0), watchos(5.0))
+API_AVAILABLE(ios(12.0), watchos(5.0)) API_UNAVAILABLE(macos, tvos)
 @interface ContinueTimerIntentResponse : INIntentResponse
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -96,3 +96,5 @@ API_AVAILABLE(ios(12.0), watchos(5.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

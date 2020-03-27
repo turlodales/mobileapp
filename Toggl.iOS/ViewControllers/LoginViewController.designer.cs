@@ -9,78 +9,52 @@ using System.CodeDom.Compiler;
 
 namespace Toggl.iOS.ViewControllers
 {
-	[Register ("LoginView")]
+	[Register ("LoginViewController")]
 	partial class LoginViewController
 	{
 		[Outlet]
-		Toggl.iOS.Views.ActivityIndicatorView ActivityIndicator { get; set; }
+		UIKit.UILabel EmailErrorLabel { get; set; }
 
 		[Outlet]
-		UIKit.UILabel DontHaveAnAccountLabel { get; set; }
+		Toggl.Daneel.Views.EmailTextField EmailTextField { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint EmailFieldTopConstraint { get; set; }
-
-		[Outlet]
-		[GeneratedCode ("iOS Designer", "1.0")]
-		Toggl.iOS.Views.LoginTextField EmailTextField { get; set; }
-
-		[Outlet]
-		UIKit.UILabel ErrorLabel { get; set; }
-
-		[Outlet]
-		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.UIButton ForgotPasswordButton { get; set; }
-
-		[Outlet]
-		UIKit.UIButton GoogleLoginButton { get; set; }
 
 		[Outlet]
 		UIKit.UIButton LoginButton { get; set; }
 
 		[Outlet]
+		UIKit.UILabel LoginErrorLabel { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView LogoImageView { get; set; }
 
 		[Outlet]
-		UIKit.UILabel OrLabel { get; set; }
+		UIKit.UILabel PasswordErrorLabel { get; set; }
 
 		[Outlet]
-		UIKit.UIButton PasswordManagerButton { get; set; }
-
-		[Outlet]
-		[GeneratedCode ("iOS Designer", "1.0")]
 		Toggl.iOS.Views.LoginTextField PasswordTextField { get; set; }
+
+		[Outlet]
+		UIKit.UIScrollView ScrollView { get; set; }
 
 		[Outlet]
 		UIKit.UIButton ShowPasswordButton { get; set; }
 
 		[Outlet]
-		UIKit.UIView SignupCard { get; set; }
+		UIKit.UILabel WelcomeLabel { get; set; }
 
-		[Outlet]
-		UIKit.UILabel SignUpForFreeLabel { get; set; }
-
-		[Outlet]
-		UIKit.UIStackView ThirdPartyProvidersContainer { get; set; }
-
-		[Outlet]
-		UIKit.NSLayoutConstraint TopConstraint { get; set; }
-		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ActivityIndicator != null) {
-				ActivityIndicator.Dispose ();
-				ActivityIndicator = null;
+			if (ScrollView != null) {
+				ScrollView.Dispose ();
+				ScrollView = null;
 			}
 
-			if (DontHaveAnAccountLabel != null) {
-				DontHaveAnAccountLabel.Dispose ();
-				DontHaveAnAccountLabel = null;
-			}
-
-			if (EmailFieldTopConstraint != null) {
-				EmailFieldTopConstraint.Dispose ();
-				EmailFieldTopConstraint = null;
+			if (EmailErrorLabel != null) {
+				EmailErrorLabel.Dispose ();
+				EmailErrorLabel = null;
 			}
 
 			if (EmailTextField != null) {
@@ -88,19 +62,9 @@ namespace Toggl.iOS.ViewControllers
 				EmailTextField = null;
 			}
 
-			if (ErrorLabel != null) {
-				ErrorLabel.Dispose ();
-				ErrorLabel = null;
-			}
-
 			if (ForgotPasswordButton != null) {
 				ForgotPasswordButton.Dispose ();
 				ForgotPasswordButton = null;
-			}
-
-			if (GoogleLoginButton != null) {
-				GoogleLoginButton.Dispose ();
-				GoogleLoginButton = null;
 			}
 
 			if (LoginButton != null) {
@@ -108,19 +72,19 @@ namespace Toggl.iOS.ViewControllers
 				LoginButton = null;
 			}
 
+			if (LoginErrorLabel != null) {
+				LoginErrorLabel.Dispose ();
+				LoginErrorLabel = null;
+			}
+
 			if (LogoImageView != null) {
 				LogoImageView.Dispose ();
 				LogoImageView = null;
 			}
 
-			if (OrLabel != null) {
-				OrLabel.Dispose ();
-				OrLabel = null;
-			}
-
-			if (PasswordManagerButton != null) {
-				PasswordManagerButton.Dispose ();
-				PasswordManagerButton = null;
+			if (PasswordErrorLabel != null) {
+				PasswordErrorLabel.Dispose ();
+				PasswordErrorLabel = null;
 			}
 
 			if (PasswordTextField != null) {
@@ -133,24 +97,9 @@ namespace Toggl.iOS.ViewControllers
 				ShowPasswordButton = null;
 			}
 
-			if (SignupCard != null) {
-				SignupCard.Dispose ();
-				SignupCard = null;
-			}
-
-			if (SignUpForFreeLabel != null) {
-				SignUpForFreeLabel.Dispose ();
-				SignUpForFreeLabel = null;
-			}
-
-			if (TopConstraint != null) {
-				TopConstraint.Dispose ();
-				TopConstraint = null;
-			}
-
-			if (ThirdPartyProvidersContainer != null) {
-				ThirdPartyProvidersContainer.Dispose ();
-				ThirdPartyProvidersContainer = null;
+			if (WelcomeLabel != null) {
+				WelcomeLabel.Dispose ();
+				WelcomeLabel = null;
 			}
 		}
 	}

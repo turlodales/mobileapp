@@ -1,12 +1,20 @@
+using System;
+using System.Collections.Generic;
 using Android.Views;
 using Toggl.Droid.Extensions;
 using Google.Android.Material.BottomNavigation;
+using Toggl.Droid.Fragments;
 
 namespace Toggl.Droid.Activities
 {
     public sealed partial class MainTabBarActivity
     {
         private BottomNavigationView navigationView;
+        private readonly HashSet<Type> readyLayouts = new HashSet<Type>();
+        private readonly Dictionary<Type, int> placeholderLayoutIds = new Dictionary<Type, int>
+        {
+            { typeof(MainFragment), Resource.Id.MainLogPlaceholder }
+        };
 
         protected override void InitializeViews()
         {

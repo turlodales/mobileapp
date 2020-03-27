@@ -19,5 +19,17 @@ namespace Toggl.Networking.Tests.Integration.BaseTests
 
             passwordReturn.Should().BeEquivalentTo(apiTokenReturn);
         }
+
+        [Fact, LogTestInfo]
+        public async Task FetchesTheExactSameEntityWhenFetchingTwice()
+        {
+            var (validApi, user) = await SetupTestUser();
+
+            var firstEntity = await CallEndpointWith(validApi);
+            await Task.Delay(500).ConfigureAwait(false);
+            var secondEntity = await CallEndpointWith(validApi);
+
+            firstEntity.Should().BeEquivalentTo(secondEntity);
+        }
     }
 }

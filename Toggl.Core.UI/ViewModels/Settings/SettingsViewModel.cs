@@ -313,8 +313,8 @@ namespace Toggl.Core.UI.ViewModels
         }
 
         private async Task openCalendarSettings()
-        { 
-            await Navigate<CalendarSettingsViewModel, bool, string[]>(false);
+        {
+            await Navigate<CalendarSettingsViewModel>();
             interactorFactory.UpdateEventNotificationsSchedules().Execute();
         }
 
@@ -328,8 +328,8 @@ namespace Toggl.Core.UI.ViewModels
         {
             await Navigate<NotificationSettingsViewModel>();
             interactorFactory.UpdateEventNotificationsSchedules().Execute();
-        } 
-            
+        }
+
 
         private IObservable<Unit> logout()
         {
@@ -338,7 +338,7 @@ namespace Toggl.Core.UI.ViewModels
 
             return interactorFactory.Logout(LogoutSource.Settings)
                 .Execute()
-                .Do(_ => Navigate<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty));
+                .Do(_ => Navigate<OnboardingViewModel>());
         }
 
         private IObservable<bool> isSynced()
