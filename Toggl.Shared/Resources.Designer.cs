@@ -214,6 +214,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string GetPasswordResetLink {
+            get {
+                return ResourceManager.GetString("GetPasswordResetLink", resourceCulture);
+            }
+        }
+        
         public static string ForgotPasswordSendEmail {
             get {
                 return ResourceManager.GetString("ForgotPasswordSendEmail", resourceCulture);

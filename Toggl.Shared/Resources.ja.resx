@@ -492,6 +492,9 @@
     <data name="Back" xml:space="preserve">
         <value>戻る</value>
     </data>
+    <data name="GetPasswordResetLink" xml:space="preserve">
+        <value>パスワードリセットのリンクを取得</value>
+    </data>
     <data name="ForgotPasswordSendEmail" xml:space="preserve">
         <value>メールを送る</value>
     </data>
