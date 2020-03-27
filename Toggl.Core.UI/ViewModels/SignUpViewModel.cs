@@ -177,6 +177,8 @@ namespace Toggl.Core.UI.ViewModels
             else
                 analyticsService.LocalCountryValidationSignUpCheck.Track(true);
 
+            if (isLoadingSubject.Value) return;
+
             isLoadingSubject.OnNext(true);
 
             var termsOfServiceAccepted = countryId.HasValue;
@@ -211,6 +213,8 @@ namespace Toggl.Core.UI.ViewModels
             onboardingStorage.SetUserSignedUp();
 
             await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
+
+            isLoadingSubject.OnNext(false);
 
             await Navigate<MainTabBarViewModel>();
         }

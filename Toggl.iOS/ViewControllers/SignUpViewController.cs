@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using CoreText;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
@@ -8,11 +7,10 @@ using Toggl.iOS.Extensions.Reactive;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
-using ColorAssets = Toggl.iOS.Shared.Extensions.ColorAssets;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public partial class SignUpViewController : ReactiveViewController<SignUpViewModel>
+    public partial class SignUpViewController : KeyboardAwareViewController<SignUpViewModel>
     {
         public SignUpViewController(SignUpViewModel vm) : base(vm, nameof(SignUpViewController))
         {
@@ -25,11 +23,20 @@ namespace Toggl.iOS.ViewControllers
             prepareViews();
 
             var loginButton = createLoginButton();
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(loginButton);
-            NavigationItem.LeftBarButtonItem = new UIBarButtonItem(
-                UIImage.FromBundle("icClose"),
+            var closeButton = new UIBarButtonItem(
+                UIImage.FromBundle("icClose").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate),
                 UIBarButtonItemStyle.Plain,
                 (sender, args) => ViewModel.Close());
+            closeButton.TintColor = ColorAssets.IconTint;
+
+            var backButton = new UIBarButtonItem("",
+                UIBarButtonItemStyle.Plain,
+                (sender, args) => ViewModel.Close());
+            backButton.TintColor = ColorAssets.IconTint;
+
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(loginButton);
+            NavigationItem.LeftBarButtonItem = closeButton;
+            NavigationItem.BackBarButtonItem = backButton;
 
             //E-mail
             ViewModel.Email
@@ -102,8 +109,95 @@ namespace Toggl.iOS.ViewControllers
                 .BindAction(ViewModel.SignUp)
                 .DisposedBy(DisposeBag);
 
+            //Loading: disabling all interaction
+            ViewModel.IsLoading
+                .Select(CommonFunctions.Invert)
+                .Subscribe(SignUpButton.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(CommonFunctions.Invert)
+                .Subscribe(loginButton.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(CommonFunctions.Invert)
+                .Subscribe(closeButton.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Subscribe(this.Rx().ModalInPresentation())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(CommonFunctions.Invert)
+                .Subscribe(ShowPasswordButton.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(CommonFunctions.Invert)
+                .Subscribe(EmailTextField.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(CommonFunctions.Invert)
+                .Subscribe(PasswordTextField.Rx().Enabled())
+                .DisposedBy(DisposeBag);
+
+            //Loading: making everything look disabled
+            ViewModel.IsLoading
+                .Select(opacityForLoadingState)
+                .Subscribe(LogoImageView.Rx().AnimatedAlpha())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(isLoading => isLoading ? Resources.Loading : Resources.SignUpTitle)
+                .Subscribe(SignUpButton.Rx().Title())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(opacityForLoadingState)
+                .Subscribe(SignUpButton.Rx().AnimatedAlpha())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(opacityForLoadingState)
+                .Subscribe(loginButton.Rx().AnimatedAlpha())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(opacityForLoadingState)
+                .Subscribe(WelcomeLabel.Rx().AnimatedAlpha())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(opacityForLoadingState)
+                .Subscribe(EmailTextField.Rx().AnimatedAlpha())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsLoading
+                .Select(opacityForLoadingState)
+                .Subscribe(PasswordTextField.Rx().AnimatedAlpha())
+                .DisposedBy(DisposeBag);
+
             EmailTextField.BecomeFirstResponder();
         }
+
+        protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
+        {
+            var keyboardHeight = e.FrameEnd.Height;
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
+        }
+
+        protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
+        {
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
+        }
+
+
+
+        private float opacityForLoadingState(bool isLoading)
+            => isLoading ? 0.6f : 1;
 
         private void prepareViews()
         {

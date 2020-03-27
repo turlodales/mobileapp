@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using NSubstitute;
@@ -12,6 +13,7 @@ using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
+using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
@@ -151,7 +153,26 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void DisplaysErrorWhenLoginFails()
+            public void DisplaysAnErrorWhenLoginFailsWithGoogleError()
+            {
+                UserAccessManager
+                    .LoginWithGoogle(Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+
+                ViewModel.ContinueWithGoogle.Execute();
+
+                TestScheduler.Start();
+
+                View.Received()
+                    .Alert(
+                        Arg.Any<string>(),
+                        Arg.Any<string>(),
+                        Arg.Any<string>())
+                    .Wait();
+            }
+
+            [Fact, LogIfTooSlow]
+            public void DoesntDisplayAnErrorWhenLoginFailsWithAPIError()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -161,16 +182,38 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                View.Received()
+                View.DidNotReceive()
                     .Alert(
-                        Arg.Is(Resources.Oops),
-                        Arg.Is(Resources.GenericLoginError),
-                        Arg.Is(Resources.Ok))
+                        Arg.Any<string>(),
+                        Arg.Any<string>(),
+                        Arg.Any<string>())
                     .Wait();
             }
 
+            [Theory, LogIfTooSlow]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void SetIsLoadingToFalseWhenLoginFailsWithGoogleError(bool userCancelled)
+            {
+                UserAccessManager
+                    .LoginWithGoogle(Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(userCancelled)));
+
+                var observer = TestScheduler.CreateObserver<bool>();
+                ViewModel.IsLoading.Subscribe(observer);
+
+                ViewModel.ContinueWithGoogle.Execute();
+
+                TestScheduler.Start();
+                observer.Messages.AssertEqual(
+                    ReactiveTest.OnNext(1, false),
+                    ReactiveTest.OnNext(2, true),
+                    ReactiveTest.OnNext(3, false)
+                );
+            }
+
             [Fact, LogIfTooSlow]
-            public void DoesntSetIsLoadingToFalseWhenLoginFails()
+            public void SetIsLoadingToTrueWhenLoginFailsWithAPIError()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -183,7 +226,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false)
+                    ReactiveTest.OnNext(1, false),
+                    ReactiveTest.OnNext(2, true)
                 );
             }
 
@@ -192,7 +236,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -232,7 +276,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -251,7 +295,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void DoesntSetIsLoadingToFalseWhenSignupFails()
+            public void SetIsLoadingToFalseWhenSignupFails()
             {
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
@@ -268,7 +312,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
                 observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(1, false)
+                    ReactiveTest.OnNext(1, false),
+                    ReactiveTest.OnNext(2, true),
+                    ReactiveTest.OnNext(3, false)
                 );
             }
 
@@ -299,7 +345,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 UserAccessManager
                     .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .Returns(Observable.Throw<Unit>(new Exception()));
                 UserAccessManager
                     .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));

@@ -19,10 +19,16 @@ namespace Toggl.iOS.ViewControllers
 		Toggl.Daneel.Views.EmailTextField EmailTextField { get; set; }
 
 		[Outlet]
+		UIKit.UIImageView LogoImageView { get; set; }
+
+		[Outlet]
 		UIKit.UILabel PasswordErrorLabel { get; set; }
 
 		[Outlet]
 		Toggl.iOS.Views.LoginTextField PasswordTextField { get; set; }
+
+		[Outlet]
+		UIKit.UIScrollView ScrollView { get; set; }
 
 		[Outlet]
 		UIKit.UIButton ShowPasswordButton { get; set; }
@@ -38,19 +44,9 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (EmailTextField != null) {
-				EmailTextField.Dispose ();
-				EmailTextField = null;
-			}
-
-			if (PasswordTextField != null) {
-				PasswordTextField.Dispose ();
-				PasswordTextField = null;
-			}
-
-			if (SignUpButton != null) {
-				SignUpButton.Dispose ();
-				SignUpButton = null;
+			if (ScrollView != null) {
+				ScrollView.Dispose ();
+				ScrollView = null;
 			}
 
 			if (EmailErrorLabel != null) {
@@ -58,19 +54,39 @@ namespace Toggl.iOS.ViewControllers
 				EmailErrorLabel = null;
 			}
 
+			if (EmailTextField != null) {
+				EmailTextField.Dispose ();
+				EmailTextField = null;
+			}
+
+			if (LogoImageView != null) {
+				LogoImageView.Dispose ();
+				LogoImageView = null;
+			}
+
 			if (PasswordErrorLabel != null) {
 				PasswordErrorLabel.Dispose ();
 				PasswordErrorLabel = null;
 			}
 
-			if (SignUpErrorLabel != null) {
-				SignUpErrorLabel.Dispose ();
-				SignUpErrorLabel = null;
+			if (PasswordTextField != null) {
+				PasswordTextField.Dispose ();
+				PasswordTextField = null;
 			}
 
 			if (ShowPasswordButton != null) {
 				ShowPasswordButton.Dispose ();
 				ShowPasswordButton = null;
+			}
+
+			if (SignUpButton != null) {
+				SignUpButton.Dispose ();
+				SignUpButton = null;
+			}
+
+			if (SignUpErrorLabel != null) {
+				SignUpErrorLabel.Dispose ();
+				SignUpErrorLabel = null;
 			}
 
 			if (WelcomeLabel != null) {

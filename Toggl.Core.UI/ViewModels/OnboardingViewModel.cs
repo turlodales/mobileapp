@@ -30,11 +30,13 @@ namespace Toggl.Core.UI.ViewModels
         private readonly IUserAccessManager userAccessManager;
         private readonly ILastTimeUsageStorage lastTimeUsageStorage;
         private readonly IInteractorFactory interactorFactory;
+        private readonly ISchedulerProvider schedulerProvider;
 
         private CompositeDisposable disposeBag = new CompositeDisposable();
 
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
 
+        private string googleToken;
         private List<bool> onboardingPagesViewed = new List<bool> { false, false, false };
 
         public IObservable<bool> IsLoading { get; }
@@ -72,6 +74,7 @@ namespace Toggl.Core.UI.ViewModels
             this.userAccessManager = userAccessManager;
             this.lastTimeUsageStorage = lastTimeUsageStorage;
             this.interactorFactory = interactorFactory;
+            this.schedulerProvider = schedulerProvider;
 
             ContinueWithApple = rxActionFactory.FromAction(continueWithApple);
             ContinueWithGoogle = rxActionFactory.FromAction(continueWithGoogle);
@@ -104,6 +107,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private Task continueWithEmail()
         {
+            analyticsService.ContinueWithEmail.Track();
             trackViewedPages();
             if (lastTimeUsageStorage.LastLogin == null)
             {
@@ -115,9 +119,11 @@ namespace Toggl.Core.UI.ViewModels
             }
         }
 
-        private void tryLoggingInWithGoogle()
+        private async void tryLoggingInWithGoogle()
         {
             View?.GetGoogleToken()
+                .Do(token => googleToken = token)
+                .Do(_ => isLoadingSubject.OnNext(true))
                 .SelectMany(userAccessManager.LoginWithGoogle)
                 .Track(analyticsService.Login, AuthenticationMethod.Google)
                 .Subscribe(_ => onAuthenticated(), onGoogleLoginFailure)
@@ -126,8 +132,6 @@ namespace Toggl.Core.UI.ViewModels
 
         private async void onAuthenticated()
         {
-            isLoadingSubject.OnNext(true);
-
             lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
 
             interactorFactory.GetCurrentUser().Execute()
@@ -142,57 +146,56 @@ namespace Toggl.Core.UI.ViewModels
 
         private async void onGoogleLoginFailure(Exception exception)
         {
-            var e = exception as GoogleLoginException;
-            if (e == null)
+            if (exception is GoogleLoginException googleException)
             {
-                onLoginError(exception);
+                isLoadingSubject.OnNext(false);
+                if (!googleException.LoginWasCanceled)
+                {
+                    await View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
+                }
                 return;
             }
-            if (e.LoginWasCanceled) return;
 
-            var country = await confirmCountryAndTermsOfService();
-
-            if (country == null) return;
-
-            signUpWithGoogle(country);
-        }
-
-        private void signUpWithGoogle(ICountry country)
-        {
-            interactorFactory.GetSupportedTimezones().Execute()
-                .Select(supportedTimezones =>
-                    supportedTimezones.FirstOrDefault(tz => platformInfo.TimezoneIdentifier == tz)
-                )
-                .CombineLatest(View.GetGoogleToken(), (timezone, token) =>
-                    userAccessManager.SignUpWithGoogle(token, true, (int) country.Id, timezone)
-                )
-                .Merge()
-                .Track(analyticsService.SignUp, AuthenticationMethod.Google)
-                .Subscribe(_ => onAuthenticated(), onSignUpError)
-                .DisposedBy(disposeBag);
-        }
-
-        private void onLoginError(Exception exception)
-        {
-            isLoadingSubject.OnNext(false);
-            analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
-            analyticsService.TrackAnonymized(exception);
-            View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
-        }
-
-        private void onSignUpError(Exception exception)
-        {
-            isLoadingSubject.OnNext(false);
-
-            var e = exception as GoogleLoginException;
-            if (e == null)
+            if (exception != null)
             {
                 analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
                 analyticsService.TrackAnonymized(exception);
             }
-            else if (e.LoginWasCanceled) return;
 
-            View.Alert(Resources.Oops, Resources.GenericSignUpError, Resources.Ok);
+            signUpWithGoogle();
+        }
+
+        private async void signUpWithGoogle()
+        {
+            var country = await confirmCountryAndTermsOfService();
+
+            if (country == null)
+            {
+                isLoadingSubject.OnNext(false);
+                return;
+            }
+
+            interactorFactory.GetSupportedTimezones().Execute()
+                .Select(supportedTimezones =>
+                    supportedTimezones.FirstOrDefault(tz => platformInfo.TimezoneIdentifier == tz)
+                )
+                .Select(timezone =>
+                    userAccessManager.SignUpWithGoogle(googleToken, true, (int)country.Id, timezone)
+                )
+                .Merge()
+                .Track(analyticsService.SignUp, AuthenticationMethod.Google)
+                .ObserveOn(schedulerProvider.MainScheduler)
+                .Subscribe(_ => onAuthenticated(), onSignUpError)
+                .DisposedBy(disposeBag);
+        }
+
+        private async void onSignUpError(Exception exception)
+        {
+            isLoadingSubject.OnNext(false);
+
+            analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
+            analyticsService.TrackAnonymized(exception);
+            await View.Alert(Resources.Oops, Resources.GenericSignUpError, Resources.Ok);
         }
 
         private async Task<ICountry?> confirmCountryAndTermsOfService()

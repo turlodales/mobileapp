@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Mt-HR-eKs">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Mt-HR-eKs">
                     <rect key="frame" x="31" y="111" width="352" height="77"/>
                     <attributedString key="attributedText">
                         <fragment content="ONBOARDING_STEP_MESSAGE">
@@ -27,48 +26,30 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yx8-Zz-DUc">
-                    <rect key="frame" x="50" y="291" width="314" height="314"/>
+                    <rect key="frame" x="31" y="272" width="352" height="352"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="Yx8-Zz-DUc" secondAttribute="height" id="UwY-4J-mfP"/>
-                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="But-tW-SdP"/>
+                <constraint firstAttribute="trailing" secondItem="Yx8-Zz-DUc" secondAttribute="trailing" priority="750" constant="31" id="G3f-Ya-JXt"/>
                 <constraint firstItem="2Mt-HR-eKs" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="31" id="GOx-9j-HDV"/>
                 <constraint firstItem="Yx8-Zz-DUc" firstAttribute="width" secondItem="Yx8-Zz-DUc" secondAttribute="height" id="HGa-yO-54x"/>
                 <constraint firstItem="Yx8-Zz-DUc" firstAttribute="centerX" secondItem="1" secondAttribute="centerX" id="HIt-DT-puN"/>
-                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="top" secondItem="2Mt-HR-eKs" secondAttribute="bottom" constant="50" id="KEJ-u7-wjP"/>
-                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="50" id="VDa-W4-zEQ"/>
+                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" priority="250" id="JB2-ah-yK3"/>
+                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2Mt-HR-eKs" secondAttribute="bottom" constant="16" id="KEJ-u7-wjP">
+                    <variation key="heightClass=regular-widthClass=regular" constant="50"/>
+                </constraint>
+                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="width" relation="lessThanOrEqual" secondItem="2Mt-HR-eKs" secondAttribute="width" id="Rld-ts-5sx"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Yx8-Zz-DUc" secondAttribute="bottomMargin" constant="190" id="nEQ-yK-eBr"/>
                 <constraint firstAttribute="trailing" secondItem="2Mt-HR-eKs" secondAttribute="trailing" constant="31" id="rvC-u4-jTG"/>
-                <constraint firstAttribute="trailing" secondItem="Yx8-Zz-DUc" secondAttribute="trailing" constant="50" id="vBu-oY-Rp1"/>
-                <constraint firstItem="2Mt-HR-eKs" firstAttribute="top" secondItem="1" secondAttribute="top" constant="111" id="wT7-fS-kGc"/>
+                <constraint firstItem="2Mt-HR-eKs" firstAttribute="top" secondItem="1" secondAttribute="topMargin" constant="67" id="wT7-fS-kGc"/>
             </constraints>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="KEJ-u7-wjP"/>
-                    <exclude reference="VDa-W4-zEQ"/>
-                    <exclude reference="vBu-oY-Rp1"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="constraints">
-                    <include reference="VDa-W4-zEQ"/>
-                    <include reference="vBu-oY-Rp1"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular-widthClass=regular">
-                <mask key="constraints">
-                    <include reference="KEJ-u7-wjP"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="ContentView" destination="Yx8-Zz-DUc" id="D2g-h3-WsY"/>
                 <outlet property="MessageLabel" destination="2Mt-HR-eKs" id="aps-uA-XpK"/>
             </connections>
-            <point key="canvasLocation" x="34" y="54"/>
+            <point key="canvasLocation" x="33.75" y="53.87323943661972"/>
         </view>
     </objects>
 </document>

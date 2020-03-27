@@ -206,6 +206,10 @@ mobile, desktop or web</value>
         <value>Sign up for free</value>
         <comment>Title of the sign up view</comment>
     </data>
+    <data name="SendEmail" xml:space="preserve">
+        <value>Send email</value>
+        <comment>Send email to reset password</comment>
+    </data>
     <data name="LoginForgotPassword" xml:space="preserve">
         <value>Forgot your password?</value>
         <comment>Link to the password reset view</comment>
@@ -293,7 +297,7 @@ Please try again.</value>
         <comment>@Invariant</comment>
     </data>
     <data name="ReviewTheTerms" xml:space="preserve">
-        <value>Just one more thing.
+        <value>Welcome to Toggl!
 Please review
 the details below.</value>
         <comment>The header of the terms of service / country selection screen</comment>

@@ -37,6 +37,9 @@ namespace Toggl.iOS.ViewControllers
 		Toggl.iOS.Views.LoginTextField PasswordTextField { get; set; }
 
 		[Outlet]
+		UIKit.UIScrollView ScrollView { get; set; }
+
+		[Outlet]
 		UIKit.UIButton ShowPasswordButton { get; set; }
 
 		[Outlet]
@@ -44,6 +47,11 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ScrollView != null) {
+				ScrollView.Dispose ();
+				ScrollView = null;
+			}
+
 			if (EmailErrorLabel != null) {
 				EmailErrorLabel.Dispose ();
 				EmailErrorLabel = null;
@@ -69,6 +77,11 @@ namespace Toggl.iOS.ViewControllers
 				LoginErrorLabel = null;
 			}
 
+			if (LogoImageView != null) {
+				LogoImageView.Dispose ();
+				LogoImageView = null;
+			}
+
 			if (PasswordErrorLabel != null) {
 				PasswordErrorLabel.Dispose ();
 				PasswordErrorLabel = null;
@@ -87,11 +100,6 @@ namespace Toggl.iOS.ViewControllers
 			if (WelcomeLabel != null) {
 				WelcomeLabel.Dispose ();
 				WelcomeLabel = null;
-			}
-
-			if (LogoImageView != null) {
-				LogoImageView.Dispose ();
-				LogoImageView = null;
 			}
 		}
 	}

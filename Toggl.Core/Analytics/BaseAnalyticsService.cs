@@ -252,6 +252,8 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
+        public IAnalyticsEvent ContinueWithEmail { get; }
+
         protected BaseAnalyticsService()
         {
             Login = new AnalyticsEvent<AuthenticationMethod>(this, nameof(Login), "AuthenticationMethod");
@@ -375,6 +377,7 @@ namespace Toggl.Core.Analytics
             CalendarExistingTimeEntryContextualMenu = new AnalyticsEvent<CalendarContextualMenuActionType>(this, nameof(CalendarExistingTimeEntryContextualMenu), "SelectedOption");
             CalendarRunningTimeEntryContextualMenu = new AnalyticsEvent<CalendarContextualMenuActionType>(this, nameof(CalendarRunningTimeEntryContextualMenu), "SelectedOption");
             CalendarTimeEntryCreated = new AnalyticsEvent<CalendarTimeEntryCreatedType, int, string>(this, nameof(CalendarTimeEntryCreated), "Type", "DaysSinceToday", "DayOfTheWeek");
+            ContinueWithEmail = new AnalyticsEvent(this, nameof(ContinueWithEmail));
         }
 
         public void TrackAnonymized(Exception exception)

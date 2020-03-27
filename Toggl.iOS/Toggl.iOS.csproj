@@ -1405,6 +1405,7 @@
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x-1.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%403x.png" />
+    <ImageAsset Include="Resources\Colors.xcassets\IconTint.colorset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2287,6 +2288,7 @@
     <Folder Include="Resources\Images.xcassets\ic_eyeball.imageset\" />
     <Folder Include="Resources\Images.xcassets\ic_pupil.imageset\" />
     <Folder Include="Resources\Images.xcassets\ic_hand.imageset\" />
+    <Folder Include="Resources\Colors.xcassets\IconTint.colorset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

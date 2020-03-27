@@ -11,12 +11,8 @@ using UIKit;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public sealed partial class ForgotPasswordViewController
-        : KeyboardAwareViewController<ForgotPasswordViewModel>
+    public sealed partial class ForgotPasswordViewController : KeyboardAwareViewController<ForgotPasswordViewModel>
     {
-        private const int backButtonFontSize = 14;
-        private const int resetButtonBottomSpacing = 32;
-
         private bool viewInitialized;
 
         public ForgotPasswordViewController(ForgotPasswordViewModel viewModel)
@@ -28,8 +24,7 @@ namespace Toggl.iOS.ViewControllers
         {
             base.ViewDidLoad();
 
-            Title = Resources.LoginForgotPassword;
-            ResetPasswordButton.SetTitle(Resources.GetPasswordResetLink, UIControlState.Normal);
+            ResetPasswordButton.SetTitle(Resources.SendEmail, UIControlState.Normal);
             EmailTextField.Placeholder = Resources.EmailAddress;
             SuccessMessageLabel.Text = Resources.PasswordResetSuccess;
 
@@ -116,24 +111,23 @@ namespace Toggl.iOS.ViewControllers
 
         protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
         {
-            ResetPasswordButtonBottomConstraint.Constant = e.FrameEnd.Height + resetButtonBottomSpacing;
-            UIView.Animate(Animation.Timings.EnterTiming, () => View.LayoutIfNeeded());
+            var keyboardHeight = e.FrameEnd.Height;
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
         }
 
         protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
         {
-            ResetPasswordButtonBottomConstraint.Constant = resetButtonBottomSpacing;
-            UIView.Animate(Animation.Timings.EnterTiming, () => View.LayoutIfNeeded());
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
         }
 
         private void prepareViews()
         {
             NavigationController.NavigationBarHidden = false;
 
-            ResetPasswordButton.SetTitleColor(
-                Core.UI.Helper.Colors.Login.DisabledButtonColor.ToNativeColor(),
-                UIControlState.Disabled
-            );
+            MessageLabel.Text = Resources.PasswordResetExplanation;
+
+            ResetPasswordButton.SetTitle(Resources.SendEmail, UIControlState.Normal);
+            ResetPasswordButton.SetTitleColor(Colors.Login.DisabledButtonColor.ToNativeColor(), UIControlState.Disabled);
 
             EmailTextField.BecomeFirstResponder();
             EmailTextField.Rx().ShouldReturn()
