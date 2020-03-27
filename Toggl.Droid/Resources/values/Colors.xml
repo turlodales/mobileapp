@@ -65,7 +65,7 @@
 
   <!-- Start Time entry page-->
   <color name="billable">#FF328FFF</color>
-  <color name="nonBillable">#1E328FFF</color>
+  <color name="nonBillable">#FFE6F1FF</color>
   <color name="runningEntryTimer">#FF328FFF</color>
 
   <!--Project page-->

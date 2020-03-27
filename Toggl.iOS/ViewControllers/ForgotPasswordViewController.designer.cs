@@ -6,7 +6,6 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
-using Toggl.iOS.Views;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -14,28 +13,36 @@ namespace Toggl.iOS.ViewControllers
 	partial class ForgotPasswordViewController
 	{
 		[Outlet]
-		ActivityIndicatorView ActivityIndicator { get; set; }
+		Toggl.iOS.Views.ActivityIndicatorView ActivityIndicator { get; set; }
 
 		[Outlet]
 		UIKit.UIView DoneCard { get; set; }
 
 		[Outlet]
-		LoginTextField EmailTextField { get; set; }
+		Toggl.iOS.Views.LoginTextField EmailTextField { get; set; }
 
 		[Outlet]
 		UIKit.UILabel ErrorLabel { get; set; }
 
 		[Outlet]
+		UIKit.UILabel MessageLabel { get; set; }
+
+		[Outlet]
 		UIKit.UIButton ResetPasswordButton { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint ResetPasswordButtonBottomConstraint { get; set; }
+		UIKit.UIScrollView ScrollView { get; set; }
 
 		[Outlet]
 		UIKit.UILabel SuccessMessageLabel { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ScrollView != null) {
+				ScrollView.Dispose ();
+				ScrollView = null;
+			}
+
 			if (ActivityIndicator != null) {
 				ActivityIndicator.Dispose ();
 				ActivityIndicator = null;
@@ -56,14 +63,14 @@ namespace Toggl.iOS.ViewControllers
 				ErrorLabel = null;
 			}
 
+			if (MessageLabel != null) {
+				MessageLabel.Dispose ();
+				MessageLabel = null;
+			}
+
 			if (ResetPasswordButton != null) {
 				ResetPasswordButton.Dispose ();
 				ResetPasswordButton = null;
-			}
-
-			if (ResetPasswordButtonBottomConstraint != null) {
-				ResetPasswordButtonBottomConstraint.Dispose ();
-				ResetPasswordButtonBottomConstraint = null;
 			}
 
 			if (SuccessMessageLabel != null) {

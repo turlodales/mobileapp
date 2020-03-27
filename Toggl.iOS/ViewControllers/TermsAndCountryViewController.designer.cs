@@ -13,6 +13,9 @@ namespace Toggl.iOS.ViewControllers
 	partial class TermsAndCountryViewController
 	{
 		[Outlet]
+		UIKit.UIButton BackButton { get; set; }
+
+		[Outlet]
 		UIKit.UIButton ConfirmButton { get; set; }
 
 		[Outlet]
@@ -35,6 +38,11 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (BackButton != null) {
+				BackButton.Dispose ();
+				BackButton = null;
+			}
+
 			if (ConfirmButton != null) {
 				ConfirmButton.Dispose ();
 				ConfirmButton = null;

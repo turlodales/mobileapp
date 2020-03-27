@@ -44,7 +44,7 @@ namespace Toggl.Droid.Extensions
 
             if (tokenSpans.None())
             {
-                yield return new QueryTextSpan(text.ToString(), cursorPosition);
+                yield return new QueryTextSpan(text.ToString(), cursorPosition.Clamp(0, text.Length()));
                 yield break;
             }
 

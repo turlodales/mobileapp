@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsAndCountryViewController">
             <connections>
+                <outlet property="BackButton" destination="xR6-jD-yPS" id="LvB-Yn-zYq"/>
                 <outlet property="ConfirmButton" destination="QQ5-Aj-kaC" id="cpN-et-LiZ"/>
                 <outlet property="CountryOfResidenceLabel" destination="xaZ-D1-Wcb" id="uLt-KR-viD"/>
                 <outlet property="CountrySelectionButton" destination="lls-E0-dPq" id="CZa-tk-77U"/>
@@ -27,22 +28,22 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just one more thing. Please review the details below." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJC-bA-eam">
-                    <rect key="frame" x="39" y="120" width="265" height="100.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                    <rect key="frame" x="39" y="120" width="265" height="90"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <color key="textColor" name="Text"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your country of residence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaZ-D1-Wcb">
-                    <rect key="frame" x="39" y="252.5" width="265" height="14.5"/>
+                    <rect key="frame" x="39" y="242" width="265" height="14.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" name="Text2"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icErrorSmall" translatesAutoresizingMaskIntoConstraints="NO" id="uL7-Rd-Lk1">
-                    <rect key="frame" x="40" y="288.5" width="11" height="11"/>
+                    <rect key="frame" x="40" y="278" width="11" height="11"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lls-E0-dPq">
-                    <rect key="frame" x="39" y="272" width="265" height="44"/>
+                    <rect key="frame" x="39" y="261.5" width="265" height="44"/>
                     <accessibility key="accessibilityConfiguration" identifier="SelectCountry"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="y0g-km-sQR"/>
@@ -54,21 +55,21 @@
                     </state>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="icDownS" translatesAutoresizingMaskIntoConstraints="NO" id="Grp-N8-qhZ">
-                    <rect key="frame" x="278.5" y="291" width="10" height="6"/>
+                    <rect key="frame" x="278.5" y="280.5" width="10" height="6"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Grp-N8-qhZ" secondAttribute="height" multiplier="8:5" id="Z8z-vp-ZOf"/>
                         <constraint firstAttribute="width" constant="10" id="rFt-A8-b3S"/>
                     </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PmH-Ml-R9N" userLabel="Separator">
-                    <rect key="frame" x="39" y="316" width="265" height="1"/>
+                    <rect key="frame" x="39" y="305.5" width="265" height="1"/>
                     <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="lxv-aE-cSS"/>
                     </constraints>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="By tapping I Agree, you understand and agree to Toggl’s Terms of Service and Privacy Policy." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pWI-Wv-1cb">
-                    <rect key="frame" x="39" y="348" width="265" height="121"/>
+                    <rect key="frame" x="39" y="337.5" width="265" height="131.5"/>
                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -84,6 +85,10 @@
                     <state key="normal" title="I agree">
                         <color key="titleColor" name="Background"/>
                     </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xR6-jD-yPS">
+                    <rect key="frame" x="0.0" y="6" width="40" height="40"/>
+                    <state key="normal" image="icBack"/>
                 </button>
             </subviews>
             <color key="backgroundColor" name="Background"/>
@@ -104,6 +109,8 @@
                 <constraint firstItem="lls-E0-dPq" firstAttribute="top" secondItem="xaZ-D1-Wcb" secondAttribute="bottom" constant="5" id="Zd8-Op-ugN"/>
                 <constraint firstItem="xaZ-D1-Wcb" firstAttribute="top" secondItem="bJC-bA-eam" secondAttribute="bottom" constant="32" id="apn-GP-kGQ"/>
                 <constraint firstItem="PmH-Ml-R9N" firstAttribute="top" secondItem="lls-E0-dPq" secondAttribute="bottom" id="bAZ-oC-RNR"/>
+                <constraint firstItem="xR6-jD-yPS" firstAttribute="leading" secondItem="Qyk-Yx-Tae" secondAttribute="leading" id="gOg-Bk-Oso"/>
+                <constraint firstItem="xR6-jD-yPS" firstAttribute="top" secondItem="Qyk-Yx-Tae" secondAttribute="top" constant="6" id="h2n-1R-9Lm"/>
                 <constraint firstItem="QQ5-Aj-kaC" firstAttribute="centerX" secondItem="Qyk-Yx-Tae" secondAttribute="centerX" id="lYc-hI-kcP"/>
                 <constraint firstItem="PmH-Ml-R9N" firstAttribute="trailing" secondItem="lls-E0-dPq" secondAttribute="trailing" id="n3O-ee-rk0"/>
                 <constraint firstItem="Grp-N8-qhZ" firstAttribute="centerY" secondItem="lls-E0-dPq" secondAttribute="centerY" id="ojn-4c-h7g"/>
@@ -117,6 +124,7 @@
         </view>
     </objects>
     <resources>
+        <image name="icBack" width="40" height="40"/>
         <image name="icDownS" width="8" height="5"/>
         <image name="icErrorSmall" width="11" height="11"/>
         <namedColor name="Background">
