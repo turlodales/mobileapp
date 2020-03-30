@@ -14,7 +14,10 @@ using Toggl.Core.UI.Parameters;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Extensions.Reactive;
 using Toggl.Storage.Settings;
+using Xamarin.Essentials;
+using Email = Toggl.Shared.Email;
 
 namespace Toggl.Core.UI.ViewModels
 {
@@ -24,10 +27,13 @@ namespace Toggl.Core.UI.ViewModels
         private readonly ITogglDataSource dataSource;
         private readonly IUserAccessManager userAccessManager;
         private readonly IInteractorFactory interactorFactory;
+        private IDisposable needsSyncDisposable;
+        private IDisposable emailDisposable;
+        
+        private readonly BehaviorRelay<bool> needsSync = new BehaviorRelay<bool>(false);
+        private readonly BehaviorRelay<Email> emailRelay = new BehaviorRelay<Email>(Shared.Email.Empty);
 
-        private bool needsSync;
-
-        public Email Email { get; private set; }
+        public IObservable<Email> Email { get; }
         public IObservable<bool> HasError { get; }
         public IObservable<string> Error { get; }
         public IObservable<bool> NextIsEnabled { get; }
@@ -62,6 +68,8 @@ namespace Toggl.Core.UI.ViewModels
             Done = rxActionFactory.FromObservable(done);
             SignOut = rxActionFactory.FromAsync(signout);
 
+            Email = emailRelay.AsDriver(schedulerProvider);
+
             Error = Done.Errors
                 .Select(transformException);
 
@@ -75,19 +83,22 @@ namespace Toggl.Core.UI.ViewModels
                 .CombineLatest(Done.Executing, (password, isExecuting) => password.IsValid && !isExecuting)
                 .DistinctUntilChanged()
                 .AsDriver(schedulerProvider);
-        }
 
-        public override async Task Initialize()
-        {
-            await base.Initialize();
-
-            needsSync = await dataSource.HasUnsyncedData();
-            Email = await dataSource.User.Current.FirstAsync().Select(u => u.Email);
+            needsSyncDisposable = this.dataSource
+                .HasUnsyncedData()
+                .ObserveOn(schedulerProvider.BackgroundScheduler)
+                .Subscribe(isUnsynced => needsSync.Accept(isUnsynced));
+            
+            emailDisposable = this.dataSource.User.Current
+                .Take(1)
+                .Select(u => u.Email)
+                .ObserveOn(schedulerProvider.BackgroundScheduler)
+                .Subscribe(emailRelay.Accept);
         }
 
         private async Task signout()
         {
-            if (needsSync)
+            if (needsSync.Value)
             {
                 var userConfirmedLoggingOut = await askToLogOut();
                 if (!userConfirmedLoggingOut)
@@ -125,5 +136,14 @@ namespace Toggl.Core.UI.ViewModels
                 Resources.SettingsUnsyncedMessage,
                 Resources.SettingsDialogButtonSignOut,
                 Resources.Cancel);
+
+        public override void ViewDestroyed()
+        {
+            base.ViewDestroyed();
+            emailDisposable?.Dispose();
+            needsSyncDisposable?.Dispose();
+            emailDisposable = null;
+            needsSyncDisposable = null;
+        }
     }
 }

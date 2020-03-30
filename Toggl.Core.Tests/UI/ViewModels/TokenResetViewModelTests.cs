@@ -227,13 +227,19 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
         public sealed class TheSignOutCommand : TokenResetViewModelTest
         {
+            private TokenResetViewModel viewModel;
+            
             private async Task setup(bool hasUnsyncedData = false, bool userConfirmsSignout = true)
             {
                 View.Confirm(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
                              .Returns(Observable.Return(userConfirmsSignout));
                 DataSource.HasUnsyncedData().Returns(Observable.Return(hasUnsyncedData));
 
-                await ViewModel.Initialize();
+                viewModel = CreateViewModel();
+                TestScheduler.Start();
+                
+                await viewModel.Initialize();
+                viewModel.AttachView(View);
             }
 
             [Fact, LogIfTooSlow]
@@ -241,7 +247,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 await setup();
 
-                ViewModel.SignOut.Execute();
+                viewModel.SignOut.Execute();
 
                 TestScheduler.Start();
                 await InteractorFactory.Received().Logout(LogoutSource.TokenReset).Execute();
@@ -252,7 +258,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 await setup();
 
-                ViewModel.SignOut.Execute();
+                viewModel.SignOut.Execute();
 
                 TestScheduler.Start();
                 await NavigationService.Received()
@@ -264,7 +270,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 await setup(hasUnsyncedData: true);
 
-                ViewModel.SignOut.Execute();
+                viewModel.SignOut.Execute();
 
                 TestScheduler.Start();
                 await View.Received().Confirm(
@@ -276,7 +282,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 await setup(hasUnsyncedData: true, userConfirmsSignout: false);
 
-                ViewModel.SignOut.Execute();
+                viewModel.SignOut.Execute();
 
                 TestScheduler.Start();
                 InteractorFactory.DidNotReceive().Logout(Arg.Any<LogoutSource>());
