@@ -1409,6 +1409,7 @@
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x-1.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\IconTint.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
