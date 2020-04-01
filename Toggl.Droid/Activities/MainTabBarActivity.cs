@@ -175,7 +175,8 @@ namespace Toggl.Droid.Activities
 
             if (navigationView.SelectedItemId == Resource.Id.MainTabCalendarItem)
             {
-                var calendarFragment = getCachedFragment(Resource.Id.MainTabCalendarItem) as IBackPressHandler;
+                var calendarFragmentTag = Resource.Id.MainTabCalendarItem.ToString();
+                var calendarFragment = SupportFragmentManager.FindFragmentByTag(calendarFragmentTag) as IBackPressHandler;
                 if (calendarFragment?.HandledBackPress() == true)
                     return;
             }

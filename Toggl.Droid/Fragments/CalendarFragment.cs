@@ -73,11 +73,18 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             calendarDayAdapter.MenuVisibilityRelay
-                .Subscribe(swipeIsLocked => calendarViewPager.IsLocked = swipeIsLocked)
+                .Subscribe(swipeIsLocked =>
+                {
+                    calendarViewPager.IsLocked = swipeIsLocked;
+                    calendarWeekStripePager.IsLocked = swipeIsLocked;
+                })
                 .DisposedBy(DisposeBag);
 
             void clickOnTopWeekDatePicker(CalendarWeeklyViewDayViewModel day)
             {
+                if (calendarDayAdapter.MenuVisibilityRelay.Value)
+                    return;
+                
                 isChangingPageFromUserInteraction = false;
                 ViewModel.SelectDayFromWeekView.Inputs.OnNext(day);
             }
