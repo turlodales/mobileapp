@@ -11,7 +11,6 @@ using Toggl.Shared.Extensions;
 namespace Toggl.Droid.Activities
 {
     [Activity(Theme = "@style/ModalActivityTheme",
-        ScreenOrientation = ScreenOrientation.Portrait,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class TermsAndCountryModalActivity : BaseTermsAndCountryActivity
     {
