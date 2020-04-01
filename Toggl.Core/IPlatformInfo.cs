@@ -12,7 +12,8 @@ namespace Toggl.Core
         string TimezoneIdentifier { get; }
         string StoreUrl { get; }
         string CurrentNativeLanguageCode { get; }
-        
+        string SignInWithAppleClientId { get; }
+
         ApplicationInstallLocation InstallLocation { get; }
     }
 

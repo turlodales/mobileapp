@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
+using Toggl.Core.Helper;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Generators;
 using Toggl.Core.Tests.TestExtensions;

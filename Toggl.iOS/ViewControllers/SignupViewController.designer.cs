@@ -41,7 +41,7 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.UILabel WelcomeLabel { get; set; }
-		
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (ScrollView != null) {
@@ -92,7 +92,7 @@ namespace Toggl.iOS.ViewControllers
 			if (WelcomeLabel != null) {
 				WelcomeLabel.Dispose ();
 				WelcomeLabel = null;
-			}
+            }
 		}
 	}
 }

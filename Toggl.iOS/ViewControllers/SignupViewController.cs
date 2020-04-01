@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using AuthenticationServices;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
@@ -11,18 +10,9 @@ using UIKit;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public partial class LoginViewController : KeyboardAwareViewController<LoginViewModel>
+    public partial class SignUpViewController : KeyboardAwareViewController<SignUpViewModel>
     {
-        private ASAuthorizationAppleIdButton appleSignInButton;
-        private IDisposable appleSignInButtonDisposable;
-
-        private readonly UIStringAttributes plainTextAttributes = new UIStringAttributes
-        {
-            ForegroundColor = ColorAssets.Text,
-            Font = UIFont.SystemFontOfSize(15, UIFontWeight.Regular)
-        };
-
-        public LoginViewController(LoginViewModel vm) : base(vm, nameof(LoginViewController))
+        public SignUpViewController(SignUpViewModel vm) : base(vm, nameof(SignUpViewController))
         {
         }
 
@@ -32,7 +22,7 @@ namespace Toggl.iOS.ViewControllers
 
             prepareViews();
 
-            var signUpButton = createSignUpButton();
+            var loginButton = createLoginButton();
             var closeButton = new UIBarButtonItem(
                 UIImage.FromBundle("icClose").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate),
                 UIBarButtonItemStyle.Plain,
@@ -44,7 +34,7 @@ namespace Toggl.iOS.ViewControllers
                 (sender, args) => ViewModel.Close());
             backButton.TintColor = ColorAssets.IconTint;
 
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(signUpButton);
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(loginButton);
             NavigationItem.LeftBarButtonItem = closeButton;
             NavigationItem.BackBarButtonItem = backButton;
 
@@ -57,6 +47,14 @@ namespace Toggl.iOS.ViewControllers
             EmailTextField.Rx().Text()
                 .Select(Email.From)
                 .Subscribe(ViewModel.Email.Accept)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.EmailError
+                .Merge(ViewModel.PasswordError)
+                .Merge(ViewModel.SignUpError)
+                .Where(error => !string.IsNullOrEmpty(error))
+                .SelectUnit()
+                .Subscribe(EmailTextField.Rx().Shake())
                 .DisposedBy(DisposeBag);
 
             //Password
@@ -82,19 +80,19 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             //Errors
-            ViewModel.EmailErrorMessage
+            ViewModel.EmailError
                 .Subscribe(EmailErrorLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.PasswordErrorMessage
+            ViewModel.PasswordError
                 .Subscribe(PasswordErrorLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.LoginErrorMessage
-                .Subscribe(LoginErrorLabel.Rx().Text())
+            ViewModel.SignUpError
+                .Subscribe(SignUpErrorLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.ShakeEmail
+            ViewModel.ShakeEmailField
                 .Subscribe(EmailTextField.Rx().Shake())
                 .DisposedBy(DisposeBag);
 
@@ -103,37 +101,28 @@ namespace Toggl.iOS.ViewControllers
                 .BindAction(ViewModel.TogglePasswordVisibility)
                 .DisposedBy(DisposeBag);
 
-            signUpButton.Rx()
-                .BindAction(ViewModel.SignUp)
-                .DisposedBy(DisposeBag);
-
-            LoginButton.Rx()
+            loginButton.Rx()
                 .BindAction(ViewModel.Login)
                 .DisposedBy(DisposeBag);
 
-            ForgotPasswordButton.Rx()
-                .BindAction(ViewModel.ForgotPassword)
+            SignUpButton.Rx()
+                .BindAction(ViewModel.SignUp)
                 .DisposedBy(DisposeBag);
 
             //Loading: disabling all interaction
             ViewModel.IsLoading
                 .Select(CommonFunctions.Invert)
-                .Subscribe(LoginButton.Rx().Enabled())
+                .Subscribe(SignUpButton.Rx().Enabled())
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
                 .Select(CommonFunctions.Invert)
-                .Subscribe(signUpButton.Rx().Enabled())
+                .Subscribe(loginButton.Rx().Enabled())
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
                 .Select(CommonFunctions.Invert)
                 .Subscribe(closeButton.Rx().Enabled())
-                .DisposedBy(DisposeBag);
-
-            ViewModel.IsLoading
-                .Select(CommonFunctions.Invert)
-                .Subscribe(ForgotPasswordButton.Rx().Enabled())
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
@@ -162,18 +151,18 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
-                .Select(isLoading => isLoading ? Resources.Loading : Resources.LoginTitle)
-                .Subscribe(LoginButton.Rx().Title())
+                .Select(isLoading => isLoading ? Resources.Loading : Resources.SignUpTitle)
+                .Subscribe(SignUpButton.Rx().Title())
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
                 .Select(opacityForLoadingState)
-                .Subscribe(LoginButton.Rx().AnimatedAlpha())
+                .Subscribe(SignUpButton.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
                 .Select(opacityForLoadingState)
-                .Subscribe(signUpButton.Rx().AnimatedAlpha())
+                .Subscribe(loginButton.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
@@ -191,12 +180,6 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(PasswordTextField.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.IsLoading
-                .Select(opacityForLoadingState)
-                .Subscribe(ForgotPasswordButton.Rx().AnimatedAlpha())
-                .DisposedBy(DisposeBag);
-
-
             EmailTextField.BecomeFirstResponder();
         }
 
@@ -211,16 +194,17 @@ namespace Toggl.iOS.ViewControllers
             ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
         }
 
+
+
         private float opacityForLoadingState(bool isLoading)
             => isLoading ? 0.6f : 1;
 
         private void prepareViews()
         {
-            WelcomeLabel.Text = Resources.LoginWelcomeMessage;
+            WelcomeLabel.Text = Resources.SignUpWelcomeMessage;
             EmailTextField.Placeholder = Resources.Email;
-            PasswordTextField.Placeholder = Resources.Password;
-            LoginButton.SetTitle(Resources.LoginTitle, UIControlState.Normal);
-            prepareForgotPasswordButton();
+            PasswordTextField.Placeholder = Resources.SetPassword;
+            SignUpButton.SetTitle(Resources.SignUp, UIControlState.Normal);
 
             EmailTextField.ShouldReturn += _ =>
             {
@@ -231,36 +215,24 @@ namespace Toggl.iOS.ViewControllers
             PasswordTextField.ShouldReturn += _ =>
             {
                 PasswordTextField.ResignFirstResponder();
-                ViewModel.Login.Execute();
+                ViewModel.SignUp.Execute();
                 return false;
             };
 
             ShowPasswordButton.SetupShowPasswordButton();
         }
 
-        private void prepareForgotPasswordButton()
+        private UIButton createLoginButton()
         {
-            var forgotPasswordTitle = new NSMutableAttributedString(
-                    Resources.LoginForgotPassword,
-                    underlineStyle: NSUnderlineStyle.Single
-                );
-            forgotPasswordTitle.AddAttributes(
-                plainTextAttributes,
-                new NSRange(0, forgotPasswordTitle.Length)
-            );
-            ForgotPasswordButton.SetAttributedTitle(
-                forgotPasswordTitle,
-                UIControlState.Normal
-            );
-        }
-
-        private UIButton createSignUpButton()
-        {
-            var buttonTitle = new NSMutableAttributedString(Resources.DoNotHaveAnAccountWithQuestionMark);
+            var buttonTitle = new NSMutableAttributedString(Resources.HaveAnAccountQuestionMark);
             buttonTitle.Append(new NSAttributedString(" "));
-            buttonTitle.Append(new NSMutableAttributedString(Resources.SignUp, underlineStyle: NSUnderlineStyle.Single));
+            buttonTitle.Append(new NSMutableAttributedString(Resources.LoginTitle, underlineStyle: NSUnderlineStyle.Single));
             buttonTitle.AddAttributes(
-                plainTextAttributes,
+                new UIStringAttributes
+                {
+                    ForegroundColor = ColorAssets.Text,
+                    Font = UIFont.SystemFontOfSize(15, UIFontWeight.Regular)
+                },
                 new NSRange(0, buttonTitle.Length)
             );
 

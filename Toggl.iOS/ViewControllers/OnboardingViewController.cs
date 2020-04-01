@@ -1,4 +1,5 @@
 ﻿using System;
+using AuthenticationServices;
 using CoreGraphics;
 using Foundation;
 using Toggl.Core.Analytics;
@@ -27,6 +28,9 @@ namespace Toggl.iOS.ViewControllers
         private int currentPage = 0;
 
         private OnboardingLoadingView loadingView;
+
+        private ASAuthorizationAppleIdButton appleSignInButton;
+        private IDisposable appleSignInButtonDisposable;
 
         public OnboardingViewController(OnboardingViewModel viewModel) : base(viewModel, nameof(OnboardingViewController))
         {
@@ -139,6 +143,32 @@ namespace Toggl.iOS.ViewControllers
             ContinueWithGoogleButton.Layer.ShadowOpacity = (float)0.15;
             ContinueWithGoogleButton.Layer.ShadowRadius = 6;
             ContinueWithGoogleButton.Layer.ShadowOffset = new CGSize(0, 2);
+
+            // Continue with apple
+            configureSignInWithApple();
+        }
+
+        private void configureSignInWithApple()
+        {
+            if (!UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+                return;
+
+            if (appleSignInButton != null)
+            {
+                appleSignInButtonDisposable?.Dispose();
+                appleSignInButtonDisposable = null;
+                ButtonsStackView.RemoveArrangedSubview(appleSignInButton);
+                appleSignInButton = null;
+            }
+
+            var style = TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Light
+                ? ASAuthorizationAppleIdButtonStyle.White
+                : ASAuthorizationAppleIdButtonStyle.Black;
+            appleSignInButton = new ASAuthorizationAppleIdButton(ASAuthorizationAppleIdButtonType.Continue, style);
+            ButtonsStackView.InsertArrangedSubview(appleSignInButton, 0);
+
+            appleSignInButtonDisposable = appleSignInButton.Rx().Tap()
+                .Subscribe(ViewModel.ContinueWithApple.Inputs);
         }
 
         private void moveToNextPage(UISwipeGestureRecognizer swipe)

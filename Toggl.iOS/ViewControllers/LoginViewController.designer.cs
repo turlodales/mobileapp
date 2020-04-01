@@ -44,7 +44,7 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.UILabel WelcomeLabel { get; set; }
-		
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (ScrollView != null) {

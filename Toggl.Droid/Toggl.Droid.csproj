@@ -810,7 +810,7 @@
     <Compile Include="Activities\ReactiveActivity.DialogProvider.cs">
       <DependentUpon>ReactiveActivity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Activities\ReactiveActivity.GoogleTokenProvider.cs">
+    <Compile Include="Activities\ReactiveActivity.ThirdPartyTokenProvider.cs">
       <DependentUpon>ReactiveActivity.cs</DependentUpon>
     </Compile>
     <Compile Include="Activities\ReactiveActivity.PermissionsHandler.cs">

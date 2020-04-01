@@ -295,7 +295,7 @@ private TemporaryFileTransformation GetAndroidGoogleServicesTransformation()
 
 private TemporaryFileTransformation GetAndroidGoogleLoginTransformation()
 {
-    const string path = "Toggl.Droid/Activities/ReactiveActivity.GoogleTokenProvider.cs";
+    const string path = "Toggl.Droid/Activities/ReactiveActivity.ThirdPartyTokenProvider.cs";
     var clientId = EnvironmentVariable("TOGGL_DROID_GOOGLE_SERVICES_CLIENT_ID");
 
     var filePath = GetFiles(path).Single();

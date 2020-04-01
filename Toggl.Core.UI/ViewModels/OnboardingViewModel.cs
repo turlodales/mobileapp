@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Extensions;
+using Toggl.Core.Helper;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
@@ -36,7 +37,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
 
-        private string googleToken;
+        private ThirdPartyLoginInfo loginInfo;
         private List<bool> onboardingPagesViewed = new List<bool> { false, false, false };
 
         public IObservable<bool> IsLoading { get; }
@@ -95,14 +96,15 @@ namespace Toggl.Core.UI.ViewModels
         private void continueWithApple()
         {
             trackViewedPages();
-            // TODO: Apple login code goes here
+            analyticsService.ContinueWithApple.Track();
+            tryLoggingIn(ThirdPartyLoginProvider.Apple);
         }
 
         private void continueWithGoogle()
         {
             trackViewedPages();
             analyticsService.ContinueWithGoogle.Track();
-            tryLoggingInWithGoogle();
+            tryLoggingIn(ThirdPartyLoginProvider.Google);
         }
 
         private Task continueWithEmail()
@@ -119,17 +121,6 @@ namespace Toggl.Core.UI.ViewModels
             }
         }
 
-        private async void tryLoggingInWithGoogle()
-        {
-            View?.GetGoogleToken()
-                .Do(token => googleToken = token)
-                .Do(_ => isLoadingSubject.OnNext(true))
-                .SelectMany(userAccessManager.LoginWithGoogle)
-                .Track(analyticsService.Login, AuthenticationMethod.Google)
-                .Subscribe(_ => onAuthenticated(), onGoogleLoginFailure)
-                .DisposedBy(disposeBag);
-        }
-
         private async void onAuthenticated()
         {
             lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
@@ -144,12 +135,27 @@ namespace Toggl.Core.UI.ViewModels
             await Navigate<MainTabBarViewModel>();
         }
 
-        private async void onGoogleLoginFailure(Exception exception)
+        private async void tryLoggingIn(ThirdPartyLoginProvider provider)
         {
-            if (exception is GoogleLoginException googleException)
+            var authenticationMethod = provider == ThirdPartyLoginProvider.Google
+                ? AuthenticationMethod.Google
+                : AuthenticationMethod.Apple;
+
+            View?.GetLoginInfo(provider)
+                .Do(loginInfo => this.loginInfo = loginInfo)
+                .Do(_ => isLoadingSubject.OnNext(true))
+                .SelectMany(userAccessManager.ThirdPartyLogin(provider, loginInfo))
+                .Track(analyticsService.Login, authenticationMethod)
+                .Subscribe(_ => onAuthenticated(), ex => onLoginFailure(provider, ex))
+                .DisposedBy(disposeBag);
+        }
+
+        private async void onLoginFailure(ThirdPartyLoginProvider provider, Exception exception)
+        {
+            if (exception is ThirdPartyLoginException loginException)
             {
                 isLoadingSubject.OnNext(false);
-                if (!googleException.LoginWasCanceled)
+                if (!loginException.LoginWasCanceled)
                 {
                     await View.Alert(Resources.Oops, Resources.GenericLoginError, Resources.Ok);
                 }
@@ -162,10 +168,10 @@ namespace Toggl.Core.UI.ViewModels
                 analyticsService.TrackAnonymized(exception);
             }
 
-            signUpWithGoogle();
+            trySignUp(provider);
         }
 
-        private async void signUpWithGoogle()
+        private async void trySignUp(ThirdPartyLoginProvider provider)
         {
             var country = await confirmCountryAndTermsOfService();
 
@@ -175,15 +181,19 @@ namespace Toggl.Core.UI.ViewModels
                 return;
             }
 
+            var authenticationMethod = provider == ThirdPartyLoginProvider.Google
+                ? AuthenticationMethod.Google
+                : AuthenticationMethod.Apple;
+
             interactorFactory.GetSupportedTimezones().Execute()
                 .Select(supportedTimezones =>
                     supportedTimezones.FirstOrDefault(tz => platformInfo.TimezoneIdentifier == tz)
                 )
                 .Select(timezone =>
-                    userAccessManager.SignUpWithGoogle(googleToken, true, (int)country.Id, timezone)
+                    userAccessManager.ThirdPartySignUp(provider, loginInfo, true, (int)country.Id, timezone)
                 )
                 .Merge()
-                .Track(analyticsService.SignUp, AuthenticationMethod.Google)
+                .Track(analyticsService.SignUp, authenticationMethod)
                 .ObserveOn(schedulerProvider.MainScheduler)
                 .Subscribe(_ => onAuthenticated(), onSignUpError)
                 .DisposedBy(disposeBag);

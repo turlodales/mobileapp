@@ -20,6 +20,8 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent ContinueWithGoogle { get; }
 
+        public IAnalyticsEvent ContinueWithApple { get; }
+
         public IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
         public IAnalyticsEvent<string> OnboardingSkip { get; }
@@ -261,6 +263,7 @@ namespace Toggl.Core.Analytics
             SignUp = new AnalyticsEvent<AuthenticationMethod>(this, nameof(SignUp), "AuthenticationMethod");
             SignUpError = new AnalyticsEvent<SignUpErrorSource>(this, nameof(SignUpError), "Source");
             ContinueWithGoogle = new AnalyticsEvent(this, nameof(ContinueWithGoogle));
+            ContinueWithApple = new AnalyticsEvent(this, nameof(ContinueWithApple));
             UserIsMissingApiToken = new AnalyticsEvent<LoginSignupAuthenticationMethod>(this, nameof(UserIsMissingApiToken), "AuthenticationMethod");
             OnboardingSkip = new AnalyticsEvent<string>(this, nameof(OnboardingSkip), "PageWhenSkipWasClicked");
             Logout = new AnalyticsEvent<LogoutSource>(this, nameof(Logout), "Source");

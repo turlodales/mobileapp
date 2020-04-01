@@ -52,6 +52,7 @@
     <MtouchExtraArgs>--linkskip Toggl.iOS --linkskip=Toggl.Storage.Realm --registrar:static</MtouchExtraArgs>
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.AppStore|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -73,6 +74,8 @@
     <MtouchUseLlvm>true</MtouchUseLlvm>
     <MtouchFloat32>true</MtouchFloat32>
     <MtouchLink>Full</MtouchLink>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.AdHoc|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -1606,7 +1609,7 @@
     <Compile Include="ViewControllers\Reactive\ReactiveViewController.DialogProvider.cs">
       <DependentUpon>ReactiveViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewControllers\Reactive\ReactiveViewController.GoogleTokenProvider.cs">
+    <Compile Include="ViewControllers\Reactive\ReactiveViewController.ThirdPartyTokenProvider.cs">
       <DependentUpon>ReactiveViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewControllers\Reactive\ReactiveViewController.KeyCommands.cs">

@@ -7,6 +7,7 @@ using Microsoft.Reactive.Testing;
 using NSubstitute;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
+using Toggl.Core.Helper;
 using Toggl.Core.Tests.Generators;
 using Toggl.Core.UI.Models;
 using Toggl.Core.UI.Navigation;
@@ -85,16 +86,15 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class ContinueWithApple : OnboardingViewModelTest
+        public abstract class ContinueWithThirdPartyProvider : OnboardingViewModelTest
         {
-            // TODO: Add Login with Apple tests here
-        }
+            private ThirdPartyLoginProvider provider;
 
-        public sealed class ContinueWithGoogle : OnboardingViewModelTest
-        {
-            public ContinueWithGoogle()
+            public ContinueWithThirdPartyProvider(ThirdPartyLoginProvider provider)
             {
-                View.GetGoogleToken().Returns(Observable.Return(""));
+                View
+                    .GetLoginInfo(provider)
+                    .Returns(Observable.Return(new ThirdPartyLoginInfo("")));
 
                 var country = Substitute.For<ICountry>();
                 country.Id.Returns(1);
@@ -124,7 +124,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void LogsInWithGoogleAndNavigatesToMainVM()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Return(Unit.Default));
 
                 ViewModel.ContinueWithGoogle.Execute();
@@ -140,8 +140,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DoesNotNavigateWhenLoginFails()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -156,8 +156,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DisplaysAnErrorWhenLoginFailsWithGoogleError()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -175,7 +175,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DoesntDisplayAnErrorWhenLoginFailsWithAPIError()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new UnauthorizedAccessException()));
 
                 ViewModel.ContinueWithGoogle.Execute();
@@ -196,8 +196,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void SetIsLoadingToFalseWhenLoginFailsWithGoogleError(bool userCancelled)
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(userCancelled)));
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, userCancelled)));
 
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
@@ -216,7 +216,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void SetIsLoadingToTrueWhenLoginFailsWithAPIError()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new UnauthorizedAccessException()));
 
                 var observer = TestScheduler.CreateObserver<bool>();
@@ -235,11 +235,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void SignsUpWithGoogleAndNavigatesToMainVM()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
-                    .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
+                    .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
 
                 ViewModel.ContinueWithGoogle.Execute();
@@ -255,12 +255,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DoesNotNavigateWhenSignupFails()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 UserAccessManager
-                    .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -275,12 +275,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DisplaysErrorWhenSignupFails()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new Exception()));
 
                 UserAccessManager
-                    .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -298,12 +298,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void SetIsLoadingToFalseWhenSignupFails()
             {
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 UserAccessManager
-                    .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
-                    .Returns(Observable.Throw<Unit>(new GoogleLoginException(false)));
+                    .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
+                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
 
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
@@ -324,7 +324,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TimeService.CurrentDateTime.Returns(now);
 
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Return(Unit.Default));
 
                 var viewModel = CreateViewModel();
@@ -344,10 +344,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TimeService.CurrentDateTime.Returns(now);
 
                 UserAccessManager
-                    .LoginWithGoogle(Arg.Any<string>())
+                    .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
                     .Returns(Observable.Throw<Unit>(new Exception()));
                 UserAccessManager
-                    .SignUpWithGoogle(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
+                    .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
 
                 var viewModel = CreateViewModel();
@@ -368,6 +368,20 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 ViewModel.ContinueWithEmail.Execute();
                 AnalyticsService.Received().OnboardingPagesViewed.Track(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<bool>());
+            }
+        }
+
+        public sealed class ContinueWithGoogle : ContinueWithThirdPartyProvider
+        {
+            public ContinueWithGoogle() : base(ThirdPartyLoginProvider.Google)
+            {
+            }
+        }
+
+        public sealed class ContinueWithApple : ContinueWithThirdPartyProvider
+        {
+            public ContinueWithApple() : base(ThirdPartyLoginProvider.Apple)
+            {
             }
         }
 

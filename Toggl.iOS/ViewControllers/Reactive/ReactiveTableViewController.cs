@@ -2,6 +2,7 @@ using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using CoreFoundation;
+using Toggl.Core.Helper;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
 using Toggl.iOS.Extensions;
@@ -95,9 +96,8 @@ namespace Toggl.iOS.ViewControllers
             DisposeBag?.Dispose();
         }
 
-        public IObservable<string> GetGoogleToken()
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
             => throw new InvalidOperationException();
-
 
         protected virtual void ConfigureKeyCommands()
         {

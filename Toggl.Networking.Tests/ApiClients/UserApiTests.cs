@@ -84,6 +84,12 @@ namespace Toggl.Networking.Tests.ApiClients
                 => api.GetWithGoogle();
         }
 
+        public class TheGetWithAppleMethod : Base
+        {
+            protected override Task<IUser> CallEndpoint(IUserApi api)
+                => api.GetWithApple("daneel.debug");
+        }
+
         public class TheUpdateMethod : Base
         {
             protected override Task<IUser> CallEndpoint(IUserApi api)
@@ -100,6 +106,21 @@ namespace Toggl.Networking.Tests.ApiClients
         {
             protected override Task<IUser> CallEndpoint(IUserApi api)
                 => api.SignUpWithGoogle("", true, 237, null);
+        }
+
+        public class TheSignUpWithAppleMethod
+        {
+            public class WithFullname : Base
+            {
+                protected override Task<IUser> CallEndpoint(IUserApi api)
+                    => api.SignUpWithApple("daneel.debug", "", "John Appleseed", true, 237, null);
+            }
+
+            public class WithoutFullname : Base
+            {
+                protected override Task<IUser> CallEndpoint(IUserApi api)
+                    => api.SignUpWithApple("daneel.debug", "", null, true, 237, null);
+            }
         }
     }
 }

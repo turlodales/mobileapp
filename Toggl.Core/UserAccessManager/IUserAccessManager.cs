@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive;
+using Toggl.Core.Helper;
 using Toggl.Networking;
 using Toggl.Shared;
 
@@ -18,10 +19,10 @@ namespace Toggl.Core.Login
 
         void LoginWithSavedCredentials();
 
-        IObservable<Unit> LoginWithGoogle(string googleToken);
+        IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo);
         IObservable<Unit> Login(Email email, Password password);
 
-        IObservable<Unit> SignUpWithGoogle(string googleToken, bool termsAccepted, int countryId, string timezone);
+        IObservable<Unit> ThirdPartySignUp(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo, bool termsAccepted, int countryId, string timezone);
         IObservable<Unit> SignUp(Email email, Password password, bool termsAccepted, int countryId, string timezone);
 
         IObservable<Unit> RefreshToken(Password password);

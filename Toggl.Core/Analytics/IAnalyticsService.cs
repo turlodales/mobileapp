@@ -17,6 +17,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent ContinueWithGoogle { get;  }
 
+        IAnalyticsEvent ContinueWithApple { get;  }
+
         IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
         IAnalyticsEvent<string> OnboardingSkip { get; }
