@@ -5,6 +5,7 @@ using Foundation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -162,11 +163,6 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
-                .Select(isLoading => isLoading ? Resources.Loading : Resources.LoginTitle)
-                .Subscribe(LoginButton.Rx().Title())
-                .DisposedBy(DisposeBag);
-
-            ViewModel.IsLoading
                 .Select(opacityForLoadingState)
                 .Subscribe(LoginButton.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
@@ -196,6 +192,16 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ForgotPasswordButton.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
 
+            var animatedLoadingMessage = TextHelpers.AnimatedLoadingMessage();
+            ViewModel.IsLoading
+                .CombineLatest(animatedLoadingMessage, loginButtonTitle)
+                .Subscribe(LoginButton.Rx().Title())
+                .DisposedBy(DisposeBag);
+
+            string loginButtonTitle(bool isLoading, string currentLoadingMessage)
+                => isLoading
+                    ? currentLoadingMessage
+                    : Resources.LoginTitle;
 
             EmailTextField.BecomeFirstResponder();
         }

@@ -2152,6 +2152,7 @@
       <DependentUpon>OnboardingPageView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Onboarding\VideoView.cs" />
+    <Compile Include="Helper\TextHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">

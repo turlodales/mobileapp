@@ -204,7 +204,7 @@ mobile, desktop or web</value>
         <comment>Used in the login view as a call to action to the sign up view</comment>
     </data>
     <data name="SignUpTitle" xml:space="preserve">
-        <value>Sign up for free</value>
+        <value>Sign up</value>
         <comment>Title of the sign up view</comment>
     </data>
     <data name="SendEmail" xml:space="preserve">

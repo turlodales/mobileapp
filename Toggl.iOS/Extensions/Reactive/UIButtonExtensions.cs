@@ -22,7 +22,14 @@ namespace Toggl.iOS.Extensions.Reactive
                 .SelectUnit();
 
         public static Action<string> Title(this IReactive<UIButton> reactive)
-            => title => reactive.Base.SetTitle(title, UIControlState.Normal);
+            => title =>
+            {
+                UIView.PerformWithoutAnimation(() =>
+                {
+                    reactive.Base.SetTitle(title, UIControlState.Normal);
+                    reactive.Base.LayoutIfNeeded();
+                });
+            };
 
         public static Action<string> TitleAdaptive(this IReactive<UIButton> reactive)
             => title =>

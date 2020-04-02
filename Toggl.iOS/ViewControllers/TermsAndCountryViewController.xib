@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -40,7 +39,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icErrorSmall" translatesAutoresizingMaskIntoConstraints="NO" id="uL7-Rd-Lk1">
-                    <rect key="frame" x="40" y="278" width="11" height="11"/>
+                    <rect key="frame" x="40" y="272.5" width="22" height="22"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lls-E0-dPq">
                     <rect key="frame" x="39" y="261.5" width="265" height="44"/>
@@ -75,10 +74,9 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QQ5-Aj-kaC">
-                    <rect key="frame" x="40" y="501" width="263" height="44"/>
+                    <rect key="frame" x="39" y="501" width="265" height="44"/>
                     <color key="backgroundColor" name="OnboardingButtonBackground"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="263" id="1nI-ks-JTI"/>
                         <constraint firstAttribute="height" constant="44" id="hpv-lB-Pny"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
@@ -87,7 +85,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xR6-jD-yPS">
-                    <rect key="frame" x="0.0" y="6" width="40" height="40"/>
+                    <rect key="frame" x="0.0" y="6" width="80" height="80"/>
                     <state key="normal" image="icBack"/>
                 </button>
             </subviews>
@@ -104,6 +102,7 @@
                 <constraint firstItem="xaZ-D1-Wcb" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" id="KcZ-eG-nDl"/>
                 <constraint firstItem="Qyk-Yx-Tae" firstAttribute="bottom" secondItem="QQ5-Aj-kaC" secondAttribute="bottom" constant="32" id="L3d-cS-bXy"/>
                 <constraint firstItem="pWI-Wv-1cb" firstAttribute="top" secondItem="PmH-Ml-R9N" secondAttribute="top" constant="32" id="PdB-Ov-GqU"/>
+                <constraint firstItem="QQ5-Aj-kaC" firstAttribute="width" secondItem="bJC-bA-eam" secondAttribute="width" id="R61-qM-hNd"/>
                 <constraint firstItem="xaZ-D1-Wcb" firstAttribute="trailing" secondItem="bJC-bA-eam" secondAttribute="trailing" id="Sst-A7-mAN"/>
                 <constraint firstItem="PmH-Ml-R9N" firstAttribute="leading" secondItem="bJC-bA-eam" secondAttribute="leading" id="VkS-95-OWG"/>
                 <constraint firstItem="lls-E0-dPq" firstAttribute="top" secondItem="xaZ-D1-Wcb" secondAttribute="bottom" constant="5" id="Zd8-Op-ugN"/>
