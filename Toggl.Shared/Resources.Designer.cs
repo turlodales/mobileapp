@@ -172,6 +172,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SendEmail {
+            get {
+                return ResourceManager.GetString("SendEmail", resourceCulture);
+            }
+        }
+        
         public static string LoginForgotPassword {
             get {
                 return ResourceManager.GetString("LoginForgotPassword", resourceCulture);
@@ -205,6 +211,12 @@ namespace Toggl.Shared {
         public static string HaveAnAccountQuestionMark {
             get {
                 return ResourceManager.GetString("HaveAnAccountQuestionMark", resourceCulture);
+            }
+        }
+        
+        public static string GetPasswordResetLink {
+            get {
+                return ResourceManager.GetString("GetPasswordResetLink", resourceCulture);
             }
         }
         

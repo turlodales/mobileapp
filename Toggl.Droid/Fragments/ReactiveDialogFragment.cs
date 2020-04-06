@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
 using AndroidX.Fragment.App;
+using Toggl.Core.Helper;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
 
@@ -124,7 +125,7 @@ namespace Toggl.Droid.Fragments
 
         public IObservable<T> Select<T>(string title, IEnumerable<SelectOption<T>> options, int initialSelectionIndex)
             => throw new InvalidOperationException("You shouldn't be doing this from the Dialog. Use the parent activity/fragment");
-        
+
         public IObservable<T> SelectAction<T>(string title, IEnumerable<SelectOption<T>> options)
             => throw new InvalidOperationException("This is not implemented for Android");
 
@@ -134,7 +135,7 @@ namespace Toggl.Droid.Fragments
         public IObservable<bool> RequestNotificationAuthorization(bool force = false)
             => throw new InvalidOperationException("You shouldn't be doing this from the Dialog. Use the parent activity/fragment");
 
-        public IObservable<string> GetGoogleToken()
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
             => throw new InvalidOperationException("You shouldn't be doing this from the Dialog. Use the parent activity/fragment");
     }
 }

@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.Runtime;
 using System;
+using System.Reactive.Linq;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
@@ -30,7 +31,10 @@ namespace Toggl.Droid.Activities
         {
             this.CancelAllNotifications();
 
-            emailLabel.Text = ViewModel.Email.ToString();
+            ViewModel.Email
+                .Select(email => email.ToString())
+                .Subscribe(emailLabel.Rx().TextObserver())
+                .DisposedBy(DisposeBag);
 
             passwordEditText
                 .Rx().Text()

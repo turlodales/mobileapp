@@ -1,6 +1,9 @@
 ﻿using System;
+using AuthenticationServices;
 using CoreGraphics;
 using Foundation;
+using Toggl.Core.Analytics;
+using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
@@ -25,6 +28,9 @@ namespace Toggl.iOS.ViewControllers
         private int currentPage = 0;
 
         private OnboardingLoadingView loadingView;
+
+        private ASAuthorizationAppleIdButton appleSignInButton;
+        private IDisposable appleSignInButtonDisposable;
 
         public OnboardingViewController(OnboardingViewModel viewModel) : base(viewModel, nameof(OnboardingViewController))
         {
@@ -108,6 +114,13 @@ namespace Toggl.iOS.ViewControllers
 
             View.AddGestureRecognizer(swipeLeftGesture);
             View.AddGestureRecognizer(swipeRightGesture);
+
+            ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+            {
+                Action = OnboardingScrollAction.Automatic,
+                Direction = OnboardingScrollDirection.Left,
+                PageNumber = currentPage,
+            });
         }
 
         private void configureButtonsAppearance()
@@ -130,6 +143,32 @@ namespace Toggl.iOS.ViewControllers
             ContinueWithGoogleButton.Layer.ShadowOpacity = (float)0.15;
             ContinueWithGoogleButton.Layer.ShadowRadius = 6;
             ContinueWithGoogleButton.Layer.ShadowOffset = new CGSize(0, 2);
+
+            // Continue with apple
+            configureSignInWithApple();
+        }
+
+        private void configureSignInWithApple()
+        {
+            if (!UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+                return;
+
+            if (appleSignInButton != null)
+            {
+                appleSignInButtonDisposable?.Dispose();
+                appleSignInButtonDisposable = null;
+                ButtonsStackView.RemoveArrangedSubview(appleSignInButton);
+                appleSignInButton = null;
+            }
+
+            var style = TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Light
+                ? ASAuthorizationAppleIdButtonStyle.White
+                : ASAuthorizationAppleIdButtonStyle.Black;
+            appleSignInButton = new ASAuthorizationAppleIdButton(ASAuthorizationAppleIdButtonType.Continue, style);
+            ButtonsStackView.InsertArrangedSubview(appleSignInButton, 0);
+
+            appleSignInButtonDisposable = appleSignInButton.Rx().Tap()
+                .Subscribe(ViewModel.ContinueWithApple.Inputs);
         }
 
         private void moveToNextPage(UISwipeGestureRecognizer swipe)
@@ -143,8 +182,7 @@ namespace Toggl.iOS.ViewControllers
             UIView.Animate(
                 duration,
                 () => { animatePage(next); },
-                moveIndicatorToNextPage
-                );
+                () => { moveIndicatorToNextPage(OnboardingScrollAction.Manual); });
         }
 
         private void moveToPreviousPage(UISwipeGestureRecognizer swipe)
@@ -158,8 +196,7 @@ namespace Toggl.iOS.ViewControllers
             UIView.Animate(
                 duration,
                 () => { animatePage(previous); },
-                moveIndicatorToPreviousPage
-            );
+                () => { moveIndicatorToPreviousPage(OnboardingScrollAction.Manual); });
         }
 
         private void animatePage(OnboardingPageView page)
@@ -167,20 +204,32 @@ namespace Toggl.iOS.ViewControllers
             page.Frame = View.Bounds;
         }
 
-        private void moveIndicatorToNextPage()
+        private void moveIndicatorToNextPage(OnboardingScrollAction action)
         {
             currentPage = currentPage < totalPages - 1
                 ? currentPage + 1
                 : 0;
             PageControl.CurrentPage = currentPage;
+            ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+            {
+                Action = action,
+                Direction = OnboardingScrollDirection.Right,
+                PageNumber = currentPage,
+            });
         }
 
-        private void moveIndicatorToPreviousPage()
+        private void moveIndicatorToPreviousPage(OnboardingScrollAction action)
         {
             currentPage = currentPage > 0
                 ? currentPage - 1
                 : totalPages - 1;
             PageControl.CurrentPage = currentPage;
+            ViewModel.OnOnboardingScroll.Execute(new OnboardingScrollParameters
+            {
+                Action = action,
+                Direction = OnboardingScrollDirection.Left,
+                PageNumber = currentPage,
+            });
         }
 
         private OnboardingPageView nextPageView()

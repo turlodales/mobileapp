@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         layout="@layout/CalendarWeekStripeLabelsView" />
     
-    <androidx.viewpager.widget.ViewPager
+    <toggl.droid.views.LockableViewPager
         android:id="@+id/WeekStripePager"
         android:layout_width="match_parent"
         android:layout_height="40dp" />

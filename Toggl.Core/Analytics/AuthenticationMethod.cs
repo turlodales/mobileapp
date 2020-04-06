@@ -3,6 +3,7 @@
     public enum AuthenticationMethod
     {
         EmailAndPassword,
-        Google
+        Google,
+        Apple
     }
 }

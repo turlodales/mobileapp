@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Accord.Statistics.Kernels;
 using Toggl.Core.Extensions;
 using Toggl.Core.Suggestions;
 using Toggl.Core.Sync;
@@ -21,6 +19,8 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent<SignUpErrorSource> SignUpError { get; }
 
         public IAnalyticsEvent ContinueWithGoogle { get; }
+
+        public IAnalyticsEvent ContinueWithApple { get; }
 
         public IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
@@ -184,6 +184,10 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
 
+        public IAnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int> OnboardingPageScroll { get; }
+
+        public IAnalyticsEvent<bool, bool, bool> OnboardingPagesViewed { get; }
+
         public IAnalyticsEvent<string, string> UnknownLoginFailure { get; }
 
         public IAnalyticsEvent<string, string> UnknownSignUpFailure { get; }
@@ -259,6 +263,7 @@ namespace Toggl.Core.Analytics
             SignUp = new AnalyticsEvent<AuthenticationMethod>(this, nameof(SignUp), "AuthenticationMethod");
             SignUpError = new AnalyticsEvent<SignUpErrorSource>(this, nameof(SignUpError), "Source");
             ContinueWithGoogle = new AnalyticsEvent(this, nameof(ContinueWithGoogle));
+            ContinueWithApple = new AnalyticsEvent(this, nameof(ContinueWithApple));
             UserIsMissingApiToken = new AnalyticsEvent<LoginSignupAuthenticationMethod>(this, nameof(UserIsMissingApiToken), "AuthenticationMethod");
             OnboardingSkip = new AnalyticsEvent<string>(this, nameof(OnboardingSkip), "PageWhenSkipWasClicked");
             Logout = new AnalyticsEvent<LogoutSource>(this, nameof(Logout), "Source");
@@ -340,6 +345,8 @@ namespace Toggl.Core.Analytics
             OnboardingPrivacyPolicyOpened = new AnalyticsEvent(this, nameof(OnboardingPrivacyPolicyOpened));
             OnboardingTermsOfServiceOpened = new AnalyticsEvent(this, nameof(OnboardingTermsOfServiceOpened));
             OnboardingAgreeButtonTapped = new AnalyticsEvent(this, nameof(OnboardingAgreeButtonTapped));
+            OnboardingPageScroll = new AnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int>(this, nameof(OnboardingPageScroll), "Action", "Direction", "PageViewed");
+            OnboardingPagesViewed = new AnalyticsEvent<bool, bool, bool>(this, nameof(OnboardingPagesViewed), "Page1", "Page2", "Page3");
             UnknownLoginFailure = new AnalyticsEvent<string, string>(this, nameof(UnknownLoginFailure), "Type", "Message");
             UnknownSignUpFailure = new AnalyticsEvent<string, string>(this, nameof(UnknownSignUpFailure), "Type", "Message");
             RateLimitingDelayDuringSyncing = new AnalyticsEvent<int>(this, nameof(RateLimitingDelayDuringSyncing), "DelayDurationSeconds");

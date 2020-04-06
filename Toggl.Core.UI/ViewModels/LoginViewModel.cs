@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Extensions;
+using Toggl.Core.Helper;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
@@ -229,11 +229,11 @@ namespace Toggl.Core.UI.ViewModels
 
             switch (exception)
             {
-                case UnauthorizedException forbidden:
+                case UnauthorizedException _:
                     loginErrorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
                     analyticsService.IncorrectEmailOrPasswordLoginFailure.Track();
                     break;
-                
+
                 default:
                     analyticsService.UnknownLoginFailure.Track(exception.GetType().FullName, exception.Message);
                     analyticsService.TrackAnonymized(exception);

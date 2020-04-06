@@ -1,7 +1,10 @@
 ﻿using System.Linq;
+using Firebase.Core;
 using Foundation;
 using Toggl.Core;
 using Toggl.Core.Helper;
+using Xamarin.Essentials;
+using Platform = Toggl.Core.Platform;
 
 namespace Toggl.iOS
 {
@@ -165,9 +168,12 @@ namespace Toggl.iOS
             }
         }
 
+        public override string SignInWithAppleClientId
+            => AppInfo.PackageName.Replace("com.toggl.", "");
+
         public override string CurrentNativeLanguageCode => getPreferredLanguageCode();
 
-        private string getPreferredLanguageCode() 
+        private string getPreferredLanguageCode()
             => NSLocale.PreferredLanguages.FirstOrDefault() ?? Constants.DefaultLanguageCode;
     }
 }

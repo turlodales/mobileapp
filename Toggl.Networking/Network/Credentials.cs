@@ -45,6 +45,15 @@ namespace Toggl.Networking.Network
             return new Credentials(header);
         }
 
+        public static Credentials WithAppleToken(string appleToken)
+        {
+            Ensure.Argument.IsNotNull(appleToken, nameof(appleToken));
+
+            var header = authorizationHeaderWithValue($"{appleToken}:apple_token");
+
+            return new Credentials(header);
+        }
+
         private static HttpHeader authorizationHeaderWithValue(string authString)
         {
             Ensure.Argument.IsNotNull(authString, nameof(authString));

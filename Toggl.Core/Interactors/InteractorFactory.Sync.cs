@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Toggl.Core.Models;
 
 namespace Toggl.Core.Interactors
@@ -29,5 +30,8 @@ namespace Toggl.Core.Interactors
                 syncManager,
                 analyticsService,
                 PushNotificationSyncSourceState.Background);
+        
+        public IInteractor<Task<UnsyncedDataDump>> CreateUnsyncedDataDump()
+            => new CreateUnsyncedDataDumpInteractor(dataSource);
     }
 }

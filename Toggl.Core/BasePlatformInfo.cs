@@ -28,6 +28,8 @@ namespace Toggl.Core
 
         public virtual string OperatingSystem { get; } = $"{DeviceInfo.Platform} {DeviceInfo.VersionString}";
 
+        public abstract string SignInWithAppleClientId { get; }
+
         public virtual ApplicationInstallLocation InstallLocation => ApplicationInstallLocation.Internal;
     }
 }

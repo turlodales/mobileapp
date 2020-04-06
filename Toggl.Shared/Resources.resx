@@ -204,8 +204,12 @@ mobile, desktop or web</value>
         <comment>Used in the login view as a call to action to the sign up view</comment>
     </data>
     <data name="SignUpTitle" xml:space="preserve">
-        <value>Sign up for free</value>
+        <value>Sign up</value>
         <comment>Title of the sign up view</comment>
+    </data>
+    <data name="SendEmail" xml:space="preserve">
+        <value>Send email</value>
+        <comment>Send email to reset password</comment>
     </data>
     <data name="LoginForgotPassword" xml:space="preserve">
         <value>Forgot your password?</value>
@@ -230,6 +234,10 @@ mobile, desktop or web</value>
     <data name="HaveAnAccountQuestionMark" xml:space="preserve">
         <value>Have an account?</value>
         <comment>Message shown in the sign up view to link to the login page</comment>
+    </data>
+    <data name="GetPasswordResetLink" xml:space="preserve">
+        <value>Get password reset link</value>
+        <comment>Message shown in the button to get a "reset password link" in forgot password screen</comment>
     </data>
     <data name="ForgotPasswordSendEmail" xml:space="preserve">
         <value>Send email</value>

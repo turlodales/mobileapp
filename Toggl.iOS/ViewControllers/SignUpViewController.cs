@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using CoreText;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
@@ -8,11 +7,10 @@ using Toggl.iOS.Extensions.Reactive;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
-using ColorAssets = Toggl.iOS.Shared.Extensions.ColorAssets;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public partial class SignUpViewController : ReactiveViewController<SignUpViewModel>
+    public partial class SignUpViewController : KeyboardAwareViewController<SignUpViewModel>
     {
         public SignUpViewController(SignUpViewModel vm) : base(vm, nameof(SignUpViewController))
         {
@@ -26,12 +24,19 @@ namespace Toggl.iOS.ViewControllers
 
             var loginButton = createLoginButton();
             var closeButton = new UIBarButtonItem(
-                UIImage.FromBundle("icClose"),
+                UIImage.FromBundle("icClose").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate),
                 UIBarButtonItemStyle.Plain,
                 (sender, args) => ViewModel.Close());
+            closeButton.TintColor = ColorAssets.IconTint;
+
+            var backButton = new UIBarButtonItem("",
+                UIBarButtonItemStyle.Plain,
+                (sender, args) => ViewModel.Close());
+            backButton.TintColor = ColorAssets.IconTint;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(loginButton);
             NavigationItem.LeftBarButtonItem = closeButton;
+            NavigationItem.BackBarButtonItem = backButton;
 
             //E-mail
             ViewModel.Email
@@ -177,6 +182,19 @@ namespace Toggl.iOS.ViewControllers
 
             EmailTextField.BecomeFirstResponder();
         }
+
+        protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
+        {
+            var keyboardHeight = e.FrameEnd.Height;
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
+        }
+
+        protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
+        {
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
+        }
+
+
 
         private float opacityForLoadingState(bool isLoading)
             => isLoading ? 0.6f : 1;

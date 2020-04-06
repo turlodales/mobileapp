@@ -245,5 +245,7 @@ namespace Toggl.Core.Interactors
         IInteractor<IObservable<Unit>> SubscribeToPushNotifications();
 
         #endregion
+
+        IInteractor<Task<UnsyncedDataDump>> CreateUnsyncedDataDump();
     }
 }

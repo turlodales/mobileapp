@@ -4,6 +4,7 @@ using System.Reactive.Subjects;
 using Android.Content;
 using Android.Content.PM;
 using AndroidX.Core.Content;
+using Toggl.Core.Helper;
 using Toggl.Core.UI.Views;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Helper;
@@ -38,12 +39,12 @@ namespace Toggl.Droid.Fragments.Calendar
         public void OpenAppSettings()
             => this.FireAppSettingsIntent();
 
-        public IObservable<string> GetGoogleToken()
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
         {
-            if (!(Activity is IGoogleTokenProvider tokenProvider))
+            if (!(Activity is IThirdPartyTokenProvider tokenProvider))
                 throw new InvalidOperationException();
 
-            return tokenProvider.GetGoogleToken();
+            return tokenProvider.GetLoginInfo(provider);
         }
 
         public void Close()

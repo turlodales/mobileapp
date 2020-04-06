@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using CoreAnimation;
 using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace Toggl.iOS
@@ -24,32 +26,49 @@ namespace Toggl.iOS
             Layer.AddSublayer(eyeballLayer);
             Layer.AddSublayer(pupilLayer);
             Layer.AddSublayer(periscopeLayer);
+
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, restartAnimation);
         }
 
         public override void LayoutSubviews()
         {
-            // The magic numbers used here are to position the eyeball and pupil relative to the periscope image size
             base.LayoutSubviews();
-            periscopeLayer.Frame = Bounds;
-            eyeballLayer.Frame = new CGRect(Bounds.Width * 0.611, Bounds.Height * 0.061, Bounds.Width * 0.203, Bounds.Height * 0.221);
-            pupilLayer.Frame = new CGRect(Bounds.Width * 0.770, Bounds.Height * 0.135, Bounds.Width * 0.110, Bounds.Height * 0.109);
+            restartAnimation(null);
+        }
 
-            periscopeLayer.RemoveAllAnimations();
+        public void restartAnimation(NSNotification notification)
+        {
+            // The magic numbers used here are to position the eyeball and pupil relative to the periscope image size
+            periscopeLayer.Frame = Bounds;
+            eyeballLayer.Frame = new CGRect(Bounds.Width * 0.571, Bounds.Height * 0.123, Bounds.Width * 0.203, Bounds.Height * 0.221);
+            pupilLayer.Frame = new CGRect(Bounds.Width * 0.730, Bounds.Height * 0.197, Bounds.Width * 0.110, Bounds.Height * 0.109);
+
+            pupilLayer.RemoveAllAnimations();
 
             var path = new UIBezierPath();
-            path.MoveTo(new CGPoint(Bounds.Width * 0.773, Bounds.Height * 0.176));
-            path.AddLineTo(new CGPoint(Bounds.Width * 0.676, Bounds.Height * 0.176));
-            path.AddArc(new CGPoint(Bounds.Width * 0.725, Bounds.Height * 0.176), (nfloat)(Bounds.Width * 0.049), 0, (nfloat)Math.PI, true);
+            path.MoveTo(new CGPoint(Bounds.Width * 0.725, Bounds.Height * 0.238));
+            path.AddLineTo(new CGPoint(Bounds.Width * 0.628, Bounds.Height * 0.238));
+            path.AddArc(new CGPoint(Bounds.Width * 0.677, Bounds.Height * 0.238), (nfloat)(Bounds.Width * 0.049), 0, (nfloat)Math.PI, true);
             path.ClosePath();
 
             var animation = new CAKeyFrameAnimation();
             animation.KeyPath = "position";
-            animation.Duration = 3;
+            animation.Duration = 5;
             animation.Path = path.CGPath;
             animation.AutoReverses = true;
             animation.RepeatCount = float.MaxValue;
 
             pupilLayer.AddAnimation(animation, "animation");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (!disposing)
+                return;
+
+            NSNotificationCenter.DefaultCenter.RemoveObserver(this, UIApplication.DidBecomeActiveNotification);
         }
     }
 }

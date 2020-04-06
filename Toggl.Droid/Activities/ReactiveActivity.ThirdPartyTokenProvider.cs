@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Toggl.Core.Exceptions;
+using Toggl.Core.Helper;
 using Toggl.Shared.Extensions;
 using Object = Java.Lang.Object;
 
@@ -24,9 +25,17 @@ namespace Toggl.Droid.Activities
 
         private bool isLoggingIn;
         private GoogleApiClient googleApiClient;
-        private Subject<string> loginSubject = new Subject<string>();
+        private Subject<ThirdPartyLoginInfo> loginSubject = new Subject<ThirdPartyLoginInfo>();
 
-        public IObservable<string> GetGoogleToken()
+        public IObservable<ThirdPartyLoginInfo> GetLoginInfo(ThirdPartyLoginProvider provider)
+        {
+            if (provider == ThirdPartyLoginProvider.Google)
+                return getGoogleLoginInfo();
+
+            throw new InvalidOperationException("You shouldn't be doing this from Android.");
+        }
+
+        private IObservable<ThirdPartyLoginInfo> getGoogleLoginInfo()
         {
             ensureApiClientExists();
 
@@ -46,7 +55,7 @@ namespace Toggl.Droid.Activities
                 return logoutSubject.AsObservable();
             }
 
-            IObservable<string> getGoogleToken(Unit _)
+            IObservable<ThirdPartyLoginInfo> getGoogleToken(Unit _)
             {
                 lock (lockable)
                 {
@@ -54,7 +63,7 @@ namespace Toggl.Droid.Activities
                         return loginSubject.AsObservable();
 
                     isLoggingIn = true;
-                    loginSubject = new Subject<string>();
+                    loginSubject = new Subject<ThirdPartyLoginInfo>();
 
                     if (googleApiClient.IsConnected)
                     {
@@ -75,7 +84,7 @@ namespace Toggl.Droid.Activities
                 var signInData = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
                 if (!signInData.IsSuccess)
                 {
-                    loginSubject.OnError(new GoogleLoginException(signInData.Status.IsCanceled));
+                    loginSubject.OnError(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, signInData.Status.IsCanceled));
                     isLoggingIn = false;
                     return;
                 }
@@ -85,7 +94,8 @@ namespace Toggl.Droid.Activities
                     try
                     {
                         var token = GoogleAuthUtil.GetToken(Application.Context, signInData.SignInAccount.Account, scope);
-                        loginSubject.OnNext(token);
+                        var loginInfo = new ThirdPartyLoginInfo(token);
+                        loginSubject.OnNext(loginInfo);
                         loginSubject.OnCompleted();
                     }
                     catch (Exception e)
@@ -106,7 +116,7 @@ namespace Toggl.Droid.Activities
 
             if (!googleApiClient.IsConnected)
             {
-                throw new GoogleLoginException(false);
+                throw new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false);
             }
 
             var intent = Auth.GoogleSignInApi.GetSignInIntent(googleApiClient);
@@ -117,7 +127,7 @@ namespace Toggl.Droid.Activities
         {
             lock (lockable)
             {
-                loginSubject.OnError(new GoogleLoginException(false));
+                loginSubject.OnError(new ThirdPartyLoginException(ThirdPartyLoginProvider.Google, false));
                 isLoggingIn = false;
             }
         }

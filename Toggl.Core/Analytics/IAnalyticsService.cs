@@ -17,6 +17,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent ContinueWithGoogle { get;  }
 
+        IAnalyticsEvent ContinueWithApple { get;  }
+
         IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
         IAnalyticsEvent<string> OnboardingSkip { get; }
@@ -172,6 +174,10 @@ namespace Toggl.Core.Analytics
         IAnalyticsEvent OnboardingTermsOfServiceOpened { get; }
 
         IAnalyticsEvent OnboardingAgreeButtonTapped { get; }
+
+        IAnalyticsEvent<OnboardingScrollAction, OnboardingScrollDirection, int> OnboardingPageScroll { get; }
+
+        IAnalyticsEvent<bool, bool, bool> OnboardingPagesViewed { get; }
 
         IAnalyticsEvent IncorrectEmailOrPasswordSignUpFailure { get; }
 

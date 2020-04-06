@@ -27,7 +27,10 @@ namespace Toggl.iOS.ViewControllers
             PasswordTextField.Placeholder = Resources.Password;
             SignOutButton.SetTitle(Resources.OrSignOut, UIControlState.Normal);
 
-            EmailLabel.Text = ViewModel.Email.ToString();
+            ViewModel.Email
+                .Select(email => email.ToString())
+                .Subscribe(EmailLabel.Rx().Text())
+                .DisposedBy(DisposeBag);
 
             ViewModel.Error
                 .Subscribe(ErrorLabel.Rx().Text())

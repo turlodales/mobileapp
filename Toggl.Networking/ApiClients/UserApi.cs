@@ -11,12 +11,15 @@ using Toggl.Networking.Serialization.Converters;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
+using NotImplementedException = System.NotImplementedException;
 
 namespace Toggl.Networking.ApiClients
 {
     internal sealed class UserApi : BaseApi, IUserApi
     {
         private const string userAlreadyExistsApiErrorMessage = "user with this email already exists";
+        private const string googleProvider = "google";
+        private const string appleProvider = "apple";
 
         private readonly UserEndpoints endPoints;
         private readonly IJsonSerializer serializer;
@@ -36,6 +39,13 @@ namespace Toggl.Networking.ApiClients
         public async Task<IUser> GetWithGoogle()
             => await SendRequest<User>(endPoints.GetWithGoogle, AuthHeader)
                 .ConfigureAwait(false);
+
+        public async Task<IUser> GetWithApple(string clientId)
+        {
+            var headers = new[] {AuthHeader, HttpHeader.Referer(clientId) };
+            return await SendRequest<User>(endPoints.Get, headers)
+                .ConfigureAwait(false);
+        }
 
         public async Task<IUser> Update(IUser user)
             => await SendRequest(endPoints.Put, AuthHeader, user as User ?? new User(user), SerializationReason.Post)
@@ -88,9 +98,10 @@ namespace Toggl.Networking.ApiClients
         public async Task<IUser> SignUpWithGoogle(string googleToken, bool termsAccepted, int countryId, string timezone)
         {
             Ensure.Argument.IsNotNull(googleToken, nameof(googleToken));
-            var parameters = new GoogleSignUpParameters
+            var parameters = new ThirdPartySignUpParameters
             {
-                GoogleAccessToken = googleToken,
+                Provider = googleProvider,
+                Token = googleToken,
                 Workspace = new WorkspaceParameters
                 {
                     InitialPricingPlan = PricingPlans.Free
@@ -102,6 +113,29 @@ namespace Toggl.Networking.ApiClients
 
             var json = serializer.Serialize(parameters, SerializationReason.Post);
             return await SendRequest<User>(endPoints.PostWithGoogle, new HttpHeader[0], json)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IUser> SignUpWithApple(string clientId, string appleToken, string fullname, bool termsAccepted, int countryId, string timezone)
+        {
+            Ensure.Argument.IsNotNull(appleToken, nameof(appleToken));
+            var parameters = new ThirdPartySignUpParameters
+            {
+                Provider = appleProvider,
+                Token = appleToken,
+                Fullname = fullname,
+                Workspace = new WorkspaceParameters
+                {
+                    InitialPricingPlan = PricingPlans.Free
+                },
+                TermsAccepted = termsAccepted,
+                CountryId = countryId,
+                Timezone = timezone
+            };
+
+            var headers = new[] { HttpHeader.Referer(clientId) };
+            var json = serializer.Serialize(parameters, SerializationReason.Post);
+            return await SendRequest<User>(endPoints.Post, headers, json)
                 .ConfigureAwait(false);
         }
 
@@ -133,9 +167,14 @@ namespace Toggl.Networking.ApiClients
         }
 
         [Preserve(AllMembers = true)]
-        private class GoogleSignUpParameters
+        private class ThirdPartySignUpParameters
         {
-            public string GoogleAccessToken { get; set; }
+            public string Token { get; set; }
+
+            public string Provider { get; set; }
+
+            [JsonProperty("full_name", NullValueHandling = NullValueHandling.Ignore)]
+            public string? Fullname { get; set; }
 
             public WorkspaceParameters Workspace { get; set; }
 

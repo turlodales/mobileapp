@@ -3,11 +3,11 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using System;
+using System.Reactive;
 using AndroidX.AppCompat.App;
 using Toggl.Core;
 using Toggl.Core.UI;
 using Toggl.Core.UI.Navigation;
-using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Activities;
 using Toggl.Droid.BroadcastReceivers;
@@ -55,7 +55,8 @@ namespace Toggl.Droid
             var accessLevel = app.GetAccessLevel();
             if (accessLevel != AccessLevel.LoggedIn)
             {
-                navigateAccordingToAccessLevel(accessLevel);
+                var intent = createIntentForNotLoggedInAccessLevel(accessLevel);
+                StartActivity(intent);
                 Finish();
                 return;
             }
@@ -102,22 +103,34 @@ namespace Toggl.Droid
         private TogglApplication getTogglApplication()
             => (TogglApplication)Application;
 
-        private void navigateAccordingToAccessLevel(AccessLevel accessLevel)
+        private Intent createIntentForNotLoggedInAccessLevel(AccessLevel accessLevel)
         {
-            var navigationService = AndroidDependencyContainer.Instance.NavigationService;
-
             switch (accessLevel)
             {
                 case AccessLevel.AccessRestricted:
-                    navigationService.Navigate<OutdatedAppViewModel>(null);
-                    return;
+                    loadAndCacheViewModelWithParams<OutdatedAppViewModel, Unit>(Unit.Default);
+                    return new Intent(this, typeof(OutdatedAppActivity))
+                        .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                
                 case AccessLevel.NotLoggedIn:
-                    navigationService.Navigate<OnboardingViewModel>(null);
-                    return;
+                    loadAndCacheViewModelWithParams<OnboardingViewModel, Unit>(Unit.Default);
+                    return new Intent(this, typeof(OnboardingActivity))
+                        .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+
                 case AccessLevel.TokenRevoked:
-                    navigationService.Navigate<TokenResetViewModel>(null);
-                    return;
+                    loadAndCacheViewModelWithParams<TokenResetViewModel, Unit>(Unit.Default);
+                    return new Intent(this, typeof(TokenResetActivity))
+                        .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                
+                default:
+                    throw new ArgumentException("Invalid not logged in access level");
             }
+        }
+
+        public override void Finish()
+        {
+            base.Finish();
+            OverridePendingTransition(0, Transitions.Fade.OtherIn);
         }
     }
 }

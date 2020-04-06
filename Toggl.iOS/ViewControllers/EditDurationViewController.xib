@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -86,7 +85,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icEndLabel" translatesAutoresizingMaskIntoConstraints="NO" id="xO0-Bb-VWh">
-                                            <rect key="frame" x="54.5" y="7.5" width="9" height="9"/>
+                                            <rect key="frame" x="45.5" y="3" width="18" height="18"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MTr-8e-VhT">
                                             <rect key="frame" x="-7.5" y="24" width="159" height="31"/>
@@ -147,7 +146,6 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Go-Wr-YCP">
                                             <rect key="frame" x="64" y="4" width="29" height="16"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="29" id="fej-z5-VrM"/>
                                                 <constraint firstAttribute="height" constant="16" id="iTK-S6-hWe"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
@@ -155,7 +153,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="icStartLabel" translatesAutoresizingMaskIntoConstraints="NO" id="Rb0-t8-ESu">
-                                            <rect key="frame" x="51" y="7" width="9" height="10"/>
+                                            <rect key="frame" x="42" y="2" width="18" height="20"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f2y-9L-nF2">
                                             <rect key="frame" x="17.5" y="24" width="109" height="31.5"/>
@@ -246,14 +244,14 @@
                                     <rect key="frame" x="83" y="96" width="122" height="32"/>
                                     <subviews>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="duration" translatesAutoresizingMaskIntoConstraints="NO" id="KQv-M8-qqz">
-                                            <rect key="frame" x="12" y="8" width="13" height="16"/>
+                                            <rect key="frame" x="12" y="0.0" width="13" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="13" id="4JR-rt-cq0"/>
                                             </constraints>
                                         </imageView>
                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="0:00:00" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="azJ-VB-or1" customClass="DurationField">
                                             <rect key="frame" x="31" y="2" width="81" height="28"/>
-                                            <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>

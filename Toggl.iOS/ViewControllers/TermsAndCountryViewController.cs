@@ -14,7 +14,7 @@ namespace Toggl.iOS.ViewControllers
     public partial class TermsAndCountryViewController : ReactiveViewController<TermsAndCountryViewModel>
     {
         private const int fontSize = 15;
-        private const int headerFontSize = 28;
+        private const int headerFontSize = 25;
         private const float headerLineHeight = 38;
 
         private readonly NSRange privacyPolicyRange;
@@ -82,6 +82,12 @@ namespace Toggl.iOS.ViewControllers
             ConfirmButton.Rx()
                 .BindAction(ViewModel.Accept)
                 .DisposedBy(DisposeBag);
+
+            BackButton.Rx()
+                .BindAction(ViewModel.Cancel)
+                .DisposedBy(DisposeBag);
+
+            BackButton.Hidden = NavigationController != null;
         }
 
         private void prepareTextView()

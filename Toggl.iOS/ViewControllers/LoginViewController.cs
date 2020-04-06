@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Reactive.Linq;
-using CoreText;
+using AuthenticationServices;
 using Foundation;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public partial class LoginViewController : ReactiveViewController<LoginViewModel>
+    public partial class LoginViewController : KeyboardAwareViewController<LoginViewModel>
     {
+        private ASAuthorizationAppleIdButton appleSignInButton;
+        private IDisposable appleSignInButtonDisposable;
+
         private readonly UIStringAttributes plainTextAttributes = new UIStringAttributes
         {
             ForegroundColor = ColorAssets.Text,
@@ -31,12 +35,19 @@ namespace Toggl.iOS.ViewControllers
 
             var signUpButton = createSignUpButton();
             var closeButton = new UIBarButtonItem(
-                UIImage.FromBundle("icClose"),
+                UIImage.FromBundle("icClose").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate),
                 UIBarButtonItemStyle.Plain,
                 (sender, args) => ViewModel.Close());
+            closeButton.TintColor = ColorAssets.IconTint;
+
+            var backButton = new UIBarButtonItem("",
+                UIBarButtonItemStyle.Plain,
+                (sender, args) => ViewModel.Close());
+            backButton.TintColor = ColorAssets.IconTint;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(signUpButton);
             NavigationItem.LeftBarButtonItem = closeButton;
+            NavigationItem.BackBarButtonItem = backButton;
 
             //E-mail
             ViewModel.Email
@@ -152,11 +163,6 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
-                .Select(isLoading => isLoading ? Resources.Loading : Resources.LoginTitle)
-                .Subscribe(LoginButton.Rx().Title())
-                .DisposedBy(DisposeBag);
-
-            ViewModel.IsLoading
                 .Select(opacityForLoadingState)
                 .Subscribe(LoginButton.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
@@ -186,8 +192,29 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ForgotPasswordButton.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
 
+            var animatedLoadingMessage = TextHelpers.AnimatedLoadingMessage();
+            ViewModel.IsLoading
+                .CombineLatest(animatedLoadingMessage, loginButtonTitle)
+                .Subscribe(LoginButton.Rx().Title())
+                .DisposedBy(DisposeBag);
+
+            string loginButtonTitle(bool isLoading, string currentLoadingMessage)
+                => isLoading
+                    ? currentLoadingMessage
+                    : Resources.LoginTitle;
 
             EmailTextField.BecomeFirstResponder();
+        }
+
+        protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)
+        {
+            var keyboardHeight = e.FrameEnd.Height;
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
+        }
+
+        protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
+        {
+            ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
         }
 
         private float opacityForLoadingState(bool isLoading)
