@@ -402,13 +402,7 @@ namespace Toggl.Droid.Views.Calendar
             if (eventTextLayout != null && !(Math.Abs(eventTextLayout.Width - eventWidth) > 0.1) && eventTextLayout.Text == item.Description)
                 return eventTextLayout;
 
-            var color = item.Source == CalendarItemSource.Calendar || isRunning
-                ? Color.ParseColor(item.Color)
-                : Color.White;
-
-            var primaryTextColor = Context.SafeGetColor(Resource.Color.primaryText);
-            var itemColorContrast = ColorUtils.CalculateContrast(color, lastCalendarItemBackgroundColor);
-            color = itemColorContrast >= minimumTextContrast ? color : primaryTextColor;
+            var color = calculateBestContrastingTextColorFor(item, isRunning);
 
             textEventsPaint.Color = color;
             textEventsPaint.TextSize = fontSize;
@@ -427,6 +421,28 @@ namespace Toggl.Droid.Views.Calendar
             textLayouts[item.Id] = eventTextLayout;
 
             return eventTextLayout;
+        }
+
+        private Color calculateBestContrastingTextColorFor(CalendarItem item, bool isRunning)
+        {
+            var basicStrategyColor = item.Source == CalendarItemSource.Calendar || isRunning
+                ? Color.ParseColor(item.Color)
+                : Color.White;
+
+            var basicColorContrast = ColorUtils.CalculateContrast(basicStrategyColor, lastCalendarItemBackgroundColor);
+            if (basicColorContrast >= minimumTextContrast)
+                return basicStrategyColor;
+
+            var primaryTextColor = Context.SafeGetColor(Resource.Color.primaryText);
+            var primaryTextColorContrast = ColorUtils.CalculateContrast(primaryTextColor, lastCalendarItemBackgroundColor);
+            if (primaryTextColorContrast >= minimumTextContrast)
+                return primaryTextColor;
+
+            var whiteContrast = ColorUtils.CalculateContrast(Color.White, lastCalendarItemBackgroundColor);
+            if (whiteContrast >= minimumTextContrast)
+                return Color.White;
+
+            return Color.Black;
         }
 
         private sealed class CalendarItemStartTimeComparer : Comparer<CalendarItem>
