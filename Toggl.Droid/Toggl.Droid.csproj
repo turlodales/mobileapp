@@ -1105,6 +1105,7 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\values-ja\strings.xml" />
     <AndroidResource Include="Resources\values-pt\strings.xml" />
+    <AndroidResource Include="Resources\values-fr\strings.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />

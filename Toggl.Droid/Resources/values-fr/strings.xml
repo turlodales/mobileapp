@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="reports">Rapports</string>
+  <string name="new_time_entry">Nouvelle entrée de temps</string>
+  <string name="running_time_entry">Entrée en cours</string>
+  <string name="suggestions">Suggestion</string>
+</resources>

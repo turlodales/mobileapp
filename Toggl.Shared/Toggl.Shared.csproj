@@ -29,9 +29,10 @@
     <EmbeddedResource Update="Resources.ja.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="Resources.pt.resx">
+      <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources.fr.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
