@@ -1,0 +1,1264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="SignUpTitle" xml:space="preserve">
+    <value>Cadastre-se gratuitamente</value>
+  </data>
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LoginForgotPassword" xml:space="preserve">
+    <value>Esqueceu sua senha?</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Hoje</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Ontem</value>
+  </data>
+  <data name="IncorrectEmailOrPassword" xml:space="preserve">
+    <value>Email ou senha incorretos. Por favor, tente novamente.</value>
+  </data>
+  <data name="MondayInitial" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="TuesdayInitial" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="WednesdayInitial" xml:space="preserve">
+    <value>Q</value>
+  </data>
+  <data name="ThursdayInitial" xml:space="preserve">
+    <value>Q</value>
+  </data>
+  <data name="FridayInitial" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="SaturdayInitial" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="SundayInitial" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ajuda</value>
+  </data>
+  <data name="StartTimeEntryPlaceholder" xml:space="preserve">
+    <value>Em que você está trabalhando?</value>
+  </data>
+  <data name="ManualTimeEntryPlaceholder" xml:space="preserve">
+    <value>O que você fez?</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="SettingsSyncInProgressTitle" xml:space="preserve">
+    <value>Estamos sincronizando os seus dados</value>
+  </data>
+  <data name="SettingsSyncInProgressMessage" xml:space="preserve">
+    <value>Você pode perder seus dados caso tente sair antes da sincronização terminar.</value>
+  </data>
+  <data name="GenericLoginError" xml:space="preserve">
+    <value>Sinto muito, parece que estamos tendo algum problema com sua autenticação. Por favor, tente novamente.</value>
+  </data>
+  <data name="GenericSignUpError" xml:space="preserve">
+    <value>Sinto muito, parece que estamos tendo algum problema ao tentar criar sua conta. Por favor, tente novamente.</value>
+  </data>
+  <data name="SettingsUnsyncedTitle" xml:space="preserve">
+    <value>Dados não sincronizados</value>
+  </data>
+  <data name="SettingsUnsyncedMessage" xml:space="preserve">
+    <value>Alguns dos seus dados ainda não foram sincronizados e serão perdidos caso você saia.</value>
+  </data>
+  <data name="SettingsDialogButtonSignOut" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="UnitSecond" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="UnitHour" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="UnitMin" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="AddDescription" xml:space="preserve">
+    <value>Adicionar descrição</value>
+  </data>
+  <data name="NoProject" xml:space="preserve">
+    <value>Sem Projeto</value>
+  </data>
+  <data name="NoDescription" xml:space="preserve">
+    <value>Sem Descrição</value>
+  </data>
+  <data name="InaccessibleProject" xml:space="preserve">
+    <value>(projeto inacessível)</value>
+  </data>
+  <data name="WorkspacePlaceholder" xml:space="preserve">
+    <value>(workspace não sincronizado)</value>
+  </data>
+  <data name="ProjectPlaceholder" xml:space="preserve">
+    <value>(projeto não sincronizado)</value>
+  </data>
+  <data name="TaskPlaceholder" xml:space="preserve">
+    <value>(tarefa não sincronizada)</value>
+  </data>
+  <data name="TagPlaceholder" xml:space="preserve">
+    <value>(tag não sincronizada)</value>
+  </data>
+  <data name="Syncing" xml:space="preserve">
+    <value>Sincronizando...</value>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="PullDownToRefresh" xml:space="preserve">
+    <value>Puxe para atualizar</value>
+  </data>
+  <data name="ReleaseToRefresh" xml:space="preserve">
+    <value>Solte para atualizar</value>
+  </data>
+  <data name="LogEmptyStateTitle" xml:space="preserve">
+    <value>Bem-vindo de volta!</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="ConfirmDeleteNewTETitle" xml:space="preserve">
+    <value>Gostaria de descartar esse registro de tempo?</value>
+  </data>
+  <data name="ContinueEditing" xml:space="preserve">
+    <value>Continuar editando</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Descartar</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Política de privacidade</value>
+  </data>
+  <data name="TermsOfService" xml:space="preserve">
+    <value>Termos de serviço</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Deletar</value>
+  </data>
+  <data name="NewProject" xml:space="preserve">
+    <value>Novo Projeto</value>
+  </data>
+  <data name="PrivateProject" xml:space="preserve">
+    <value>Projeto Privado</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Criar</value>
+  </data>
+  <data name="AddClient" xml:space="preserve">
+    <value>Adicionar Cliente</value>
+  </data>
+  <data name="NoClient" xml:space="preserve">
+    <value>Sem Cliente</value>
+  </data>
+  <data name="AddFilterTags" xml:space="preserve">
+    <value>Adicionar/filtrar tags</value>
+  </data>
+  <data name="AddFilterProjects" xml:space="preserve">
+    <value>Adicionar/filtrar projetos</value>
+  </data>
+  <data name="AddFilterClients" xml:space="preserve">
+    <value>Adicionar/filtrar clientes</value>
+  </data>
+  <data name="CreateTag" xml:space="preserve">
+    <value>Criar tag</value>
+  </data>
+  <data name="CreateProject" xml:space="preserve">
+    <value>Criar projeto</value>
+  </data>
+  <data name="Workspace" xml:space="preserve">
+    <value>Workspace</value>
+  </data>
+  <data name="WorkspacePossesive" xml:space="preserve">
+    <value>Workspace de {0}</value>
+  </data>
+  <data name="SetDefaultWorkspace" xml:space="preserve">
+    <value>Selecionar como workspace padrão</value>
+  </data>
+  <data name="EnterProject" xml:space="preserve">
+    <value>Digite o nome do projeto</value>
+  </data>
+  <data name="PasswordResetExplanation" xml:space="preserve">
+    <value>Por favor, digite seu email para redefinir sua senha.</value>
+  </data>
+  <data name="PasswordResetSuccess" xml:space="preserve">
+    <value>Link enviado. Por favor, verifique seu email para mudar sua senha.</value>
+  </data>
+  <data name="PasswordResetEmailDoesNotExistError" xml:space="preserve">
+    <value>Email desconhecido. Certifique-se de que o email está correto e tente novamente.</value>
+  </data>
+  <data name="PasswordResetGeneralError" xml:space="preserve">
+    <value>Pedimos desculpas, ocorreu um problema ao tentar mudar sua senha. Tente novamente.</value>
+  </data>
+  <data name="PasswordResetOfflineError" xml:space="preserve">
+    <value>Você está offline. Por favor, conecte-se à internet e tente novamente.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Tem certeza?</value>
+  </data>
+  <data name="IncorrectPassword" xml:space="preserve">
+    <value>Senha incorreta. Por favor, tente novamente</value>
+  </data>
+  <data name="GoogleLogin" xml:space="preserve">
+    <value>Entrar usando o Google</value>
+  </data>
+  <data name="GoogleSignUp" xml:space="preserve">
+    <value>Cadastrar-se usando o Google</value>
+  </data>
+  <data name="ThisWeek" xml:space="preserve">
+    <value>Semana atual</value>
+  </data>
+  <data name="LastWeek" xml:space="preserve">
+    <value>Semana passada</value>
+  </data>
+  <data name="ThisMonth" xml:space="preserve">
+    <value>Mês atual</value>
+  </data>
+  <data name="LastMonth" xml:space="preserve">
+    <value>Mês passado</value>
+  </data>
+  <data name="ThisYear" xml:space="preserve">
+    <value>Ano atual</value>
+  </data>
+  <data name="LastYear" xml:space="preserve">
+    <value>Ano passado</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconhecido</value>
+  </data>
+  <data name="ReportPeriod" xml:space="preserve">
+    <value>Período do relatório</value>
+  </data>
+  <data name="YourProfile" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
+  <data name="YouHaveCreatedYourFirstTimeEntry" xml:space="preserve">
+    <value>Você criou seu primeiro registro de tempo</value>
+  </data>
+  <data name="WorkspaceChangedAlertTitle" xml:space="preserve">
+    <value>Você mudou o workspace.</value>
+  </data>
+  <data name="WorkspaceChangedAlertMessage" xml:space="preserve">
+    <value>O projeto e o registro de tempo serão mudados para o workspace selecionado.</value>
+  </data>
+  <data name="WidgetNoRunningTimeEntryError" xml:space="preserve">
+    <value>Nenhum registro de tempo ativo.
+Abra o app para começar a marcar seu tempo.</value>
+  </data>
+  <data name="WidgetGenericError" xml:space="preserve">
+    <value>Ocorreu um erro.
+Abra o app para marcar seu tempo.</value>
+  </data>
+  <data name="WidgetApiError" xml:space="preserve">
+    <value>Erro de conexão.
+Abra o app para marcar o tempo offline.</value>
+  </data>
+  <data name="WhenEventStarts" xml:space="preserve">
+    <value>Quando o evento estiver para começar</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Quarta-feira</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Usuário</value>
+  </data>
+  <data name="Use24HourClock" xml:space="preserve">
+    <value>Usar o relógio de 24 horas</value>
+  </data>
+  <data name="UpdateTheApp" xml:space="preserve">
+    <value>Atualize o app</value>
+  </data>
+  <data name="UpcomingEvent" xml:space="preserve">
+    <value>Eventos próximos</value>
+  </data>
+  <data name="UndoDeletedTimeEntry" xml:space="preserve">
+    <value>Desfazer deleção</value>
+  </data>
+  <data name="UndoButtonTitle" xml:space="preserve">
+    <value>DESFAZER</value>
+  </data>
+  <data name="UhOh" xml:space="preserve">
+    <value>Eita.</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Terça-feira</value>
+  </data>
+  <data name="TrackedTime" xml:space="preserve">
+    <value>tempo marcado</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TokenResetInstruction" xml:space="preserve">
+    <value>Digite sua senha para acessar sua conta novamente</value>
+  </data>
+  <data name="TimeEntryRowAccessibilityHint" xml:space="preserve">
+    <value>Edita o registro de tempo</value>
+  </data>
+  <data name="TimeEntry" xml:space="preserve">
+    <value>Registro de tempo</value>
+  </data>
+  <data name="TimeEntriesGroupSyncErrorMessage" xml:space="preserve">
+    <value>Dos {1} registros de tempo neste grupo, {0} não estão sincronizados. Abra os registros individualmente para obter mais detalhes.</value>
+  </data>
+  <data name="TimeEntries" xml:space="preserve">
+    <value>Registros de tempo</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Quinta-feira</value>
+  </data>
+  <data name="ThirtyMinutes" xml:space="preserve">
+    <value>30 minutos antes</value>
+  </data>
+  <data name="ThankYouForTheFeedback" xml:space="preserve">
+    <value>Agradecemos o feedback. Caso você tenha perguntado algo, entramos em contato em breve.</value>
+  </data>
+  <data name="TermsOfServiceDialogMessage" xml:space="preserve">
+    <value>Ao clicar em "Concordo", você entende e concorda com os {0} e {1} do Toggl</value>
+  </data>
+  <data name="TenMinutes" xml:space="preserve">
+    <value>10 minutos antes</value>
+  </data>
+  <data name="Task" xml:space="preserve">
+    <value>Tarefa</value>
+  </data>
+  <data name="TapToStopTimer" xml:space="preserve">
+    <value>Aperte para parar de marcar</value>
+  </data>
+  <data name="TapToStartTimer" xml:space="preserve">
+    <value>Aperte para começar a marcar</value>
+  </data>
+  <data name="TapToRetry" xml:space="preserve">
+    <value>Aperte para tentar novamente</value>
+  </data>
+  <data name="TapToEditIt" xml:space="preserve">
+    <value>Aperte para editar</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="SyncFailedOffline" xml:space="preserve">
+    <value>Falha ao sincronizar, você parece estar offline</value>
+  </data>
+  <data name="SyncFailed" xml:space="preserve">
+    <value>Falha ao sincronizar</value>
+  </data>
+  <data name="SyncCompleted" xml:space="preserve">
+    <value>Sincronização concluída</value>
+  </data>
+  <data name="SwipeActions" xml:space="preserve">
+    <value>Ações ao deslizar</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Domingo</value>
+  </data>
+  <data name="SuggestionAccessibilityHint" xml:space="preserve">
+    <value>Inicia um registro de tempo</value>
+  </data>
+  <data name="Suggestion" xml:space="preserve">
+    <value>Sugestão</value>
+  </data>
+  <data name="SuccessfullySyncedData" xml:space="preserve">
+    <value>Dados sincronizados com sucesso</value>
+  </data>
+  <data name="SubmitFeedback" xml:space="preserve">
+    <value>Enviar feedback</value>
+  </data>
+  <data name="StopTimeBeforeStartTimeWarning" xml:space="preserve">
+    <value>A hora final deve ser depois da hora de início!</value>
+  </data>
+  <data name="StopCurrentlyRunningTimeEntry" xml:space="preserve">
+    <value>Parar o registro de tempo atual</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Parar</value>
+  </data>
+  <data name="StartTimeEntry" xml:space="preserve">
+    <value>Iniciar um registro de tempo</value>
+  </data>
+  <data name="StartTimeAfterStopTimeWarning" xml:space="preserve">
+    <value>A hora de início deve ser anterior à hora final!</value>
+  </data>
+  <data name="StartTimeAfterCurrentTimeWarning" xml:space="preserve">
+    <value>A hora de início deve ser anterior à hora atual!</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Horário de início</value>
+  </data>
+  <data name="StartInBackgroundAction" xml:space="preserve">
+    <value>Criar em segundo plano</value>
+  </data>
+  <data name="Startdate" xml:space="preserve">
+    <value>Data de início</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Iniciar</value>
+  </data>
+  <data name="SomethingWentWrongTryAgain" xml:space="preserve">
+    <value>Algo deu errado. Por favor, tente novamente</value>
+  </data>
+  <data name="SmartReminders" xml:space="preserve">
+    <value>Alertas inteligentes</value>
+  </data>
+  <data name="SiriStopTimerWithEmptyDescConfirmationMessage" xml:space="preserve">
+    <value>Parar registro de tempo?</value>
+  </data>
+  <data name="SiriStopTimerConfirmationMessage" xml:space="preserve">
+    <value>Parar de marcar {0}?</value>
+  </data>
+  <data name="SiriStartTimerWithEmptyDescConfirmationMessage" xml:space="preserve">
+    <value>Iniciar registro de tempo?</value>
+  </data>
+  <data name="SiriStartTimerConfirmationMessage" xml:space="preserve">
+    <value>Iniciar a marcar {0}?</value>
+  </data>
+  <data name="SiriShortcutsReportsShortcuts" xml:space="preserve">
+    <value>Atalhos para relatórios</value>
+  </data>
+  <data name="SiriDurationWithSeconds" xml:space="preserve">
+    <value>{0} segundos</value>
+  </data>
+  <data name="SiriDurationWithMinutesAndSeconds" xml:space="preserve">
+    <value>{0} minutos e {1} segundos</value>
+  </data>
+  <data name="SiriDurationWithHoursMinutesAndSeconds" xml:space="preserve">
+    <value>{0} horas {1} minutos e {2} segundos</value>
+  </data>
+  <data name="SiriDurationWithHoursAndSeconds" xml:space="preserve">
+    <value>{0} horas e {1} segundos</value>
+  </data>
+  <data name="SignOutOfToggl" xml:space="preserve">
+    <value>Sair do Toggl</value>
+  </data>
+  <data name="SelectCountry" xml:space="preserve">
+    <value>Escolher país...</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Sábado</value>
+  </data>
+  <data name="ReviewTheTermsOneMoreThing" xml:space="preserve">
+    <value>Só mais uma coisa.
+Por favor, revise
+os detalhes abaixo.</value>
+  </data>
+  <data name="ReviewTheTermsWelcome" xml:space="preserve">
+    <value>Boas-vindas ao Toggl!
+Por favor, revise
+os detalhes abaixo.</value>
+  </data>
+  <data name="ReportsEmptyStateTitle" xml:space="preserve">
+    <value>Não tem nada aqui</value>
+  </data>
+  <data name="RatingYes" xml:space="preserve">
+    <value>Sim!</value>
+  </data>
+  <data name="RatingViewPositiveCallToActionTitle" xml:space="preserve">
+    <value>Legal!</value>
+  </data>
+  <data name="RatingViewPositiveCallToActionDescription" xml:space="preserve">
+    <value>Você daria aquela força avaliando o Toggl na {0}? Sua avaliação faz a diferença.</value>
+  </data>
+  <data name="RatingViewPositiveCallToActionButtonTitle" xml:space="preserve">
+    <value>Avaliar o app</value>
+  </data>
+  <data name="RatingTitle" xml:space="preserve">
+    <value>Gostando do Toggl?</value>
+  </data>
+  <data name="RatingNotReally" xml:space="preserve">
+    <value>Não muito</value>
+  </data>
+  <data name="RatingCallToActionTitle" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Projetos</value>
+  </data>
+  <data name="RatingViewNegativeCallToActionTitle" xml:space="preserve">
+    <value>Sem problemas</value>
+  </data>
+  <data name="RatingViewNegativeCallToActionDescription" xml:space="preserve">
+    <value>Você gostaria de deixar um feedback? Isso nos ajudaria a melhorar o Toggl.</value>
+  </data>
+  <data name="RatingViewNegativeCallToActionButtonTitle" xml:space="preserve">
+    <value>Diga-nos o que está errado</value>
+  </data>
+  <data name="ProjectNameTakenError" xml:space="preserve">
+    <value>Esse projeto já existe</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>Nome do projeto</value>
+  </data>
+  <data name="ProjectColor" xml:space="preserve">
+    <value>Cor do projeto</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Projeto</value>
+  </data>
+  <data name="PrivateProjectHint" xml:space="preserve">
+    <value>Projetos privados são acessíveis somente para os membros do projeto</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Senha</value>
+  </data>
+  <data name="OrSignOut" xml:space="preserve">
+    <value>ou saia</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>Ou</value>
+  </data>
+  <data name="OpenSettingsApp" xml:space="preserve">
+    <value>Abrir o app de configurações</value>
+  </data>
+  <data name="OpenAppAndStartAction" xml:space="preserve">
+    <value>Abrir o app e iniciar</value>
+  </data>
+  <data name="OpenAppAction" xml:space="preserve">
+    <value>Abrir o app</value>
+  </data>
+  <data name="Oops" xml:space="preserve">
+    <value>Ops</value>
+  </data>
+  <data name="OneHour" xml:space="preserve">
+    <value>1 hora antes</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Ativo</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Inativo</value>
+  </data>
+  <data name="NumberOfTasksSingular" xml:space="preserve">
+    <value>{0} Tarefa</value>
+  </data>
+  <data name="NumberOfTasksPlural" xml:space="preserve">
+    <value>{0} Tarefas</value>
+  </data>
+  <data name="NoWorries" xml:space="preserve">
+    <value>Sem problemas</value>
+  </data>
+  <data name="NoWorkspaceOr" xml:space="preserve">
+    <value>Ou {0}</value>
+  </data>
+  <data name="NoWorkspaceErrorMessage" xml:space="preserve">
+    <value>Parece que seu acesso a um workspace foi removido. Crie um novo para continuar.</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Agora</value>
+  </data>
+  <data name="NotificationsStoppedTimer" xml:space="preserve">
+    <value>Nenhum registro de tempo ativo</value>
+  </data>
+  <data name="NotificationsRunningTimer" xml:space="preserve">
+    <value>Registro de tempo ativo</value>
+  </data>
+  <data name="NotificationSettingExplaination" xml:space="preserve">
+    <value>Receba notificações de eventos do seu calendário antes deles começarem.</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notificações</value>
+  </data>
+  <data name="NotificationDisabledNotice" xml:space="preserve">
+    <value>Notificações desabilitadas. Se preferir recebê-las, favor habilitá-las no app de configurações.</value>
+  </data>
+  <data name="NonBillable" xml:space="preserve">
+    <value>Não faturável</value>
+  </data>
+  <data name="NewTimeEntry" xml:space="preserve">
+    <value>Novo registro de tempo</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="NoTags" xml:space="preserve">
+    <value>Nenhuma tag</value>
+  </data>
+  <data name="NoSuggestionsAvailable" xml:space="preserve">
+    <value>Nenhuma sugestão disponível</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Geral</value>
+  </data>
+  <data name="DifferentWorkspaceAlertMessage" xml:space="preserve">
+    <value>Mudar workspace?</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duração</value>
+  </data>
+  <data name="Later" xml:space="preserve">
+    <value>Mais tarde</value>
+  </data>
+  <data name="EmailIsAlreadyUsedError" xml:space="preserve">
+    <value>Já existe um usuário com esse email.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="AlreadyHaveAnAccountQuestionMark" xml:space="preserve">
+    <value>Já possui uma conta?</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
+  <data name="GetPasswordResetLink" xml:space="preserve">
+    <value>Obter um link para redefinir sua senha</value>
+  </data>
+  <data name="DoneWithExclamationMark" xml:space="preserve">
+    <value>Feito!</value>
+  </data>
+  <data name="IsBillable" xml:space="preserve">
+    <value>Faturável</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Endereço de email</value>
+  </data>
+  <data name="CategorizeYourTimeWithProjects" xml:space="preserve">
+    <value>Categorize seu tempo com projetos</value>
+  </data>
+  <data name="CategorizeWithProjects" xml:space="preserve">
+    <value>Categorize seu tempo adicionando um projeto</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Confirmar alterações</value>
+  </data>
+  <data name="IAgree" xml:space="preserve">
+    <value>Eu concordo</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Relatórios</value>
+  </data>
+  <data name="Billable" xml:space="preserve">
+    <value>Faturável</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Calendar" xml:space="preserve">
+    <value>Calendário</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Sobre</value>
+  </data>
+  <data name="SendFeedbackSuccessMessage" xml:space="preserve">
+    <value>Mensagem enviada. Agradecemos o seu feedback! Caso você tenha alguma dúvida, entraremos em contato em breve.</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Segunda-feira</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Sexta-feira</value>
+  </data>
+  <data name="DurationFormatClassic" xml:space="preserve">
+    <value>Clássico (47:06 min)</value>
+  </data>
+  <data name="DurationFormatImproved" xml:space="preserve">
+    <value>Melhorado (0:47:06)</value>
+  </data>
+  <data name="DurationFormatDecimal" xml:space="preserve">
+    <value>Decimal (0.79 h)</value>
+  </data>
+  <data name="EventReminder" xml:space="preserve">
+    <value>Lembretes de evento</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Desabilitado</value>
+  </data>
+  <data name="FiveMinutes" xml:space="preserve">
+    <value>5 minutos antes</value>
+  </data>
+  <data name="FifteenMinutes" xml:space="preserve">
+    <value>15 minutos antes</value>
+  </data>
+  <data name="CalendarSettingsTitle" xml:space="preserve">
+    <value>Configurações do calendário</value>
+  </data>
+  <data name="SetSmartReminders" xml:space="preserve">
+    <value>Habilitar lembretes inteligentes</value>
+  </data>
+  <data name="LinkCalendars" xml:space="preserve">
+    <value>Vincular contas de calendário</value>
+  </data>
+  <data name="AllowAccess" xml:space="preserve">
+    <value>Permitir acesso</value>
+  </data>
+  <data name="SelectCalendars" xml:space="preserve">
+    <value>Escolher calendários</value>
+  </data>
+  <data name="EnableAccessLater" xml:space="preserve">
+    <value>Você pode habilitar essa funcionalidade mais tarde a partir da tela de configuração.</value>
+  </data>
+  <data name="ContinueWithoutAccess" xml:space="preserve">
+    <value>Continuar sem acesso</value>
+  </data>
+  <data name="AllowCalendarAccess" xml:space="preserve">
+    <value>Permitir acesso ao calendário</value>
+  </data>
+  <data name="CalendarAccessExplanation" xml:space="preserve">
+    <value>O Toggl precisa acessar o seu calendário para exibir seus eventos. Ninguém além de você poderá ver os eventos e eles não aparecem nos seus relatórios.</value>
+  </data>
+  <data name="CalendarPermissionDeniedOr" xml:space="preserve">
+    <value>ou {0}</value>
+  </data>
+  <data name="CalendarPermissionDeniedEnableButton" xml:space="preserve">
+    <value>permita acesso para ver seus eventos</value>
+  </data>
+  <data name="GroupTimeEntries" xml:space="preserve">
+    <value>Agrupar entradas de tempo similares</value>
+  </data>
+  <data name="Clients" xml:space="preserve">
+    <value>Clientes</value>
+  </data>
+  <data name="CreateClient" xml:space="preserve">
+    <value>Criar cliente</value>
+  </data>
+  <data name="EmptyTagText" xml:space="preserve">
+    <value>Suas tags aparecerão aqui.
+Use-as para marcar seus registros de tempo com palavras-chave.</value>
+  </data>
+  <data name="NoWorkspaceTryAgain" xml:space="preserve">
+    <value>Tentar novamente</value>
+  </data>
+  <data name="APITokenResetSuccess" xml:space="preserve">
+    <value>Seu token de API foi redefinido.</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="FeedbackHint" xml:space="preserve">
+    <value>Sua mensagem</value>
+  </data>
+  <data name="FeedbackFieldPlaceholder" xml:space="preserve">
+    <value>Conte-nos o que você está achando do app. Use esse espaço para dar feedback e fazer perguntas.
+
+PS. Nosso suporte atualmente só atende em inglês. Nos desculpamos por qualquer inconveniência!</value>
+  </data>
+  <data name="ArchivedProjectDecorator" xml:space="preserve">
+    <value>(arquivado)</value>
+  </data>
+  <data name="ContinueLastEntry" xml:space="preserve">
+    <value>Continuar último registro de tempo</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Voltar</value>
+  </data>
+  <data name="DiscardEditingChanges" xml:space="preserve">
+    <value>Descartar alterações?</value>
+  </data>
+  <data name="DiscardThisTimeEntry" xml:space="preserve">
+    <value>Descartar registro de tempo?</value>
+  </data>
+  <data name="CustomSiriShortcutCellIn" xml:space="preserve">
+    <value>em {0}</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Licenças</value>
+  </data>
+  <data name="DeleteThisEntry" xml:space="preserve">
+    <value>Deletar esse registro de tempo</value>
+  </data>
+  <data name="DeleteNTimeEntries" xml:space="preserve">
+    <value>Deletar {0} registros de tempo</value>
+  </data>
+  <data name="EditingTimeEntryGroup" xml:space="preserve">
+    <value>Editando {0} registros de tempo</value>
+  </data>
+  <data name="DeleteMultipleTimeEntries" xml:space="preserve">
+    <value>Deletar permanentemente {0} registros de tempo?</value>
+  </data>
+  <data name="DeleteThisTimeEntry" xml:space="preserve">
+    <value>Deletar esse registro de tempo?</value>
+  </data>
+  <data name="ClockedHours" xml:space="preserve">
+    <value>Horas registradas</value>
+  </data>
+  <data name="CalendarCopyEventToTimeEntry" xml:space="preserve">
+    <value>Copiar como registro de tempo</value>
+  </data>
+  <data name="AppOutdatedMessage" xml:space="preserve">
+    <value>Parece que você não atualiza o app há algum tempo...
+Por favor atualize o app para continuar.</value>
+  </data>
+  <data name="AddProjectBubbleText" xml:space="preserve">
+    <value>Adicione projetos e tags</value>
+  </data>
+  <data name="AddProjectTask" xml:space="preserve">
+    <value>Adicionar projeto/tarefa</value>
+  </data>
+  <data name="AddTags" xml:space="preserve">
+    <value>Adicionar tags</value>
+  </data>
+  <data name="ContactUsSomethingWentWrongTryAgain" xml:space="preserve">
+    <value>Algo deu errado. Por favor, tente novamente</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continuar</value>
+  </data>
+  <data name="ContinueTimerInvocationPhrase" xml:space="preserve">
+    <value>Continuar registro</value>
+  </data>
+  <data name="CountryOfResidence" xml:space="preserve">
+    <value>País de residência</value>
+  </data>
+  <data name="CreateNewWorkspace" xml:space="preserve">
+    <value>Criar um novo workspace</value>
+  </data>
+  <data name="CurrentlyRunningTimeEntry" xml:space="preserve">
+    <value>Registro de tempo ativo</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Data e tempo</value>
+  </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>Formatação de datas</value>
+  </data>
+  <data name="DefaultWorkspace" xml:space="preserve">
+    <value>Workspace padrão</value>
+  </data>
+  <data name="DifferentWorkspaceAlertTitle" xml:space="preserve">
+    <value>Você selecionou um projeto de outro workspace.</value>
+  </data>
+  <data name="DiscardMessage" xml:space="preserve">
+    <value>Descartar mensagem?</value>
+  </data>
+  <data name="Display" xml:space="preserve">
+    <value>Exibição</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Concluir</value>
+  </data>
+  <data name="DoNotHaveAnAccountWithQuestionMark" xml:space="preserve">
+    <value>Não possui uma conta?</value>
+  </data>
+  <data name="DurationFormat" xml:space="preserve">
+    <value>Formatação da duração</value>
+  </data>
+  <data name="DurationTooLong" xml:space="preserve">
+    <value>A duração não pode exceder 999 horas!</value>
+  </data>
+  <data name="EditRunningTimeEntry" xml:space="preserve">
+    <value>Editar registro de tempo ativo</value>
+  </data>
+  <data name="EmptyProjectText" xml:space="preserve">
+    <value>Seus projetos aparecerão aqui.
+Use-os para categorizar o seu tempo.</value>
+  </data>
+  <data name="GenericInternetConnectionErrorMessage" xml:space="preserve">
+    <value>Sem conexão à internet. Por favor, tente novamente.</value>
+  </data>
+  <data name="HasTags" xml:space="preserve">
+    <value>Possui tags</value>
+  </data>
+  <data name="IdleTimerNotification" xml:space="preserve">
+    <value>Em que você está trabalhando?</value>
+  </data>
+  <data name="InaccessibleTimeEntryErrorMessage" xml:space="preserve">
+    <value>Esse registro de tempo pertence a um workspace a qual você não possui mais acesso e, portanto, não pode ser sincronizado. Mova-o para um workspace diferente mudando o projeto ou delete-o.</value>
+  </data>
+  <data name="FirstDayOfTheWeek" xml:space="preserve">
+    <value>Primeiro dia da semana</value>
+  </data>
+  <data name="LinkCalendarsMessage" xml:space="preserve">
+    <value>Veja os eventos do seu calendário no Toggl e transforme-os em registros de tempo de forma prática</value>
+  </data>
+  <data name="LogEmptyStateText" xml:space="preserve">
+    <value>Parece que você não possui registros de tempo recentes.
+Comece a marcar seu tempo e os registros mais usados aparecerão aqui.</value>
+  </data>
+  <data name="LoggingOutSecurely" xml:space="preserve">
+    <value>Saindo do app de forma segura...</value>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Modo manual</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Próximo</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="NoRunningTimeEntry" xml:space="preserve">
+    <value>Nenhum registro de tempo ativo</value>
+  </data>
+  <data name="NoTagsInfoMessage" xml:space="preserve">
+    <value>Adicione palavras-chave aos registros de tempo com # tags.</value>
+  </data>
+  <data name="NoProjectsInfoMessage" xml:space="preserve">
+    <value>Crie um projeto @ e categorize seus registros de tempo.</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="ReportsEmptyStateDescription" xml:space="preserve">
+    <value>Você não possui registros de tempo para o período selecionado.</value>
+  </data>
+  <data name="SearchObject" xml:space="preserve">
+    <value>Buscar {0}</value>
+  </data>
+  <data name="SelectDefaultWorkspaceDescription" xml:space="preserve">
+    <value>Seu tempo será registrado automaticamente nesse workspace. Você pode mudar isso mais tarde nas configurações.</value>
+  </data>
+  <data name="SelectWorkspace" xml:space="preserve">
+    <value>Selecione o workspace</value>
+  </data>
+  <data name="ShowAllTimEntries" xml:space="preserve">
+    <value>Mostrar todos registros de tempo</value>
+  </data>
+  <data name="StopRunningTimeEntry" xml:space="preserve">
+    <value>Parar registro de tempo ativo</value>
+  </data>
+  <data name="Sync" xml:space="preserve">
+    <value>Começar sincronização</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>Registros</value>
+  </data>
+  <data name="MultipleEntriesDeleted" xml:space="preserve">
+    <value>{0} registros de tempos removidos</value>
+  </data>
+  <data name="EntryDeleted" xml:space="preserve">
+    <value>Registro de tempo removido</value>
+  </data>
+  <data name="NoThanks" xml:space="preserve">
+    <value>Agora não</value>
+  </data>
+  <data name="SuggestionsHeader" xml:space="preserve">
+    <value>SUGESTÕES</value>
+  </data>
+  <data name="WorkingOnThis" xml:space="preserve">
+    <value>Sugestão</value>
+  </data>
+  <data name="WorkingOnThese" xml:space="preserve">
+    <value>Sugestões</value>
+  </data>
+  <data name="ExpandTimeEntryGroup" xml:space="preserve">
+    <value>Expandir grupo de registros de tempo</value>
+  </data>
+  <data name="CollapseTimeEntryGroup" xml:space="preserve">
+    <value>Agrupar novamente grupo de registros de tempo</value>
+  </data>
+  <data name="SelectProjectTitle" xml:space="preserve">
+    <value>Projetos</value>
+  </data>
+  <data name="ReportTooLongTitle" xml:space="preserve">
+    <value>Grande demais</value>
+  </data>
+  <data name="ReportTooLongDescription" xml:space="preserve">
+    <value>O período máximo de um relatório é de 365 dias.</value>
+  </data>
+  <data name="LoginToTrack" xml:space="preserve">
+    <value>Faça login para marcar seu tempo</value>
+  </data>
+  <data name="LoginToShowSuggestions" xml:space="preserve">
+    <value>Faça login para mostrar as sugestões</value>
+  </data>
+  <data name="StartAndStopTime" xml:space="preserve">
+    <value>Horários de início e término</value>
+  </data>
+  <data name="OutdatedAppTryTogglCom" xml:space="preserve">
+    <value>tente acessar toggl.com</value>
+  </data>
+  <data name="SiriShortcutCustomTimeEntryTitle" xml:space="preserve">
+    <value>Detalhes do registro de tempo</value>
+  </data>
+  <data name="SiriShortcutDescriptionFromClipboard" xml:space="preserve">
+    <value>Descrição a partir da área de transferência</value>
+  </data>
+  <data name="SiriClipboardInstructionTitle" xml:space="preserve">
+    <value>Colar descrição a partir da área de transferência</value>
+  </data>
+  <data name="SiriClipboardInstructionDoNotShowAgain" xml:space="preserve">
+    <value>Não mostrar novamente</value>
+  </data>
+  <data name="SiriShortcutCellAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="SiriShortcutsStartTimer" xml:space="preserve">
+    <value>Iniciar registro de tempo</value>
+  </data>
+  <data name="SiriShortcutsStartTimerWithName" xml:space="preserve">
+    <value>Iniciar registro de tempo: {0}</value>
+  </data>
+  <data name="SiriShortcutsStartFromClipboard" xml:space="preserve">
+    <value>Iniciar a partir da área de transferência</value>
+  </data>
+  <data name="SiriShortcutsContinueTracking" xml:space="preserve">
+    <value>Continuar marcando tempo</value>
+  </data>
+  <data name="SiriShortcutsStopRunningEntry" xml:space="preserve">
+    <value>Parar registro de tempo ativo</value>
+  </data>
+  <data name="SiriShortcutsStartTimerWithCustomDetails" xml:space="preserve">
+    <value>Iniciar um registro de tempo com detalhes customizados</value>
+  </data>
+  <data name="SiriShortcutsShowReport" xml:space="preserve">
+    <value>Exibir relatório</value>
+  </data>
+  <data name="SiriShortcutsShowCustomReport" xml:space="preserve">
+    <value>Exibir relatório customizado</value>
+  </data>
+  <data name="SiriShortcutsTimerShortcuts" xml:space="preserve">
+    <value>Atalhos de registro de tempo</value>
+  </data>
+  <data name="StartTimerInvocationPhrase" xml:space="preserve">
+    <value>Marcar tempo</value>
+  </data>
+  <data name="StopTimerInvocationPhrase" xml:space="preserve">
+    <value>Pare meu registro de tempo</value>
+  </data>
+  <data name="ShowReportsInvocationPhrase" xml:space="preserve">
+    <value>Mostre meu tempo</value>
+  </data>
+  <data name="ReportErrorOffline" xml:space="preserve">
+    <value>Falha na conexão de rede</value>
+  </data>
+  <data name="ReportErrorGeneric" xml:space="preserve">
+    <value>Algo deu errado</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Início</value>
+  </data>
+  <data name="SiriNoCurrentEntryRunning" xml:space="preserve">
+    <value>Nenhum registro de tempo ativo.</value>
+  </data>
+  <data name="ManualModeDescription" xml:space="preserve">
+    <value>Controla o comportamento padrão do botão de iniciar um registro de tempo. Apertar e segurar o botão sempre ativará o modo alternativo.</value>
+  </data>
+  <data name="SetSmartRemindersMessage" xml:space="preserve">
+    <value>Receba lembretes para marcar o tempo referente ao seus eventos</value>
+  </data>
+  <data name="SelectCalendarsMessage" xml:space="preserve">
+    <value>Escolha os calendários com eventos que você queira registrar usando o Toggl</value>
+  </data>
+  <data name="SiriReportPeriodInstruction" xml:space="preserve">
+    <value>Peça para a siri para ver um relatório para esse período</value>
+  </data>
+  <data name="SiriCustomTimeEntryInstruction" xml:space="preserve">
+    <value>Peça para a Siri para iniciar um registro de tempo com esses detalhes</value>
+  </data>
+  <data name="SiriShortcuts" xml:space="preserve">
+    <value>Atalhos da Siri</value>
+  </data>
+  <data name="SiriShortcutsDescription" xml:space="preserve">
+    <value>Adicione atalhos para controlar o Toggl com a Siri e o app de atalhos</value>
+  </data>
+  <data name="SiriClipboardInstructionDescription" xml:space="preserve">
+    <value>Ao escolher essa opção, o texto que estiver na área de transferência do sistema será usado como a descrição do seu registro de tempo.</value>
+  </data>
+  <data name="SiriClipboardHintLabel" xml:space="preserve">
+    <value>Ao executar esse atalho, a descrição será criada a partir da área de transferência</value>
+  </data>
+  <data name="SiriTrackEntrySuggestedInvocationPhrase" xml:space="preserve">
+    <value>Marcar {0}</value>
+  </data>
+  <data name="SiriShowReportSuggestedInvocationPhrase" xml:space="preserve">
+    <value>Mostrar o tempo de {0}</value>
+  </data>
+  <data name="SiriShortcutLoginToUseShortcut" xml:space="preserve">
+    <value>Faça login para mostrar esse atalho.</value>
+  </data>
+  <data name="SiriShortcutOpenTheAppToSync" xml:space="preserve">
+    <value>Abra o app para sincronizar seus dados e tente novamente.</value>
+  </data>
+  <data name="DateRange" xml:space="preserve">
+    <value>Período</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Horário de termino</value>
+  </data>
+  <data name="TimerDefaults" xml:space="preserve">
+    <value>Configurações padrão</value>
+  </data>
+  <data name="SignUp" xml:space="preserve">
+    <value>Criar conta</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Carregando</value>
+  </data>
+  <data name="PasswordResetMessage" xml:space="preserve">
+    <value>Digite seu email para
+redefinir a sua senha</value>
+  </data>
+  <data name="HaveAnAccountQuestionMark" xml:space="preserve">
+    <value>Já possui uma conta?</value>
+  </data>
+  <data name="InvalidEmailOrPassword" xml:space="preserve">
+    <value>Email ou senha inválidos. Por favor, tente novamente.</value>
+  </data>
+  <data name="InvalidPasswordError" xml:space="preserve">
+    <value>A senha deve conter pelo menos 6 caracteres</value>
+  </data>
+  <data name="SetPassword" xml:space="preserve">
+    <value>Digite sua senha</value>
+  </data>
+  <data name="NoPasswordError" xml:space="preserve">
+    <value>Por favor, digite sua senha</value>
+  </data>
+  <data name="NoEmailError" xml:space="preserve">
+    <value>Por favor, digite seu email</value>
+  </data>
+  <data name="ContinueWithEmail" xml:space="preserve">
+    <value>Continuar com email</value>
+  </data>
+  <data name="LoginWelcomeMessage" xml:space="preserve">
+    <value>Boas-vindas!</value>
+  </data>
+  <data name="SignUpWelcomeMessage" xml:space="preserve">
+    <value>Boas-vindas ao Toggl!
+Vamos deixar tudo pronto para você
+marcar seu tempo.</value>
+  </data>
+  <data name="ContinueWithGoogle" xml:space="preserve">
+    <value>Continuar com o Google</value>
+  </data>
+  <data name="LoginGetHelpLoggingIn" xml:space="preserve">
+    <value>Obter ajuda para efetuar o login</value>
+  </data>
+  <data name="OnboardingMessagePage1" xml:space="preserve">
+    <value>Um app de marcar tempo tão simples
+que você vai acabar usando de verdade</value>
+  </data>
+  <data name="InvalidEmailError" xml:space="preserve">
+    <value>Por favor digite um email válido</value>
+  </data>
+  <data name="OnboardingMessagePage2" xml:space="preserve">
+    <value>Descubra para onde
+o tempo vai</value>
+  </data>
+  <data name="OnboardingMessagePage3" xml:space="preserve">
+    <value>Funciona em todo lugar -
+celulares, computares e no navegador</value>
+  </data>
+  <data name="SendEmail" xml:space="preserve">
+    <value>Enviar email</value>
+  </data>
+  <data name="ForgotPasswordSendEmail" xml:space="preserve">
+    <value>Enviar email</value>
+  </data>
+</root>

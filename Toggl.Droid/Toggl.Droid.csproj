@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.AndroidX.Migration.1.0.0\build\monoandroid90\Xamarin.AndroidX.Migration.props" Condition="Exists('..\packages\Xamarin.AndroidX.Migration.1.0.0\build\monoandroid90\Xamarin.AndroidX.Migration.props')" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" />
   <PropertyGroup>
@@ -1104,6 +1104,7 @@
     <AndroidResource Include="Resources\values\Environment.xml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\values-ja\strings.xml" />
+    <AndroidResource Include="Resources\values-pt\strings.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
@@ -1276,6 +1277,13 @@
     <AndroidResource Include="Resources\drawable\ic_check.xml" />
     <AndroidResource Include="Resources\drawable\ic_padlock.xml" />
     <AndroidResource Include="Resources\drawable\ic_next.xml" />
+    <AndroidResource Include="Resources\layout\DatePickerShortcutCell.axml" />
+    <AndroidResource Include="Resources\layout\DateRangePicker.axml" />
+    <AndroidResource Include="Resources\layout\DateRangePickerMonthView.axml" />
+    <AndroidResource Include="Resources\layout\DateRangePickerShortcutCell.axml" />
+    <AndroidResource Include="Resources\layout\ReportDonutChartDonutElement.axml" />
+    <AndroidResource Include="Resources\layout\ReportDonutLegendItem.axml" />
+    <AndroidResource Include="Resources\layout\ReportsBarChartElement.axml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core\Toggl.Core.csproj">
@@ -1305,31 +1313,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="ProGuard.cfg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\DatePickerShortcutCell.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\DateRangePicker.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\DateRangePickerMonthView.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\DateRangePickerShortcutCell.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\ReportDonutChartDonutElement.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\ReportDonutLegendItem.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\ReportsBarChartElement.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets" />
-    <Folder Include="Resources\drawable-nodpi" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Fody.2.4.6\build\Fody.targets" Condition="Exists('..\packages\Fody.2.4.6\build\Fody.targets')" />
