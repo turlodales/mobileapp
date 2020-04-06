@@ -39,6 +39,12 @@ namespace Toggl.iOS.ViewControllers
                 })
                 .DisposedBy(DisposeBag);
 
+            ViewModel.Email
+                .Take(1)
+                .Select(email => email.ToString())
+                .Subscribe(EmailTextField.Rx().TextObserver())
+                .DisposedBy(DisposeBag);
+
             EmailTextField.Rx().Text()
                 .Select(Email.From)
                 .Subscribe(ViewModel.Email.OnNext)
@@ -51,9 +57,17 @@ namespace Toggl.iOS.ViewControllers
                         ResetPasswordButton,
                         Animation.Timings.EnterTiming,
                         UIViewAnimationOptions.TransitionCrossDissolve,
-                        () => ResetPasswordButton.SetTitle(loading ? "" : Resources.GetPasswordResetLink, UIControlState.Normal),
+                        () => ResetPasswordButton.SetTitle(loading ? "" : Resources.SendEmail, UIControlState.Normal),
                         null
                     );
+                })
+                .DisposedBy(DisposeBag);
+
+            ViewModel.PasswordResetWithInvalidEmail
+                .Subscribe(_ =>
+                {
+                    ErrorLabel.Text = Resources.InvalidEmailError;
+                    ErrorLabel.Hidden = false;
                 })
                 .DisposedBy(DisposeBag);
 
@@ -81,23 +95,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ActivityIndicator.Rx().IsVisibleWithFade())
                 .DisposedBy(DisposeBag);
 
-            //Colors
-            ViewModel.EmailValid
-                .Select(resetButtonTitleColor)
-                .Subscribe(ResetPasswordButton.Rx().TitleColor());
-
             //Commands
             ResetPasswordButton.Rx()
                 .BindAction(ViewModel.Reset)
                 .DisposedBy(DisposeBag);
-
-            ViewModel.PasswordResetWithInvalidEmail
-                .Subscribe(_ => EmailTextField.Shake())
-                .DisposedBy(DisposeBag);
-
-                UIColor resetButtonTitleColor(bool enabled) => enabled
-                    ? Colors.Login.EnabledButtonColor.ToNativeColor()
-                    : Colors.Login.DisabledButtonColor.ToNativeColor();
         }
 
         public override void ViewDidLayoutSubviews()
@@ -124,10 +125,9 @@ namespace Toggl.iOS.ViewControllers
         {
             NavigationController.NavigationBarHidden = false;
 
-            MessageLabel.Text = Resources.PasswordResetExplanation;
+            MessageLabel.Text = Resources.PasswordResetMessage;
 
             ResetPasswordButton.SetTitle(Resources.SendEmail, UIControlState.Normal);
-            ResetPasswordButton.SetTitleColor(Colors.Login.DisabledButtonColor.ToNativeColor(), UIControlState.Disabled);
 
             EmailTextField.BecomeFirstResponder();
             EmailTextField.Rx().ShouldReturn()
