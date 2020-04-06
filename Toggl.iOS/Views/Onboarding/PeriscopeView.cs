@@ -68,7 +68,7 @@ namespace Toggl.iOS
             if (!disposing)
                 return;
 
-            NSNotificationCenter.DefaultCenter.RemoveObserver(this, UIApplication.DidBecomeActiveNotification);
+            NSNotificationCenter.DefaultCenter.RemoveObserver(this);
         }
     }
 }

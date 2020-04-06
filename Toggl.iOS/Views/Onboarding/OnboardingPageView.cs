@@ -66,6 +66,12 @@ namespace Toggl.iOS
             contentView.TrailingAnchor.ConstraintEqualTo(ContentView.TrailingAnchor).Active = true;
         }
 
+        public override void RemoveFromSuperview()
+        {
+            base.RemoveFromSuperview();
+            ContentView.Subviews.ToList().ForEach(subview => subview?.Dispose());
+        }
+
         private void configureMessageAppearance()
         {
             var paragraphStyle = new NSMutableParagraphStyle();

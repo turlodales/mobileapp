@@ -13,6 +13,7 @@ using Firebase.CloudMessaging;
 using Google.SignIn;
 using System.Reactive;
 using Toggl.iOS.ViewControllers;
+using AVFoundation;
 
 namespace Toggl.iOS
 {
@@ -60,6 +61,8 @@ namespace Toggl.iOS
 
             var watchservice = new WatchService();
             watchservice.TryLogWatchConnectivity();
+
+            AVAudioSession.SharedInstance().SetCategory(AVAudioSessionCategory.Ambient);
 
             return true;
         }

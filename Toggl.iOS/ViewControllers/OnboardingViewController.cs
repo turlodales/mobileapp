@@ -42,7 +42,6 @@ namespace Toggl.iOS.ViewControllers
             loadingView = new OnboardingLoadingView();
             loadingView.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            configureOnboardingPages();
             configureButtonsAppearance();
 
             ContinueWithEmailButton.Rx().Tap()
@@ -58,12 +57,26 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            configureOnboardingPages();
+        }
+
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
             page1.Frame = View.Bounds;
             page2.Frame = View.Bounds;
             page3.Frame = View.Bounds;
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            page1.RemoveFromSuperview();
+            page2.RemoveFromSuperview();
+            page3.RemoveFromSuperview();
         }
 
         public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
