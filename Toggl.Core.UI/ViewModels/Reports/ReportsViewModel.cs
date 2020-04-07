@@ -37,6 +37,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private readonly ISchedulerProvider schedulerProvider;
         private readonly ITogglDataSource dataSource;
         private readonly IAnalyticsService analyticsService;
+        private readonly ISubject<IThreadSafeWorkspace> workspaceSelectedById = new Subject<IThreadSafeWorkspace>();
 
         public IObservable<IImmutableList<IReportElement>> Elements { get; set; }
         public IObservable<bool> HasMultipleWorkspaces { get; set; }
@@ -89,7 +90,8 @@ namespace Toggl.Core.UI.ViewModels.Reports
         public override async Task Initialize()
         {
             var workspaceSelector = interactorFactory.GetDefaultWorkspace().Execute()
-                .Concat(SelectWorkspace.Elements.WhereNotNull());
+                .Concat(SelectWorkspace.Elements.WhereNotNull())
+                .Merge(workspaceSelectedById.AsObservable());
 
             var beginningOfWeek = (await interactorFactory.GetCurrentUser().Execute()).BeginningOfWeek;
 
@@ -125,6 +127,15 @@ namespace Toggl.Core.UI.ViewModels.Reports
             selectedWorkspaceId = (await interactorFactory.GetDefaultWorkspace().Execute())?.Id;
 
             selection = Either<DateRangePeriod, DateRange>.WithLeft(DateRangePeriod.ThisWeek);
+        }
+
+        public async Task SelectWorkspaceById(long id)
+        {
+            var allWorkspaces = await interactorFactory.GetAllWorkspaces().Execute();
+            var ws = allWorkspaces.FirstOrDefault(ws => !ws.IsInaccessible && ws.Id == id);
+            if (ws == null) return;
+            selectedWorkspaceId = ws.Id;
+            workspaceSelectedById.OnNext(ws);
         }
 
         private async Task<IThreadSafeWorkspace> selectWorkspace()

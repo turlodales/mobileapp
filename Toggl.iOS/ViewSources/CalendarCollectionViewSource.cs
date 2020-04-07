@@ -136,7 +136,7 @@ namespace Toggl.iOS.ViewSources
                 var selectedIndexPath = IndexPathForSelectedItem;
                 if (selectedIndexPath == null)
                 {
-                    return collectionView.DequeueReusableSupplementaryView(elementKind, currentTimeReuseIdentifier, indexPath);
+                    return collectionView.DequeueReusableSupplementaryView(CalendarCollectionViewLayout.CurrentTimeSupplementaryViewKind, currentTimeReuseIdentifier, indexPath);
                 }
 
                 var attrs = LayoutAttributesForItemAtIndexPath(selectedIndexPath);

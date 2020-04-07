@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Views;
+using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Presentation;
@@ -45,6 +45,24 @@ namespace Toggl.Droid.Activities
                 .Do(setAnimationStatus)
                 .Subscribe(loadingViewViews.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
+
+            onboardingViewPager.Rx()
+                .CurrentItem()
+                .DistinctUntilChanged()
+                .Subscribe(onPageChanged)
+                .DisposedBy(DisposeBag);
+        }
+
+        private void onPageChanged(int page)
+        {
+            ViewModel.OnOnboardingScroll.Execute(
+                new OnboardingScrollParameters
+                {
+                    Action = Core.Analytics.OnboardingScrollAction.Manual,
+                    Direction = Core.Analytics.OnboardingScrollDirection.None,
+                    PageNumber = page
+                }
+            );
         }
 
         private void setAnimationStatus(bool isLoading)
