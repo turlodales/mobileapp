@@ -34,7 +34,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
     {
         public abstract class ReportsViewModelBaseTest : BaseViewModelTests<ReportsViewModel>
         {
-            private List<MockWorkspace> workspaces;
+            public List<MockWorkspace> Workspaces;
 
             protected new IDateRangeShortcutsService DateRangeShortcutsService { get; private set; } = Substitute.For<IDateRangeShortcutsService>();
 
@@ -49,15 +49,15 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 Func<int> unsyncedProjectsCountSelector = null,
                 Action beforeViewModelCreation = null)
             {
-                workspaces = Enumerable.Range(0, 10)
+                Workspaces = Enumerable.Range(0, 10)
                     .Select(id => new MockWorkspace(id, isInaccessible: id % 4 == 0))
                     .ToList();
 
                 adjustWorkspaces = adjustWorkspaces ?? (ws => ws);
-                workspaces = adjustWorkspaces(workspaces).ToList();
+                Workspaces = adjustWorkspaces(Workspaces).ToList();
 
                 setDefaultWorkspace = setDefaultWorkspace ?? (ws => ws.First());
-                var defaultWorkspace = setDefaultWorkspace(workspaces);
+                var defaultWorkspace = setDefaultWorkspace(Workspaces);
 
                 selectedDateRangeSelector = selectedDateRangeSelector
                     ?? (() => new DateRange(DateTime.Parse("2019-01-01"), DateTime.Parse("2019-01-08")));
@@ -74,12 +74,12 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 InteractorFactory
                     .GetAllWorkspaces()
                     .Execute()
-                    .Returns(Observable.Return(workspaces));
+                    .Returns(Observable.Return(Workspaces));
 
                 InteractorFactory
                     .ObserveAllWorkspaces()
                     .Execute()
-                    .Returns(Observable.Return(workspaces));
+                    .Returns(Observable.Return(Workspaces));
 
                 var userObservable = Observable.Return(new MockUser { Id = 1, BeginningOfWeek = BeginningOfWeek.Wednesday });
 
@@ -445,6 +445,76 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                     Arg.Is(initialSelectionDays),
                     Arg.Is(unsyncedProjects),
                     Arg.Any<double>());
+            }
+        }
+
+        public sealed class TheSelectWorkspaceByIdMethod : ReportsViewModelBaseTest
+        {
+            private bool isLoadingElements(IEnumerable<IReportElement> elements)
+                => elements.Cast<ReportElementBase>().All(element => element.IsLoading);
+
+            private bool isNotLoadingElements(IEnumerable<IReportElement> elements)
+                => elements.OfType<ReportElementBase>().All(element => !element.IsLoading);
+
+            private bool isNoDataElement(IEnumerable<IReportElement> elements)
+                => elements.OfType<ReportNoDataElement>().Count() == 1;
+
+
+            [Fact, LogIfTooSlow]
+            public async Task CallsGetAllWorkspace()
+            {
+                SetupEnvironment();
+
+                await ViewModel.Initialize();
+                TestScheduler.Start();
+                await ViewModel.SelectWorkspaceById(0);
+
+                await InteractorFactory.GetAllWorkspaces()
+                    .Received()
+                    .Execute();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task SelectsCorrectWorkspace()
+            {
+                SetupEnvironment();
+                var chosenWorkspace = Workspaces.Where(ws => !ws.IsInaccessible).Last();
+                var observer = TestScheduler.CreateObserver<IEnumerable<IReportElement>>();
+
+                await ViewModel.Initialize();
+                ViewModel.Elements.Subscribe(observer);
+                await ViewModel.SelectWorkspaceById(chosenWorkspace.Id);
+                TestScheduler.Start();
+
+                observer.Messages.AssertEqual(
+                    // Default data base upon initial filter
+                    OnNext<IEnumerable<IReportElement>>(1, isLoadingElements),
+                    OnNext<IEnumerable<IReportElement>>(2, isNotLoadingElements),
+
+                    // Data based on the workspace change
+                    OnNext<IEnumerable<IReportElement>>(3, isLoadingElements),
+                    OnNext<IEnumerable<IReportElement>>(4, isNoDataElement)
+                );
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task DoesNotSelectUnavailableWorkspace()
+            {
+                SetupEnvironment();
+                var chosenWorkspace = Workspaces.Where(ws => ws.IsInaccessible).Last();
+                var observer = TestScheduler.CreateObserver<IEnumerable<IReportElement>>();
+
+                await ViewModel.Initialize();
+                ViewModel.Elements.Subscribe(observer);
+                await ViewModel.SelectWorkspaceById(chosenWorkspace.Id);
+                TestScheduler.Start();
+
+                observer.Messages.AssertEqual(
+                    // Default data base upon initial filter
+                    OnNext<IEnumerable<IReportElement>>(1, isLoadingElements),
+                    OnNext<IEnumerable<IReportElement>>(2, isNotLoadingElements)
+                    // And then we don't change WSes
+                );
             }
         }
 

@@ -17,6 +17,7 @@ namespace Toggl.Core.Analytics
         ShortcutLastYear,
         Calendar,
         Other,
+        Siri,
     }
 
     public static class DateRangeSelectionSourceExtensions
