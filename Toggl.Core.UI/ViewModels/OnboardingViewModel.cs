@@ -144,7 +144,7 @@ namespace Toggl.Core.UI.ViewModels
             View?.GetLoginInfo(provider)
                 .Do(loginInfo => this.loginInfo = loginInfo)
                 .Do(_ => isLoadingSubject.OnNext(true))
-                .SelectMany(userAccessManager.ThirdPartyLogin(provider, loginInfo))
+                .SelectMany(loginInfo => userAccessManager.ThirdPartyLogin(provider, loginInfo))
                 .Track(analyticsService.Login, authenticationMethod)
                 .Subscribe(_ => onAuthenticated(), ex => onLoginFailure(provider, ex))
                 .DisposedBy(disposeBag);
