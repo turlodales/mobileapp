@@ -164,7 +164,7 @@ namespace Toggl.Core.UI.ViewModels
 
             if (exception != null)
             {
-                analyticsService.UnknownSignUpFailure.Track(exception.GetType().FullName, exception.Message);
+                analyticsService.UnknownLoginFailure.Track(exception.GetType().FullName, exception.Message);
                 analyticsService.TrackAnonymized(exception);
             }
 
