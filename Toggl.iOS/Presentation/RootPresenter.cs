@@ -5,9 +5,11 @@ using Toggl.Core.Analytics;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.Core.UI.Views;
 using Toggl.iOS.ViewControllers;
 using UIKit;
+using static Toggl.Core.UI.ViewModels.DateRangePicker.DateRangePickerViewModel;
 
 namespace Toggl.iOS.Presentation
 {
@@ -67,6 +69,32 @@ namespace Toggl.iOS.Presentation
                         var endDate = showReportsPresentationChange.EndDate;
                         var period = showReportsPresentationChange.Period;
                         var workspaceId = showReportsPresentationChange.WorkspaceId;
+
+                        if (workspaceId.HasValue)
+                        {
+                            reportsViewModel.SelectWorkspaceById(workspaceId.Value);
+                        }
+
+                        if (startDate.HasValue && endDate.HasValue)
+                        {
+                            var result = new DateRangeSelectionResult(
+                                new Toggl.Shared.DateRange(
+                                    startDate.Value.DateTime,
+                                    endDate.Value.DateTime),
+                                DateRangeSelectionSource.Siri);
+                            reportsViewModel.SetTimeRange.Execute(result);
+                        }
+                        else if (period.HasValue)
+                        {
+                            var shortcut = IosDependencyContainer.Instance
+                                .DateRangeShortcutsService
+                                .GetShortcutFrom(period.Value);
+
+                            var result = new DateRangeSelectionResult(
+                                shortcut.DateRange,
+                                DateRangeSelectionSource.Siri);
+                            reportsViewModel.SetTimeRange.Execute(result);
+                        }
 
                         return true;
 
