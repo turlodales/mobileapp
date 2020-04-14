@@ -12,12 +12,15 @@ namespace Toggl.iOS
         private readonly AVPlayer player;
         private readonly AVPlayerLayer playerLayer;
 
+        private NSObject didPlayToEndObserver = null;
+        private NSObject didBecomeActiveObserver = null;
+
         public VideoView(NSUrl url)
         {
             this.url = url;
 
             player = AVPlayer.FromUrl(url);
-            NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, restartVideo, player.CurrentItem);
+            didPlayToEndObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, restartVideo, player.CurrentItem);
 
             playerLayer = AVPlayerLayer.FromPlayer(player);
             Layer.AddSublayer(playerLayer);
@@ -25,7 +28,7 @@ namespace Toggl.iOS
             playerLayer.Frame = Bounds;
             restartVideo(null);
 
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, restartVideo);
+            didBecomeActiveObserver = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, restartVideo);
         }
 
         public override void LayoutSubviews()
@@ -48,12 +51,19 @@ namespace Toggl.iOS
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-
-            if (!disposing)
-                return;
-
             player.Dispose();
-            NSNotificationCenter.DefaultCenter.RemoveObserver(this);
+
+            if (didPlayToEndObserver != null)
+            {
+                NSNotificationCenter.DefaultCenter.RemoveObserver(didPlayToEndObserver);
+                didPlayToEndObserver = null;
+            }
+
+            if (didBecomeActiveObserver != null)
+            {
+                NSNotificationCenter.DefaultCenter.RemoveObserver(didBecomeActiveObserver);
+                didBecomeActiveObserver = null;
+            }
         }
     }
 }
