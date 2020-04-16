@@ -2,9 +2,9 @@
 using Newtonsoft.Json.Converters;
 using Toggl.Shared.Models;
 
-namespace Toggl.Networking.Sync
+namespace Toggl.Networking.Sync.Push
 {
-    internal class CreatePushAction<TPayload> : PushAction<CreateMeta>
+    internal class CreateAction<TPayload> : Action<CreateMeta>
         where TPayload : IIdentifiable
     {
         [JsonConverter(typeof(StringEnumConverter), true)]
@@ -12,7 +12,7 @@ namespace Toggl.Networking.Sync
 
         public TPayload Payload { get; set; }
 
-        public CreatePushAction(TPayload payload)
+        public CreateAction(TPayload payload)
         {
             Payload = payload;
             Meta = new CreateMeta(payload.Id);

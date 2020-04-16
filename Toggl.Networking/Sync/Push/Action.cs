@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Toggl.Networking.Sync
+namespace Toggl.Networking.Sync.Push
 {
-    public class PushAction<TMeta> : IPushAction
+    public class Action<TMeta> : IAction
         where TMeta : IMeta
     {
         public virtual ActionType Type { get; }

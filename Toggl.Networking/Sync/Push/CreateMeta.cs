@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Toggl.Networking.Sync
+namespace Toggl.Networking.Sync.Push
 {
     public sealed class CreateMeta : IMeta
     {

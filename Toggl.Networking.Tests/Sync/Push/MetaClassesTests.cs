@@ -1,13 +1,9 @@
 ﻿using FluentAssertions;
-using Newtonsoft.Json.Linq;
-using Toggl.Networking.Models;
 using Toggl.Networking.Serialization;
-using Toggl.Networking.Sync;
-using Toggl.Shared;
-using Toggl.Shared.Tests;
+using Toggl.Networking.Sync.Push;
 using Xunit;
 
-namespace Toggl.Networking.Tests.Sync
+namespace Toggl.Networking.Tests.Sync.Push
 {
     public sealed class MetaClassesTests
     {

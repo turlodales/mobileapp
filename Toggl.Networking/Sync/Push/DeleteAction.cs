@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Toggl.Networking.Sync
+namespace Toggl.Networking.Sync.Push
 {
-    public class DeletePushAction : PushAction<DeleteMeta>
+    public class DeleteAction : Action<DeleteMeta>
     {
         [JsonConverter(typeof(StringEnumConverter), true)]
         public override ActionType Type => ActionType.Delete;
 
-        public DeletePushAction(long id, long workspaceId)
+        public DeleteAction(long id, long workspaceId)
         {
             Meta = new DeleteMeta(id, workspaceId);
         }

@@ -1,17 +1,13 @@
 ﻿using FluentAssertions;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using Toggl.Networking.Models;
 using Toggl.Networking.Serialization;
-using Toggl.Networking.Sync;
-using Toggl.Shared;
+using Toggl.Networking.Sync.Push;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
-using Toggl.Shared.Tests;
 using Xunit;
 
-namespace Toggl.Networking.Tests.Sync
+namespace Toggl.Networking.Tests.Sync.Push
 {
     public sealed class PushActionsTests
     {
@@ -64,7 +60,7 @@ namespace Toggl.Networking.Tests.Sync
         public void CreatePushActionSerializesCorrectly(long id, long wid, string name)
         {
             var tag = new MockTag(id, wid, name);
-            var request = new PushRequest().CreateTags(tag.Yield());
+            var request = new Request().CreateTags(tag.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -76,14 +72,14 @@ namespace Toggl.Networking.Tests.Sync
         }
 
         [Fact, LogIfTooSlow]
-        public void CorrectlyCreatesPushRequestWithMultipleCreateActions()
+        public void CorrectlyCreatesRequestWithMultipleCreateActions()
         {
             var tags = new[]
             {
                 new MockTag(1, 1, "Tag A"),
                 new MockTag(2, 4, "Tag B")
             };
-            var request = new PushRequest().CreateTags(tags);
+            var request = new Request().CreateTags(tags);
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -105,7 +101,7 @@ namespace Toggl.Networking.Tests.Sync
         public void UpdatePushActionSerializesCorrectly(long id, long wid, string description)
         {
             var timeEntry = new MockTimeEntry(id, wid, description);
-            var request = new PushRequest().UpdateTimeEntries(timeEntry.Yield());
+            var request = new Request().UpdateTimeEntries(timeEntry.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -120,7 +116,7 @@ namespace Toggl.Networking.Tests.Sync
         public void DeletePushActionSerializesCorrectly()
         {
             var timeEntry = new MockTimeEntry(154, 12, "Playing HL2 EP3");
-            var request = new PushRequest().DeleteTimeEntries(timeEntry.Yield());
+            var request = new Request().DeleteTimeEntries(timeEntry.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 

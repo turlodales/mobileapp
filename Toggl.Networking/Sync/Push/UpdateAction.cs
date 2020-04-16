@@ -1,18 +1,16 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using Toggl.Shared.Models;
 
-namespace Toggl.Networking.Sync
+namespace Toggl.Networking.Sync.Push
 {
-    public class UpdatePushAction<TPayload> : PushAction<IMeta>
+    public class UpdateAction<TPayload> : Action<IMeta>
     {
         [JsonConverter(typeof(StringEnumConverter), true)]
         public override ActionType Type => ActionType.Update;
 
         public TPayload Payload { get; protected set; }
 
-        public UpdatePushAction(TPayload payload)
+        public UpdateAction(TPayload payload)
         {
             Payload = payload;
 

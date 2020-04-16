@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Toggl.Networking.Sync
+﻿namespace Toggl.Networking.Sync.Push
 {
     public class ErrorMessage
     {

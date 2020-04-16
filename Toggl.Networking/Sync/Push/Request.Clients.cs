@@ -1,20 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using Toggl.Networking.Models;
 using Toggl.Shared.Models;
 using Toggl.Shared.Extensions;
 
-namespace Toggl.Networking.Sync
+namespace Toggl.Networking.Sync.Push
 {
-    public sealed partial class PushRequest
+    public sealed partial class Request
     {
-        public PushRequest CreateClients(IEnumerable<IClient> clients)
+        public Request CreateClients(IEnumerable<IClient> clients)
         {
             clients
                 .Select(client => new Client(client))
-                .Select(client => new CreatePushAction<Client>(client))
+                .Select(client => new CreateAction<Client>(client))
                 .AddTo(Clients);
 
             return this;

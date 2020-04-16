@@ -1,4 +1,4 @@
-﻿namespace Toggl.Networking.Sync
+﻿namespace Toggl.Networking.Sync.Push
 {
     public sealed class DeleteMeta : IMeta
     {
