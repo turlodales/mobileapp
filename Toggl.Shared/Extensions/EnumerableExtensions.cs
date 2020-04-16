@@ -108,5 +108,17 @@ namespace Toggl.Shared.Extensions
 
         public static IEnumerable<T> PrependIf<T>(this IEnumerable<T> collection, bool condition, Func<T> getElement)
             => condition ? collection.Prepend(getElement()) : collection;
+
+        public static void AddTo<T>(this IEnumerable<T> collection, IList<T> destination)
+        {
+            if (destination is List<T> destinationList)
+            {
+                destinationList.AddRange(collection);
+                return;
+            }
+
+            foreach (var item in collection)
+                destination.Add(item);
+        }
     }
 }
