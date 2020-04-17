@@ -1,4 +1,4 @@
-﻿namespace Toggl.Networking.Sync.Push
+namespace Toggl.Networking.Sync.Push
 {
     public enum ActionType
     {
