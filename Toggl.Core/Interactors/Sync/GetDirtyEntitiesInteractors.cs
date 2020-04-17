@@ -52,10 +52,12 @@ namespace Toggl.Core.Interactors
                 .TimeEntries
                 .GetAll(isDirty);
 
-            timeEntries.DistributedExecute(actionType,
-                (Create, pushRequest.CreateTimeEntries),
-                (Update, pushRequest.UpdateTimeEntries),
-                (Delete, pushRequest.DeleteTimeEntries));
+            timeEntries
+                .Where(te => !isLocalDelete(te))
+                .DistributedExecute(actionType,
+                    (Create, pushRequest.CreateTimeEntries),
+                    (Update, pushRequest.UpdateTimeEntries),
+                    (Delete, pushRequest.DeleteTimeEntries));
 
             await dataSource.Preferences
                 .Current
@@ -75,6 +77,9 @@ namespace Toggl.Core.Interactors
 
         private bool isDirty(IDatabaseSyncable entity)
             => entity.SyncStatus == SyncNeeded;
+
+        private bool isLocalDelete<T>(T entity) where T : IDatabaseSyncable, IIdentifiable
+            => entity.IsDeleted && entity.Id < 0;
 
         private ActionType actionType<T>(T entity) where T : IIdentifiable, IDatabaseSyncable
             => entity.IsDeleted
