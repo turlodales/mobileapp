@@ -8,14 +8,12 @@ namespace Toggl.Networking.Sync.Push
 {
     public sealed partial class Request
     {
-        public Request CreateTags(IEnumerable<ITag> tags)
+        public void CreateTags(IEnumerable<ITag> tags)
         {
             tags
                 .Select(tag => new Tag(tag))
                 .Select(tag => new CreateAction<Tag>(tag))
                 .AddTo(Tags);
-
-            return this;
         }
     }
 }

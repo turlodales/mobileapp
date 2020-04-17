@@ -8,14 +8,12 @@ namespace Toggl.Networking.Sync.Push
 {
     public sealed partial class Request
     {
-        public Request CreateProjects(IEnumerable<IProject> projects)
+        public void CreateProjects(IEnumerable<IProject> projects)
         {
             projects
                 .Select(project => new Project(project))
                 .Select(project => new CreateAction<Project>(project))
                 .AddTo(Projects);
-
-            return this;
         }
     }
 }
