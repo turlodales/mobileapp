@@ -46,6 +46,7 @@ namespace Toggl.Droid.Widgets
 
             view.SetViewVisibility(Resource.Id.DotView, widgetInfo.HasProject.ToVisibility());
             view.SetViewVisibility(Resource.Id.ProjectTextView, widgetInfo.HasProject.ToVisibility());
+            view.SetViewVisibility(Resource.Id.ClientTextView, widgetInfo.HasClient.ToVisibility());
             if (widgetInfo.HasProject)
             {
                 // Project
@@ -57,7 +58,6 @@ namespace Toggl.Droid.Widgets
                 view.SetTextColor(Resource.Id.ProjectTextView, projectColor);
 
                 // Client
-                view.SetViewVisibility(Resource.Id.ClientTextView, widgetInfo.HasClient.ToVisibility());
                 if (widgetInfo.HasClient)
                 {
                     view.SetTextViewText(Resource.Id.ClientTextView, widgetInfo.ClientName);
