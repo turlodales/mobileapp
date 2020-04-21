@@ -39,15 +39,17 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private readonly IAnalyticsService analyticsService;
         private readonly ISubject<IThreadSafeWorkspace> workspaceSelectedById = new Subject<IThreadSafeWorkspace>();
 
-        public IObservable<IImmutableList<IReportElement>> Elements { get; set; }
-        public IObservable<bool> HasMultipleWorkspaces { get; set; }
+        public IObservable<IImmutableList<IReportElement>> Elements { get; private set; }
+        public IObservable<bool> HasMultipleWorkspaces { get; }
         public IObservable<string> CurrentWorkspaceName { get; private set; }
 
-        public IObservable<string> FormattedTimeRange { get; set; }
+        public IObservable<string> FormattedDateRange { get; private set; }
 
-        public OutputAction<IThreadSafeWorkspace> SelectWorkspace { get; private set; }
-        public OutputAction<DateRangeSelectionResult> SelectTimeRange { get; private set; }
-        public InputAction<DateRangeSelectionResult> SetTimeRange { get; private set; }
+        public IObservable<DateRange> DateRange { get; private set; }
+
+        public OutputAction<IThreadSafeWorkspace> SelectWorkspace { get; }
+        public OutputAction<DateRangeSelectionResult> SelectDateRange { get; }
+        public InputAction<DateRangeSelectionResult> SetDateRange { get; }
 
         public ReportsViewModel(
             ITogglDataSource dataSource,
@@ -83,8 +85,8 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .AsDriver(schedulerProvider);
 
             SelectWorkspace = rxActionFactory.FromAsync(selectWorkspace);
-            SelectTimeRange = rxActionFactory.FromAsync(selectTimeRange);
-            SetTimeRange = rxActionFactory.FromAction<DateRangeSelectionResult>(setTimeRange);
+            SelectDateRange = rxActionFactory.FromAsync(selectDateRange);
+            SetDateRange = rxActionFactory.FromAction<DateRangeSelectionResult>(setDateRange);
         }
 
         public override async Task Initialize()
@@ -93,14 +95,12 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .Concat(SelectWorkspace.Elements.WhereNotNull())
                 .Merge(workspaceSelectedById.AsObservable());
 
-            var beginningOfWeek = (await interactorFactory.GetCurrentUser().Execute()).BeginningOfWeek;
-
             var initialSelection = new DateRangeSelectionResult(
                     dateRangeShortcutsService.GetShortcutFrom(DateRangePeriod.ThisWeek).DateRange,
                     DateRangeSelectionSource.Initial);
 
-            var timeRangeSelector = SelectTimeRange.Elements
-                .Merge(SetTimeRange.Inputs)
+            var dateRangeSelector = SelectDateRange.Elements
+                .Merge(SetDateRange.Inputs)
                 .StartWith(initialSelection)
                 .WhereNotNull();
 
@@ -110,7 +110,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .DistinctUntilChanged()
                 .AsDriver("", schedulerProvider);
 
-            Elements = Observable.CombineLatest(workspaceSelector, timeRangeSelector, ReportProcessData.Create)
+            Elements = Observable.CombineLatest(workspaceSelector, dateRangeSelector, ReportProcessData.Create)
                 .SelectMany(reportElements)
                 .AsDriver(ImmutableList<IReportElement>.Empty, schedulerProvider);
 
@@ -118,8 +118,13 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .Current
                 .Select(preferences => preferences.DateFormat);
 
-            FormattedTimeRange = timeRangeSelector
-                .CombineLatest(dateFormatObservable, resultSelector: formattedTimeRange)
+            DateRange = dateRangeSelector
+                .Select(dateRangeSelectionResult => dateRangeSelectionResult.SelectedRange)
+                .WhereNotNull()
+                .AsDriver(schedulerProvider);
+
+            FormattedDateRange = DateRange
+                .CombineLatest(dateFormatObservable, resultSelector: formattedDateRange)
                 .DistinctUntilChanged()
                 .Select(dateRange => $"{dateRange} {DownArrowCharacter}")
                 .AsDriver("", schedulerProvider);
@@ -159,7 +164,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             return workspace;
         }
 
-        private async Task<DateRangeSelectionResult> selectTimeRange()
+        private async Task<DateRangeSelectionResult> selectDateRange()
         {
             var dateRangeSelection = await Navigate<DateRangePickerViewModel, Either<DateRangePeriod, DateRange>, DateRangeSelectionResult>(selection);
             if (dateRangeSelection?.SelectedRange == null)
@@ -170,7 +175,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             return dateRangeSelection;
         }
 
-        private void setTimeRange(DateRangeSelectionResult result)
+        private void setDateRange(DateRangeSelectionResult result)
         {
             selection = Either<DateRangePeriod, DateRange>.WithRight(result.SelectedRange.Value);
         }
@@ -186,15 +191,14 @@ namespace Toggl.Core.UI.ViewModels.Reports
             .ToObservable()
             .StartWith(createLoadingStateReportElements());
 
-        private string formattedTimeRange(DateRangeSelectionResult dateRangeSelectionResult, DateFormat dateFormat)
+        private string formattedDateRange(DateRange dateRange, DateFormat dateFormat)
         {
-            var range = dateRangeSelectionResult.SelectedRange.Value;
-            var knownShortcut = dateRangeShortcutsService.GetShortcutFrom(range);
+            var knownShortcut = dateRangeShortcutsService.GetShortcutFrom(dateRange);
             if (knownShortcut != null)
                 return knownShortcut.Text;
 
-            var startDateText = range.Beginning.ToString(dateFormat.Short, CultureInfo.InvariantCulture);
-            var endDateText = range.End.ToString(dateFormat.Short, CultureInfo.InvariantCulture);
+            var startDateText = dateRange.Beginning.ToString(dateFormat.Short, CultureInfo.InvariantCulture);
+            var endDateText = dateRange.End.ToString(dateFormat.Short, CultureInfo.InvariantCulture);
             return $"{startDateText} - {endDateText}";
         }
 
