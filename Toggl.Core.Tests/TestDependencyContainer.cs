@@ -146,6 +146,10 @@ namespace Toggl.Core.Tests
         protected override IAccessibilityService CreateAccessibilityService()
             => MockAccessibilityService;
 
+        internal IUnsyncedDataPersistenceService MockUnsyncedDataPersistenceService { get; set; }
+        protected override IUnsyncedDataPersistenceService CreateUnsyncedDataPersistenceService()
+            => MockUnsyncedDataPersistenceService;
+
         internal IPushNotificationsTokenStorage MockPushNotificationsTokenStorage { get; set; }
 
         internal IWidgetsService MockWidgetsService { get; set; }
