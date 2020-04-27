@@ -2,6 +2,7 @@ using Android.Content;
 using Android.OS;
 using Android.Widget;
 using System;
+using Android.Views;
 using Toggl.Droid.Extensions;
 using Color = Android.Graphics.Color;
 using Toggl.Shared;
@@ -35,13 +36,15 @@ namespace Toggl.Droid.Widgets
 
             if (string.IsNullOrEmpty(widgetInfo.Description))
             {
-                view.SetTextViewText(Resource.Id.DescriptionTextView, Resources.NoDescription);
-                view.SetTextColor(Resource.Id.DescriptionTextView, context.SafeGetColor(Resource.Color.secondaryText));
+                view.SetTextViewText(Resource.Id.NoDescriptionTextView, Resources.NoDescription);
+                view.SetViewVisibility(Resource.Id.NoDescriptionTextView, ViewStates.Visible);
+                view.SetViewVisibility(Resource.Id.DescriptionTextView, ViewStates.Gone);
             }
             else
             {
                 view.SetTextViewText(Resource.Id.DescriptionTextView, widgetInfo.Description);
-                view.SetTextColor(Resource.Id.DescriptionTextView, context.SafeGetColor(Resource.Color.primaryText));
+                view.SetViewVisibility(Resource.Id.DescriptionTextView, ViewStates.Visible);
+                view.SetViewVisibility(Resource.Id.NoDescriptionTextView, ViewStates.Gone);
             }
 
             view.SetViewVisibility(Resource.Id.DotView, widgetInfo.HasProject.ToVisibility());

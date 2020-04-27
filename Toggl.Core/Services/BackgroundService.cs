@@ -14,6 +14,7 @@ namespace Toggl.Core.Services
         private readonly ITimeService timeService;
         private readonly IAnalyticsService analyticsService;
         private readonly IUpdateRemoteConfigCacheService updateRemoteConfigCacheService;
+        private readonly IUnsyncedDataPersistenceService unsyncedDataPersistenceService;
         private readonly IInteractorFactory interactorFactory;
 
         private DateTimeOffset? lastEnteredBackground { get; set; }
@@ -22,20 +23,23 @@ namespace Toggl.Core.Services
         public IObservable<TimeSpan> AppResumedFromBackground { get; }
 
         public bool AppIsInBackground { get; private set; }
-        
+
         public BackgroundService(ITimeService timeService,
             IAnalyticsService analyticsService,
             IUpdateRemoteConfigCacheService updateRemoteConfigCacheService,
+            IUnsyncedDataPersistenceService unsyncedDataPersistenceService,
             IInteractorFactory interactorFactory)
         {
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
             Ensure.Argument.IsNotNull(updateRemoteConfigCacheService, nameof(updateRemoteConfigCacheService));
+            Ensure.Argument.IsNotNull(unsyncedDataPersistenceService, nameof(unsyncedDataPersistenceService));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
 
             this.timeService = timeService;
             this.analyticsService = analyticsService;
             this.updateRemoteConfigCacheService = updateRemoteConfigCacheService;
+            this.unsyncedDataPersistenceService = unsyncedDataPersistenceService;
             this.interactorFactory = interactorFactory;
 
             appBecameActiveSubject = new Subject<TimeSpan>();
@@ -55,6 +59,7 @@ namespace Toggl.Core.Services
             analyticsService.AppSentToBackground.Track();
             lastEnteredBackground = timeService.CurrentDateTime;
             AppIsInBackground = true;
+            unsyncedDataPersistenceService?.PersistUnsyncedData().ConfigureAwait(false);
         }
 
         public void EnterForeground()
@@ -63,7 +68,7 @@ namespace Toggl.Core.Services
                 Task.Run(() => updateRemoteConfigCacheService.FetchAndStoreRemoteConfigData()).ConfigureAwait(false);
 
             interactorFactory.UpdateEventNotificationsSchedules().Execute().ConfigureAwait(false);
-            
+
             if (lastEnteredBackground.HasValue == false)
                 return;
 
