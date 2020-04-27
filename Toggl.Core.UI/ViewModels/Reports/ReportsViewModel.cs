@@ -30,7 +30,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
 {
     public sealed class ReportsViewModel : ViewModel
     {
-        private const string DownArrowCharacter = "▾";
+        private const string downArrowCharacter = "▾";
         private long? selectedWorkspaceId;
         private Either<DateRangePeriod, DateRange> selection;
 
@@ -41,6 +41,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         private readonly IInteractorFactory interactorFactory;
         private readonly IDateRangeShortcutsService dateRangeShortcutsService;
+        c
         private readonly ITimeService timeService;
         private readonly ISchedulerProvider schedulerProvider;
         private readonly ITogglDataSource dataSource;
@@ -142,7 +143,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             FormattedDateRange = DateRange
                 .CombineLatest(dateFormatObservable, resultSelector: formattedDateRange)
                 .DistinctUntilChanged()
-                .Select(dateRange => $"{dateRange} {DownArrowCharacter}")
+                .Select(dateRange => $"{dateRange} {downArrowCharacter}")
                 .AsDriver("", schedulerProvider);
 
             selectedWorkspaceId = (await interactorFactory.GetDefaultWorkspace().Execute())?.Id;
