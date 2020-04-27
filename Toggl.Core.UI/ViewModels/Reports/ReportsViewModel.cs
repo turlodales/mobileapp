@@ -123,7 +123,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .Subscribe(_ => shouldReloadReportOnViewAppeared = true)
                 .DisposedBy(disposeBag);
 
-            Elements = reloadReportsSubject.CombineLatest(
+            Elements = reloadReportsSubject.StartWith(Unit.Default).CombineLatest(
                     workspaceSelector,
                     dateRangeSelector,
                     (_, workspace, dateRange) => ReportProcessData.Create(workspace, dateRange))
