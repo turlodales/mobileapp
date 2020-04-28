@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reactive.Disposables;
@@ -61,6 +62,7 @@ namespace Toggl.Core
         private readonly Lazy<IUpdateRemoteConfigCacheService> remoteConfigUpdateService;
         private readonly Lazy<IPrivateSharedStorageService> privateSharedStorageService;
         private readonly Lazy<IPushNotificationsTokenService> pushNotificationsTokenService;
+        private readonly Lazy<IUnsyncedDataPersistenceService> unsyncedDataPersistenceService;
         private readonly Lazy<IPushNotificationsTokenStorage> pushNotificationsTokenStorage;
         private readonly Lazy<HttpClient> httpClient;
 
@@ -98,6 +100,7 @@ namespace Toggl.Core
         public IUpdateRemoteConfigCacheService UpdateRemoteConfigCacheService => remoteConfigUpdateService.Value;
         public IPrivateSharedStorageService PrivateSharedStorageService => privateSharedStorageService.Value;
         public IPushNotificationsTokenService PushNotificationsTokenService => pushNotificationsTokenService.Value;
+        public IUnsyncedDataPersistenceService UnsyncedDataPersistenceService => unsyncedDataPersistenceService.Value;
         public IPushNotificationsTokenStorage PushNotificationsTokenStorage => pushNotificationsTokenStorage.Value;
         public HttpClient HttpClient => httpClient.Value;
 
@@ -139,6 +142,7 @@ namespace Toggl.Core
             remoteConfigUpdateService = new Lazy<IUpdateRemoteConfigCacheService>(CreateUpdateRemoteConfigCacheService);
             privateSharedStorageService = new Lazy<IPrivateSharedStorageService>(CreatePrivateSharedStorageService);
             pushNotificationsTokenService = new Lazy<IPushNotificationsTokenService>(CreatePushNotificationsTokenService);
+            unsyncedDataPersistenceService = new Lazy<IUnsyncedDataPersistenceService>(CreateUnsyncedDataPersistenceService);
             pushNotificationsTokenStorage =
                 new Lazy<IPushNotificationsTokenStorage>(CreatePushNotificationsTokenStorage);
             httpClient = new Lazy<HttpClient>(CreateHttpClient);
@@ -191,7 +195,7 @@ namespace Toggl.Core
             => new TimeService(SchedulerProvider.DefaultScheduler);
 
         protected virtual IBackgroundService CreateBackgroundService()
-            => new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, InteractorFactory);
+            => new BackgroundService(TimeService, AnalyticsService, UpdateRemoteConfigCacheService, UnsyncedDataPersistenceService, InteractorFactory);
 
         protected virtual IAutomaticSyncingService CreateAutomaticSyncingService()
             => new AutomaticSyncingService(BackgroundService, TimeService, LastTimeUsageStorage);
@@ -210,6 +214,13 @@ namespace Toggl.Core
 
         protected virtual IUpdateRemoteConfigCacheService CreateUpdateRemoteConfigCacheService()
             => new UpdateRemoteConfigCacheService(TimeService, KeyValueStorage, FetchRemoteConfigService);
+
+        protected virtual IUnsyncedDataPersistenceService CreateUnsyncedDataPersistenceService()
+            => new UnsyncedDataPersistenceService(InteractorFactory.CreateUnsyncedDataDump(), async (textToWrite, writer) =>
+            {
+                await writer.WriteAsync(textToWrite);
+                writer.Close();
+            });
 
         protected virtual IPushNotificationsTokenStorage CreatePushNotificationsTokenStorage()
             => new PushNotificationsTokenStorage(KeyValueStorage);

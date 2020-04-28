@@ -12,6 +12,7 @@ namespace Toggl.iOS
         private readonly CALayer periscopeLayer;
         private readonly CALayer eyeballLayer;
         private readonly CALayer pupilLayer;
+        private NSObject observer = null;
 
         public PeriscopeView()
         {
@@ -27,7 +28,7 @@ namespace Toggl.iOS
             Layer.AddSublayer(pupilLayer);
             Layer.AddSublayer(periscopeLayer);
 
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, restartAnimation);
+            observer = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, restartAnimation);
         }
 
         public override void LayoutSubviews()
@@ -68,7 +69,11 @@ namespace Toggl.iOS
             if (!disposing)
                 return;
 
-            NSNotificationCenter.DefaultCenter.RemoveObserver(this);
+            if (observer != null)
+            {
+                NSNotificationCenter.DefaultCenter.RemoveObserver(observer);
+                observer = null;
+            }
         }
     }
 }

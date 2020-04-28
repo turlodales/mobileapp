@@ -65,7 +65,7 @@ namespace Toggl.iOS.ViewControllers
         [Export(nameof(selectDateRange))]
         private void selectDateRange()
         {
-            ViewModel.SelectTimeRange.Execute();
+            ViewModel.SelectDateRange.Execute();
         }
 
         [Export("selectShortcut:")]
@@ -79,7 +79,7 @@ namespace Toggl.iOS.ViewControllers
             var result = new DateRangeSelectionResult(
                 shortcut.DateRange,
                 shortcut.Period.ToDateRangeSelectionSource());
-            ViewModel.SetTimeRange.Execute(result);
+            ViewModel.SetDateRange.Execute(result);
         }
     }
 }

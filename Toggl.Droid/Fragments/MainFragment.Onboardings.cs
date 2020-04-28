@@ -116,7 +116,7 @@ namespace Toggl.Droid.Fragments
         private void setupTapToEditOnboardingStep()
         {
             tapToEditPopup ??= createTapToEditPopup();
-            
+
             editTimeEntryOnboardingStep = new EditTimeEntryOnboardingStep(
                 ViewModel.OnboardingStorage, Observable.Return(false));
 
@@ -151,11 +151,12 @@ namespace Toggl.Droid.Fragments
             }
 
             editTimeEntryOnboardingStepDisposable = editTimeEntryOnboardingStep
-                .ManageVisibilityOf(
+                .ManageDismissableTooltip(
                     visibilityChanged,
                     tapToEditPopup,
                     oldestVisibleTimeEntryViewHolder.ItemView,
-                    (window, view) => PopupOffsets.FromDp(16, -4, Context));
+                    (window, view) => PopupOffsets.FromDp(16, -4, Context),
+                    ViewModel.OnboardingStorage);
         }
 
         private PopupWindow createTapToEditPopup()

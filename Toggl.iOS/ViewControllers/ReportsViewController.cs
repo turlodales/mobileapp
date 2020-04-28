@@ -52,7 +52,7 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(WorkspaceLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
-            ViewModel.FormattedTimeRange
+            ViewModel.FormattedDateRange
                 .Subscribe(titleButton.Rx().TitleAdaptive())
                 .DisposedBy(DisposeBag);
 
@@ -61,7 +61,7 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             titleButton.Rx().Tap()
-                .Subscribe(ViewModel.SelectTimeRange.Inputs)
+                .Subscribe(ViewModel.SelectDateRange.Inputs)
                 .DisposedBy(DisposeBag);
 
             WorkspaceButton.Rx()
@@ -89,19 +89,12 @@ namespace Toggl.iOS.ViewControllers
                 .Merge(ViewModel.SelectWorkspace.Elements)
                 .WhereNotNull();
 
-            var dateRangeSelectionResultObservable = ViewModel.SelectTimeRange.Elements
-                .StartWith(new DateRangeSelectionResult(
-                    new DateRange(DateTime.Now.AddDays(-7), DateTime.Now),
-                    DateRangeSelectionSource.ShortcutThisWeek)
-                )
-                .WhereNotNull();
-
             //Handoff
             viewDidAppearSubject.AsObservable()
                 .CombineLatest(
                     workspaceObservable,
-                    dateRangeSelectionResultObservable,
-                    (_, ws, tr) => createUserActivity(ws.Id, tr.SelectedRange.Value.Beginning, tr.SelectedRange.Value.End))
+                    ViewModel.DateRange,
+                    (_, workspace, dateRange) => createUserActivity(workspace.Id, dateRange.Beginning, dateRange.End))
                 .Subscribe(updateUserActivity);
 
             NSUserActivity createUserActivity(long workspaceId, DateTimeOffset start, DateTimeOffset end)
