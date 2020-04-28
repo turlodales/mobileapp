@@ -35,7 +35,7 @@ namespace Toggl.Core.DataSources
             Workspaces = new WorkspacesDataSource(database.Workspaces, schedulerProvider);
             Preferences = new PreferencesDataSource(database.Preferences);
             WorkspaceFeatures = new WorkspaceFeaturesDataSource(database.WorkspaceFeatures);
-            TimeEntries = new TimeEntriesDataSource(database.TimeEntries, timeService, analyticsService, schedulerProvider);
+            TimeEntries = new TimeEntriesDataSource(database.TimeEntries, database.TimeEntriesBackup, timeService, analyticsService, schedulerProvider);
         }
 
         public ITimeEntriesSource TimeEntries { get; }

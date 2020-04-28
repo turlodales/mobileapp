@@ -27,6 +27,7 @@ namespace Toggl.Storage.Realm
             Preferences = SingleObjectStorage<IDatabasePreferences>.For(getRealmInstance, (preferences, realm) => new RealmPreferences(preferences, realm));
             Projects = Repository<IDatabaseProject>.For(getRealmInstance, (project, realm) => new RealmProject(project, realm));
             TimeEntries = Repository<IDatabaseTimeEntry>.For(getRealmInstance, (timeEntry, realm) => new RealmTimeEntry(timeEntry, realm));
+            TimeEntriesBackup = Repository<IDatabaseTimeEntry>.For(getRealmInstance, (timeEntry, realm) => new RealmTimeEntry(timeEntry, realm));
             Workspaces = Repository<IDatabaseWorkspace>.For(getRealmInstance, (workspace, realm) => new RealmWorkspace(workspace, realm));
             WorkspaceFeatures = Repository<IDatabaseWorkspaceFeatureCollection>.For(
                 getRealmInstance,
@@ -45,6 +46,7 @@ namespace Toggl.Storage.Realm
         public IRepository<IDatabaseProject> Projects { get; }
         public ISingleObjectStorage<IDatabaseUser> User { get; }
         public IRepository<IDatabaseTimeEntry> TimeEntries { get; }
+        public IRepository<IDatabaseTimeEntry> TimeEntriesBackup { get; }
         public IRepository<IDatabaseWorkspace> Workspaces { get; }
         public IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
 

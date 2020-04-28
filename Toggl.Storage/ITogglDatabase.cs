@@ -13,6 +13,7 @@ namespace Toggl.Storage
         IRepository<IDatabaseTag> Tags { get; }
         IRepository<IDatabaseTask> Tasks { get; }
         IRepository<IDatabaseTimeEntry> TimeEntries { get; }
+        IRepository<IDatabaseTimeEntry> TimeEntriesBackup { get; }
         IRepository<IDatabaseWorkspace> Workspaces { get; }
         IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
         IIdProvider IdProvider { get; }

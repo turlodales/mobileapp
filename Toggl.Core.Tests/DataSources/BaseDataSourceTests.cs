@@ -42,8 +42,8 @@ namespace Toggl.Core.Tests.DataSources
     public sealed class DataSourceTests
     {
         private readonly ITimeService timeService = Substitute.For<ITimeService>();
-        private readonly IRepository<IDatabaseTimeEntry> repository
-            = Substitute.For<IRepository<IDatabaseTimeEntry>>();
+        private readonly IRepository<IDatabaseTimeEntry> timeEntriesRepository = Substitute.For<IRepository<IDatabaseTimeEntry>>();
+        private readonly IRepository<IDatabaseTimeEntry> timeEntriesBackupRepository = Substitute.For<IRepository<IDatabaseTimeEntry>>();
         private readonly IAnalyticsService analyticsService = Substitute.For<IAnalyticsService>();
         private readonly ISchedulerProvider schedulerProvider = new TestSchedulerProvider();
 
@@ -51,7 +51,7 @@ namespace Toggl.Core.Tests.DataSources
 
         public DataSourceTests()
         {
-            dataSource = new TimeEntriesDataSource(repository, timeService, analyticsService, schedulerProvider);
+            dataSource = new TimeEntriesDataSource(timeEntriesRepository, timeEntriesBackupRepository, timeService, analyticsService, schedulerProvider);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Toggl.Core.Tests.DataSources
         {
             var entities = Enumerable.Range(0, 10).Select(i => new MockTimeEntry { Id = i });
 
-            repository.BatchUpdate(
+            timeEntriesRepository.BatchUpdate(
                 Arg.Any<IEnumerable<(long id, IDatabaseTimeEntry)>>(),
                 Arg.Any<Func<IDatabaseTimeEntry, IDatabaseTimeEntry, ConflictResolutionMode>>())
                 .Returns(batchUpdateResult);

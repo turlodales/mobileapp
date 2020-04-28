@@ -19,7 +19,8 @@ namespace Toggl.Core.DataSources
     internal sealed class TimeEntriesDataSource : ObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry>, ITimeEntriesSource
     {
         private readonly IAnalyticsService analyticsService;
-        private readonly IRepository<IDatabaseTimeEntry> repository;
+        private readonly IRepository<IDatabaseTimeEntry> timeEntriesRepository;
+        private readonly IRepository<IDatabaseTimeEntry> timeEntriesBackupRepository;
 
         private readonly Func<IDatabaseTimeEntry, IDatabaseTimeEntry, ConflictResolutionMode> alwaysCreate
             = (a, b) => ConflictResolutionMode.Create;
@@ -40,17 +41,21 @@ namespace Toggl.Core.DataSources
 
         protected override IRivalsResolver<IDatabaseTimeEntry> RivalsResolver { get; }
 
-        public TimeEntriesDataSource(IRepository<IDatabaseTimeEntry> repository,
+        public TimeEntriesDataSource(
+            IRepository<IDatabaseTimeEntry> timeEntriesRepository,
+            IRepository<IDatabaseTimeEntry> timeEntriesBackupRepository,
             ITimeService timeService,
             IAnalyticsService analyticsService, 
             ISchedulerProvider schedulerProvider)
-            : base(repository, schedulerProvider)
+            : base(timeEntriesRepository, schedulerProvider)
         {
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
-            Ensure.Argument.IsNotNull(repository, nameof(repository));
+            Ensure.Argument.IsNotNull(timeEntriesRepository, nameof(timeEntriesRepository));
+            Ensure.Argument.IsNotNull(timeEntriesBackupRepository, nameof(timeEntriesBackupRepository));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
 
-            this.repository = repository;
+            this.timeEntriesRepository = timeEntriesRepository;
+            this.timeEntriesBackupRepository = timeEntriesBackupRepository;
             this.analyticsService = analyticsService;
 
             RivalsResolver = new TimeEntryRivalsResolver(timeService);
@@ -76,7 +81,7 @@ namespace Toggl.Core.DataSources
         }
 
         public override IObservable<IThreadSafeTimeEntry> Create(IThreadSafeTimeEntry entity)
-            => repository.UpdateWithConflictResolution(entity.Id, entity, alwaysCreate, RivalsResolver)
+            => timeEntriesRepository.UpdateWithConflictResolution(entity.Id, entity, alwaysCreate, RivalsResolver)
                 .ToThreadSafeResult(Convert)
                 .Flatten()
                 .OfType<CreateResult<IThreadSafeTimeEntry>>()
