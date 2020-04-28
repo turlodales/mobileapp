@@ -41,7 +41,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         private readonly IInteractorFactory interactorFactory;
         private readonly IDateRangeShortcutsService dateRangeShortcutsService;
-        c
+
         private readonly ITimeService timeService;
         private readonly ISchedulerProvider schedulerProvider;
         private readonly ITogglDataSource dataSource;
