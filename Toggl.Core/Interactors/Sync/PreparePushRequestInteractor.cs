@@ -18,11 +18,11 @@ using Toggl.Shared.Extensions;
 
 namespace Toggl.Core.Interactors
 {
-    public class GetDirtyEntitiesInteractors : IInteractor<Task<Request>>
+    public class PreparePushRequestInteractor : IInteractor<Task<Request>>
     {
         private readonly ITogglDataSource dataSource;
 
-        public GetDirtyEntitiesInteractors(ITogglDataSource dataSource)
+        public PreparePushRequestInteractor(ITogglDataSource dataSource)
         {
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
 
