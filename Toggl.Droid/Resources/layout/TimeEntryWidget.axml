@@ -52,7 +52,20 @@
             android:lineSpacingExtra="5sp"
             android:singleLine="true"
             android:ellipsize="marquee"
-            tools:text="Description"/>
+            tools:text="Description"/>        
+        <TextView
+            android:id="@+id/NoDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginLeft="12dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="@color/secondaryText"
+            android:lineSpacingExtra="5sp"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            tools:text="No Description"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"

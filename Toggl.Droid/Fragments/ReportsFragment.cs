@@ -33,7 +33,7 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(ViewModel.SelectWorkspace.Inputs)
                 .DisposedBy(DisposeBag);
 
-            ViewModel.FormattedTimeRange
+            ViewModel.FormattedDateRange
                 .Subscribe(toolbarCurrentDateRangeText.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
@@ -42,7 +42,7 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             toolbarCurrentDateRangeText.Rx()
-                .BindAction(ViewModel.SelectTimeRange)
+                .BindAction(ViewModel.SelectDateRange)
                 .DisposedBy(DisposeBag);
         }
 

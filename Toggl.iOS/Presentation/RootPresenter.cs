@@ -82,7 +82,7 @@ namespace Toggl.iOS.Presentation
                                     startDate.Value.DateTime,
                                     endDate.Value.DateTime),
                                 DateRangeSelectionSource.Siri);
-                            reportsViewModel.SetTimeRange.Execute(result);
+                            reportsViewModel.SetDateRange.Execute(result);
                         }
                         else if (period.HasValue)
                         {
@@ -93,7 +93,7 @@ namespace Toggl.iOS.Presentation
                             var result = new DateRangeSelectionResult(
                                 shortcut.DateRange,
                                 DateRangeSelectionSource.Siri);
-                            reportsViewModel.SetTimeRange.Execute(result);
+                            reportsViewModel.SetDateRange.Execute(result);
                         }
 
                         return true;

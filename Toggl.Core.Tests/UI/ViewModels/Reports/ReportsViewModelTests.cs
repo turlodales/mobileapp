@@ -36,6 +36,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
         {
             public List<MockWorkspace> Workspaces;
 
+            protected DateTimeOffset now = new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero);
             protected new IDateRangeShortcutsService DateRangeShortcutsService { get; private set; } = Substitute.For<IDateRangeShortcutsService>();
 
             protected new ReportsViewModel ViewModel { get; set; }
@@ -94,7 +95,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
 
                 TimeService
                     .CurrentDateTime
-                    .Returns(new DateTimeOffset(2019, 1, 1, 0, 0, 0, TimeSpan.Zero));
+                    .Returns(now);
 
                 DateRangeShortcutsService = new DateRangeShortcutsService(DataSource, TimeService);
 
@@ -197,7 +198,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 => elements.OfType<ReportNoDataElement>().Count() == 1;
 
             [Fact, LogIfTooSlow]
-            public async Task EmitsElementsForDefaultWorkspaceAndDefaultTimeRangeOnViewModelCreation()
+            public async Task EmitsElementsForDefaultWorkspaceAndDefaultDateRangeOnViewModelCreation()
             {
                 SetupEnvironment();
                 var observer = TestScheduler.CreateObserver<IEnumerable<IReportElement>>();
@@ -235,18 +236,86 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
             }
         }
 
-        public sealed class TheFormattedTimeRangeProperty : ReportsViewModelBaseTest
+        public sealed class TheDateRangeProperty : ReportsViewModelBaseTest {
+            [Fact, LogIfTooSlow]
+            public async Task StartsWithThisWeek()
+            {
+                SetupEnvironment();
+                var expectedBeginning = new DateTime(2018, 12, 26);
+                var expectedEnd = new DateTime(2019, 1, 1);
+                var expectedDateRange = new DateRange(expectedBeginning, expectedEnd);
+                var observer = TestScheduler.CreateObserver<DateRange>();
+
+                await ViewModel.Initialize();
+                ViewModel.DateRange.Subscribe(observer);
+                TestScheduler.Start();
+
+                observer.FirstEmittedValue().Should()
+                    .BeEquivalentTo(expectedDateRange);
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task EmitsWhateverDateRangeIsSelected()
+            {
+                var selectedDateRange = new DateRange(
+                    new DateTime(2020, 3, 4),
+                    new DateTime(2020, 4, 1));
+                SetupEnvironment(selectedDateRangeSelector: () => selectedDateRange);
+                var observer = TestScheduler.CreateObserver<DateRange>();
+
+                await ViewModel.Initialize();
+                ViewModel.DateRange.Subscribe(observer);
+                ViewModel.SelectDateRange.Execute();
+                TestScheduler.Start();
+
+                observer.Values().Should().HaveCount(2);
+                observer.LastEmittedValue().Should().BeEquivalentTo(selectedDateRange);
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task DoesNotEmitNewValueIfDateRangePickerIsClosed()
+            {
+                SetupEnvironment(selectedDateRangeSelector: () => null);
+                var observer = TestScheduler.CreateObserver<DateRange>();
+
+                await ViewModel.Initialize();
+                ViewModel.DateRange.Subscribe(observer);
+                ViewModel.SelectDateRange.Execute();
+                TestScheduler.Start();
+
+                observer.Values().Should().HaveCount(1);
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task EmitsWhateverDateRangeIsSet()
+            {
+                SetupEnvironment();
+                var observer = TestScheduler.CreateObserver<DateRange>();
+
+                await ViewModel.Initialize();
+                ViewModel.DateRange.Subscribe(observer);
+                var dateRange = new DateRange(now.AddDays(-13).Date, now.Date);
+                ViewModel.SetDateRange.Execute(
+                    new DateRangeSelectionResult(dateRange, DateRangeSelectionSource.Calendar));
+                TestScheduler.Start();
+
+                observer.Values().Should().HaveCount(2);
+                observer.LastEmittedValue().Should().BeEquivalentTo(dateRange);
+            }
+        }
+
+        public sealed class TheFormattedDateRangeProperty : ReportsViewModelBaseTest
         {
             private string removeDropDownCharacter(string dateRange) => dateRange[0..^2].Trim();
 
             [Fact, LogIfTooSlow]
-            public async Task EmitsInitialTimeRange()
+            public async Task EmitsInitialDateRange()
             {
                 SetupEnvironment();
                 var observer = TestScheduler.CreateObserver<string>();
 
                 await ViewModel.Initialize();
-                ViewModel.FormattedTimeRange.Select(removeDropDownCharacter).Subscribe(observer);
+                ViewModel.FormattedDateRange.Select(removeDropDownCharacter).Subscribe(observer);
                 TestScheduler.Start();
 
                 observer.FirstEmittedValue().Should().Be(Resources.ThisWeek);
@@ -259,8 +328,8 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 var observer = TestScheduler.CreateObserver<string>();
 
                 await ViewModel.Initialize();
-                ViewModel.FormattedTimeRange.Select(removeDropDownCharacter).Subscribe(observer);
-                ViewModel.SelectTimeRange.Execute();
+                ViewModel.FormattedDateRange.Select(removeDropDownCharacter).Subscribe(observer);
+                ViewModel.SelectDateRange.Execute();
                 TestScheduler.Start();
 
                 observer.LastEmittedValue().Should().Be("01-01 - 01-08");
@@ -274,8 +343,8 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 var observer = TestScheduler.CreateObserver<string>();
 
                 await ViewModel.Initialize();
-                ViewModel.FormattedTimeRange.Select(removeDropDownCharacter).Subscribe(observer);
-                ViewModel.SelectTimeRange.Execute();
+                ViewModel.FormattedDateRange.Select(removeDropDownCharacter).Subscribe(observer);
+                ViewModel.SelectDateRange.Execute();
                 TestScheduler.Start();
 
                 observer.Messages.Count().Should().Be(1);
@@ -297,18 +366,19 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 var observer = TestScheduler.CreateObserver<string>();
 
                 await ViewModel.Initialize();
-                ViewModel.FormattedTimeRange.Select(removeDropDownCharacter).Subscribe(observer);
-                ViewModel.SelectTimeRange.Execute();
+                ViewModel.FormattedDateRange.Select(removeDropDownCharacter).Subscribe(observer);
+                ViewModel.SelectDateRange.Execute();
                 TestScheduler.Start();
 
                 preferences.OnNext(changedPreferences);
                 TestScheduler.Start();
 
-                observer.Messages.AssertEqual(
-                    OnNext(1, Resources.ThisWeek),
-                    OnNext(2, "01/01 - 01/08"),
-                    OnNext(3, "01.01 - 08.01")
-               );
+                observer.Values().Should().BeEquivalentTo(new[]
+                {
+                    Resources.ThisWeek,
+                    "01/01 - 01/08",
+                    "01.01 - 08.01"
+                });
             }
         }
 
@@ -518,7 +588,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
             }
         }
 
-        public sealed class TheSelectTimeRangeAction : ReportsViewModelBaseTest
+        public sealed class TheSelectDateRangeAction : ReportsViewModelBaseTest
         {
             [Fact, LogIfTooSlow]
             public async Task NavigatesToTheDateRangePicker()
@@ -526,7 +596,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 SetupEnvironment();
 
                 await ViewModel.Initialize();
-                ViewModel.SelectTimeRange.Execute();
+                ViewModel.SelectDateRange.Execute();
                 TestScheduler.Start();
 
                 await NavigationService.Received().Navigate<DateRangePickerViewModel, Either<DateRangePeriod, DateRange>, DateRangeSelectionResult>(
@@ -542,8 +612,8 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 var observer = TestScheduler.CreateObserver<DateRangeSelectionResult>();
 
                 await ViewModel.Initialize();
-                ViewModel.SelectTimeRange.Elements.Subscribe(observer);
-                ViewModel.SelectTimeRange.Execute();
+                ViewModel.SelectDateRange.Elements.Subscribe(observer);
+                ViewModel.SelectDateRange.Execute();
                 TestScheduler.Start();
 
                 var result = observer.LastEmittedValue();
@@ -564,7 +634,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
 
                 await ViewModel.Initialize();
                 ViewModel.Elements.Subscribe();
-                ViewModel.SelectTimeRange.Execute();
+                ViewModel.SelectDateRange.Execute();
                 TestScheduler.Start();
 
                 AnalyticsService.ReportsSuccess.Received().Track(
