@@ -60,7 +60,8 @@ namespace Toggl.Networking.Tests.Sync.Push
         public void CreatePushActionSerializesCorrectly(long id, long wid, string name)
         {
             var tag = new MockTag(id, wid, name);
-            var request = new Request().CreateTags(tag.Yield());
+            var request = new Request();
+            request.CreateTags(tag.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -79,7 +80,8 @@ namespace Toggl.Networking.Tests.Sync.Push
                 new MockTag(1, 1, "Tag A"),
                 new MockTag(2, 4, "Tag B")
             };
-            var request = new Request().CreateTags(tags);
+            var request = new Request();
+            request.CreateTags(tags);
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -101,7 +103,8 @@ namespace Toggl.Networking.Tests.Sync.Push
         public void UpdatePushActionSerializesCorrectly(long id, long wid, string description)
         {
             var timeEntry = new MockTimeEntry(id, wid, description);
-            var request = new Request().UpdateTimeEntries(timeEntry.Yield());
+            var request = new Request();
+            request.UpdateTimeEntries(timeEntry.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -116,7 +119,8 @@ namespace Toggl.Networking.Tests.Sync.Push
         public void DeletePushActionSerializesCorrectly()
         {
             var timeEntry = new MockTimeEntry(154, 12, "Playing HL2 EP3");
-            var request = new Request().DeleteTimeEntries(timeEntry.Yield());
+            var request = new Request();
+            request.DeleteTimeEntries(timeEntry.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
