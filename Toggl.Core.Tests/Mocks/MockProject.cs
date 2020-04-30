@@ -62,7 +62,6 @@ namespace Toggl.Core.Tests.Mocks
 
         public MockProject()
         {
-            Color = "#000000";
         }
 
         public MockProject(
@@ -78,6 +77,12 @@ namespace Toggl.Core.Tests.Mocks
             Client = client;
             ClientId = client?.Id;
             SyncStatus = syncStatus;
+        }
+
+        public MockProject WithColor(string color)
+        {
+            Color = color;
+            return this;
         }
     }
 }

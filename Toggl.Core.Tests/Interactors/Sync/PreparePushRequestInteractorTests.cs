@@ -90,8 +90,8 @@ namespace Toggl.Core.Tests.Interactors.Workspace
             public async Task RequestContainsProjectsCreations()
             {
                 var projects = new[] {
-                    new MockProject() { Id = -1 },
-                    new MockProject() { Id = -2 }
+                    new MockProject() { Id = -1 }.WithColor("#000000"),
+                    new MockProject() { Id = -2 }.WithColor("#000000")
                 };
                 var createdProjectsCount = projects.Count(t => t.Id < 0);
                 returnsValueOrEmpty(DataSource.Projects, projects);
