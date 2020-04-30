@@ -35,7 +35,7 @@ namespace Toggl.Core.Services
                 ContractResolver = contractResolver,
                 Formatting = Formatting.Indented
             });
-            var backingFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), IUnsyncedDataPersistenceService.UnsyncedDataFileName);
+            var backingFile = IUnsyncedDataPersistenceService.UnsyncedDataFilePath;
             await using (var writer = File.CreateText(backingFile))
             {
                 await writeToFile(serializedUnsyncedDataDump, writer);
