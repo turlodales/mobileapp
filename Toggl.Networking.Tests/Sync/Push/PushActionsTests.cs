@@ -34,12 +34,12 @@ namespace Toggl.Networking.Tests.Sync.Push
         {
             public long Id { get; }
             public long WorkspaceId { get; }
-            public long? ProjectId { get; }
+            public long? ProjectId { get; set; }
             public long? TaskId { get; }
             public bool Billable { get; } = false;
             public DateTimeOffset Start { get; } = new DateTimeOffset(2020, 03, 22, 6, 24, 7, TimeSpan.Zero);
             public long? Duration { get; } = 9;
-            public string Description { get; }
+            public string Description { get; set; }
             public IEnumerable<long> TagIds { get; } = Array.Empty<long>();
             public long UserId { get; } = 0;
             public DateTimeOffset? ServerDeletedAt { get; }
@@ -103,16 +103,24 @@ namespace Toggl.Networking.Tests.Sync.Push
         public void UpdatePushActionSerializesCorrectly(long id, long wid, string description)
         {
             var timeEntry = new MockTimeEntry(id, wid, description);
+            var timeEntryBackedUp = new MockTimeEntry(id, wid, description);
+            timeEntry.Description = "changed description";
+            timeEntry.ProjectId = 987654321;
+
             var request = new Request();
-            request.UpdateTimeEntries(timeEntry.Yield());
+            request.UpdateTimeEntries(timeEntry.Yield(), timeEntryBackedUp.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
             json.GetString("time_entries[0].type").Should().Be("update");
             json.Get("time_entries[0].meta").Should().BeNull();
-            json.GetLong("time_entries[0].payload.id").Should().Be(id);
-            json.GetLong("time_entries[0].payload.workspace_id").Should().Be(wid);
-            json.GetString("time_entries[0].payload.description").Should().Be(description);
+            json.GetLong("time_entries[0].payload.project_id").Should().Be(timeEntry.ProjectId);
+            json.GetString("time_entries[0].payload.description").Should().Be(timeEntry.Description);
+
+            json.Get("time_entries[0].payload.task_id").Should().BeNull();
+            json.Get("time_entries[0].payload.billable").Should().BeNull();
+            json.Get("time_entries[0].payload.start").Should().BeNull();
+            json.Get("time_entries[0].payload.duration").Should().BeNull();
         }
 
         [Fact, LogIfTooSlow]

@@ -60,7 +60,10 @@ namespace Toggl.Core.Tests.Mocks
 
         public bool IsInaccessible => Workspace.IsInaccessible;
 
-        public MockProject() { }
+        public MockProject()
+        {
+            Color = "#000000";
+        }
 
         public MockProject(
             long id,
