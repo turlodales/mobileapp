@@ -17,8 +17,18 @@ namespace Toggl.Networking.Sync.Push
         public List<IAction> Tasks { get; set; } = new List<IAction>();
         public List<IAction> Workspaces { get; set; } = new List<IAction>();
 
-        public UpdateAction<IPreferences> Preferences { get; set; }
-        public UpdateAction<IUser> User { get; set; }
+        public SingletonUpdateAction<IPreferences> Preferences { get; set; }
+        public SingletonUpdateAction<IUser> User { get; set; }
+
+        public bool IsEmpty
+            => TimeEntries.None()
+            && Tags.None()
+            && Projects.None()
+            && Clients.None()
+            && Tasks.None()
+            && Workspaces.None()
+            && Preferences == null
+            && User == null;
 
         public void CreateTimeEntries(IEnumerable<ITimeEntry> timeEntries)
         {
@@ -28,11 +38,12 @@ namespace Toggl.Networking.Sync.Push
                 .AddTo(TimeEntries);
         }
 
-        public void UpdateTimeEntries(IEnumerable<ITimeEntry> timeEntries)
+        public void UpdateTimeEntries(IEnumerable<ITimeEntry> timeEntries, IEnumerable<ITimeEntry> backedUpTimeEntries)
         {
-            timeEntries
-                .Select(timeEntry => new TimeEntry(timeEntry))
-                .Select(timeEntry => new UpdateAction<TimeEntry>(timeEntry))
+            var timeEntriesMap = timeEntries.ToDictionary(te => te.Id); 
+
+            backedUpTimeEntries
+                .Select(bte => new UpdateAction<ITimeEntry>(timeEntriesMap[bte.Id], bte))
                 .AddTo(TimeEntries);
         }
 
@@ -70,14 +81,20 @@ namespace Toggl.Networking.Sync.Push
 
         public void UpdatePreferences(IPreferences preferences)
         {
+            if (preferences == null)
+                return;
+
             var networkPreferences = new Preferences(preferences);
-            Preferences = new UpdateAction<IPreferences>(networkPreferences);
+            Preferences = new SingletonUpdateAction<IPreferences>(networkPreferences);
         }
 
         public void UpdateUser(IUser user)
         {
+            if (user == null)
+                return;
+
             var networkUser = new User(user);
-            User = new UpdateAction<IUser>(networkUser);
+            User = new SingletonUpdateAction<IUser>(networkUser);
         }
     }
 }

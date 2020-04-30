@@ -125,13 +125,13 @@ namespace Toggl.Shared.Extensions
 
         public static void DistributedExecute<TKey, TItem>(
             this IEnumerable<TItem> collection,
-            Func<TItem, TKey> groupCriteria,
+            Func<TItem, TKey> distributeBy,
             params (TKey value, GroupAction<TKey, TItem> action)[] actions)
         {
             Dictionary<TKey, GroupAction<TKey, TItem>> actionsMap =
                 actions.ToDictionary(item => item.value, item => item.action);
 
-            foreach (var group in collection.GroupBy(groupCriteria))
+            foreach (var group in collection.GroupBy(distributeBy))
             {
                 actionsMap[group.Key](group);
             }

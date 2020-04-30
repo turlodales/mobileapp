@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Toggl.Networking.Models;
 using Toggl.Networking.Serialization.Converters;
+using Toggl.Networking.Sync.Push.Serialization;
 
 namespace Toggl.Networking.Serialization
 {
@@ -33,7 +34,9 @@ namespace Toggl.Networking.Serialization
                     new ActionResultConverter<TimeEntry>(),
                     new ActionResultConverter<Workspace>(),
                     new ActionResultConverter<User>(),
-                    new ActionResultConverter<Preferences>()
+                    new ActionResultConverter<Preferences>(),
+
+                    new JsonPartialEntityConverter()
                 }
             };
         }

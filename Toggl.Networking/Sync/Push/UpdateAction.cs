@@ -1,19 +1,20 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Toggl.Networking.Sync.Push.Serialization;
 
 namespace Toggl.Networking.Sync.Push
 {
-    public class UpdateAction<TPayload> : Action<IMeta>
+    internal class UpdateAction<TEntity> : Action<IMeta>
     {
         [JsonConverter(typeof(StringEnumConverter), true)]
         public override ActionType Type => ActionType.Update;
 
-        public TPayload Payload { get; protected set; }
+        [JsonConverter(typeof(JsonPartialEntityConverter))]
+        public IPartiallySerializableEntity Payload { get; protected set; }
 
-        public UpdateAction(TPayload payload)
+        public UpdateAction(TEntity entity, TEntity backedUpEntity)
         {
-            Payload = payload;
-
+            Payload = PartiallySerializableEntityFactory.Create(entity, backedUpEntity);
             Meta = null;
         }
     }

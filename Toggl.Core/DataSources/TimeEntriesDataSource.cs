@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models;
@@ -37,6 +39,8 @@ namespace Toggl.Core.DataSources
 
         public IObservable<bool> IsEmpty { get; }
 
+        private ISchedulerProvider schedulerProvider;
+
         public IObservable<IThreadSafeTimeEntry> CurrentlyRunningTimeEntry { get; }
 
         protected override IRivalsResolver<IDatabaseTimeEntry> RivalsResolver { get; }
@@ -45,7 +49,7 @@ namespace Toggl.Core.DataSources
             IRepository<IDatabaseTimeEntry> timeEntriesRepository,
             IRepository<IDatabaseTimeEntry> timeEntriesBackupRepository,
             ITimeService timeService,
-            IAnalyticsService analyticsService, 
+            IAnalyticsService analyticsService,
             ISchedulerProvider schedulerProvider)
             : base(timeEntriesRepository, schedulerProvider)
         {
@@ -53,6 +57,8 @@ namespace Toggl.Core.DataSources
             Ensure.Argument.IsNotNull(timeEntriesRepository, nameof(timeEntriesRepository));
             Ensure.Argument.IsNotNull(timeEntriesBackupRepository, nameof(timeEntriesBackupRepository));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
+
+            this.schedulerProvider = schedulerProvider;
 
             this.timeEntriesRepository = timeEntriesRepository;
             this.timeEntriesBackupRepository = timeEntriesBackupRepository;
@@ -92,6 +98,25 @@ namespace Toggl.Core.DataSources
         public void OnTimeEntryStopped(IThreadSafeTimeEntry timeEntry)
         {
             timeEntryStoppedSubject.OnNext(timeEntry);
+        }
+
+        public IObservable<IEnumerable<IThreadSafeTimeEntry>> GetBackedUpTimeEntries()
+            => timeEntriesBackupRepository.GetAll().Select(entities => entities.Select(Convert));
+
+        public override IObservable<IThreadSafeTimeEntry> Update(IThreadSafeTimeEntry entity)
+            => update(entity).ToObservable(schedulerProvider.DefaultScheduler);
+
+        private async Task<IThreadSafeTimeEntry> update(IThreadSafeTimeEntry entity)
+        {
+            var entityDb = await timeEntriesRepository.GetById(entity.Id);
+            var backedUpEntity = await timeEntriesBackupRepository.FirstOrDefaultWithId(entity.Id);
+
+            if (backedUpEntity == null)
+            {
+                await timeEntriesBackupRepository.Create(entityDb);
+            }
+
+            return await base.Update(entity);
         }
 
         public void OnTimeEntryStarted(IThreadSafeTimeEntry timeEntry, TimeEntryStartOrigin origin)

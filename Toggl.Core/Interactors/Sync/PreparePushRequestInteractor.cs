@@ -48,26 +48,26 @@ namespace Toggl.Core.Interactors
                 .Select(entitiesToCreate)
                 .Do(pushRequest.CreateTags);
 
-            var timeEntries = await dataSource
-                .TimeEntries
-                .GetAll(isDirty);
-
-            timeEntries
-                .Where(te => !isLocalDelete(te))
-                .DistributedExecute(actionType,
-                    (Create, pushRequest.CreateTimeEntries),
-                    (Update, pushRequest.UpdateTimeEntries),
-                    (Delete, pushRequest.DeleteTimeEntries));
-
             await dataSource.Preferences
                 .Current
-                .Where(isDirty)
+                .FirstOrDefaultAsync(isDirty)
                 .Do(pushRequest.UpdatePreferences);
 
             await dataSource.User
                 .Current
-                .Where(isDirty)
+                .FirstOrDefaultAsync(isDirty)
                 .Do(pushRequest.UpdateUser);
+
+            var timeEntries = await dataSource.TimeEntries.GetAll(isDirty);
+            var backedUpEntries = await dataSource.TimeEntries.GetBackedUpTimeEntries();
+
+            timeEntries
+                .Where(isDirty)
+                .Where(te => !isLocalDelete(te))
+                .DistributedExecute(distributeBy: actionType,
+                    (Create, pushRequest.CreateTimeEntries),
+                    (Delete, pushRequest.DeleteTimeEntries),
+                    (Update, timeEntries => pushRequest.UpdateTimeEntries(timeEntries, backedUpEntries)));
 
             return pushRequest;
         }
