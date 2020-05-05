@@ -5,6 +5,8 @@ using Android.Views;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using Android.Content.Res;
+using Android.Graphics.Drawables;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Helper;
@@ -44,6 +46,10 @@ namespace Toggl.Droid.Activities
                 .Subscribe(passwordEditText.Rx().TextObserver(true))
                 .DisposedBy(DisposeBag);
 
+            ViewModel.IsPasswordStrong
+                .Subscribe(resetPasswordErrorLabelColorIfPasswordStrong)
+                .DisposedBy(DisposeBag);
+
             emailEditText.Rx().Text()
                 .Select(Email.From)
                 .Subscribe(ViewModel.Email.Accept)
@@ -62,12 +68,16 @@ namespace Toggl.Droid.Activities
                 .Subscribe(passwordInputLayout.Rx().ErrorObserver())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.PasswordError
+                .Subscribe(handlePasswordError)
+                .DisposedBy(DisposeBag);
+
             ViewModel.SignUpError
-                 .Subscribe(errorLabel.Rx().TextObserver())
-                 .DisposedBy(DisposeBag);
+                .Subscribe(errorLabel.Rx().TextObserver())
+                .DisposedBy(DisposeBag);
 
             var animatedLoadingMessage = TextHelpers.AnimatedLoadingMessage();
-            
+
             ViewModel.IsLoading
                 .CombineLatest(animatedLoadingMessage, signupButtonTitle)
                 .Subscribe(signUpButton.Rx().TextObserver())
@@ -81,7 +91,7 @@ namespace Toggl.Droid.Activities
             isNotLoading
                 .Subscribe(emailInputLayout.Rx().Enabled())
                 .DisposedBy(DisposeBag);
-            
+
             isNotLoading
                 .Subscribe(passwordInputLayout.Rx().Enabled())
                 .DisposedBy(DisposeBag);
@@ -89,7 +99,7 @@ namespace Toggl.Droid.Activities
             isNotLoading
                 .Subscribe(this.Rx().NavigationEnabled())
                 .DisposedBy(DisposeBag);
-            
+
             loadingOverlay.Rx().Tap()
                 .Subscribe(CommonFunctions.DoNothing)
                 .DisposedBy(DisposeBag);
@@ -114,6 +124,33 @@ namespace Toggl.Droid.Activities
                 => isLoading
                     ? currentLoadingMessage
                     : Shared.Resources.SignUp;
+        }
+
+        private void handlePasswordError(string error)
+        {
+            if (error == "")
+            {
+                setPasswordErrorLabelTextColor(Shared.Resources.StrongPasswordCriteria, secondaryTextColor, null);
+            }
+            else
+            {
+                setPasswordErrorLabelTextColor(error, errorTextColor, defaultErrorDrawable);
+            }
+        }
+
+        private void resetPasswordErrorLabelColorIfPasswordStrong(bool isStrong)
+        {
+            if (isStrong)
+            {
+                handlePasswordError("");
+            }
+        }
+
+        private void setPasswordErrorLabelTextColor(string errorText, ColorStateList textColor, Drawable errorDrawable)
+        {
+            passwordInputLayout.SetErrorTextColor(textColor);
+            passwordInputLayout.ErrorIconDrawable = errorDrawable;
+            passwordInputLayout.Error = errorText;
         }
     }
 }

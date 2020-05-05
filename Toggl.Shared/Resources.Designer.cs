@@ -124,6 +124,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string StrongPasswordCriteria {
+            get {
+                return ResourceManager.GetString("StrongPasswordCriteria", resourceCulture);
+            }
+        }
+        
         public static string LoginTitle {
             get {
                 return ResourceManager.GetString("LoginTitle", resourceCulture);

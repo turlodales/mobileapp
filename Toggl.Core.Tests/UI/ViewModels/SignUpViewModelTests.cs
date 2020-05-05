@@ -26,7 +26,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
         {
             protected Email ValidEmail { get; } = Email.From("person@company.com");
             protected Email InvalidEmail { get; } = Email.From("peon@compan");
-            protected Password ValidPassword { get; } = Password.From("123456");
+            protected Password ValidPassword { get; } = Password.From("123456Xx");
             protected Password InvalidPassword { get; } = Password.From("123");
 
             protected override SignUpViewModel CreateViewModel()
@@ -335,7 +335,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void SetsNoPasswordErrorIfNoPasswordIsEntered()
+            public void SetsPasswordCriteriaErrorIfNoPasswordIsEntered()
             {
                 var passwordErrorObserver = TestScheduler.CreateObserver<string>();
                 ViewModel.PasswordError.Subscribe(passwordErrorObserver);
@@ -343,11 +343,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.SignUp.Execute();
                 TestScheduler.Start();
 
-                passwordErrorObserver.Values().Should().BeEquivalentTo(new[] { "", Resources.NoPasswordError });
+                passwordErrorObserver.Values().Should().BeEquivalentTo(new[] { "", Resources.StrongPasswordCriteria });
             }
 
             [Fact, LogIfTooSlow]
-            public void SetsInvalidPasswordErrorIfInvalidPasswordIsEntered()
+            public void SetsPasswordCriteriaErrorIfInvalidPasswordIsEntered()
             {
                 var passwordErrorObserver = TestScheduler.CreateObserver<string>();
                 ViewModel.PasswordError.Subscribe(passwordErrorObserver);
@@ -356,7 +356,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.SignUp.Execute();
                 TestScheduler.Start();
 
-                passwordErrorObserver.Values().Should().BeEquivalentTo(new[] { "", Resources.InvalidPasswordError });
+                passwordErrorObserver.Values().Should().BeEquivalentTo(new[] { "", Resources.StrongPasswordCriteria });
             }
 
             [Theory, LogIfTooSlow]

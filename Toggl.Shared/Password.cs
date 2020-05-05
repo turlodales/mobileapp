@@ -9,7 +9,6 @@ namespace Toggl.Shared
 
         private readonly string password;
 
-        public bool IsValid { get; }
         public bool IsStrong { get; }
 
         public bool IsEmpty => string.IsNullOrWhiteSpace(password);
@@ -19,7 +18,6 @@ namespace Toggl.Shared
         private Password(string password)
         {
             this.password = password;
-            IsValid = password?.Length >= minimumLength;
             IsStrong = password != null && password.Length >= minimumStrongLength
                                         && password.Any(char.IsDigit)
                                         && password.Any(char.IsUpper)

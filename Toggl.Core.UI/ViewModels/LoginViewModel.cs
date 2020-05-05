@@ -50,7 +50,6 @@ namespace Toggl.Core.UI.ViewModels
 
         public IObservable<bool> PasswordVisible { get; }
         public IObservable<bool> IsLoading { get; }
-        public IObservable<bool> LoginEnabled { get; }
         public IObservable<Unit> ShakeEmail { get; }
         public IObservable<string> EmailErrorMessage { get; }
         public IObservable<string> PasswordErrorMessage { get; }
@@ -114,14 +113,6 @@ namespace Toggl.Core.UI.ViewModels
                 .AsDriver(this.schedulerProvider);
 
             LoginErrorMessage = loginErrorMessageSubject
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
-
-            LoginEnabled = Email
-                .CombineLatest(
-                    Password,
-                    IsLoading,
-                    (email, password, isLoading) => email.IsValid && password.IsValid && !isLoading)
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
         }

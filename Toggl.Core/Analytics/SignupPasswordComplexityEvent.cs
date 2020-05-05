@@ -17,7 +17,7 @@ namespace Toggl.Core.Analytics
 
         public SignupPasswordComplexityEvent(Password password)
         {
-            if (!password.IsValid)
+            if (!password.IsStrong)
                 throw new ArgumentException("Can't track the complexity of an invalid password");
 
             length = password.Length;

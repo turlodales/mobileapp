@@ -34,7 +34,7 @@ namespace Toggl.Core.Tests.Login
     {
         public abstract class UserAccessManagerTest
         {
-            protected static readonly Password Password = "theirobotmoviesucked123".ToPassword();
+            protected static readonly Password Password = "theirobotmoviesucked123A".ToPassword();
             protected static readonly Email Email = "susancalvin@psychohistorian.museum".ToEmail();
             protected static readonly bool TermsAccepted = true;
             protected static readonly int CountryId = 237;

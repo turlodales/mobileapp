@@ -80,7 +80,7 @@ namespace Toggl.Core.UI.ViewModels
 
             NextIsEnabled = Password
                 .Select(Shared.Password.From)
-                .CombineLatest(Done.Executing, (password, isExecuting) => password.IsValid && !isExecuting)
+                .CombineLatest(Done.Executing, (password, isExecuting) => !password.IsEmpty && !isExecuting)
                 .DistinctUntilChanged()
                 .AsDriver(schedulerProvider);
 
@@ -113,7 +113,7 @@ namespace Toggl.Core.UI.ViewModels
             Password
                 .FirstAsync()
                 .Select(Shared.Password.From)
-                .ThrowIf(password => !password.IsValid, new InvalidOperationException())
+                .ThrowIf(password => password.IsEmpty, new InvalidOperationException())
                 .SelectMany(userAccessManager.RefreshToken)
                 .Do(onLogin)
                 .SelectUnit();

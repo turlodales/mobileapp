@@ -44,12 +44,13 @@ namespace Toggl.Core.UI.ViewModels
         private IDisposable signUpDisposable;
 
         private bool credentialsAreValid
-            => Email.Value.IsValid && Password.Value.IsValid;
+            => Email.Value.IsValid && Password.Value.IsStrong;
 
         public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
         public BehaviorRelay<Password> Password { get; } = new BehaviorRelay<Password>(Shared.Password.Empty);
 
         public IObservable<bool> PasswordVisible { get; }
+        public IObservable<bool> IsPasswordStrong { get; }
         public IObservable<bool> SignUpEnabled { get; }
         public IObservable<string> SignUpError { get; }
         public IObservable<string> EmailError { get; }
@@ -100,10 +101,15 @@ namespace Toggl.Core.UI.ViewModels
                 .DistinctUntilChanged()
                 .AsDriver(false, schedulerProvider);
 
+            IsPasswordStrong = Password
+                .Select(password => password.IsStrong)
+                .DistinctUntilChanged()
+                .AsDriver(schedulerProvider);
+
             IsLoading = isLoadingSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
             EmailError = emailErrorSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
             SignUpError = signUpErrorSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
-            PasswordError = passwordErrorSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
+            PasswordError = passwordErrorSubject.AsDriver(schedulerProvider);
             PasswordVisible = passwordVisibleSubject.DistinctUntilChanged().AsDriver(schedulerProvider);
             ShakeEmailField = shakeEmailFieldSubject.AsDriver(schedulerProvider);
 
@@ -144,14 +150,9 @@ namespace Toggl.Core.UI.ViewModels
                 analyticsService.LocalEmailValidationSignUpCheck.Track(true);
             }
 
-            if (Password.Value.IsEmpty)
+            if (!Password.Value.IsStrong)
             {
-                passwordErrorSubject.OnNext(Resources.NoPasswordError);
-                analyticsService.LocalPasswordValidationSignUpCheck.Track(false);
-            }
-            else if (!Password.Value.IsValid)
-            {
-                passwordErrorSubject.OnNext(Resources.InvalidPasswordError);
+                passwordErrorSubject.OnNext(Resources.StrongPasswordCriteria);
                 analyticsService.LocalPasswordValidationSignUpCheck.Track(false);
             }
             else
@@ -196,7 +197,7 @@ namespace Toggl.Core.UI.ViewModels
                 .Do(_ =>
                 {
                     var password = Password.Value;
-                    if (!password.IsValid)
+                    if (!password.IsStrong)
                         return;
 
                     analyticsService.Track(new SignupPasswordComplexityEvent(password));

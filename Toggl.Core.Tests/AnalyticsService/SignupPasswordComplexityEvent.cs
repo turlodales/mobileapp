@@ -38,7 +38,7 @@ namespace Toggl.Core.Tests.AnalyticsService
             public void AlwaysHasSixParameters(string passwordString)
             {
                 var password = Password.From(passwordString);
-                if (!password.IsValid)
+                if (!password.IsStrong)
                     return;
                 var complexityEvent = new SignupPasswordComplexityEvent(password);
 
@@ -51,7 +51,7 @@ namespace Toggl.Core.Tests.AnalyticsService
             public void HasALengthEntryThatEqualsTheLengthOfThePassword(string passwordString)
             {
                 var password = Password.From(passwordString);
-                if (!password.IsValid)
+                if (!password.IsStrong)
                     return;
 
                 var length = password.Length;
@@ -87,7 +87,7 @@ namespace Toggl.Core.Tests.AnalyticsService
             public void TheCountOfAllEntriesEqualsTheLength(string passwordString)
             {
                 var password = Password.From(passwordString);
-                if (!password.IsValid)
+                if (!password.IsStrong)
                     return;
                 var complexityEvent = new SignupPasswordComplexityEvent(password);
                 var dictionary = complexityEvent.ToDictionary();
@@ -106,10 +106,10 @@ namespace Toggl.Core.Tests.AnalyticsService
             public static IEnumerable<object[]> PasswordsAndCounts
                 => new[]
                 {
-                    new object[] { "123456", 6, 0, 0, 0, 0 },
-                    new object[] { "ٱلْعَرَبِيَّة1E‎", 1, 14, 0, 1, 0 },
-                    new object[] { "🔥🔥🔥asd123", 3, 6, 3, 0, 0 },
-                    new object[] { "ט31ײַטשspooky", 2, 5, 6, 0, 0 },
+                    new object[] { "123456xX", 6, 0, 1, 1, 0 },
+                    new object[] { "ٱلْعَرَبِيَّة1E‎e", 1, 14, 1, 1, 0 },
+                    new object[] { "🔥🔥🔥asd123A", 3, 6, 3, 1, 0 },
+                    new object[] { "Aט31ײַטשspooky", 2, 5, 6, 1, 0 },
                     new object[] { "$J?=f6&([)+7LQAx", 2, 0, 2, 4, 8 },
                     new object[] { "JQR2$PK?=PGzqGyAMxRLB=QC_LZNYLVgZ6_8Ej", 3, 0, 6, 23, 6 },
                     new object[] { "_DK*xF_ZjnZXLAqQPUrkLVn4AJZJM5tG^YxvuE", 2, 0, 11, 21, 4 },

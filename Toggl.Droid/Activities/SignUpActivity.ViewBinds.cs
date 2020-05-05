@@ -1,4 +1,6 @@
+using Android.Content.Res;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
@@ -22,6 +24,9 @@ namespace Toggl.Droid.Activities
         private TextView errorLabel;
         private View loadingOverlay;
         private Toolbar toolbar;
+        private ColorStateList secondaryTextColor;
+        private ColorStateList errorTextColor;
+        private Drawable defaultErrorDrawable;
 
         protected override void InitializeViews()
         {
@@ -40,6 +45,14 @@ namespace Toggl.Droid.Activities
             emailInputLayout.Hint = Shared.Resources.Email;
             passwordInputLayout.Hint = Shared.Resources.Password;
             signUpButton.Text = Shared.Resources.SignUp;
+
+            secondaryTextColor = ColorStateList.ValueOf(this.SafeGetColor(Resource.Color.secondaryText));
+            errorTextColor = ColorStateList.ValueOf(this.SafeGetColor(Resource.Color.errorText));
+            passwordInputLayout.SetErrorTextColor(secondaryTextColor);
+            emailInputLayout.SetErrorTextColor(errorTextColor);
+            passwordInputLayout.Error = Shared.Resources.StrongPasswordCriteria;
+            defaultErrorDrawable = passwordInputLayout.ErrorIconDrawable;
+            passwordInputLayout.ErrorIconDrawable = null;
 
             var loginLabelText = new SpannableStringBuilder();
             loginLabelText.Append(Shared.Resources.HaveAnAccountQuestionMark, new TypefaceSpan("sans-serif"), SpanTypes.ExclusiveExclusive);
