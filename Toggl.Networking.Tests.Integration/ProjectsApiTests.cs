@@ -242,7 +242,7 @@ namespace Toggl.Networking.Tests.Integration
                 Name = Guid.NewGuid().ToString(),
                 WorkspaceId = workspaceID,
                 At = DateTimeOffset.UtcNow,
-                Color = "#06aaf5",
+                Color = "#0B83D9",
                 Active = isActive,
                 ClientId = client?.Id
             };

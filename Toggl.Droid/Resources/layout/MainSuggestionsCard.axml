@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/ProjectLabel"
             tools:text="Design"
-            tools:textColor="#c56bff"
+            tools:textColor="#9E5BD9"
             android:maxLines="1"
             android:textSize="15sp"
             android:layout_marginLeft="16dp"

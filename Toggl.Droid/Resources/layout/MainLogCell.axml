@@ -129,7 +129,7 @@
             android:id="@+id/TimeEntriesLogCellProjectLabel"
             tools:text="Design"
             android:gravity="left"
-            tools:textColor="#c56bff"
+            tools:textColor="#9E5BD9"
             tools:visibility="visible"
             android:maxLines="1"
             android:textSize="15sp"

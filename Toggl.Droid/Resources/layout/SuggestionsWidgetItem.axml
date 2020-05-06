@@ -44,7 +44,7 @@
                 android:lineSpacingExtra="5sp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                tools:textColor="#c56bff"
+                tools:textColor="#9E5BD9"
                 tools:text="A very long name that doesn't fit in this row that easily"/>
             <TextView
                 android:id="@+id/ClientNameTextView"
