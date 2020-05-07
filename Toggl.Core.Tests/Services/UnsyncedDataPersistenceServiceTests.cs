@@ -3,7 +3,9 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Toggl.Core.Analytics;
 using Toggl.Core.Interactors;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
@@ -20,11 +22,15 @@ namespace Toggl.Core.Tests.Services
     {
         public abstract class UnsyncedDataPersistenceServiceTest
         {
-            protected IInteractor<Task<UnsyncedDataDump>> CreateUnsyncedDataDumpInteractor { get; }
+            protected IAnalyticsService AnalyticsService { get; }
             protected Func<string, StreamWriter, Task> WriteToFile { get; }
+            protected IInteractor<Task<UnsyncedDataDump>> CreateUnsyncedDataDumpInteractor { get; }
 
             public UnsyncedDataPersistenceServiceTest()
             {
+                AnalyticsService = Substitute.For<IAnalyticsService>();
+                var unsyncedDumpEvent = Substitute.For<IAnalyticsEvent<int, int, int, int>>();
+                AnalyticsService.UnsyncedDataDumped.Returns(unsyncedDumpEvent);
                 CreateUnsyncedDataDumpInteractor = Substitute.For<IInteractor<Task<UnsyncedDataDump>>>();
                 WriteToFile = Substitute.For<Func<string, StreamWriter, Task>>();
             }
@@ -34,11 +40,16 @@ namespace Toggl.Core.Tests.Services
         {
             [Theory, LogIfTooSlow]
             [ConstructorData]
-            public void ThrowsWhenAnyOfTheArgumentsAreNull(bool useCreateUnsyncedDataDumpInteractor, bool useWriteToFile)
+            public void ThrowsWhenAnyOfTheArgumentsAreNull(bool useCreateUnsyncedDataDumpInteractor, bool useWriteToFile, bool useAnalyticsService)
             {
+                var analyticsService = useAnalyticsService ? Substitute.For<IAnalyticsService>() : null;
                 var createUnsyncedDataDumpInteractor = useCreateUnsyncedDataDumpInteractor ? Substitute.For<IInteractor<Task<UnsyncedDataDump>>>() : null;
                 var writeToFile = useWriteToFile ? Substitute.For<Func<string, StreamWriter, Task>>() : null;
-                Action constructor = () => new UnsyncedDataPersistenceService(createUnsyncedDataDumpInteractor, writeToFile);
+                Action constructor = () => new UnsyncedDataPersistenceService(
+                    analyticsService,
+                    writeToFile,
+                    createUnsyncedDataDumpInteractor
+                );
 
                 constructor.Should().Throw<ArgumentNullException>();
             }
@@ -47,16 +58,25 @@ namespace Toggl.Core.Tests.Services
         public sealed class ThePersistUnsyncedDataMethod : UnsyncedDataPersistenceServiceTest
         {
             [Fact]
-            public void ExecutesUnsyncedDataDumpCreation()
+            public async Task ExecutesUnsyncedDataDumpCreation()
             {
-                var unsyncedDataPersistenceService = new UnsyncedDataPersistenceService(CreateUnsyncedDataDumpInteractor, WriteToFile);
-                unsyncedDataPersistenceService.PersistUnsyncedData();
-                CreateUnsyncedDataDumpInteractor.Received().Execute();
+                var mockWorkspace = new MockWorkspace();
+                CreateUnsyncedDataDumpInteractor.Execute().Returns(
+                    new UnsyncedDataDump(
+                        new List<IThreadSafeTimeEntry> { new MockTimeEntry(1, mockWorkspace, syncStatus: SyncStatus.SyncNeeded) },
+                        new List<IThreadSafeTag> { new MockTag(1, mockWorkspace, syncStatus: SyncStatus.SyncNeeded) },
+                        new List<IThreadSafeProject> { new MockProject(1, mockWorkspace, syncStatus: SyncStatus.SyncNeeded) },
+                        new List<IThreadSafeClient> { new MockClient(1, mockWorkspace, syncStatus: SyncStatus.SyncNeeded) }
+                    )
+                );
 
+                var unsyncedDataPersistenceService = new UnsyncedDataPersistenceService(AnalyticsService, WriteToFile, CreateUnsyncedDataDumpInteractor);
+                await unsyncedDataPersistenceService.PersistUnsyncedData();
+                await CreateUnsyncedDataDumpInteractor.Received().Execute();
             }
 
             [Fact]
-            public void AttemptsToWriteCorrectDataDump()
+            public async Task AttemptsToWriteCorrectDataDump()
             {
                 var mockWorkspace = new MockWorkspace();
 
@@ -68,9 +88,27 @@ namespace Toggl.Core.Tests.Services
                         new List<IThreadSafeClient> {new MockClient(1, mockWorkspace, syncStatus: SyncStatus.SyncNeeded)}
                     )
                 );
-                var unsyncedDataPersistenceService = new UnsyncedDataPersistenceService(CreateUnsyncedDataDumpInteractor, WriteToFile);
-                unsyncedDataPersistenceService.PersistUnsyncedData();
-                WriteToFile.Received().Invoke(SerializedDump, Arg.Any<StreamWriter>());
+                var unsyncedDataPersistenceService = new UnsyncedDataPersistenceService(AnalyticsService, WriteToFile, CreateUnsyncedDataDumpInteractor);
+                await unsyncedDataPersistenceService.PersistUnsyncedData();
+                await WriteToFile.Received().Invoke(SerializedDump, Arg.Any<StreamWriter>());
+            }
+
+            [Fact]
+            public async Task CallsTheAnalyticsServiceWithTheCorrectAmountsOfSyncedData()
+            {
+                var mockWorkspace = new MockWorkspace();
+
+                CreateUnsyncedDataDumpInteractor.Execute().Returns(
+                    new UnsyncedDataDump(
+                        Enumerable.Range(1, 1).Select(id => new MockTimeEntry(id, mockWorkspace, syncStatus: SyncStatus.SyncNeeded)),
+                        Enumerable.Range(1, 2).Select(id => new MockTag(id, mockWorkspace, syncStatus: SyncStatus.SyncNeeded)),
+                        Enumerable.Range(1, 3).Select(id => new MockProject(id, mockWorkspace, syncStatus: SyncStatus.SyncNeeded)),
+                        Enumerable.Range(1, 4).Select(id => new MockClient(id, mockWorkspace, syncStatus: SyncStatus.SyncNeeded))
+                    )
+                );
+                var unsyncedDataPersistenceService = new UnsyncedDataPersistenceService(AnalyticsService, WriteToFile, CreateUnsyncedDataDumpInteractor);
+                await unsyncedDataPersistenceService.PersistUnsyncedData();
+                AnalyticsService.UnsyncedDataDumped.Received().Track(1, 3, 4, 2);
             }
 
             private const string SerializedDump = @"{

@@ -253,6 +253,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent ContinueWithEmail { get; }
 
+        public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
+
         void SetUserId(long id);
         void ResetUserId();
 
