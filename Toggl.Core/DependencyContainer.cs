@@ -216,11 +216,11 @@ namespace Toggl.Core
             => new UpdateRemoteConfigCacheService(TimeService, KeyValueStorage, FetchRemoteConfigService);
 
         protected virtual IUnsyncedDataPersistenceService CreateUnsyncedDataPersistenceService()
-            => new UnsyncedDataPersistenceService(InteractorFactory.CreateUnsyncedDataDump(), async (textToWrite, writer) =>
+            => new UnsyncedDataPersistenceService(AnalyticsService, async (textToWrite, writer) =>
             {
                 await writer.WriteAsync(textToWrite);
                 writer.Close();
-            });
+            }, InteractorFactory.CreateUnsyncedDataDump());
 
         protected virtual IPushNotificationsTokenStorage CreatePushNotificationsTokenStorage()
             => new PushNotificationsTokenStorage(KeyValueStorage);

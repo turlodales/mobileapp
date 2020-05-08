@@ -1,9 +1,11 @@
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using AndroidX.Core.Content;
 using Toggl.Droid.Helper;
+using static AndroidX.AppCompat.App.AppCompatDelegate;
 
 namespace Toggl.Droid.Extensions
 {
@@ -29,6 +31,20 @@ namespace Toggl.Droid.Extensions
             intent.SetPackage(null);
             intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ResetTaskIfNeeded | ActivityFlags.TaskOnHome);
             return PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.UpdateCurrent);
+        }
+
+        public static int GetOptimalNightMode(this Context context)
+        {
+            if (QApis.AreAvailable)
+                return ModeNightFollowSystem;
+
+            var nightModeFlags = context.Resources.Configuration.UiMode & UiMode.NightMask;
+            return nightModeFlags switch
+            {
+                UiMode.NightYes => ModeNightYes,
+                UiMode.NightNo => ModeNightNo,
+                _ => ModeNightAutoBattery
+            };
         }
     }
 }

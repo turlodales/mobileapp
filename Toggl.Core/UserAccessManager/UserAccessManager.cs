@@ -78,7 +78,7 @@ namespace Toggl.Core.Login
         {
             if (!email.IsValid)
                 throw new ArgumentException($"A valid {nameof(email)} must be provided when trying to signup");
-            if (!password.IsValid)
+            if (!password.IsStrong)
                 throw new ArgumentException($"A valid {nameof(password)} must be provided when trying to signup");
 
             return database.Value

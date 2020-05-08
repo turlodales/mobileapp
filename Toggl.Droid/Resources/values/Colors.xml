@@ -75,8 +75,8 @@
   <color name="syncStateSyncedText">#4CD964</color>
 
   <!--Placeholder time entry -->
-  <color name="halfTransparentPurple">#8FC56BFF</color>
-  <color name="halfTransparentBlue">#8F06AAF5</color>
+  <color name="halfTransparentPurple">#8F9E5BD9</color>
+  <color name="halfTransparentBlue">#8F0B83D9</color>
 
   <!-- Hex percentages -->
   <color name="black40percent">#65000000</color>

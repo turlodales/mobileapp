@@ -104,49 +104,6 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
         }
 
-        public sealed class TheLoginEnabledObservable : LoginViewModelTest
-        {
-            [Xunit.Theory]
-            [InlineData("invalid email address", "123")]
-            [InlineData("invalid email address", "T0tally s4afe p4a$$")]
-            [InlineData("person@company.com", "123")]
-            public void ReturnsFalseWhenEmailOrPasswordIsInvalid(string email, string password)
-            {
-                var observer = TestScheduler.CreateObserver<bool>();
-                ViewModel.LoginEnabled.Subscribe(observer);
-                ViewModel.Email.Accept(Email.From(email));
-                ViewModel.Password.Accept(Password.From(password));
-
-                TestScheduler.Start();
-                observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(2, false)
-                );
-            }
-
-            [Xunit.Theory]
-            [InlineData("invalid email address", "123")]
-            [InlineData("invalid email address", "T0tally s4afe p4a$$")]
-            [InlineData("person@company.com", "123")]
-            public async Task ReturnsFalseWhenIsLoading(string email, string password)
-            {
-                var observer = TestScheduler.CreateObserver<bool>();
-                ViewModel.LoginEnabled.Subscribe(observer);
-
-                ViewModel.Email.Accept(Email.From(email));
-                ViewModel.Password.Accept(Password.From(password));
-                //Make sure isloading is true
-                UserAccessManager
-                    .Login(Arg.Any<Email>(), Arg.Any<Password>())
-                    .Returns(Observable.Never<Unit>());
-                ViewModel.Login.Execute();
-
-                TestScheduler.Start();
-                observer.Messages.AssertEqual(
-                    ReactiveTest.OnNext(2, false)
-                );
-            }
-        }
-
         public sealed class TheLoginMethod : LoginViewModelTest
         {
             [Fact, LogIfTooSlow]

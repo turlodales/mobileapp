@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Toggl.Core.Analytics;
 using Toggl.Core.Interactors;
 using Toggl.Core.Models;
 using Toggl.Shared;
@@ -12,15 +13,22 @@ namespace Toggl.Core.Services
 {
     public class UnsyncedDataPersistenceService : IUnsyncedDataPersistenceService
     {
-        private readonly IInteractor<Task<UnsyncedDataDump>> createUnsyncedDataDumpInteractor;
+        private readonly IAnalyticsService analyticsService;
         private readonly Func<string, StreamWriter, Task> writeToFile;
+        private readonly IInteractor<Task<UnsyncedDataDump>> createUnsyncedDataDumpInteractor;
 
-        public UnsyncedDataPersistenceService(IInteractor<Task<UnsyncedDataDump>> createUnsyncedDataDumpInteractor, Func<string, StreamWriter, Task> writeToFile)
+        public UnsyncedDataPersistenceService(
+            IAnalyticsService analyticsService,
+            Func<string, StreamWriter, Task> writeToFile,
+            IInteractor<Task<UnsyncedDataDump>> createUnsyncedDataDumpInteractor)
         {
-            Ensure.Argument.IsNotNull(createUnsyncedDataDumpInteractor, nameof(createUnsyncedDataDumpInteractor));
             Ensure.Argument.IsNotNull(writeToFile, nameof(writeToFile));
-            this.createUnsyncedDataDumpInteractor = createUnsyncedDataDumpInteractor;
+            Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
+            Ensure.Argument.IsNotNull(createUnsyncedDataDumpInteractor, nameof(createUnsyncedDataDumpInteractor));
+
             this.writeToFile = writeToFile;
+            this.analyticsService = analyticsService;
+            this.createUnsyncedDataDumpInteractor = createUnsyncedDataDumpInteractor;
         }
 
         public async Task PersistUnsyncedData()
@@ -35,11 +43,16 @@ namespace Toggl.Core.Services
                 ContractResolver = contractResolver,
                 Formatting = Formatting.Indented
             });
-            var backingFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), IUnsyncedDataPersistenceService.UnsyncedDataFileName);
-            await using (var writer = File.CreateText(backingFile))
-            {
-                await writeToFile(serializedUnsyncedDataDump, writer);
-            }
+            var backingFile = IUnsyncedDataPersistenceService.UnsyncedDataFilePath;
+            await using var writer = File.CreateText(backingFile);
+            await writeToFile(serializedUnsyncedDataDump, writer);
+
+            analyticsService.UnsyncedDataDumped.Track(
+                unsyncedDataDump.TimeEntries.Count,
+                unsyncedDataDump.Projects.Count,
+                unsyncedDataDump.Clients.Count,
+                unsyncedDataDump.Tags.Count
+            );            
         }
     }
 }

@@ -8,7 +8,7 @@ using Java.Interop;
 using Toggl.Core;
 using Toggl.Core.UI;
 using Toggl.Droid.BroadcastReceivers;
-using Toggl.Droid.Helper;
+using Toggl.Droid.Extensions;
 using static AndroidX.AppCompat.App.AppCompatDelegate;
 
 namespace Toggl.Droid
@@ -16,7 +16,6 @@ namespace Toggl.Droid
     [Application(AllowBackup = false)]
     public class TogglApplication : Application, ILifecycleObserver
     {
-        private const int modeNightAutoBattery = 3;
         public TimezoneChangedBroadcastReceiver TimezoneChangedBroadcastReceiver { get; set; }
 
         public bool IsInForeground { get; private set; } = false;
@@ -28,7 +27,7 @@ namespace Toggl.Droid
 
         public override void OnCreate()
         {
-            DefaultNightMode = QApis.AreAvailable ? ModeNightFollowSystem : modeNightAutoBattery;
+            DefaultNightMode = Context.GetOptimalNightMode();
 
             base.OnCreate();
             ProcessLifecycleOwner.Get().Lifecycle.AddObserver(this);

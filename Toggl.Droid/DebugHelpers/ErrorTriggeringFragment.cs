@@ -6,7 +6,10 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using System;
+using System.IO;
 using System.Reactive.Disposables;
+using Java.IO;
+using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.ViewModels;
@@ -14,6 +17,8 @@ using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Fragments;
 using Toggl.Shared.Extensions;
+using Environment = System.Environment;
+using File = Java.IO.File;
 
 namespace Toggl.Droid.Debug
 {
@@ -47,6 +52,7 @@ namespace Toggl.Droid.Debug
             var outdatedApi = createTextView("Outdated API error");
             var outdatedAppPermanently = createTextView("Permanent outdated client error");
             var outdatedApiPermanently = createTextView("Permanent outdated API error");
+            var unsyncedDataDump = createTextView("Share unsynced data dump");
 
             tokenReset.Rx().Tap()
                 .Subscribe(dismissAndThenRun(tokenResetErrorTriggered))
@@ -76,6 +82,10 @@ namespace Toggl.Droid.Debug
                 .Subscribe(dismissAndThenRun(outdatedApiPermanentlyErrorTriggered))
                 .DisposedBy(disposeBag);
 
+            unsyncedDataDump.Rx().Tap()
+                .Subscribe(dismissAndThenRun(unsyncedDataDumpTriggered))
+                .DisposedBy(disposeBag);
+
             view.AddView(tokenReset);
             view.AddView(noWorkspace);
             view.AddView(noDefaultWorkspace);
@@ -83,6 +93,7 @@ namespace Toggl.Droid.Debug
             view.AddView(outdatedApi);
             view.AddView(outdatedAppPermanently);
             view.AddView(outdatedApiPermanently);
+            view.AddView(unsyncedDataDump);
 
             return view;
         }
@@ -98,17 +109,14 @@ namespace Toggl.Droid.Debug
                 ViewGroup.LayoutParams.MatchParent,
                 ViewGroup.LayoutParams.WrapContent);
 
-            var margin = 20.DpToPixels(Context);
-            layoutParameters.TopMargin = margin;
-            layoutParameters.LeftMargin = margin;
-            layoutParameters.RightMargin = margin;
-            layoutParameters.BottomMargin = margin;
-
             var textView = new TextView(Context)
             {
                 Text = text,
                 LayoutParameters = layoutParameters
             };
+
+            var padding = 20.DpToPixels(Context);
+            textView.SetPadding(padding, padding, padding, padding);
 
             var outValue = new TypedValue();
             Context.Theme.ResolveAttribute(
@@ -174,6 +182,34 @@ namespace Toggl.Droid.Debug
             var container = AndroidDependencyContainer.Instance;
             container.AccessRestrictionStorage.SetClientOutdated();
             outdatedApiErrorTriggered();
+        }
+
+        private void unsyncedDataDumpTriggered()
+        {
+            void copyFile(File src, File dst) {
+                FileInputStream inStream = new FileInputStream(src);
+                FileOutputStream outStream = new FileOutputStream(dst);
+                inStream.Channel.TransferTo(0, inStream.Channel.Size(), outStream.Channel);
+                inStream.Close();
+                outStream.Close();
+            }
+
+            AndroidDependencyContainer
+                .Instance
+                .UnsyncedDataPersistenceService
+                .PersistUnsyncedData()
+                .Wait();
+
+            var originalFile = new File(IUnsyncedDataPersistenceService.UnsyncedDataFilePath);
+            var tempCopy = File.CreateTempFile("unsynced_dump", ".json", RequireContext().ExternalCacheDir);
+            copyFile(originalFile, tempCopy);
+            tempCopy.SetReadable(true, false);
+            var email = new Intent(Intent.ActionSend);
+            email.PutExtra(Intent.ExtraSubject, "Unsynced data dump");
+            email.PutExtra(Intent.ExtraText, "See attached file");
+            email.PutExtra(Intent.ExtraStream, Android.Net.Uri.FromFile(tempCopy));
+            email.SetType("message/rfc822");
+            StartActivityForResult(email, 1);
         }
 
         protected override void InitializeViews(View view)

@@ -90,7 +90,7 @@
                     android:lineSpacingExtra="5sp"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    tools:textColor="#c56bff"
+                    tools:textColor="#9E5BD9"
                     tools:text="A very long project with stuff there, much more longer than this"/>
             <TextView
                 android:id="@+id/ClientTextView"

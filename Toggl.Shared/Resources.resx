@@ -175,6 +175,10 @@ mobile, desktop or web</value>
         <value>Password should be at least 6 characters</value>
         <comment>Displayed when the user tries to login or sign up with an invalid password (less than 6 characters)</comment>
     </data>
+    <data name="StrongPasswordCriteria" xml:space="preserve">
+        <value>Include 8 or more characters, with at least one uppercase letter, lowercase letter, and a number.</value>
+        <comment>Displayed under the password field to let the user know what criteria must be met when setting a password</comment>
+    </data>
     <data name="LoginTitle" xml:space="preserve">
         <value>Log in</value>
         <comment>Title of the login button</comment>

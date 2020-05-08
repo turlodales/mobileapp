@@ -21,9 +21,9 @@ namespace Toggl.Core.Helper
 
         public static readonly string[] DefaultProjectColors =
         {
-            "#06AAF5", "#C56BFF", "#EA468D", "#FB8B14", "#C7741C",
-            "#F1C33F", "#E20505", "#4BC800", "#04BB9B", "#E19A86",
-            "#3750B5", "#A01AA5", "#205500", "#000000"
+            "#0B83D9", "#9E5BD9", "#D94182", "#E36A00", "#BF7000",
+            "#C7AF14", "#D92B2B", "#2DA608", "#06A893", "#C9806B",
+            "#465BB3", "#990099", "#566614", "#525266"
         };
     }
 }

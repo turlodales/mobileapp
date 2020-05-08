@@ -256,6 +256,8 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent ContinueWithEmail { get; }
 
+        public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
+
         protected BaseAnalyticsService()
         {
             Login = new AnalyticsEvent<AuthenticationMethod>(this, nameof(Login), "AuthenticationMethod");
@@ -381,6 +383,7 @@ namespace Toggl.Core.Analytics
             CalendarRunningTimeEntryContextualMenu = new AnalyticsEvent<CalendarContextualMenuActionType>(this, nameof(CalendarRunningTimeEntryContextualMenu), "SelectedOption");
             CalendarTimeEntryCreated = new AnalyticsEvent<CalendarTimeEntryCreatedType, int, string>(this, nameof(CalendarTimeEntryCreated), "Type", "DaysSinceToday", "DayOfTheWeek");
             ContinueWithEmail = new AnalyticsEvent(this, nameof(ContinueWithEmail));
+            UnsyncedDataDumped = new AnalyticsEvent<int, int, int, int>(this, nameof(UnsyncedDataDumped), "TimeEntries", "Projects", "Clients", "Tags");
         }
 
         public void TrackAnonymized(Exception exception)

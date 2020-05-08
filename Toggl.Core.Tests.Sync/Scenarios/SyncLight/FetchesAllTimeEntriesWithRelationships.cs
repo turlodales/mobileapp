@@ -21,7 +21,7 @@ namespace Toggl.Core.Tests.Sync.Scenarios.SyncLight
                 .With(
                     projects: new[]
                     {
-                        new MockProject { Id = -1, Name = "Project", WorkspaceId = initialServerState.DefaultWorkspace.Id, Active = true, Color = "#06AAF5" }
+                        new MockProject { Id = -1, Name = "Project", WorkspaceId = initialServerState.DefaultWorkspace.Id, Active = true, Color = "#0B83D9" }
                     },
                     tasks: new[]
                     {
