@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Toggl.Shared.Models
 {
-    public interface ITimeEntry : IIdentifiable, IDeletable, ILastChangedDatable
+    public partial interface ITimeEntry : IIdentifiable, IDeletable, ILastChangedDatable
     {
         long WorkspaceId { get; }
 

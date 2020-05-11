@@ -1,16 +1,20 @@
 ﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Toggl.Networking.Network;
 using Toggl.Networking.Serialization;
 using Toggl.Networking.Sync.Push;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
 using Xunit;
+using Request = Toggl.Networking.Sync.Push.Request;
 
 namespace Toggl.Networking.Tests.Sync.Push
 {
     public sealed class PushActionsTests
     {
+        private const string userAgent = "Test/1.0";
         private JsonSerializer serializer => new JsonSerializer();
 
         public class MockTag : ITag
@@ -34,22 +38,38 @@ namespace Toggl.Networking.Tests.Sync.Push
         {
             public long Id { get; }
             public long WorkspaceId { get; }
-            public long? ProjectId { get; }
+            public long? ProjectId { get; set; }
             public long? TaskId { get; }
             public bool Billable { get; } = false;
             public DateTimeOffset Start { get; } = new DateTimeOffset(2020, 03, 22, 6, 24, 7, TimeSpan.Zero);
             public long? Duration { get; } = 9;
-            public string Description { get; }
+            public string Description { get; set; }
             public IEnumerable<long> TagIds { get; } = Array.Empty<long>();
             public long UserId { get; } = 0;
             public DateTimeOffset? ServerDeletedAt { get; }
             public DateTimeOffset At { get; } = DateTimeOffset.Now;
 
+            #region Backup properties
+            public bool ContainsBackup { get; set; }
+            public long? ProjectIdBackup { get; set; }
+            public long? TaskIdBackup { get; set; }
+            public bool BillableBackup { get; set; }
+            public DateTimeOffset StartBackup { get; set; }
+            public long? DurationBackup { get; set; }
+            public string DescriptionBackup { get; set; }
+            public IList<long> TagIdsBackup { get; set; }
+            #endregion
+
             public MockTimeEntry(long id, long wid, string description)
             {
                 Id = id;
                 WorkspaceId = wid;
-                Description = description;
+                DescriptionBackup = Description = description;
+                DurationBackup = Duration;
+                ProjectIdBackup = ProjectId;
+                TaskIdBackup = TaskId;
+                TagIdsBackup = TagIds.ToList();
+                StartBackup = Start;
             }
         }
 
@@ -60,7 +80,8 @@ namespace Toggl.Networking.Tests.Sync.Push
         public void CreatePushActionSerializesCorrectly(long id, long wid, string name)
         {
             var tag = new MockTag(id, wid, name);
-            var request = new Request().CreateTags(tag.Yield());
+            var request = new Request(userAgent);
+            request.CreateTags(tag.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -71,6 +92,16 @@ namespace Toggl.Networking.Tests.Sync.Push
             json.GetString("tags[0].payload.name").Should().Be(name);
         }
 
+        [Theory, LogIfTooSlow]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   \t  \n  ")]
+        public void ThrowsIfUserAgentIsNullOrEmpty(string userAgent)
+        {
+            Action createRequest = () => new Request(userAgent);
+            createRequest.Should().Throw<ArgumentException>();
+        }
+
         [Fact, LogIfTooSlow]
         public void CorrectlyCreatesRequestWithMultipleCreateActions()
         {
@@ -79,7 +110,8 @@ namespace Toggl.Networking.Tests.Sync.Push
                 new MockTag(1, 1, "Tag A"),
                 new MockTag(2, 4, "Tag B")
             };
-            var request = new Request().CreateTags(tags);
+            var request = new Request(userAgent);
+            request.CreateTags(tags);
 
             var json = serializer.SerializeRoundtrip(request);
 
@@ -101,22 +133,31 @@ namespace Toggl.Networking.Tests.Sync.Push
         public void UpdatePushActionSerializesCorrectly(long id, long wid, string description)
         {
             var timeEntry = new MockTimeEntry(id, wid, description);
-            var request = new Request().UpdateTimeEntries(timeEntry.Yield());
+            timeEntry.Description = "changed description";
+            timeEntry.ProjectId = 987654321;
+
+            var request = new Request(userAgent);
+            request.UpdateTimeEntries(timeEntry.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 
             json.GetString("time_entries[0].type").Should().Be("update");
             json.Get("time_entries[0].meta").Should().BeNull();
-            json.GetLong("time_entries[0].payload.id").Should().Be(id);
-            json.GetLong("time_entries[0].payload.workspace_id").Should().Be(wid);
-            json.GetString("time_entries[0].payload.description").Should().Be(description);
+            json.GetLong("time_entries[0].payload.project_id").Should().Be(timeEntry.ProjectId);
+            json.GetString("time_entries[0].payload.description").Should().Be(timeEntry.Description);
+
+            json.Get("time_entries[0].payload.task_id").Should().BeNull();
+            json.Get("time_entries[0].payload.billable").Should().BeNull();
+            json.Get("time_entries[0].payload.start").Should().BeNull();
+            json.Get("time_entries[0].payload.duration").Should().BeNull();
         }
 
         [Fact, LogIfTooSlow]
         public void DeletePushActionSerializesCorrectly()
         {
             var timeEntry = new MockTimeEntry(154, 12, "Playing HL2 EP3");
-            var request = new Request().DeleteTimeEntries(timeEntry.Yield());
+            var request = new Request(userAgent);
+            request.DeleteTimeEntries(timeEntry.Yield());
 
             var json = serializer.SerializeRoundtrip(request);
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models;
@@ -19,7 +21,7 @@ namespace Toggl.Core.DataSources
     internal sealed class TimeEntriesDataSource : ObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry>, ITimeEntriesSource
     {
         private readonly IAnalyticsService analyticsService;
-        private readonly IRepository<IDatabaseTimeEntry> repository;
+        private readonly IRepository<IDatabaseTimeEntry> timeEntriesRepository;
 
         private readonly Func<IDatabaseTimeEntry, IDatabaseTimeEntry, ConflictResolutionMode> alwaysCreate
             = (a, b) => ConflictResolutionMode.Create;
@@ -36,21 +38,26 @@ namespace Toggl.Core.DataSources
 
         public IObservable<bool> IsEmpty { get; }
 
+        private ISchedulerProvider schedulerProvider;
+
         public IObservable<IThreadSafeTimeEntry> CurrentlyRunningTimeEntry { get; }
 
         protected override IRivalsResolver<IDatabaseTimeEntry> RivalsResolver { get; }
 
-        public TimeEntriesDataSource(IRepository<IDatabaseTimeEntry> repository,
+        public TimeEntriesDataSource(
+            IRepository<IDatabaseTimeEntry> timeEntriesRepository,
             ITimeService timeService,
-            IAnalyticsService analyticsService, 
+            IAnalyticsService analyticsService,
             ISchedulerProvider schedulerProvider)
-            : base(repository, schedulerProvider)
+            : base(timeEntriesRepository, schedulerProvider)
         {
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
-            Ensure.Argument.IsNotNull(repository, nameof(repository));
+            Ensure.Argument.IsNotNull(timeEntriesRepository, nameof(timeEntriesRepository));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
 
-            this.repository = repository;
+            this.schedulerProvider = schedulerProvider;
+
+            this.timeEntriesRepository = timeEntriesRepository;
             this.analyticsService = analyticsService;
 
             RivalsResolver = new TimeEntryRivalsResolver(timeService);
@@ -76,7 +83,7 @@ namespace Toggl.Core.DataSources
         }
 
         public override IObservable<IThreadSafeTimeEntry> Create(IThreadSafeTimeEntry entity)
-            => repository.UpdateWithConflictResolution(entity.Id, entity, alwaysCreate, RivalsResolver)
+            => timeEntriesRepository.UpdateWithConflictResolution(entity.Id, entity, alwaysCreate, RivalsResolver)
                 .ToThreadSafeResult(Convert)
                 .Flatten()
                 .OfType<CreateResult<IThreadSafeTimeEntry>>()
@@ -87,6 +94,34 @@ namespace Toggl.Core.DataSources
         public void OnTimeEntryStopped(IThreadSafeTimeEntry timeEntry)
         {
             timeEntryStoppedSubject.OnNext(timeEntry);
+        }
+
+        public override IObservable<IThreadSafeTimeEntry> Update(IThreadSafeTimeEntry timeEntry)
+            => timeEntriesRepository.GetById(timeEntry.Id)
+                .Do(timeEntryDb => backupTimeEntry(timeEntryDb, timeEntry))
+                .SelectMany(_ => base.Update(timeEntry));
+
+        public override IObservable<IEnumerable<IConflictResolutionResult<IThreadSafeTimeEntry>>> BatchUpdate(IEnumerable<IThreadSafeTimeEntry> timeEntries)
+            => timeEntriesRepository.GetByIds(timeEntries.Select(te => te.Id).ToArray())
+            .Select(timeEntriesDb => timeEntriesDb.ToDictionary(te => te.Id))
+            .Select(dbMap => timeEntries.Select(te => new { TimeEntry = te, TimeEntryDb = dbMap[te.Id] }))
+            .Do(timeEntryPairs => timeEntryPairs.ForEach(pair => backupTimeEntry(pair.TimeEntryDb, pair.TimeEntry)))
+            .SelectMany(_ => base.BatchUpdate(timeEntries));
+
+        private void backupTimeEntry(IDatabaseTimeEntry timeEntryDb, IThreadSafeTimeEntry timeEntry)
+        {
+            if (!timeEntryDb.ContainsBackup)
+            {
+                timeEntry.ContainsBackup = true;
+                timeEntry.BillableBackup = timeEntryDb.Billable;
+                timeEntry.DescriptionBackup = timeEntryDb.Description;
+                timeEntry.DurationBackup = timeEntryDb.Duration;
+                timeEntry.ProjectIdBackup = timeEntryDb.ProjectId;
+                timeEntry.StartBackup = timeEntryDb.Start;
+                timeEntry.TaskIdBackup = timeEntryDb.TaskId;
+                foreach (var tagId in timeEntryDb.TagIds)
+                    timeEntry.TagIdsBackup.Add(tagId);
+            }
         }
 
         public void OnTimeEntryStarted(IThreadSafeTimeEntry timeEntry, TimeEntryStartOrigin origin)

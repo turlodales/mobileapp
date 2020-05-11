@@ -244,6 +244,7 @@ namespace Toggl.Core
         }
 
         protected virtual IInteractorFactory CreateInteractorFactory() => new InteractorFactory(
+            userAgent,
             api.Value,
             UserAccessManager,
             database.Select(database => database.IdProvider),

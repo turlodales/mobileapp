@@ -6,8 +6,10 @@ using Toggl.Core.DataSources;
 using Toggl.Core.DataSources.Interfaces;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
+using Toggl.Networking.Sync;
 using Toggl.Shared;
 using Toggl.Storage;
+using static Toggl.Storage.SyncStatus;
 
 namespace Toggl.Core.Interactors
 {

@@ -51,6 +51,7 @@ namespace Toggl.Core.Tests
         protected BaseInteractorTests()
         {
             InteractorFactory = new InteractorFactory(
+                UserAgent,
                 Api,
                 UserAccessManager,
                 new Lazy<IIdProvider>(() => IdProvider),

@@ -7,6 +7,7 @@ using Toggl.Core.Services;
 using Toggl.Core.Shortcuts;
 using Toggl.Core.Sync;
 using Toggl.Networking;
+using Toggl.Networking.Network;
 using Toggl.Shared;
 using Toggl.Storage;
 using Toggl.Storage.Settings;
@@ -16,6 +17,7 @@ namespace Toggl.Core.Interactors
     [Preserve(AllMembers = true)]
     public sealed partial class InteractorFactory : IInteractorFactory
     {
+        private readonly UserAgent userAgent;
         private readonly ITogglApi api;
         private readonly IUserAccessManager userAccessManager;
         private readonly Lazy<IIdProvider> lazyIdProvider;
@@ -55,6 +57,7 @@ namespace Toggl.Core.Interactors
         private IPushNotificationsTokenService pushNotificationsTokenService => lazyPushNotificationsTokenService.Value;
 
         public InteractorFactory(
+            UserAgent userAgent,
             ITogglApi api,
             IUserAccessManager userAccessManager,
             Lazy<IIdProvider> idProvider,
@@ -75,6 +78,7 @@ namespace Toggl.Core.Interactors
             Lazy<IPushNotificationsTokenService> pushNotificationsTokenService,
             Lazy<IPushNotificationsTokenStorage> pushNotificationsTokenStorage)
         {
+            Ensure.Argument.IsNotNull(userAgent, nameof(userAgent));
             Ensure.Argument.IsNotNull(api, nameof(api));
             Ensure.Argument.IsNotNull(database, nameof(database));
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
@@ -95,6 +99,7 @@ namespace Toggl.Core.Interactors
             Ensure.Argument.IsNotNull(pushNotificationsTokenService, nameof(pushNotificationsTokenService));
             Ensure.Argument.IsNotNull(pushNotificationsTokenStorage, nameof(pushNotificationsTokenStorage));
 
+            this.userAgent = userAgent;
             this.api = api;
             this.userAccessManager = userAccessManager;
 

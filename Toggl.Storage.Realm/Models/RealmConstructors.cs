@@ -295,6 +295,17 @@ namespace Toggl.Storage.Realm
 
             var skipUserFetch = entity?.UserId == null || entity.UserId == 0;
             RealmUser = skipUserFetch ? null : realm.All<RealmUser>().Single(x => x.Id == entity.UserId || x.OriginalId == entity.UserId);
+
+            ContainsBackup = entity.ContainsBackup;
+            BillableBackup = entity.BillableBackup;
+            DescriptionBackup = entity.DescriptionBackup;
+            DurationBackup = entity.DurationBackup;
+            ProjectIdBackup = entity.ProjectIdBackup;
+            StartBackup = entity.StartBackup;
+            TaskIdBackup = entity.TaskIdBackup;
+            TagIdsBackup.Clear();
+            foreach (var tagId in entity.TagIdsBackup)
+                TagIdsBackup.Add(tagId);
         }
     }
 

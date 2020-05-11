@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Toggl.Core.Models.Interfaces;
@@ -61,10 +62,38 @@ namespace Toggl.Core.Tests.Mocks
 
         public bool IsInaccessible => Workspace.IsInaccessible;
 
-        public MockTimeEntry() { }
+        [JsonIgnore]
+        public bool ContainsBackup { get; set; }
+
+        [JsonIgnore]
+        public long? ProjectIdBackup { get; set; }
+
+        [JsonIgnore]
+        public long? TaskIdBackup { get; set; }
+
+        [JsonIgnore]
+        public bool BillableBackup { get; set; }
+
+        [JsonIgnore]
+        public DateTimeOffset StartBackup { get; set; }
+
+        [JsonIgnore]
+        public long? DurationBackup { get; set; }
+
+        [JsonIgnore]
+        public string DescriptionBackup { get; set; }
+
+        [JsonIgnore]
+        public IList<long> TagIdsBackup { get; set; }
+
+        public MockTimeEntry()
+        {
+            Tags = Tags ?? Array.Empty<IThreadSafeTag>();
+            TagIds = Tags?.Select(tag => tag.Id);
+        }
 
         public MockTimeEntry(
-            long id,
+            long id, 
             IThreadSafeWorkspace workspace,
             DateTimeOffset? start = null,
             long? duration = null,
@@ -77,7 +106,7 @@ namespace Toggl.Core.Tests.Mocks
             Id = id;
             Workspace = workspace;
             WorkspaceId = workspace.Id;
-            Start = start ?? default(DateTimeOffset);
+            Start = start ?? default;
             Duration = duration;
             Project = project;
             ProjectId = project?.Id;
