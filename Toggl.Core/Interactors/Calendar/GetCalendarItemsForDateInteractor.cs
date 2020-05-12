@@ -50,7 +50,7 @@ namespace Toggl.Core.Interactors.Calendar
             => timeEntriesDataSource.GetAll(timeEntry
                     => timeEntry.IsDeleted == false
                     && timeEntry.Start >= date.Date
-                    && timeEntry.Start <= date.AddDays(1).Date)
+                    && timeEntry.Start < date.AddDays(1).Date)
                 .Select(timeEntries => timeEntries.ToList())
                 .Select(convertTimeEntriesToCalendarItems);
 

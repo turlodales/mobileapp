@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
+using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
@@ -27,12 +30,18 @@ namespace Toggl.Core.UI.ViewModels.Reports
 {
     public sealed class ReportsViewModel : ViewModel
     {
-        public const string DownArrowCharacter = "▾";
+        private const string downArrowCharacter = "▾";
         private long? selectedWorkspaceId;
         private Either<DateRangePeriod, DateRange> selection;
 
+        private bool shouldReloadReportOnViewAppeared;
+        private readonly ISubject<Unit> reloadReportsSubject = new Subject<Unit>();
+
+        private readonly CompositeDisposable disposeBag = new CompositeDisposable();
+
         private readonly IInteractorFactory interactorFactory;
         private readonly IDateRangeShortcutsService dateRangeShortcutsService;
+
         private readonly ITimeService timeService;
         private readonly ISchedulerProvider schedulerProvider;
         private readonly ITogglDataSource dataSource;
@@ -110,7 +119,15 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .DistinctUntilChanged()
                 .AsDriver("", schedulerProvider);
 
-            Elements = Observable.CombineLatest(workspaceSelector, dateRangeSelector, ReportProcessData.Create)
+            dataSource.TimeEntries
+                .ItemsChanged
+                .Subscribe(_ => shouldReloadReportOnViewAppeared = true)
+                .DisposedBy(disposeBag);
+
+            Elements = reloadReportsSubject.StartWith(Unit.Default).CombineLatest(
+                    workspaceSelector,
+                    dateRangeSelector,
+                    (_, workspace, dateRange) => ReportProcessData.Create(workspace, dateRange))
                 .SelectMany(reportElements)
                 .AsDriver(ImmutableList<IReportElement>.Empty, schedulerProvider);
 
@@ -126,12 +143,27 @@ namespace Toggl.Core.UI.ViewModels.Reports
             FormattedDateRange = DateRange
                 .CombineLatest(dateFormatObservable, resultSelector: formattedDateRange)
                 .DistinctUntilChanged()
-                .Select(dateRange => $"{dateRange} {DownArrowCharacter}")
+                .Select(dateRange => $"{dateRange} {downArrowCharacter}")
                 .AsDriver("", schedulerProvider);
 
             selectedWorkspaceId = (await interactorFactory.GetDefaultWorkspace().Execute())?.Id;
 
             selection = Either<DateRangePeriod, DateRange>.WithLeft(DateRangePeriod.ThisWeek);
+        }
+
+        public override void ViewDestroyed()
+        {
+            base.ViewDestroyed();
+
+            disposeBag.Dispose();
+        }
+
+        public override void ViewAppeared()
+        {
+            base.ViewAppeared();
+
+            if (shouldReloadReportOnViewAppeared)
+                reloadReportsSubject.OnNext(Unit.Default);
         }
 
         public async Task SelectWorkspaceById(long id)
@@ -250,6 +282,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             }
             finally
             {
+                shouldReloadReportOnViewAppeared = false;
                 trackReportElementProcessCompletion(analyticsData);
             }
         }

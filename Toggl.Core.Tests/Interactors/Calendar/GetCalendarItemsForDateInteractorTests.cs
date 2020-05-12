@@ -9,6 +9,7 @@ using Toggl.Core.Calendar;
 using Toggl.Core.Interactors.Calendar;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Mocks;
+using Toggl.Core.Tests.TestExtensions;
 using Toggl.Shared.Extensions;
 using Toggl.Storage.Models;
 using Xunit;
@@ -194,6 +195,31 @@ namespace Toggl.Core.Tests.Interactors.Calendar
                 var calendarItems = await interactor.Execute();
 
                 calendarItems.Should().Contain(calendarItem => calendarItem.Description == "Running time entry");
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task DoesNotReturnMidnightEntriesOnThePreviousDay()
+            {
+                var midnightTomorrow = date.AddDays(1).Date;
+                var list = new List<IThreadSafeTimeEntry>
+                {
+                    new MockTimeEntry() { Start = midnightTomorrow }
+                };
+                DataSource
+                    .TimeEntries
+                    .GetAll(Arg.Any<Func<IDatabaseTimeEntry, bool>>())
+                    .Returns(callInfo =>
+                    {
+                        var filterFunc = callInfo.Arg<Func<IDatabaseTimeEntry, bool>>();
+                        var filteredTimeEntries = list.Where(filterFunc).Cast<IThreadSafeTimeEntry>().ToList();
+                        return Observable.Return(filteredTimeEntries);
+                    });
+
+                var calendarItems = await interactor.Execute();
+
+                calendarItems
+                    .Where(c => c.Source == CalendarItemSource.TimeEntry)
+                    .Should().BeEmpty();
             }
         }
     }
