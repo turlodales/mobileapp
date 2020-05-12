@@ -14,11 +14,16 @@ namespace Toggl.Networking.Helpers
 
         private const string reportsPrefix = "/reports/api/v3/";
 
+        private const string syncApiPrefix = "/";
+
         public static Uri ForApi(ApiEnvironment environment)
             => forEnvironment(environment, apiPrefix);
 
         public static Uri ForReports(ApiEnvironment environment)
             => forEnvironment(environment, reportsPrefix);
+
+        public static Uri ForSyncServer(ApiEnvironment environment)
+            => new Uri(new Uri("http://localhost:8080"), syncApiPrefix); // @todo: the URL is not known at the moment
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
         {

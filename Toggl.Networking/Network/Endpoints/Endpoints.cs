@@ -7,6 +7,7 @@ namespace Toggl.Networking.Network
     internal sealed class Endpoints
     {
         private readonly Uri baseUrl;
+        private readonly Uri syncServerBaseUrl;
 
         public UserEndpoints User => new UserEndpoints(baseUrl);
         public WorkspaceEndpoints Workspaces => new WorkspaceEndpoints(baseUrl);
@@ -24,12 +25,14 @@ namespace Toggl.Networking.Network
         public LocationEndpoints Location => new LocationEndpoints(baseUrl);
         public FeedbackEndpoints Feedback => new FeedbackEndpoints(baseUrl);
         public TimezoneEndpoints Timezones => new TimezoneEndpoints(baseUrl);
+        public SyncApiEndpoints SyncServerEndpoints => new SyncApiEndpoints(syncServerBaseUrl);
 
         public ReportsEndpoints ReportsEndpoints { get; }
 
         public Endpoints(ApiEnvironment environment)
         {
             baseUrl = BaseUrls.ForApi(environment);
+            syncServerBaseUrl = BaseUrls.ForSyncServer(environment);
             ReportsEndpoints = new ReportsEndpoints(environment);
         }
     }
