@@ -171,7 +171,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public void SelectsThePassedColorIfThePassedColorIsNotPartOfTheDefaultColorsAndWorkspaceIsPro()
+            public void SelectsTheDefaultCustomColorIfThePassedColorIsNotPartOfTheDefaultColorsAndWorkspaceIsPro()
             {
                 var someColor = new Color(23, 45, 125);
                 var parameters = ColorParameters.Create(someColor, true);
@@ -183,7 +183,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 observer.LastEmittedValue()
                     .Single(c => c.Selected)
-                    .Color.Should().Be(someColor);
+                    .Color.Should().Be(ViewModel.FirstCustomColor);
             }
         }
 
