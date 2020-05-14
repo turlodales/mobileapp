@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -33,14 +33,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="togglLogo" translatesAutoresizingMaskIntoConstraints="NO" id="pkl-Qo-4zi">
-                            <rect key="frame" x="40" y="16" width="64" height="20"/>
+                            <rect key="frame" x="40" y="32" width="64" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="Vny-JS-dyz"/>
                                 <constraint firstAttribute="width" constant="64" id="p0F-Dn-HOI"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QDR-8j-caJ">
-                            <rect key="frame" x="40" y="68" width="295" height="90"/>
+                            <rect key="frame" x="40" y="84" width="295" height="90"/>
                             <string key="text">Welcome to Toggl!
 Let’s get you set up to start tracking.</string>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
@@ -48,7 +48,7 @@ Let’s get you set up to start tracking.</string>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hEQ-Vf-Gmg" customClass="EmailTextField">
-                            <rect key="frame" x="40" y="190" width="295" height="52"/>
+                            <rect key="frame" x="40" y="206" width="295" height="52"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="vC6-Ne-j8C"/>
                             </constraints>
@@ -57,13 +57,13 @@ Let’s get you set up to start tracking.</string>
                             <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
                         </textField>
                         <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Set password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H0f-jb-3dm" customClass="LoginTextField">
-                            <rect key="frame" x="40" y="258" width="295" height="52"/>
+                            <rect key="frame" x="40" y="274" width="295" height="52"/>
                             <color key="textColor" name="Text"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES" textContentType="new-password"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CHf-dF-04X">
-                            <rect key="frame" x="40" y="356" width="295" height="44"/>
+                            <rect key="frame" x="40" y="372" width="295" height="44"/>
                             <color key="backgroundColor" red="1" green="0.1764705882352941" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="QCH-OK-wII"/>
@@ -79,25 +79,25 @@ Let’s get you set up to start tracking.</string>
                             </userDefinedRuntimeAttributes>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid email address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbC-bd-XyU">
-                            <rect key="frame" x="40" y="242" width="295" height="15"/>
+                            <rect key="frame" x="40" y="258" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" name="ErrorText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nuw-iI-A7t">
-                            <rect key="frame" x="40" y="310" width="295" height="15"/>
+                            <rect key="frame" x="40" y="326" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" name="ErrorText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter correct email/password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YcB-IX-rLm">
-                            <rect key="frame" x="40" y="325" width="295" height="15"/>
+                            <rect key="frame" x="40" y="341" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" name="ErrorText"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAN-UE-n4f">
-                            <rect key="frame" x="295" y="270" width="40" height="40"/>
+                            <rect key="frame" x="295" y="286" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="hAN-UE-n4f" secondAttribute="height" multiplier="1:1" id="QLo-m6-m9Y"/>
                             </constraints>
@@ -108,13 +108,12 @@ Let’s get you set up to start tracking.</string>
                     </subviews>
                     <constraints>
                         <constraint firstItem="QDR-8j-caJ" firstAttribute="leading" secondItem="VVt-ye-0kt" secondAttribute="leading" constant="40" id="0K4-Ng-mbs"/>
+                        <constraint firstAttribute="bottom" secondItem="CHf-dF-04X" secondAttribute="bottom" constant="10" id="0cd-ae-2fr"/>
                         <constraint firstItem="CHf-dF-04X" firstAttribute="top" secondItem="YcB-IX-rLm" secondAttribute="bottom" constant="16" id="3IT-rB-UXt"/>
                         <constraint firstItem="MbC-bd-XyU" firstAttribute="top" secondItem="hEQ-Vf-Gmg" secondAttribute="bottom" id="4kc-aq-fcc"/>
                         <constraint firstItem="Nuw-iI-A7t" firstAttribute="trailing" secondItem="H0f-jb-3dm" secondAttribute="trailing" id="4tp-QN-Pae"/>
-                        <constraint firstItem="pkl-Qo-4zi" firstAttribute="top" secondItem="VVt-ye-0kt" secondAttribute="top" constant="35" id="9DC-Wf-WJG"/>
                         <constraint firstItem="Nuw-iI-A7t" firstAttribute="top" secondItem="H0f-jb-3dm" secondAttribute="bottom" id="Atl-wj-7G9"/>
                         <constraint firstItem="pkl-Qo-4zi" firstAttribute="leading" secondItem="0l1-0u-vUE" secondAttribute="leading" constant="40" id="CM9-Zz-FLG"/>
-                        <constraint firstItem="pkl-Qo-4zi" firstAttribute="top" secondItem="0l1-0u-vUE" secondAttribute="top" constant="16" id="CVy-ln-MHA"/>
                         <constraint firstItem="QDR-8j-caJ" firstAttribute="leading" secondItem="0l1-0u-vUE" secondAttribute="leading" constant="40" id="Cgx-oS-ldu"/>
                         <constraint firstItem="CHf-dF-04X" firstAttribute="trailing" secondItem="hEQ-Vf-Gmg" secondAttribute="trailing" id="Epy-Uy-j0c"/>
                         <constraint firstItem="hAN-UE-n4f" firstAttribute="trailing" secondItem="H0f-jb-3dm" secondAttribute="trailing" id="IKZ-gT-qO6"/>
@@ -130,12 +129,12 @@ Let’s get you set up to start tracking.</string>
                         <constraint firstItem="H0f-jb-3dm" firstAttribute="leading" secondItem="hEQ-Vf-Gmg" secondAttribute="leading" id="hsY-QI-R2Z"/>
                         <constraint firstItem="YcB-IX-rLm" firstAttribute="trailing" secondItem="H0f-jb-3dm" secondAttribute="trailing" id="iD4-QR-MHY"/>
                         <constraint firstItem="Nuw-iI-A7t" firstAttribute="leading" secondItem="H0f-jb-3dm" secondAttribute="leading" id="kfb-je-odO"/>
-                        <constraint firstItem="VVt-ye-0kt" firstAttribute="bottom" secondItem="CHf-dF-04X" secondAttribute="bottom" constant="35" id="koT-Gj-xIe"/>
                         <constraint firstItem="MbC-bd-XyU" firstAttribute="trailing" secondItem="hEQ-Vf-Gmg" secondAttribute="trailing" id="mVO-Yk-mhP"/>
                         <constraint firstItem="0l1-0u-vUE" firstAttribute="trailing" secondItem="QDR-8j-caJ" secondAttribute="trailing" constant="40" id="pbS-lc-7fZ"/>
                         <constraint firstItem="H0f-jb-3dm" firstAttribute="height" secondItem="hEQ-Vf-Gmg" secondAttribute="height" id="qe0-mg-Do8"/>
                         <constraint firstItem="YcB-IX-rLm" firstAttribute="leading" secondItem="H0f-jb-3dm" secondAttribute="leading" id="uol-qe-RpC"/>
                         <constraint firstItem="hEQ-Vf-Gmg" firstAttribute="top" secondItem="QDR-8j-caJ" secondAttribute="bottom" constant="32" id="vjE-nX-BYl"/>
+                        <constraint firstItem="pkl-Qo-4zi" firstAttribute="top" secondItem="1UO-4d-E8I" secondAttribute="top" constant="32" id="wwV-1A-wPr"/>
                         <constraint firstItem="VVt-ye-0kt" firstAttribute="trailing" secondItem="QDR-8j-caJ" secondAttribute="trailing" constant="40" id="ze6-kY-Dv9"/>
                         <constraint firstItem="hAN-UE-n4f" firstAttribute="top" secondItem="H0f-jb-3dm" secondAttribute="top" constant="12" id="zl8-ct-FNv"/>
                     </constraints>

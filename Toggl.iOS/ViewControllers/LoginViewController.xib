@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -123,6 +124,7 @@
                         <constraint firstItem="SCu-97-vS2" firstAttribute="leading" secondItem="c0p-JR-zyz" secondAttribute="leading" id="A5s-iR-Qto"/>
                         <constraint firstItem="deG-eA-8Tg" firstAttribute="bottom" secondItem="OwG-42-7Zq" secondAttribute="bottom" id="ARZ-Kt-Men"/>
                         <constraint firstItem="sFU-V6-jex" firstAttribute="leading" secondItem="7WG-ti-Wcx" secondAttribute="leading" constant="40" id="BEp-Pc-W5u"/>
+                        <constraint firstItem="sFU-V6-jex" firstAttribute="top" secondItem="gtG-wK-t4E" secondAttribute="top" constant="16" id="G4g-wg-uXp"/>
                         <constraint firstItem="Vuw-Dm-umY" firstAttribute="top" secondItem="4nb-5J-It3" secondAttribute="bottom" id="H5R-6f-cDf"/>
                         <constraint firstItem="4nb-5J-It3" firstAttribute="top" secondItem="sat-i5-Sw9" secondAttribute="bottom" id="J8U-tA-LDR"/>
                         <constraint firstItem="c0p-JR-zyz" firstAttribute="leading" secondItem="7WG-ti-Wcx" secondAttribute="leading" constant="40" id="MrN-O1-JlZ"/>
@@ -136,11 +138,10 @@
                         <constraint firstItem="sat-i5-Sw9" firstAttribute="trailing" secondItem="OwG-42-7Zq" secondAttribute="trailing" id="dOG-Zs-7Ho"/>
                         <constraint firstItem="GeH-G9-XpV" firstAttribute="top" secondItem="c0p-JR-zyz" secondAttribute="bottom" id="dcf-Yd-iIo"/>
                         <constraint firstItem="Yj4-Is-dhP" firstAttribute="leading" secondItem="7WG-ti-Wcx" secondAttribute="leading" constant="40" id="emY-LR-oid"/>
-                        <constraint firstItem="sFU-V6-jex" firstAttribute="top" secondItem="eV7-fC-ERn" secondAttribute="top" constant="16" id="fdl-mO-Avc"/>
+                        <constraint firstAttribute="bottom" secondItem="SCu-97-vS2" secondAttribute="bottom" constant="10" id="gVi-iv-8mb"/>
                         <constraint firstItem="Vuw-Dm-umY" firstAttribute="leading" secondItem="SCu-97-vS2" secondAttribute="leading" id="ggg-B8-ati"/>
                         <constraint firstItem="GeH-G9-XpV" firstAttribute="trailing" secondItem="c0p-JR-zyz" secondAttribute="trailing" id="iQc-rU-g89"/>
                         <constraint firstItem="Yj4-Is-dhP" firstAttribute="leading" secondItem="eV7-fC-ERn" secondAttribute="leading" constant="40" id="jJ1-0h-jTD"/>
-                        <constraint firstItem="eV7-fC-ERn" firstAttribute="bottom" secondItem="SCu-97-vS2" secondAttribute="bottom" constant="35" id="jY1-TT-Ff8"/>
                         <constraint firstItem="Yj4-Is-dhP" firstAttribute="top" secondItem="sFU-V6-jex" secondAttribute="bottom" constant="32" id="nGh-Hn-Ypq"/>
                         <constraint firstItem="SCu-97-vS2" firstAttribute="trailing" secondItem="c0p-JR-zyz" secondAttribute="trailing" id="qgd-GB-ZjU"/>
                         <constraint firstItem="GeH-G9-XpV" firstAttribute="leading" secondItem="c0p-JR-zyz" secondAttribute="leading" id="qyc-t1-WZz"/>
