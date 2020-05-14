@@ -135,7 +135,7 @@
   <data name="Yesterday" xml:space="preserve">
     <value>Ontem</value>
   </data>
-  <data name="IncorrectEmailOrPassword" xml:space="preserve">
+  <data name="IncorrectEmailOrPasswordPleaseTryAgain" xml:space="preserve">
     <value>Email ou senha incorretos. Por favor, tente novamente.</value>
   </data>
   <data name="MondayInitial" xml:space="preserve">
@@ -1213,6 +1213,18 @@ redefinir a sua senha</value>
   </data>
   <data name="InvalidPasswordError" xml:space="preserve">
     <value>A senha deve conter pelo menos 6 caracteres</value>
+  </data>
+  <data name="StrongPasswordCriteria" xml:space="preserve">
+    <value>Inclua 8 ou mais caracteres, com ao menos uma letra maiúscula, uma letra minúscula, e um número.</value>
+  </data>
+  <data name="IncorrectEmailOrPassword" xml:space="preserve">
+    <value>Email ou senha incorreta.</value>
+  </data>
+  <data name="IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked" xml:space="preserve">
+    <value>Email ou senha incorreta. Você tem apenas mais uma tentativa de login antes da sua conta ser bloqueada por 5 minutos.</value>
+  </data>
+  <data name="IncorrectEmailOrPasswordAccountIsLocked" xml:space="preserve">
+    <value>Email ou senha incorreta. Conta bloqueada por 5 minutos. O dono da conta foi notificado.</value>
   </data>
   <data name="SetPassword" xml:space="preserve">
     <value>Digite sua senha</value>

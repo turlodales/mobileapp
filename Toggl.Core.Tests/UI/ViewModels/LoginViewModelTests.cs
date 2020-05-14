@@ -246,7 +246,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     TestScheduler.Start();
                     observer.Messages.AssertEqual(
                         ReactiveTest.OnNext(1, ""),
-                        ReactiveTest.OnNext(2, Resources.IncorrectEmailOrPassword)
+                        ReactiveTest.OnNext(2, Resources.IncorrectEmailOrPasswordPleaseTryAgain)
                     );
                 }
 

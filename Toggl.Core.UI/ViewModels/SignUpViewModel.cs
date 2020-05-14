@@ -232,7 +232,7 @@ namespace Toggl.Core.UI.ViewModels
             switch (exception)
             {
                 case UnauthorizedException _:
-                    signUpErrorSubject.OnNext(Resources.IncorrectEmailOrPassword);
+                    signUpErrorSubject.OnNext(Resources.IncorrectEmailOrPasswordPleaseTryAgain);
                     analyticsService.IncorrectEmailOrPasswordSignUpFailure.Track();
                     break;
                 case EmailIsAlreadyUsedException _:

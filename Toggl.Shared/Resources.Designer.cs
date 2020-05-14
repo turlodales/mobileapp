@@ -130,6 +130,24 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string IncorrectEmailOrPassword {
+            get {
+                return ResourceManager.GetString("IncorrectEmailOrPassword", resourceCulture);
+            }
+        }
+        
+        public static string IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked {
+            get {
+                return ResourceManager.GetString("IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked", resourceCulture);
+            }
+        }
+        
+        public static string IncorrectEmailOrPasswordAccountIsLocked {
+            get {
+                return ResourceManager.GetString("IncorrectEmailOrPasswordAccountIsLocked", resourceCulture);
+            }
+        }
+        
         public static string LoginTitle {
             get {
                 return ResourceManager.GetString("LoginTitle", resourceCulture);
@@ -250,9 +268,9 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string IncorrectEmailOrPassword {
+        public static string IncorrectEmailOrPasswordPleaseTryAgain {
             get {
-                return ResourceManager.GetString("IncorrectEmailOrPassword", resourceCulture);
+                return ResourceManager.GetString("IncorrectEmailOrPasswordPleaseTryAgain", resourceCulture);
             }
         }
         
