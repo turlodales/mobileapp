@@ -21,5 +21,7 @@ namespace Toggl.Core.Tests.Mocks
         public bool IsDeleted { get; set; }
 
         public long Id { get; set; }
+
+        public bool UseNewSync { get; set; }
     }
 }

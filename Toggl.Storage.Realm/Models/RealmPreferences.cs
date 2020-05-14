@@ -39,5 +39,7 @@ namespace Toggl.Storage.Realm
         public int DurationFormatInt { get; set; }
 
         public bool CollapseTimeEntries { get; set; }
+
+        public bool UseNewSync { get; set; }
     }
 }

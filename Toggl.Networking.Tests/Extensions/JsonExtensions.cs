@@ -22,6 +22,9 @@ namespace Toggl.Networking.Tests
             => jObject.SelectToken(path).ToString();
 
         public static long GetLong(this JObject jObject, string path)
-           => long.Parse(jObject.SelectToken(path).ToString());
+            => long.Parse(jObject.SelectToken(path).ToString());
+
+        public static bool ContainsProperty(this JObject jObject, string property)
+            => jObject.Property(property) != null;
     }
 }

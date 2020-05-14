@@ -15,15 +15,16 @@ namespace Toggl.Core.Models
         public SyncStatus SyncStatus { get; }
         public string LastSyncErrorMessage { get; }
         public bool IsDeleted { get; }
+        public bool UseNewSync { get; }
 
         public const long fakeId = 0;
         public long Id => fakeId;
 
         private Preferences(IPreferences entity, SyncStatus syncStatus, string lastSyncErrorMessage, bool isDeleted = false)
-            : this(entity.TimeOfDayFormat, entity.DateFormat, entity.DurationFormat, entity.CollapseTimeEntries, syncStatus, lastSyncErrorMessage, isDeleted)
+            : this(entity.TimeOfDayFormat, entity.DateFormat, entity.DurationFormat, entity.CollapseTimeEntries, entity.UseNewSync, syncStatus, lastSyncErrorMessage, isDeleted)
         { }
 
-        public Preferences(TimeFormat timeOfDayFormat, DateFormat dateFormat, DurationFormat durationFormat, bool collapseTimeEntries, SyncStatus syncStatus = default(SyncStatus), string lastSyncErrorMessage = "", bool isDeleted = false)
+        public Preferences(TimeFormat timeOfDayFormat, DateFormat dateFormat, DurationFormat durationFormat, bool collapseTimeEntries, bool useNewSync, SyncStatus syncStatus = default, string lastSyncErrorMessage = "", bool isDeleted = false)
         {
             Ensure.Argument.IsADefinedEnumValue(syncStatus, nameof(syncStatus));
             Ensure.Argument.IsNotNull(dateFormat.Localized, nameof(dateFormat));
@@ -36,6 +37,7 @@ namespace Toggl.Core.Models
             SyncStatus = syncStatus;
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
+            UseNewSync = useNewSync;
         }
 
         public static Preferences From(IDatabasePreferences entity)
@@ -54,6 +56,7 @@ namespace Toggl.Core.Models
                 TimeFormat.FromLocalizedTimeFormat("H:mm"),
                 DateFormat.FromLocalizedDateFormat("DD.MM.YYYY"),
                 DurationFormat.Improved,
+                false,
                 false
             );
     }

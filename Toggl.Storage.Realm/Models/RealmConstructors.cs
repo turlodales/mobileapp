@@ -82,6 +82,7 @@ namespace Toggl.Storage.Realm
             DateFormat = entity.DateFormat;
             DurationFormat = entity.DurationFormat;
             CollapseTimeEntries = entity.CollapseTimeEntries;
+            UseNewSync = entity.UseNewSync;
         }
     }
 

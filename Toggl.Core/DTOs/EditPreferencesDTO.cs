@@ -8,5 +8,6 @@ namespace Toggl.Core.DTOs
         public New<DurationFormat> DurationFormat { get; set; }
         public New<TimeFormat> TimeOfDayFormat { get; set; }
         public New<bool> CollapseTimeEntries { get; set; }
+        public New<bool> UseNewSync { get; set; }
     }
 }

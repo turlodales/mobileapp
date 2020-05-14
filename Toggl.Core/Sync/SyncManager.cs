@@ -29,8 +29,6 @@ namespace Toggl.Core.Sync
 
         public bool IsRunningSync { get; private set; }
 
-        public SyncState State => orchestrator.State;
-
         public IObservable<SyncProgress> ProgressObservable { get; }
 
         public IObservable<Exception> Errors { get; }

@@ -9,5 +9,7 @@
         DurationFormat DurationFormat { get; }
 
         bool CollapseTimeEntries { get; }
+
+        bool UseNewSync { get; }
     }
 }
