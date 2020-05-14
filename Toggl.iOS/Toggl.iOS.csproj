@@ -1410,6 +1410,10 @@
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\IconTint.colorset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\logo.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2294,6 +2298,7 @@
     <Folder Include="Resources\Images.xcassets\ic_pupil.imageset\" />
     <Folder Include="Resources\Images.xcassets\ic_hand.imageset\" />
     <Folder Include="Resources\Colors.xcassets\IconTint.colorset\" />
+    <Folder Include="Resources\Images.xcassets\ic_eyelid.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

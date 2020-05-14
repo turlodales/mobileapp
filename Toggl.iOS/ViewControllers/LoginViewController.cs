@@ -210,11 +210,19 @@ namespace Toggl.iOS.ViewControllers
         {
             var keyboardHeight = e.FrameEnd.Height;
             ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
+
+            var firstResponder = View.GetFirstResponder();
+            if (firstResponder != null && ScrollView.VisibleSize.Height - keyboardHeight < ScrollView.ContentSize.Height)
+            { 
+                var scrollOffset = firstResponder.Frame.Y - (ScrollView.VisibleSize.Height - keyboardHeight) / 2;
+                ScrollView.SetContentOffset(new CoreGraphics.CGPoint(0, scrollOffset), true);
+            }
         }
 
         protected override void KeyboardWillHide(object sender, UIKeyboardEventArgs e)
         {
             ScrollView.ContentInset = new UIEdgeInsets(0, 0, 0, 0);
+            ScrollView.SetContentOffset(new CoreGraphics.CGPoint(0, 0), true);
         }
 
         private float opacityForLoadingState(bool isLoading)

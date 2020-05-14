@@ -60,6 +60,8 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(ViewModel.SetSaturation.Inputs)
                 .DisposedBy(DisposeBag);
 
+            valueSlider.Progress = (int) (ViewModel.FirstCustomColor.GetHSV().value * valueSlider.Max);
+
             valueSlider.Rx().Progress()
                 .Select(invertedNormalizedProgress)
                 .Subscribe(ViewModel.SetValue.Inputs)

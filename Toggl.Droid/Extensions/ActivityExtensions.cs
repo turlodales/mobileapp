@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Android.OS;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
 using AndroidX.Lifecycle;
@@ -44,8 +45,16 @@ namespace Toggl.Droid.Extensions
 
             var builder = new JobInfo.Builder(JobServicesConstants.BackgroundSyncJobServiceJobId, component)
                 .SetRequiredNetworkType(NetworkType.Any)
-                .SetPeriodic(periodicity)
                 .SetPersisted(true);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                builder.SetPeriodic(periodicity, JobInfo.MinFlexMillis);
+            }
+            else
+            {
+                builder.SetPeriodic(periodicity);
+            }
 
             var jobInfo = builder.Build();
             return jobInfo;

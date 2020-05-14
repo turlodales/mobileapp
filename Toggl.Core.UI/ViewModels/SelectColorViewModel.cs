@@ -25,11 +25,12 @@ namespace Toggl.Core.UI.ViewModels
 
         private readonly BehaviorSubject<Color> selectedColor = new BehaviorSubject<Color>(Colors.Transparent);
 
-        private BehaviorSubject<float> hue { get; } = new BehaviorSubject<float>(0.0f);
-        private BehaviorSubject<float> saturation { get; } = new BehaviorSubject<float>(0.0f);
-        private BehaviorSubject<float> value { get; } = new BehaviorSubject<float>(0.375f);
+        private BehaviorSubject<float> hue { get; }
+        private BehaviorSubject<float> saturation { get; }
+        private BehaviorSubject<float> value { get; }
 
         public bool AllowCustomColors { get; private set; }
+        public readonly Color FirstCustomColor = new Color(49, 119, 190);
 
         public IObservable<IImmutableList<SelectableColorViewModel>> SelectableColors { get; }
         public IObservable<float> Hue { get; }
@@ -48,6 +49,12 @@ namespace Toggl.Core.UI.ViewModels
             Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
 
+
+            var (customHue, customSaturation, customValue) = FirstCustomColor.GetHSV();
+            hue  = new BehaviorSubject<float>(customHue);
+            saturation  = new BehaviorSubject<float>(customSaturation);
+            value  = new BehaviorSubject<float>(customValue);
+
             // Public properties
             Hue = hue.AsDriver(schedulerProvider);
             Saturation = saturation.AsDriver(schedulerProvider);
@@ -64,10 +71,9 @@ namespace Toggl.Core.UI.ViewModels
                 .Throttle(TimeSpan.FromMilliseconds(100), schedulerProvider.DefaultScheduler)
                 .Do(selectedColor.OnNext);
 
-            var firstCustomColor = Colors.FromHSV(hue.Value, saturation.Value, value.Value);
 
             var availableColors = Observable.Return(Colors.DefaultProjectColors)
-                .CombineLatest(customColor.StartWith(firstCustomColor), combineAllColors);
+                .CombineLatest(customColor.StartWith(FirstCustomColor), combineAllColors);
 
             SelectableColors = availableColors
                 .CombineLatest(selectedColor, updateSelectableColors)
@@ -87,7 +93,7 @@ namespace Toggl.Core.UI.ViewModels
                 if (AllowCustomColors)
                 {
                     startCustomColorEmitting.OnNext(Unit.Default);
-                    var colorComponents = defaultColor.GetHSV();
+                    var colorComponents = FirstCustomColor.GetHSV();
                     hue.OnNext(colorComponents.hue);
                     saturation.OnNext(colorComponents.saturation);
                     value.OnNext(colorComponents.value);
