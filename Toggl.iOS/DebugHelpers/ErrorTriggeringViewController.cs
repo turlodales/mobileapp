@@ -5,10 +5,12 @@ using CoreGraphics;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Core.Services;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
 using Toggl.Shared.Extensions;
 using UIKit;
+using Foundation;
 
 namespace Toggl.iOS.DebugHelpers
 {
@@ -38,6 +40,7 @@ namespace Toggl.iOS.DebugHelpers
             var outdatedApi = createButton("Outdated API error");
             var outdatedAppPermanently = createButton("Permanent outdated client error");
             var outdatedApiPermanently = createButton("Permanent outdated API error");
+            var shareUnsyncableEntitiesDump = createButton("Share unsyncable entities dump");
 
             tokenReset.Rx().Tap()
                 .Subscribe(dismissAndThenRun(tokenResetErrorTriggered))
@@ -67,6 +70,10 @@ namespace Toggl.iOS.DebugHelpers
                 .Subscribe(dismissAndThenRun(outdatedApiPermanentlyErrorTriggered))
                 .DisposedBy(disposeBag);
 
+            shareUnsyncableEntitiesDump.Rx().Tap()
+                .Subscribe(showShareDialog)
+                .DisposedBy(disposeBag);
+
             var buttons = new[]
             {
                 tokenReset,
@@ -75,7 +82,8 @@ namespace Toggl.iOS.DebugHelpers
                 outdatedApp,
                 outdatedApi,
                 outdatedAppPermanently,
-                outdatedApiPermanently
+                outdatedApiPermanently,
+                shareUnsyncableEntitiesDump
             };
 
             View.Add(new UIStackView(buttons)
@@ -145,6 +153,14 @@ namespace Toggl.iOS.DebugHelpers
             var container = IosDependencyContainer.Instance;
             container.AccessRestrictionStorage.SetClientOutdated();
             outdatedApiErrorTriggered();
+        }
+
+        private void showShareDialog()
+        {
+            var fileURL = new NSUrl(IUnsyncedDataPersistenceService.UnsyncedDataFilePath, false);
+            var activityController = new UIActivityViewController(new NSObject[] { fileURL }, null);
+
+            PresentViewController(activityController, true, null);
         }
     }
 }
