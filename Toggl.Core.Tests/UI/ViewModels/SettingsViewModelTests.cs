@@ -471,12 +471,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
         public sealed class TheVersionProperty : SettingsViewModelTest
         {
             [Fact, LogIfTooSlow]
-            public void ShouldBeConstructedFromVersionAndBuildNumber()
+            public void ShouldBeConstructedFromVersionBuildNumberAndSyncManagerVersion()
             {
                 const string version = "1.0";
                 PlatformInfo.Version.Returns(version);
 
-                ViewModel.Version.Should().Be($"{version} ({PlatformInfo.BuildNumber})");
+                ViewModel.Version.Should().Be($"{version} ({PlatformInfo.BuildNumber}/{SyncManager.Version})");
             }
         }
 

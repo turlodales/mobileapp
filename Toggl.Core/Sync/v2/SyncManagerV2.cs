@@ -7,6 +7,8 @@ namespace Toggl.Core.Sync.V2
     {
         public bool IsRunningSync => false;
 
+        public int Version => 2;
+
         public IObservable<SyncProgress> ProgressObservable
             => Observable.Return(SyncProgress.Failed);
 

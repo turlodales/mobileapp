@@ -33,6 +33,8 @@ namespace Toggl.Core.Sync
 
         public IObservable<Exception> Errors { get; }
 
+        public int Version => 1;
+
         public SyncManager(
             ISyncStateQueue queue,
             IStateMachineOrchestrator orchestrator,

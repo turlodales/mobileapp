@@ -4,6 +4,8 @@ namespace Toggl.Core.Sync
 {
     public interface ISyncManager
     {
+        int Version { get; }
+
         IObservable<SyncProgress> ProgressObservable { get; }
         IObservable<Exception> Errors { get; }
 

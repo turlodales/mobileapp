@@ -22,7 +22,10 @@ namespace Toggl.Core.Sync.V2
             Ensure.Argument.IsNotNull(oldSyncManagerCreator, nameof(oldSyncManagerCreator));
             Ensure.Argument.IsNotNull(newSyncManagerCreator, nameof(newSyncManagerCreator));
 
-            var preferences = interactorFactory.ObserveCurrentPreferences().Execute().GetAwaiter().Wait();
+            var preferences = interactorFactory.ObserveCurrentPreferences().Execute()
+                .FirstAsync()
+                .GetAwaiter()
+                .GetResult();
 
             var activeSyncManager = preferences.UseNewSync
                 ? newSyncManagerCreator()
