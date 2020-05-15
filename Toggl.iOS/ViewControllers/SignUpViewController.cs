@@ -38,6 +38,9 @@ namespace Toggl.iOS.ViewControllers
             NavigationItem.LeftBarButtonItem = closeButton;
             NavigationItem.BackBarButtonItem = backButton;
 
+            EmailErrorLabel.Lines = 0;
+            PasswordErrorLabel.Lines = 0;
+
             //E-mail
             ViewModel.Email
                 .Select(email => email.ToString())
@@ -79,13 +82,29 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(PasswordTextField.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
+            Observable.CombineLatest(
+                ViewModel.PasswordError.Select(error => !string.IsNullOrEmpty(error)),
+                ViewModel.IsPasswordStrong,
+                (hasError, strong) =>
+                {
+                    return (!hasError || strong)
+                        ? ColorAssets.Text2
+                        : ColorAssets.ErrorRed;
+                })
+                .Subscribe(PasswordErrorLabel.Rx().TextColor())
+                .DisposedBy(DisposeBag);
+
             //Errors
             ViewModel.EmailError
                 .Subscribe(EmailErrorLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
             ViewModel.PasswordError
-                .Subscribe(PasswordErrorLabel.Rx().Text())
+                .Subscribe(error =>
+                    PasswordErrorLabel.Text = string.IsNullOrEmpty(error)
+                        ? Resources.StrongPasswordCriteria
+                        : error
+                )
                 .DisposedBy(DisposeBag);
 
             ViewModel.SignUpError
@@ -94,6 +113,12 @@ namespace Toggl.iOS.ViewControllers
 
             ViewModel.ShakeEmailField
                 .Subscribe(EmailTextField.Rx().Shake())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.PasswordError
+                .Where(error => !string.IsNullOrEmpty(error))
+                .SelectUnit()
+                .Subscribe(PasswordTextField.Rx().Shake())
                 .DisposedBy(DisposeBag);
 
             //Actions

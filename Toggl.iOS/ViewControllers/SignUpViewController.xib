@@ -63,7 +63,7 @@ Let’s get you set up to start tracking.</string>
                             <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES" textContentType="new-password"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CHf-dF-04X">
-                            <rect key="frame" x="40" y="372" width="295" height="44"/>
+                            <rect key="frame" x="40" y="388" width="295" height="44"/>
                             <color key="backgroundColor" red="1" green="0.1764705882352941" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="QCH-OK-wII"/>
@@ -81,19 +81,19 @@ Let’s get you set up to start tracking.</string>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid email address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbC-bd-XyU">
                             <rect key="frame" x="40" y="258" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" name="ErrorText"/>
+                            <color key="textColor" name="ErrorRed"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nuw-iI-A7t">
-                            <rect key="frame" x="40" y="326" width="295" height="15"/>
+                            <rect key="frame" x="40" y="334" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" name="ErrorText"/>
+                            <color key="textColor" name="ErrorRed"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter correct email/password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YcB-IX-rLm">
-                            <rect key="frame" x="40" y="341" width="295" height="15"/>
+                            <rect key="frame" x="40" y="349" width="295" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" name="ErrorText"/>
+                            <color key="textColor" name="ErrorRed"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAN-UE-n4f">
@@ -109,10 +109,10 @@ Let’s get you set up to start tracking.</string>
                     <constraints>
                         <constraint firstItem="QDR-8j-caJ" firstAttribute="leading" secondItem="VVt-ye-0kt" secondAttribute="leading" constant="40" id="0K4-Ng-mbs"/>
                         <constraint firstAttribute="bottom" secondItem="CHf-dF-04X" secondAttribute="bottom" constant="10" id="0cd-ae-2fr"/>
-                        <constraint firstItem="CHf-dF-04X" firstAttribute="top" secondItem="YcB-IX-rLm" secondAttribute="bottom" constant="16" id="3IT-rB-UXt"/>
+                        <constraint firstItem="CHf-dF-04X" firstAttribute="top" secondItem="YcB-IX-rLm" secondAttribute="bottom" constant="24" id="3IT-rB-UXt"/>
                         <constraint firstItem="MbC-bd-XyU" firstAttribute="top" secondItem="hEQ-Vf-Gmg" secondAttribute="bottom" id="4kc-aq-fcc"/>
                         <constraint firstItem="Nuw-iI-A7t" firstAttribute="trailing" secondItem="H0f-jb-3dm" secondAttribute="trailing" id="4tp-QN-Pae"/>
-                        <constraint firstItem="Nuw-iI-A7t" firstAttribute="top" secondItem="H0f-jb-3dm" secondAttribute="bottom" id="Atl-wj-7G9"/>
+                        <constraint firstItem="Nuw-iI-A7t" firstAttribute="top" secondItem="H0f-jb-3dm" secondAttribute="bottom" constant="8" id="Atl-wj-7G9"/>
                         <constraint firstItem="pkl-Qo-4zi" firstAttribute="leading" secondItem="0l1-0u-vUE" secondAttribute="leading" constant="40" id="CM9-Zz-FLG"/>
                         <constraint firstItem="QDR-8j-caJ" firstAttribute="leading" secondItem="0l1-0u-vUE" secondAttribute="leading" constant="40" id="Cgx-oS-ldu"/>
                         <constraint firstItem="CHf-dF-04X" firstAttribute="trailing" secondItem="hEQ-Vf-Gmg" secondAttribute="trailing" id="Epy-Uy-j0c"/>
@@ -158,8 +158,8 @@ Let’s get you set up to start tracking.</string>
         <namedColor name="Background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="ErrorText">
-            <color red="0.9686274528503418" green="0.25098040699958801" blue="0.28627452254295349" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="ErrorRed">
+            <color red="0.88627450980392153" green="0.019607843137254902" blue="0.019607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="InverseText">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
