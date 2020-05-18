@@ -84,6 +84,7 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             ViewModel.SelectableColors
+                .Throttle(TimeSpan.FromMilliseconds(100))
                 .Subscribe(selectableColorsAdapter.Rx().Items())
                 .DisposedBy(DisposeBag);
 
