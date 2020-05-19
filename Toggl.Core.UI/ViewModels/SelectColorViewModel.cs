@@ -68,9 +68,7 @@ namespace Toggl.Core.UI.ViewModels
 
             customColor = Observable.CombineLatest(hue, saturation, value, Colors.FromHSV)
                 .SkipUntil(startCustomColorEmitting)
-                .Throttle(TimeSpan.FromMilliseconds(100), schedulerProvider.DefaultScheduler)
                 .Do(selectedColor.OnNext);
-
 
             var availableColors = Observable.Return(Colors.DefaultProjectColors)
                 .CombineLatest(customColor.StartWith(FirstCustomColor), combineAllColors);
