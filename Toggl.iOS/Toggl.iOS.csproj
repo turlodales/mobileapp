@@ -225,6 +225,7 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Resources\Colors.xcassets\AlwaysRedErrorText.colorset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -1414,7 +1415,6 @@
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%403x.png" />
-    <ImageAsset Include="Resources\Colors.xcassets\ErrorRed.colorset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

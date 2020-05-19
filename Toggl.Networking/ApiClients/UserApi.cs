@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Networking.Exceptions;
@@ -137,6 +139,17 @@ namespace Toggl.Networking.ApiClients
             var json = serializer.Serialize(parameters, SerializationReason.Post);
             return await SendRequest<User>(endPoints.Post, headers, json)
                 .ConfigureAwait(false);
+        }
+
+        protected override async Task<Exception> GetExceptionFor(IRequest request, IResponse response,
+            IEnumerable<HttpHeader> headers)
+        {
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                return new UnauthorizedException(request, response);
+            }
+
+            return await base.GetExceptionFor(request, response, headers);
         }
 
         [Preserve(AllMembers = true)]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using Toggl.Networking.Network;
 
@@ -14,12 +15,15 @@ namespace Toggl.Networking.Exceptions
         private const string defaultMessage = "User is not authorized to make this request and must enter login again.";
 
         private readonly IEnumerable<HttpHeader> requestHeaders;
+        private readonly string remainingLoginAttemptsHeaderName = "X-Remaining-Login-Attempts";
 
         public string ApiToken
             => requestHeaders
                 .Where(header => header.Type == HttpHeader.HeaderType.Auth)
                 .Select(tryDecodeApiToken)
                 .FirstOrDefault(token => token != null);
+
+        public int? RemainingLoginAttempts { get; }
 
         internal UnauthorizedException(IRequest request, IResponse response)
             : this(request, response, defaultMessage)
@@ -30,6 +34,24 @@ namespace Toggl.Networking.Exceptions
             : base(request, response, errorMessage)
         {
             requestHeaders = request.Headers;
+            RemainingLoginAttempts = getRemainingLoginAttemptsFromHeaders(response.Headers);
+        }
+
+        private int? getRemainingLoginAttemptsFromHeaders(HttpHeaders headers)
+        {
+            if (headers == null)
+            {
+                return null;
+            }
+
+            var hasHeader = headers.TryGetValues(remainingLoginAttemptsHeaderName, out var remainingAttemptsHeaderValues);
+
+            if (hasHeader && Int32.TryParse(remainingAttemptsHeaderValues.First(), out var remainingAttempts))
+            {
+                return remainingAttempts;
+            }
+
+            return null;
         }
 
         private static string tryDecodeApiToken(HttpHeader authHeader)
