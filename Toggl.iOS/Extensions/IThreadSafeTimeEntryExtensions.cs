@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models.Interfaces;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -23,7 +24,9 @@ namespace Toggl.iOS.Extensions
 
             var displayColor = timeEntry.Project.DisplayColor();
             var color = string.IsNullOrEmpty(displayColor) ? null
-                      : new Color(displayColor).ToNativeColor();
+                      : Color
+                        .ParseAndAdjustToUserTheme(displayColor, ActiveTheme.Is.DarkTheme)
+                        .ToNativeColor();
 
             var projectColor = shouldColorProject ? color : null;
 

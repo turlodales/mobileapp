@@ -168,59 +168,6 @@ namespace Toggl.Core.UI.Helper
             public static readonly Color DisabledCreateWorkspaceButton = new Color(255, 255, 255, 122);
         }
 
-        internal static Color FromHSV(float hue, float saturation, float value)
-        {
-            byte r = 0, g = 0, b = 0;
-
-            if (saturation == 0)
-            {
-                r = g = b = (byte)(value * 255.0f + 0.5f);
-            }
-            else
-            {
-                float h = (hue - (byte)Math.Floor(hue)) * 6.0f;
-                float f = h - (byte)Math.Floor(h);
-                float p = value * (1.0f - saturation);
-                float q = value * (1.0f - saturation * f);
-                float t = value * (1.0f - (saturation * (1.0f - f)));
-                switch ((int)h)
-                {
-                    case 0:
-                        r = (byte)(value * 255.0f + 0.5f);
-                        g = (byte)(t * 255.0f + 0.5f);
-                        b = (byte)(p * 255.0f + 0.5f);
-                        break;
-                    case 1:
-                        r = (byte)(q * 255.0f + 0.5f);
-                        g = (byte)(value * 255.0f + 0.5f);
-                        b = (byte)(p * 255.0f + 0.5f);
-                        break;
-                    case 2:
-                        r = (byte)(p * 255.0f + 0.5f);
-                        g = (byte)(value * 255.0f + 0.5f);
-                        b = (byte)(t * 255.0f + 0.5f);
-                        break;
-                    case 3:
-                        r = (byte)(p * 255.0f + 0.5f);
-                        g = (byte)(q * 255.0f + 0.5f);
-                        b = (byte)(value * 255.0f + 0.5f);
-                        break;
-                    case 4:
-                        r = (byte)(t * 255.0f + 0.5f);
-                        g = (byte)(p * 255.0f + 0.5f);
-                        b = (byte)(value * 255.0f + 0.5f);
-                        break;
-                    case 5:
-                        r = (byte)(value * 255.0f + 0.5f);
-                        g = (byte)(p * 255.0f + 0.5f);
-                        b = (byte)(q * 255.0f + 0.5f);
-                        break;
-                }
-            }
-
-            return new Color(r, g, b);
-        }
-
         public static class EditTimeEntry
         {
             public static readonly Color ClientText = new Color(94, 91, 91);

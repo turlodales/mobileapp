@@ -6,6 +6,7 @@ using Android.Views;
 using Toggl.Droid.Extensions;
 using Color = Android.Graphics.Color;
 using Toggl.Shared;
+using Toggl.Droid.Helper;
 
 namespace Toggl.Droid.Widgets
 {
@@ -54,7 +55,7 @@ namespace Toggl.Droid.Widgets
             {
                 // Project
                 var projectColor = widgetInfo.ProjectColor != null
-                    ? Color.ParseColor(widgetInfo.ProjectColor)
+                    ? Shared.Color.ParseAndAdjustToLabel(widgetInfo.ProjectColor, ActiveTheme.Is.DarkTheme).ToNativeColor()
                     : Color.Black;
                 view.SetInt(Resource.Id.DotView, "setBackgroundColor", projectColor);
                 view.SetTextViewText(Resource.Id.ProjectTextView, widgetInfo.ProjectName ?? "");
