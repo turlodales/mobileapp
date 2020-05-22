@@ -1,4 +1,5 @@
-﻿using AndroidX.AppCompat.App;
+﻿using Android.App;
+using Android.Content.Res;
 
 namespace Toggl.Droid.Helper
 {
@@ -7,12 +8,18 @@ namespace Toggl.Droid.Helper
         public static class Is
         {
             public static bool DarkTheme
-                => AppCompatDelegate.DefaultNightMode == AppCompatDelegate.ModeNightYes;
+            {
+                get
+                {
+                    var uiModeFlags = Application.Context.Resources.Configuration.UiMode & UiMode.NightMask;
+                    var isInDarkMode = uiModeFlags == UiMode.NightYes;
+                    return isInDarkMode;
+                }
+            }
 
             public static class Not
             {
-                public static bool DarkTheme
-                    => AppCompatDelegate.DefaultNightMode != AppCompatDelegate.ModeNightYes;
+                public static bool DarkTheme => !Is.DarkTheme;
             }
         }
     }

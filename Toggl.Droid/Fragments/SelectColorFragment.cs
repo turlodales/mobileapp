@@ -7,6 +7,7 @@ using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
+using Toggl.Shared;
 using Toggl.Shared.Extensions;
 
 namespace Toggl.Droid.Fragments
@@ -60,7 +61,7 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(ViewModel.SetSaturation.Inputs)
                 .DisposedBy(DisposeBag);
 
-            valueSlider.Progress = (int) (ViewModel.FirstCustomColor.GetHSV().value * valueSlider.Max);
+            valueSlider.Progress = (int) (ViewModel.FirstCustomColor.GetBrightness() * valueSlider.Max);
 
             valueSlider.Rx().Progress()
                 .Select(invertedNormalizedProgress)

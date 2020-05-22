@@ -2,6 +2,8 @@
 using Android.Views;
 using Android.Widget;
 using Toggl.Core.Autocomplete.Suggestions;
+using Toggl.Droid.Extensions;
+using Toggl.Droid.Helper;
 using static Toggl.Droid.Resource.Id;
 
 namespace Toggl.Droid.ViewHolders
@@ -55,7 +57,7 @@ namespace Toggl.Droid.ViewHolders
                 return;
             }
 
-            var projectColor = Color.ParseColor(Suggestion.ProjectColor);
+            var projectColor = Shared.Color.ParseAndAdjustToLabel(Suggestion.ProjectColor, ActiveTheme.Is.DarkTheme).ToNativeColor();
             projectLabel.Text = Suggestion.ProjectName;
             projectLabel.SetTextColor(projectColor);
             projectLabel.Visibility = ViewStates.Visible;

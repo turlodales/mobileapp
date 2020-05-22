@@ -1,6 +1,7 @@
 using Android.Content;
 using Android.Text;
 using Android.Text.Style;
+using Toggl.Droid.Helper;
 using Toggl.Droid.Views;
 using static Toggl.Core.Helper.Colors;
 using Color = Android.Graphics.Color;
@@ -59,7 +60,10 @@ namespace Toggl.Droid.Extensions
                 spannableString.Append(placeholderSeparator);
             }
             else
-                spannableString.Append(projectName, new ForegroundColorSpan(Color.ParseColor(projectColor)), SpanTypes.ExclusiveInclusive);
+            {
+                var foregroundColor = Shared.Color.ParseAndAdjustToLabel(projectColor, ActiveTheme.Is.DarkTheme).ToNativeColor();
+                spannableString.Append(projectName, new ForegroundColorSpan(foregroundColor), SpanTypes.ExclusiveInclusive);
+            }
         }
     }
 }

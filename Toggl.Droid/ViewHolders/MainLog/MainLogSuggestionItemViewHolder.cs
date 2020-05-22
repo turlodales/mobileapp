@@ -9,6 +9,7 @@ using Toggl.Core.Suggestions;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.MainLog;
 using Toggl.Droid.Extensions;
+using Toggl.Droid.Helper;
 
 namespace Toggl.Droid.ViewHolders.MainLog
 {
@@ -43,8 +44,9 @@ namespace Toggl.Droid.ViewHolders.MainLog
             prefixWithProviderNameInDebug(viewModel);
             descriptionLabel.Visibility = (!string.IsNullOrWhiteSpace(viewModel.Suggestion.Description)).ToVisibility();
 
+            var foregroundColor = Shared.Color.ParseAndAdjustToLabel(viewModel.Suggestion.ProjectColor, ActiveTheme.Is.DarkTheme).ToNativeColor();
             projectLabel.Text = viewModel.Suggestion.ProjectName;
-            projectLabel.SetTextColor(Color.ParseColor(viewModel.Suggestion.ProjectColor));
+            projectLabel.SetTextColor(foregroundColor);
             projectLabel.Visibility = viewModel.Suggestion.HasProject.ToVisibility();
 
             clientLabel.Text = viewModel.Suggestion.ClientName;

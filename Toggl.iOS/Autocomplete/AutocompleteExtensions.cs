@@ -5,6 +5,7 @@ using Toggl.Core.Autocomplete;
 using Toggl.Core.Autocomplete.Span;
 using Toggl.Core.UI.Helper;
 using Toggl.iOS.Extensions;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -183,7 +184,9 @@ namespace Toggl.iOS.Autocomplete
 
         private static NSMutableAttributedString AsAttributedString(this ProjectSpan projectSpan)
         {
-            var projectColor = new Color(projectSpan.ProjectColor).ToNativeColor();
+            var projectColor = Color
+                .ParseAndAdjustToUserTheme(projectSpan.ProjectColor, ActiveTheme.Is.DarkTheme)
+                .ToNativeColor();
 
             var projectNameString = projectSpan.ProjectName;
             if (!string.IsNullOrEmpty(projectSpan.TaskName))

@@ -1,4 +1,7 @@
-﻿using Android.Graphics;
+﻿using Toggl.Droid.Extensions;
+using Toggl.Droid.Helper;
+using Toggl.Shared;
+using Color = Android.Graphics.Color;
 
 namespace Toggl.Droid.Autocomplete
 {
@@ -15,7 +18,11 @@ namespace Toggl.Droid.Autocomplete
         public string TaskName { get; set; }
 
         public ProjectTokenSpan(long projectId, string projectName, string projectColor, long? taskId, string taskName)
-            : base(Color.ParseColor(projectColor), Color.White, false)
+            : base(
+                  Shared.Color.ParseAndAdjustToUserTheme(projectColor, ActiveTheme.Is.DarkTheme).ToNativeColor(),
+                  Color.White,
+                  false
+            )
         {
             ProjectId = projectId;
             ProjectName = projectName;
