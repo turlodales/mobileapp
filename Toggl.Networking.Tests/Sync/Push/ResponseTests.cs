@@ -213,37 +213,37 @@ namespace Toggl.Networking.Tests.Sync.Push
 
             IResponse response = serializer.Deserialize<Response>(json);
 
-            response.ClientResults.Should().HaveCount(3);
-            response.ClientResults[0].Result.Success.Should().BeTrue();
-            response.ClientResults[1].Result.Success.Should().BeTrue();
-            response.ClientResults[2].Result.Success.Should().BeTrue();
+            response.Clients.Should().HaveCount(3);
+            response.Clients[0].Result.Success.Should().BeTrue();
+            response.Clients[1].Result.Success.Should().BeTrue();
+            response.Clients[2].Result.Success.Should().BeTrue();
 
-            response.ProjectResults.Should().HaveCount(3);
-            response.ProjectResults[0].Result.Success.Should().BeTrue();
-            response.ProjectResults[1].Result.Success.Should().BeTrue();
-            response.ProjectResults[2].Result.Success.Should().BeTrue();
+            response.Projects.Should().HaveCount(3);
+            response.Projects[0].Result.Success.Should().BeTrue();
+            response.Projects[1].Result.Success.Should().BeTrue();
+            response.Projects[2].Result.Success.Should().BeTrue();
 
-            response.TagResults.Should().HaveCount(3);
-            response.TagResults[0].Result.Success.Should().BeTrue();
-            response.TagResults[1].Result.Success.Should().BeTrue();
-            response.TagResults[2].Result.Success.Should().BeTrue();
+            response.Tags.Should().HaveCount(3);
+            response.Tags[0].Result.Success.Should().BeTrue();
+            response.Tags[1].Result.Success.Should().BeTrue();
+            response.Tags[2].Result.Success.Should().BeTrue();
 
-            response.TaskResults.Should().HaveCount(3);
-            response.TaskResults[0].Result.Success.Should().BeTrue();
-            response.TaskResults[1].Result.Success.Should().BeTrue();
-            response.TaskResults[2].Result.Success.Should().BeTrue();
+            response.Tasks.Should().HaveCount(3);
+            response.Tasks[0].Result.Success.Should().BeTrue();
+            response.Tasks[1].Result.Success.Should().BeTrue();
+            response.Tasks[2].Result.Success.Should().BeTrue();
 
-            response.TimeEntryResults.Should().HaveCount(3);
-            response.TimeEntryResults[0].Result.Success.Should().BeTrue();
-            response.TimeEntryResults[1].Result.Success.Should().BeTrue();
-            response.TimeEntryResults[2].Result.Success.Should().BeTrue();
+            response.TimeEntries.Should().HaveCount(3);
+            response.TimeEntries[0].Result.Success.Should().BeTrue();
+            response.TimeEntries[1].Result.Success.Should().BeTrue();
+            response.TimeEntries[2].Result.Success.Should().BeTrue();
 
-            response.WorkspaceResults.Should().HaveCount(2);
-            response.WorkspaceResults[0].Result.Success.Should().BeTrue();
-            response.WorkspaceResults[1].Result.Success.Should().BeTrue();
+            response.Workspaces.Should().HaveCount(2);
+            response.Workspaces[0].Result.Success.Should().BeTrue();
+            response.Workspaces[1].Result.Success.Should().BeTrue();
 
-            response.UserResult.Success.Should().BeTrue();
-            response.PreferencesResult.Success.Should().BeTrue();
+            response.User.Success.Should().BeTrue();
+            response.Preferences.Success.Should().BeTrue();
         }
     }
 }

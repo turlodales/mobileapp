@@ -1,9 +1,9 @@
 using System;
 using FluentAssertions;
-using Toggl.Networking.Models;
 using Toggl.Networking.Sync.Push;
 using Toggl.Networking.Serialization;
 using Xunit;
+using Toggl.Shared.Models;
 
 namespace Toggl.Networking.Tests.Sync.Push
 {
@@ -105,14 +105,14 @@ namespace Toggl.Networking.Tests.Sync.Push
         {
             var serializer = new JsonSerializer();
 
-            var result = serializer.Deserialize<IEntityActionResult<Tag>>(validSuccessJson);
+            var result = serializer.Deserialize<IEntityActionResult<ITag>>(validSuccessJson);
 
             result.Should().NotBeNull();
-            result.Should().BeOfType<UpdateActionResult<Tag>>();
+            result.Should().BeOfType<UpdateActionResult<ITag>>();
             result.Id.Should().Be(123);
 
-            result.Result.Should().BeOfType<SuccessPayloadResult<Tag>>();
-            var success = result.Result as SuccessPayloadResult<Tag>;
+            result.Result.Should().BeOfType<SuccessPayloadResult<ITag>>();
+            var success = result.Result as SuccessPayloadResult<ITag>;
 
             success.Payload.Should().NotBeNull();
             success.Payload.Id.Should().Be(456);
@@ -125,14 +125,14 @@ namespace Toggl.Networking.Tests.Sync.Push
         {
             var serializer = new JsonSerializer();
 
-            var result = serializer.Deserialize<IEntityActionResult<Tag>>(validErrorJson);
+            var result = serializer.Deserialize<IEntityActionResult<ITag>>(validErrorJson);
 
             result.Should().NotBeNull();
-            result.Should().BeOfType<UpdateActionResult<Tag>>();
+            result.Should().BeOfType<UpdateActionResult<ITag>>();
             result.Id.Should().Be(123);
 
-            result.Result.Should().BeOfType<ErrorResult<Tag>>();
-            var error = result.Result as ErrorResult<Tag>;
+            result.Result.Should().BeOfType<ErrorResult<ITag>>();
+            var error = result.Result as ErrorResult<ITag>;
 
             error.ErrorMessage.Code.Should().Be(42);
             error.ErrorMessage.DefaultMessage.Should().Be("Cannot update the tag.");
@@ -144,7 +144,7 @@ namespace Toggl.Networking.Tests.Sync.Push
         {
             var serializer = new JsonSerializer();
 
-            Action deserialization = () => serializer.Deserialize<IEntityActionResult<Tag>>(invalidJson);
+            Action deserialization = () => serializer.Deserialize<IEntityActionResult<ITag>>(invalidJson);
 
             deserialization.Should().Throw<DeserializationException>();
         }

@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.DataSources;
-using Toggl.Core.DataSources.Interfaces;
-using Toggl.Core.Models.Interfaces;
-using Toggl.Networking.Sync;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage;
 using static Toggl.Storage.SyncStatus;
 using static Toggl.Networking.Sync.Push.ActionType;
 using Toggl.Networking.Sync.Push;
-using Toggl.Core.Interactors;
 using Toggl.Shared.Extensions;
-using Toggl.Networking.Network;
 
 namespace Toggl.Core.Interactors
 {
@@ -36,6 +30,11 @@ namespace Toggl.Core.Interactors
         public async Task<Request> Execute()
         {
             var pushRequest = new Request(userAgent);
+
+            await dataSource.Workspaces
+                .GetAll(isDirty)
+                .Select(entitiesToCreate)
+                .Do(pushRequest.CreateWorkspaces);
 
             await dataSource.Clients
                 .GetAll(isDirty)

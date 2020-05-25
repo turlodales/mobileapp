@@ -1,30 +1,40 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Toggl.Shared;
 using Toggl.Shared.Models;
-using Toggl.Networking.Models;
 
 namespace Toggl.Networking.Sync.Push
 {
     [Preserve(AllMembers = true)]
     internal class Response : IResponse
     {
-        public IEnumerable<IEntityActionResult<Client>> Clients { get; set; }
-        public IEnumerable<IEntityActionResult<Project>> Projects { get; set; }
-        public IEnumerable<IEntityActionResult<Tag>> Tags { get; set; }
-        public IEnumerable<IEntityActionResult<Task>> Tasks { get; set; }
-        public IEnumerable<IEntityActionResult<TimeEntry>> TimeEntries { get; set; }
-        public IEnumerable<IEntityActionResult<Workspace>> Workspaces { get; set; }
-        public IActionResult<User> User { get; set; }
-        public IActionResult<Preferences> Preferences { get; set; }
-
-        public List<IEntityActionResult<IClient>> ClientResults => Clients.ToList<IEntityActionResult<IClient>>();
-        public List<IEntityActionResult<IProject>> ProjectResults => Projects.ToList<IEntityActionResult<IProject>>();
-        public List<IEntityActionResult<ITag>> TagResults => Tags.ToList<IEntityActionResult<ITag>>();
-        public List<IEntityActionResult<ITask>> TaskResults => Tasks.ToList<IEntityActionResult<ITask>>();
-        public List<IEntityActionResult<ITimeEntry>> TimeEntryResults => TimeEntries.ToList<IEntityActionResult<ITimeEntry>>();
-        public List<IEntityActionResult<IWorkspace>> WorkspaceResults => Workspaces.ToList<IEntityActionResult<IWorkspace>>();
-        public IActionResult<IUser> UserResult => (IActionResult<IUser>)User;
-        public IActionResult<IPreferences> PreferencesResult => (IActionResult<IPreferences>)Preferences;
+        public ImmutableList<IEntityActionResult<IClient>> Clients { get; }
+        public ImmutableList<IEntityActionResult<IProject>> Projects { get; }
+        public ImmutableList<IEntityActionResult<ITag>> Tags { get; }
+        public ImmutableList<IEntityActionResult<ITask>> Tasks { get; }
+        public ImmutableList<IEntityActionResult<ITimeEntry>> TimeEntries { get; }
+        public ImmutableList<IEntityActionResult<IWorkspace>> Workspaces { get; }
+        public IActionResult<IUser> User { get; }
+        public IActionResult<IPreferences> Preferences { get; }
+        public Response(
+            IEnumerable<IEntityActionResult<IClient>> clients,
+            IEnumerable<IEntityActionResult<IProject>> projects,
+            IEnumerable<IEntityActionResult<ITag>> tags,
+            IEnumerable<IEntityActionResult<ITask>> tasks,
+            IEnumerable<IEntityActionResult<ITimeEntry>> timeEntries,
+            IEnumerable<IEntityActionResult<IWorkspace>> workspaces,
+            IActionResult<IUser> user,
+            IActionResult<IPreferences> preferences)
+        {
+            Clients = clients?.ToList().ToImmutableList() ?? ImmutableList<IEntityActionResult<IClient>>.Empty;
+            Projects = projects?.ToList().ToImmutableList() ?? ImmutableList<IEntityActionResult<IProject>>.Empty;
+            Tags = tags?.ToList().ToImmutableList() ?? ImmutableList<IEntityActionResult<ITag>>.Empty;
+            Tasks = tasks?.ToList().ToImmutableList() ?? ImmutableList<IEntityActionResult<ITask>>.Empty;
+            TimeEntries = timeEntries?.ToList().ToImmutableList() ?? ImmutableList<IEntityActionResult<ITimeEntry>>.Empty;
+            Workspaces = workspaces?.ToList().ToImmutableList() ?? ImmutableList<IEntityActionResult<IWorkspace>>.Empty;
+            User = user;
+            Preferences = preferences;
+        }
     }
 }

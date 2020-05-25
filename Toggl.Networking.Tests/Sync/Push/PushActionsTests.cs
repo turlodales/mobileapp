@@ -68,8 +68,9 @@ namespace Toggl.Networking.Tests.Sync.Push
                 DurationBackup = Duration;
                 ProjectIdBackup = ProjectId;
                 TaskIdBackup = TaskId;
-                TagIdsBackup = TagIds.ToList();
+                BillableBackup = Billable;
                 StartBackup = Start;
+                TagIdsBackup = TagIds.ToList();
             }
         }
 
@@ -142,7 +143,8 @@ namespace Toggl.Networking.Tests.Sync.Push
             var json = serializer.SerializeRoundtrip(request);
 
             json.GetString("time_entries[0].type").Should().Be("update");
-            json.Get("time_entries[0].meta").Should().BeNull();
+            json.GetLong("time_entries[0].meta.id").Should().Be(id);
+            json.GetLong("time_entries[0].meta.workspace_id").Should().Be(wid);
             json.GetLong("time_entries[0].payload.project_id").Should().Be(timeEntry.ProjectId);
             json.GetString("time_entries[0].payload.description").Should().Be(timeEntry.Description);
 

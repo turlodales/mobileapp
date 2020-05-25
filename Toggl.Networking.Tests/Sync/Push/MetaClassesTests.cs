@@ -27,7 +27,7 @@ namespace Toggl.Networking.Tests.Sync.Push
         [InlineData(55, 1244)]
         public void DeleteMetaSerializesCorrectly(long id, long workspaceId)
         {
-            var createMeta = new DeleteMeta(id, workspaceId);
+            var createMeta = new ModificationMeta(id, workspaceId);
 
             var json = serializer.SerializeRoundtrip(createMeta);
 

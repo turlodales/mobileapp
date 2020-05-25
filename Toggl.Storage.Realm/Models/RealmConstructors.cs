@@ -305,8 +305,12 @@ namespace Toggl.Storage.Realm
             StartBackup = entity.StartBackup;
             TaskIdBackup = entity.TaskIdBackup;
             TagIdsBackup.Clear();
-            foreach (var tagId in entity.TagIdsBackup)
-                TagIdsBackup.Add(tagId);
+
+            if (entity.TagIdsBackup != null)
+            {
+                foreach (var tagId in entity.TagIdsBackup)
+                    TagIdsBackup.Add(tagId);
+            }
         }
     }
 

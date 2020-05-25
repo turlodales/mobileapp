@@ -1,28 +1,40 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using Toggl.Networking.Models;
 using Toggl.Shared.Models;
 using Toggl.Shared.Extensions;
-using Toggl.Networking.Network;
 using Toggl.Shared;
+using Newtonsoft.Json;
 
 namespace Toggl.Networking.Sync.Push
 {
-    public sealed partial class Request
+    public sealed class Request
     {
         private string userAgent;
 
-        public List<IAction> TimeEntries { get; set; } = new List<IAction>();
-        public List<IAction> Tags { get; set; } = new List<IAction>();
-        public List<IAction> Projects { get; set; } = new List<IAction>();
-        public List<IAction> Clients { get; set; } = new List<IAction>();
-        public List<IAction> Tasks { get; set; } = new List<IAction>();
-        public List<IAction> Workspaces { get; set; } = new List<IAction>();
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<PushAction> TimeEntries { get; set; }
 
-        public SingletonUpdateAction<IPreferences> Preferences { get; set; }
-        public SingletonUpdateAction<IUser> User { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<PushAction> Tags { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<PushAction> Projects { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<PushAction> Clients { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<PushAction> Tasks { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<PushAction> Workspaces { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public PushAction Preferences { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public PushAction User { get; set; }
 
         public Request(string userAgent)
         {
@@ -30,61 +42,115 @@ namespace Toggl.Networking.Sync.Push
             this.userAgent = userAgent;
         }
 
+        [JsonIgnore]
         public bool IsEmpty
-            => TimeEntries.None()
-            && Tags.None()
-            && Projects.None()
-            && Clients.None()
-            && Tasks.None()
-            && Workspaces.None()
+            => (TimeEntries == null || TimeEntries.None())
+            && (Tags == null || Tags.None())
+            && (Projects == null || Projects.None())
+            && (Clients == null || Clients.None())
+            && (Tasks == null || Tasks.None())
+            && (Workspaces == null || Workspaces.None())
             && Preferences == null
             && User == null;
 
         public void CreateTimeEntries(IEnumerable<ITimeEntry> timeEntries)
         {
-            timeEntries
+            var list = timeEntries.ToList();
+            if (list.Count == 0)
+                return;
+
+            if (TimeEntries == null)
+            {
+                TimeEntries = new List<PushAction>();
+            }
+
+            list
                 .Select(timeEntry => new TimeEntry(timeEntry) { CreatedWith = userAgent })
-                .Select(timeEntry => new CreateAction<TimeEntry>(timeEntry))
+                .Select(timeEntry => PushAction.Create(timeEntry.Id, timeEntry))
                 .AddTo(TimeEntries);
         }
 
         public void UpdateTimeEntries(IEnumerable<ITimeEntry> timeEntries)
         {
-            timeEntries
-                .Select(bte => new UpdateAction<ITimeEntry>(bte))
+            var list = timeEntries.ToList();
+            if (list.Count == 0)
+                return;
+
+            TimeEntries ??= new List<PushAction>();
+
+            list
+                .Select(te => PushAction.Update<ITimeEntry>(te.Id, te.WorkspaceId, te))
                 .AddTo(TimeEntries);
         }
 
         public void DeleteTimeEntries(IEnumerable<ITimeEntry> timeEntries)
         {
-            timeEntries
+            var list = timeEntries.ToList();
+            if (list.Count == 0)
+                return;
+
+            TimeEntries ??= new List<PushAction>();
+
+            list
                 .Select(timeEntry => new TimeEntry(timeEntry))
-                .Select(timeEntry => new DeleteAction(timeEntry.Id, timeEntry.WorkspaceId))
+                .Select(timeEntry => PushAction.Delete(timeEntry.Id, timeEntry.WorkspaceId))
                 .AddTo(TimeEntries);
         }
 
         public void CreateProjects(IEnumerable<IProject> projects)
         {
-            projects
+            var list = projects.ToList();
+            if (list.Count == 0)
+                return;
+
+            Projects ??= new List<PushAction>();
+
+            list
                 .Select(project => new Project(project))
-                .Select(project => new CreateAction<Project>(project))
+                .Select(project => PushAction.Create(project.Id, project))
                 .AddTo(Projects);
         }
 
         public void CreateClients(IEnumerable<IClient> clients)
         {
-            clients
+            var list = clients.ToList();
+            if (list.Count == 0)
+                return;
+
+            Clients ??= new List<PushAction>();
+
+            list
                 .Select(client => new Client(client))
-                .Select(client => new CreateAction<Client>(client))
+                .Select(client => PushAction.Create(client.Id, client))
                 .AddTo(Clients);
         }
 
         public void CreateTags(IEnumerable<ITag> tags)
         {
-            tags
+            var list = tags.ToList();
+            if (list.Count == 0)
+                return;
+
+            Tags ??= new List<PushAction>();
+
+            list
                 .Select(tag => new Tag(tag))
-                .Select(tag => new CreateAction<Tag>(tag))
+                .Select(tag => PushAction.Create(tag.Id, tag))
                 .AddTo(Tags);
+        }
+
+        public void CreateWorkspaces(IEnumerable<IWorkspace> workspaces)
+        {
+            var list = workspaces.ToList();
+            if (list.Count == 0)
+                return;
+
+            Workspaces ??= new List<PushAction>();
+
+            list
+                .Select(ws => new Workspace(ws))
+                .Select(ws => PushAction.Create(ws.Id, ws))
+                .AddTo(Workspaces);
         }
 
         public void UpdatePreferences(IPreferences preferences)
@@ -93,7 +159,7 @@ namespace Toggl.Networking.Sync.Push
                 return;
 
             var networkPreferences = new Preferences(preferences);
-            Preferences = new SingletonUpdateAction<IPreferences>(networkPreferences);
+            Preferences = PushAction.UpdateSingleton(networkPreferences);
         }
 
         public void UpdateUser(IUser user)
@@ -102,7 +168,7 @@ namespace Toggl.Networking.Sync.Push
                 return;
 
             var networkUser = new User(user);
-            User = new SingletonUpdateAction<IUser>(networkUser);
+            User = PushAction.UpdateSingleton(networkUser);
         }
     }
 }

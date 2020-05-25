@@ -10,11 +10,10 @@ using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Generators;
 using Toggl.Core.Tests.Mocks;
 using Toggl.Storage.Models;
+using Toggl.Networking.Sync.Push;
 using Xunit;
 using System.Linq;
-using Toggl.Networking.Sync.Push;
 using static Toggl.Storage.SyncStatus;
-using Toggl.Core.Tests.Extensions;
 using Toggl.Networking.Network;
 
 namespace Toggl.Core.Tests.Interactors.Workspace
@@ -204,7 +203,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
                 var request = await interactor.Execute();
 
                 request.IsEmpty.Should().BeFalse();
-                request.TimeEntries.WhereMatchesGenericType(typeof(CreateAction<>)).Should().HaveCount(createdTimeEntriesCount);
+                request.TimeEntries.Where(a => a.Type == ActionType.Create).Should().HaveCount(createdTimeEntriesCount);
             }
 
             [Fact, LogIfTooSlow]
@@ -216,9 +215,8 @@ namespace Toggl.Core.Tests.Interactors.Workspace
                 var request = await interactor.Execute();
 
                 request.TimeEntries
-                    .WhereMatchesGenericType(typeof(CreateAction<>))
-                    .OfType<CreateAction<Networking.Models.TimeEntry>>()
-                    .All(te => te.Payload.CreatedWith == userAgentString)
+                    .Where(a => a.Type == ActionType.Create)
+                    .All(te => ((Networking.Models.TimeEntry)te.Payload).CreatedWith == userAgentString)
                     .Should().BeTrue();
             }
 
@@ -232,7 +230,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
                 var request = await interactor.Execute();
 
                 request.IsEmpty.Should().BeFalse();
-                request.TimeEntries.WhereMatchesGenericType(typeof(CreateAction<>)).Should().HaveCount(createdTimeEntriesCount);
+                request.TimeEntries.Where(a => a.Type == ActionType.Create).Should().HaveCount(createdTimeEntriesCount);
             }
 
             [Fact, LogIfTooSlow]
@@ -245,7 +243,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
                 var request = await interactor.Execute();
 
                 request.IsEmpty.Should().BeFalse();
-                request.TimeEntries.WhereMatchesGenericType(typeof(UpdateAction<>)).Should().HaveCount(updatedTimeEntriesCount);
+                request.TimeEntries.Where(a => a.Type == ActionType.Update).Should().HaveCount(updatedTimeEntriesCount);
             }
 
             [Fact, LogIfTooSlow]
@@ -258,7 +256,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
                 var request = await interactor.Execute();
 
                 request.IsEmpty.Should().BeFalse();
-                request.TimeEntries.OfType<DeleteAction>().Should().HaveCount(deletedTimeEntriesCount);
+                request.TimeEntries.Where(a => a.Type == ActionType.Delete).Should().HaveCount(deletedTimeEntriesCount);
             }
 
             private void returnsValueOrEmpty<TThreadsafe, TDatabase>(IDataSource<TThreadsafe, TDatabase> dataSource, IEnumerable<TThreadsafe> returnValue = null)

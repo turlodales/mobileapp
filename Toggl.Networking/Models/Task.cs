@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Toggl.Shared.Models;
 
 namespace Toggl.Networking.Models

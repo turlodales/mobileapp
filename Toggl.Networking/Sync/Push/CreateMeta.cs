@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Toggl.Shared;
 
 namespace Toggl.Networking.Sync.Push
 {
-    public sealed class CreateMeta : IMeta
+    [Preserve(AllMembers = true)]
+    public sealed class CreateMeta
     {
         public CreateMeta(long clientId)
         {

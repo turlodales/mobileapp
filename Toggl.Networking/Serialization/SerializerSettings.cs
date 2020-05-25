@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 using Toggl.Networking.Models;
 using Toggl.Networking.Serialization.Converters;
 using Toggl.Networking.Sync.Push.Serialization;
+using Toggl.Shared.Models;
 
 namespace Toggl.Networking.Serialization
 {
@@ -20,21 +21,21 @@ namespace Toggl.Networking.Serialization
                 DateFormatString = @"yyyy-MM-dd\THH:mm:ssK",
                 Converters = new List<JsonConverter>
                 {
-                    new EntityActionResultConverter<Client>(),
-                    new EntityActionResultConverter<Project>(),
-                    new EntityActionResultConverter<Tag>(),
-                    new EntityActionResultConverter<Task>(),
-                    new EntityActionResultConverter<TimeEntry>(),
-                    new EntityActionResultConverter<Workspace>(),
+                    new EntityActionResultConverter<IClient>(),
+                    new EntityActionResultConverter<IProject>(),
+                    new EntityActionResultConverter<ITag>(),
+                    new EntityActionResultConverter<ITask>(),
+                    new EntityActionResultConverter<ITimeEntry>(),
+                    new EntityActionResultConverter<IWorkspace>(),
 
-                    new ActionResultConverter<Client>(),
-                    new ActionResultConverter<Project>(),
-                    new ActionResultConverter<Tag>(),
-                    new ActionResultConverter<Task>(),
-                    new ActionResultConverter<TimeEntry>(),
-                    new ActionResultConverter<Workspace>(),
-                    new ActionResultConverter<User>(),
-                    new ActionResultConverter<Preferences>(),
+                    new ActionResultConverter<IClient, Client>(),
+                    new ActionResultConverter<IProject, Project>(),
+                    new ActionResultConverter<ITag, Tag>(),
+                    new ActionResultConverter<ITask, Task>(),
+                    new ActionResultConverter<ITimeEntry, TimeEntry>(),
+                    new ActionResultConverter<IWorkspace, Workspace>(),
+                    new ActionResultConverter<IUser, User>(),
+                    new ActionResultConverter<IPreferences, Preferences>(),
 
                     new JsonPartialEntityConverter()
                 }

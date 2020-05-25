@@ -7,7 +7,8 @@ using Toggl.Shared;
 namespace Toggl.Networking.Serialization.Converters
 {
     [Preserve(AllMembers = true)]
-    public class ActionResultConverter<T> : JsonConverter<IActionResult<T>>
+    public class ActionResultConverter<T, TClass> : JsonConverter<IActionResult<T>>
+        where TClass : T
     {
         public override bool CanRead => true;
         public override bool CanWrite => false;
@@ -30,7 +31,7 @@ namespace Toggl.Networking.Serialization.Converters
                     return new SuccessResult<T>();
                 }
 
-                var entity = serializer.Deserialize<T>(result.CreateReader());
+                var entity = serializer.Deserialize<TClass>(result.CreateReader());
                 return new SuccessPayloadResult<T>(entity);
             }
             else
