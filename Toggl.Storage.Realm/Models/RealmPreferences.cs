@@ -1,10 +1,12 @@
 ﻿using Realms;
 using Toggl.Shared;
 using Toggl.Storage.Models;
+using Toggl.Storage.Realm.Models;
 
 namespace Toggl.Storage.Realm
 {
-    internal partial class RealmPreferences : RealmObject, IDatabasePreferences
+    internal partial class RealmPreferences
+        : RealmObject, IDatabasePreferences, IPushable
     {
         public const long fakeId = 0;
 
@@ -41,5 +43,11 @@ namespace Toggl.Storage.Realm
         public bool CollapseTimeEntries { get; set; }
 
         public bool UseNewSync { get; set; }
+
+        public void PushFailed(string errorMessage)
+        {
+            SyncStatus = SyncStatus.SyncFailed;
+            LastSyncErrorMessage = errorMessage;
+        }
     }
 }

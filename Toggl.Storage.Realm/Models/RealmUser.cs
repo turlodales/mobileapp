@@ -3,10 +3,12 @@ using System;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Storage.Models;
+using Toggl.Storage.Realm.Models;
 
 namespace Toggl.Storage.Realm
 {
-    internal partial class RealmUser : RealmObject, IDatabaseUser
+    internal partial class RealmUser
+        : RealmObject, IDatabaseUser, IPushable
     {
         public string ApiToken { get; set; }
 
@@ -14,7 +16,7 @@ namespace Toggl.Storage.Realm
 
         public long? DefaultWorkspaceId { get; set; }
 
-        //Realm doesn't support enums 
+        //Realm doesn't support enums
         [Ignored]
         public BeginningOfWeek BeginningOfWeek
         {
@@ -41,5 +43,11 @@ namespace Toggl.Storage.Realm
         public string Language { get; set; }
 
         public string Timezone { get; set; }
+
+        public void PushFailed(string errorMessage)
+        {
+            SyncStatus = SyncStatus.SyncFailed;
+            LastSyncErrorMessage = errorMessage;
+        }
     }
 }
