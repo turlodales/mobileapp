@@ -10,6 +10,7 @@ using Toggl.Core.Autocomplete.Suggestions;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using static Toggl.Droid.Resource.Id;
+using Toggl.Droid.Helper;
 
 namespace Toggl.Droid.ViewHolders
 {
@@ -49,7 +50,7 @@ namespace Toggl.Droid.ViewHolders
 
         protected override void UpdateView()
         {
-            var projectColor = Color.ParseColor(Suggestion.ProjectColor);
+            var projectColor = Shared.Color.ParseAndAdjustToLabel(Suggestion.ProjectColor, ActiveTheme.Is.DarkTheme).ToNativeColor();
             projectLabel.Text = Suggestion.ProjectName;
             projectLabel.SetTextColor(projectColor);
 

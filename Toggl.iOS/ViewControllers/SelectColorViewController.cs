@@ -71,7 +71,7 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.SetSaturation.Inputs)
                 .DisposedBy(DisposeBag);
 
-            SliderView.Value = ViewModel.FirstCustomColor.GetHSV().value * SliderView.MaxValue;
+            SliderView.Value = ViewModel.FirstCustomColor.GetBrightness() * SliderView.MaxValue;
             SliderView.Rx().Value()
                 .Select(v => 1 - v)
                 .Subscribe(ViewModel.SetValue.Inputs)

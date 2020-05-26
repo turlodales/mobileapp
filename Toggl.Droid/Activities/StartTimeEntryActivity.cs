@@ -108,7 +108,7 @@ namespace Toggl.Droid.Activities
 
             descriptionField.TextObservable
                 .SubscribeOn(ThreadPoolScheduler.Instance)
-                .Throttle(typingThrottleDuration)
+                .Sample(typingThrottleDuration)
                 .Select(text => text.AsImmutableSpans(descriptionField.SelectionStart))
                 .Subscribe(ViewModel.SetTextSpans)
                 .DisposedBy(DisposeBag);

@@ -5,6 +5,7 @@ using Toggl.Core.Autocomplete.Suggestions;
 using Toggl.iOS.Cells;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -63,7 +64,9 @@ namespace Toggl.iOS.Views
             AmountOfTasksLabel.Text = Item.FormattedNumberOfTasks();
 
             //Color
-            var projectColor = new Color(Item.ProjectColor).ToNativeColor();
+            var projectColor = Color
+                .ParseAndAdjustToLabel(Item.ProjectColor, ActiveTheme.Is.DarkTheme)
+                .ToNativeColor();
             ProjectNameLabel.TextColor = projectColor;
             ProjectDotView.BackgroundColor = projectColor;
             SelectedProjectView.BackgroundColor = Item.Selected

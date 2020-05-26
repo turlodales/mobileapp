@@ -220,9 +220,21 @@ namespace Toggl.Core.UI.ViewModels
 
             switch (exception)
             {
-                case UnauthorizedException _:
-                    loginErrorMessageSubject.OnNext(Resources.IncorrectEmailOrPassword);
+                case UnauthorizedException unauthorizedException:
+                    var errorMessage = Resources.IncorrectEmailOrPasswordPleaseTryAgain;
+
+                    if (unauthorizedException.RemainingLoginAttempts == 0)
+                    {
+                        errorMessage = Resources.IncorrectEmailOrPasswordAccountIsLocked;
+                    }
+                    else if (unauthorizedException.RemainingLoginAttempts == 1)
+                    {
+                        errorMessage = Resources.IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked;
+                    }
+
+                    loginErrorMessageSubject.OnNext(errorMessage);
                     analyticsService.IncorrectEmailOrPasswordLoginFailure.Track();
+
                     break;
 
                 default:

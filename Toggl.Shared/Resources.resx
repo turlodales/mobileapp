@@ -179,6 +179,18 @@ mobile, desktop or web</value>
         <value>Include 8 or more characters, with at least one uppercase letter, lowercase letter, and a number.</value>
         <comment>Displayed under the password field to let the user know what criteria must be met when setting a password</comment>
     </data>
+    <data name="IncorrectEmailOrPassword" xml:space="preserve">
+        <value>Incorrect email or password.</value>
+        <comment>Displayed when signin couldn't be completed with the given credentials</comment>
+    </data>
+    <data name="IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked" xml:space="preserve">
+        <value>Incorrect email or password. One more try before account gets locked for 5 minutes.</value>
+        <comment>Displayed when signin couldn't be completed with the given credentials and if there's one more failed attempt, account will be locked</comment>
+    </data>
+    <data name="IncorrectEmailOrPasswordAccountIsLocked" xml:space="preserve">
+        <value>Incorrect email or password. Account is locked for 5 minutes. Account owner has been notified.</value>
+        <comment>Displayed when signin couldn't be completed with the given credentials and the account got locked due to excessive number of signin attempts</comment>
+    </data>
     <data name="LoginTitle" xml:space="preserve">
         <value>Log in</value>
         <comment>Title of the login button</comment>
@@ -216,7 +228,7 @@ mobile, desktop or web</value>
         <comment>Send email to reset password</comment>
     </data>
     <data name="LoginForgotPassword" xml:space="preserve">
-        <value>Forgot your password?</value>
+        <value>Forgot password?</value>
         <comment>Link to the password reset view</comment>
     </data>
     <data name="LoginGetHelpLoggingIn" xml:space="preserve">
@@ -260,12 +272,12 @@ mobile, desktop or web</value>
 reset your password</value>
         <comment>Helper text that appears below the email field in the password reset view</comment>
     </data>
-    <data name="IncorrectEmailOrPassword" xml:space="preserve">
+    <data name="IncorrectEmailOrPasswordPleaseTryAgain" xml:space="preserve">
         <value>Incorrect email/password. Please, try again.</value>
         <comment>Error message shown when authentication fails</comment>
     </data>
     <data name="InvalidEmailOrPassword" xml:space="preserve">
-        <value>Invalid email/password. Please, try again.</value>
+        <value>Invalid email or password. Please, try again.</value>
         <comment>Error message shown when authentication fails because of invalid e-mail/passwords</comment>
     </data>
     <data name="GenericLoginError" xml:space="preserve">

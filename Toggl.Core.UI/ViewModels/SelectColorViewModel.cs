@@ -49,11 +49,9 @@ namespace Toggl.Core.UI.ViewModels
             Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
 
-
-            var (customHue, customSaturation, customValue) = FirstCustomColor.GetHSV();
-            hue  = new BehaviorSubject<float>(customHue);
-            saturation  = new BehaviorSubject<float>(customSaturation);
-            value  = new BehaviorSubject<float>(customValue);
+            hue  = new BehaviorSubject<float>(FirstCustomColor.GetHue() / 360);
+            saturation  = new BehaviorSubject<float>(FirstCustomColor.GetSaturation());
+            value  = new BehaviorSubject<float>(FirstCustomColor.GetBrightness());
 
             // Public properties
             Hue = hue.AsDriver(schedulerProvider);
@@ -66,11 +64,9 @@ namespace Toggl.Core.UI.ViewModels
             SetValue = rxActionFactory.FromAction<float>(value.OnNext);
             SelectColor = rxActionFactory.FromAction<Color>(selectColor);
 
-            customColor = Observable.CombineLatest(hue, saturation, value, Colors.FromHSV)
+            customColor = Observable.CombineLatest(hue.Select(x => x * 360f), saturation, value, Color.FromHSB)
                 .SkipUntil(startCustomColorEmitting)
-                .Throttle(TimeSpan.FromMilliseconds(100), schedulerProvider.DefaultScheduler)
                 .Do(selectedColor.OnNext);
-
 
             var availableColors = Observable.Return(Colors.DefaultProjectColors)
                 .CombineLatest(customColor.StartWith(FirstCustomColor), combineAllColors);
@@ -93,10 +89,9 @@ namespace Toggl.Core.UI.ViewModels
                 if (AllowCustomColors)
                 {
                     startCustomColorEmitting.OnNext(Unit.Default);
-                    var colorComponents = FirstCustomColor.GetHSV();
-                    hue.OnNext(colorComponents.hue);
-                    saturation.OnNext(colorComponents.saturation);
-                    value.OnNext(colorComponents.value);
+                    hue.OnNext(FirstCustomColor.GetHue() / 360);
+                    saturation.OnNext(FirstCustomColor.GetSaturation());
+                    value.OnNext(FirstCustomColor.GetBrightness());
                 }
                 else
                 {

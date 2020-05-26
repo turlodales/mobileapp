@@ -9,6 +9,7 @@ using Toggl.Core.UI.ViewModels.MainLog;
 using Toggl.iOS.Extensions;
 using Toggl.Shared;
 using UIKit;
+using Toggl.iOS.Helper;
 
 namespace Toggl.iOS.Transformations
 {
@@ -28,7 +29,9 @@ namespace Toggl.iOS.Transformations
 
         public NSAttributedString Convert(TimeEntryLogItemViewModel timeEntryLogItemViewModel)
         {
-            var projectColor = new Color(timeEntryLogItemViewModel.ProjectColor).ToNativeColor();
+            var projectColor = Color
+                .ParseAndAdjustToLabel(timeEntryLogItemViewModel.ProjectColor, ActiveTheme.Is.DarkTheme)
+                .ToNativeColor();
             return Convert(
                 timeEntryLogItemViewModel.ProjectName,
                 timeEntryLogItemViewModel.TaskName,

@@ -5,6 +5,7 @@ using Toggl.Core.Autocomplete.Suggestions;
 using Toggl.iOS.Cells;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -63,7 +64,9 @@ namespace Toggl.iOS.Views.StartTimeEntry
             AmountOfTasksLabel.Text = taskAmoutLabelForCount(projectSuggestion.NumberOfTasks);
 
             //Color
-            var nativeProjectColor = new Color(projectSuggestion.ProjectColor).ToNativeColor();
+            var nativeProjectColor = Color
+                .ParseAndAdjustToLabel(projectSuggestion.ProjectColor, ActiveTheme.Is.DarkTheme)
+                .ToNativeColor();
             ProjectNameLabel.TextColor = nativeProjectColor;
             ProjectDotView.BackgroundColor = nativeProjectColor;
             SelectedProjectView.BackgroundColor = projectSuggestion.Selected
