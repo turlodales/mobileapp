@@ -204,8 +204,11 @@ namespace Toggl.iOS.ViewControllers
                 .Select(opacityForLoadingState)
                 .Subscribe(PasswordTextField.Rx().AnimatedAlpha())
                 .DisposedBy(DisposeBag);
+        }
 
-
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
             EmailTextField.BecomeFirstResponder();
         }
 
@@ -215,10 +218,10 @@ namespace Toggl.iOS.ViewControllers
             ScrollView.ContentInset = new UIEdgeInsets(0, 0, keyboardHeight, 0);
 
             var firstResponder = View.GetFirstResponder();
-            if (firstResponder != null && ScrollView.VisibleSize.Height - keyboardHeight < ScrollView.ContentSize.Height)
+            if (firstResponder != null && ScrollView.Frame.Height - keyboardHeight < ScrollView.ContentSize.Height)
             {
-                var scrollOffset = firstResponder.Frame.Y - (ScrollView.VisibleSize.Height - keyboardHeight) / 2;
-                ScrollView.SetContentOffset(new CoreGraphics.CGPoint(0, scrollOffset), true);
+                var scrollOffset = firstResponder.Frame.Y - (ScrollView.Frame.Height - keyboardHeight) / 2;
+                ScrollView.ContentOffset = new CoreGraphics.CGPoint(0, scrollOffset);
             }
         }
 
