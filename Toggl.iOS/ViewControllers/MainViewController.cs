@@ -13,7 +13,6 @@ using Toggl.Core.Models.Interfaces;
 using Toggl.Core.UI.Collections;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
-using Toggl.Core.UI.Onboarding.MainView;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.MainLog;
 using Toggl.Core.UI.ViewModels.MainLog.Identity;
@@ -26,8 +25,6 @@ using Toggl.iOS.Views;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
-using Toggl.Storage.Extensions;
-using Toggl.Storage.Onboarding;
 using UIKit;
 using static Toggl.Core.Analytics.EditTimeEntryOrigin;
 using static Toggl.Core.UI.Helper.Animation;
@@ -64,8 +61,6 @@ namespace Toggl.iOS.ViewControllers
         private bool viewInitialized;
         private CancellationTokenSource cardAnimationCancellation;
 
-        private DismissableOnboardingStep tapToEditStep;
-
         private CompositeDisposable disposeBag = new CompositeDisposable();
 
         private Subject<Unit> traitCollectionSubject = new Subject<Unit>();
@@ -95,10 +90,6 @@ namespace Toggl.iOS.ViewControllers
 
             WelcomeBackLabel.Text = Resources.LogEmptyStateTitle;
             WelcomeBackDescriptionLabel.Text = Resources.LogEmptyStateText;
-            CreatedFirstTimeEntryLabel.Text = Resources.YouHaveCreatedYourFirstTimeEntry;
-            TapToEditItLabel.Text = Resources.TapToEditIt;
-            StartTimerBubbleLabel.Text = Resources.TapToStartTimer;
-            TapToStopTimerLabel.Text = Resources.TapToStopTimer;
             FeedbackSentSuccessTitleLabel.Text = Resources.DoneWithExclamationMark.ToUpper();
             FeedbackSentDescriptionLabel.Text = Resources.ThankYouForTheFeedback;
 
@@ -108,7 +99,6 @@ namespace Toggl.iOS.ViewControllers
             tableViewSource = new TimeEntriesLogViewSource();
 
             prepareViews();
-            prepareOnboarding();
 
             ViewModel.SwipeActionsEnabled
                 .Subscribe(tableViewSource.SetSwipeActionsEnabled)
@@ -132,10 +122,6 @@ namespace Toggl.iOS.ViewControllers
 
             tableViewSource.FirstCell
                 .Subscribe(onFirstTimeEntryChanged)
-                .DisposedBy(DisposeBag);
-
-            tableViewSource.Rx().Scrolled()
-                .Subscribe(onTableScroll)
                 .DisposedBy(DisposeBag);
 
             tableViewSource.ContinueTap
@@ -163,10 +149,6 @@ namespace Toggl.iOS.ViewControllers
                 .OfType<SuggestionLogItemViewModel>()
                 .Select(item => item.Suggestion)
                 .Subscribe(ViewModel.SuggestionsViewModel.StartTimeEntry.Inputs)
-                .DisposedBy(DisposeBag);
-
-            tableViewSource.Rx().ItemsChanged()
-                .Subscribe(updateTooltipPositions)
                 .DisposedBy(DisposeBag);
 
             ViewModel.TimeEntriesViewModel.TimeEntriesPendingDeletion
@@ -298,16 +280,6 @@ namespace Toggl.iOS.ViewControllers
             activity.WebPageUrl = Handoff.Url.Log;
             UserActivity = activity;
             activity.BecomeCurrent();
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-
-            if (TapToEditBubbleView != null && !TapToEditBubbleView.Hidden)
-            {
-                tapToEditStep?.Dismiss();
-            }
         }
 
         private string createAccessibilityLabelForRunningEntryCard(IThreadSafeTimeEntry timeEntry)
@@ -721,50 +693,9 @@ namespace Toggl.iOS.ViewControllers
             emptyStateView.TopAnchor.ConstraintEqualTo(TimeEntriesLogTableView.TopAnchor).Active = true;
         }
 
-        private void prepareOnboarding()
-        {
-            var storage = ViewModel.OnboardingStorage;
-
-            var timelineIsEmpty = Observable.CombineLatest(
-                tableViewSource.FirstCell.Select(cell => cell == null),
-                ViewModel.LogEmpty,
-                CommonFunctions.Or);
-
-            new StartTimeEntryOnboardingStep(storage)
-                .ManageDismissableTooltip(StartTimeEntryOnboardingBubbleView, storage)
-                .DisposedBy(disposeBag);
-
-            new StopTimeEntryOnboardingStep(storage, ViewModel.IsTimeEntryRunning)
-                .ManageDismissableTooltip(StopTimeEntryOnboardingBubbleView, storage)
-                .DisposedBy(disposeBag);
-
-            tapToEditStep = new EditTimeEntryOnboardingStep(storage, timelineIsEmpty)
-                .ToDismissable(nameof(EditTimeEntryOnboardingStep), storage);
-
-            tapToEditStep.DismissByTapping(TapToEditBubbleView);
-            tapToEditStep.ManageVisibilityOf(TapToEditBubbleView).DisposedBy(disposeBag);
-        }
-
-        private void onTableScroll(CGPoint offset)
-        {
-            updateTooltipPositions();
-        }
-
         private void onFirstTimeEntryChanged(TimeEntriesLogViewCell nextFirstTimeEntry)
         {
             firstTimeEntryCell = nextFirstTimeEntry;
-            updateTooltipPositions();
-        }
-
-        private void updateTooltipPositions()
-        {
-            if (TapToEditBubbleView.Hidden) return;
-            if (firstTimeEntryCell == null) return;
-
-            var position = TimeEntriesLogTableView.ConvertRectToView(
-                firstTimeEntryCell.Frame, TimeEntriesLogTableView.Superview);
-
-            TapToEditBubbleViewTopConstraint.Constant = position.Bottom + tooltipOffset;
         }
     }
 }

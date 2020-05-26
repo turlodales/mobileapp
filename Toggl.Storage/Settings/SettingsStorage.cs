@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
-using Toggl.Storage.Onboarding;
 
 namespace Toggl.Storage.Settings
 {
@@ -310,10 +309,6 @@ namespace Toggl.Storage.Settings
         public bool DidShowSiriClipboardInstruction() => keyValueStorage.GetBool(didShowSiriClipboardInstructionKey);
 
         public void SetDidShowSiriClipboardInstruction(bool value) => keyValueStorage.SetBool(didShowSiriClipboardInstructionKey, value);
-
-        public bool WasDismissed(IDismissable dismissable) => keyValueStorage.GetBool(onboardingPrefix + dismissable.Key);
-
-        public void Dismiss(IDismissable dismissable) => keyValueStorage.SetBool(onboardingPrefix + dismissable.Key, true);
 
         void IOnboardingStorage.Reset()
         {

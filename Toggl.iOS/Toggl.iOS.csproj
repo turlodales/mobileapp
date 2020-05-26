@@ -1429,9 +1429,6 @@
     <InterfaceDefinition Include="ViewControllers\SelectTagsViewController.xib" />
     <InterfaceDefinition Include="Views\Client\ClientViewCell.xib" />
     <InterfaceDefinition Include="Views\Client\CreateClientViewCell.xib" />
-    <InterfaceDefinition Include="Views\Onboarding\TrackPage.xib" />
-    <InterfaceDefinition Include="Views\Onboarding\MostUsedPage.xib" />
-    <InterfaceDefinition Include="Views\Onboarding\ReportsPage.xib" />
     <InterfaceDefinition Include="ViewControllers\EditProjectViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\SelectColorViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\SelectClientViewController.xib" />
@@ -1708,18 +1705,6 @@
     <Compile Include="Views\MarqueeView.cs" />
     <Compile Include="Views\Onboarding\PeriscopeView.cs" />
     <Compile Include="Views\Onboarding\OnboardingLoadingView.cs" />
-    <Compile Include="Views\Onboarding\TrackPage.cs" />
-    <Compile Include="Views\Onboarding\TrackPage.designer.cs">
-      <DependentUpon>TrackPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Onboarding\MostUsedPage.cs" />
-    <Compile Include="Views\Onboarding\MostUsedPage.designer.cs">
-      <DependentUpon>MostUsedPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Onboarding\ReportsPage.cs" />
-    <Compile Include="Views\Onboarding\ReportsPage.designer.cs">
-      <DependentUpon>ReportsPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\FadeView.cs" />
     <Compile Include="Views\Interfaces\IHeaderViewCellWithHideableTopSeparator.cs" />
     <Compile Include="ViewControllers\EditProjectViewController.cs" />
@@ -1835,7 +1820,6 @@
     <Compile Include="Views\Log\TimeEntryMockView.designer.cs">
       <DependentUpon>TimeEntryMockView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\OnboardingExtensions.cs" />
     <Compile Include="Extensions\LabelExtensions.cs" />
     <Compile Include="ViewControllers\Settings\LicensesViewController.cs" />
     <Compile Include="ViewControllers\Settings\SettingsViewController.cs" />

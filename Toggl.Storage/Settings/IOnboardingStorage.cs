@@ -1,5 +1,4 @@
 ﻿using System;
-using Toggl.Storage.Onboarding;
 
 namespace Toggl.Storage.Settings
 {
@@ -35,9 +34,6 @@ namespace Toggl.Storage.Settings
 
         void EditedTimeEntry();
         void SelectsProject();
-
-        bool WasDismissed(IDismissable dismissable);
-        void Dismiss(IDismissable dismissable);
 
         void SetDidShowRatingView();
         int NumberOfTimesRatingViewWasShown();

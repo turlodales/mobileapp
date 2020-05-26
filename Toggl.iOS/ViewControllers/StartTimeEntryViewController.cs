@@ -2,18 +2,12 @@
 using Foundation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Security.Policy;
-using System.Threading;
 using Toggl.Core.Autocomplete;
 using Toggl.Core.Autocomplete.Suggestions;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
-using Toggl.Core.UI.Onboarding.CreationView;
-using Toggl.Core.UI.Onboarding.StartTimeEntryView;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Autocomplete;
 using Toggl.iOS.Extensions;
@@ -37,10 +31,6 @@ namespace Toggl.iOS.ViewControllers
         private UIImage greyCheckmarkButtonImage;
         private UIImage greenCheckmarkButtonImage;
 
-        private IDisposable descriptionDisposable;
-        private IDisposable addProjectOrTagOnboardingDisposable;
-        private IDisposable disabledConfirmationButtonOnboardingDisposable;
-
         private ISubject<bool> isDescriptionEmptySubject = new BehaviorSubject<bool>(true);
 
         private IUITextInputDelegate emptyInputDelegate = new EmptyInputDelegate();
@@ -55,15 +45,6 @@ namespace Toggl.iOS.ViewControllers
             base.Dispose(disposing);
 
             if (!disposing) return;
-
-            descriptionDisposable?.Dispose();
-            descriptionDisposable = null;
-
-            addProjectOrTagOnboardingDisposable?.Dispose();
-            addProjectOrTagOnboardingDisposable = null;
-
-            disabledConfirmationButtonOnboardingDisposable?.Dispose();
-            disabledConfirmationButtonOnboardingDisposable = null;
 
             TimeInput.LostFocus -= onTimeInputLostFocus;
         }
@@ -106,10 +87,7 @@ namespace Toggl.iOS.ViewControllers
 
             BottomOptionsSheet.InsertSeparator(UIRectEdge.Top);
 
-            AddProjectBubbleLabel.Text = Resources.AddProjectBubbleText;
-
             prepareViews();
-            prepareOnboarding();
 
             var source = new StartTimeEntryTableViewSource(SuggestionsTableView);
             SuggestionsTableView.Source = source;
@@ -404,45 +382,6 @@ namespace Toggl.iOS.ViewControllers
             ViewModel.ToggleTasks.Execute(parameter);
 
             SuggestionsTableView.CorrectOffset(offset, frameHeight);
-        }
-
-        private void prepareOnboarding()
-        {
-            prepareAddProjectOnboardingStep();
-            prepareDisableConfirmationButtonOnboardingStep();
-        }
-
-        private void prepareAddProjectOnboardingStep()
-        {
-            var onboardingStorage = ViewModel.OnboardingStorage;
-            var addProjectOrtagOnboardingStep = new AddProjectOrTagOnboardingStep(
-                onboardingStorage,
-                ViewModel.DataSource
-            );
-
-            addProjectOrTagOnboardingDisposable = addProjectOrtagOnboardingStep
-                .ManageDismissableTooltip(AddProjectOnboardingBubble, onboardingStorage);
-        }
-
-        private void prepareDisableConfirmationButtonOnboardingStep()
-        {
-            greyCheckmarkButtonImage = UIImage.FromBundle("icCheckGrey");
-            greenCheckmarkButtonImage = UIImage.FromBundle("doneGreen");
-
-            var disabledConfirmationButtonOnboardingStep
-                = new DisabledConfirmationButtonOnboardingStep(
-                    ViewModel.OnboardingStorage,
-                    isDescriptionEmptySubject.AsObservable());
-
-            disabledConfirmationButtonOnboardingDisposable
-                = disabledConfirmationButtonOnboardingStep
-                    .ShouldBeVisible
-                    .ObserveOn(IosDependencyContainer.Instance.SchedulerProvider.MainScheduler)
-                    .Subscribe(visible =>
-                    {
-                        var image = visible ? greyCheckmarkButtonImage : greenCheckmarkButtonImage;
-                        DoneButton.SetImage(image, UIControlState.Normal);
-                    });
         }
     }
 }

@@ -2,14 +2,10 @@
 using Foundation;
 using System;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using Toggl.Core.Analytics;
-using Toggl.Core.Extensions;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
-using Toggl.Core.UI.Onboarding.EditView;
 using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
@@ -18,7 +14,6 @@ using Toggl.iOS.Transformations;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
-using Math = System.Math;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -29,7 +24,6 @@ namespace Toggl.iOS.ViewControllers
         private const float nonScrollableContentHeight = 116f;
         private const double preferredIpadHeight = 228;
 
-        private IDisposable projectOnboardingDisposable;
         private IDisposable contentSizeChangedDisposable;
 
         private ProjectTaskClientToAttributedString projectTaskClientToAttributedString;
@@ -57,7 +51,6 @@ namespace Toggl.iOS.ViewControllers
 
             localizeLabels();
             prepareViews();
-            prepareOnboarding();
 
             contentSizeChangedDisposable = ScrollViewContent.AddObserver(boundsKey, NSKeyValueObservingOptions.New, onContentSizeChanged);
 
@@ -312,7 +305,6 @@ namespace Toggl.iOS.ViewControllers
             EndDescriptionLabel.Text = Resources.EndTime;
             ErrorMessageTitleLabel.Text = Resources.Oops;
             AddProjectTaskLabel.Text = Resources.AddProjectTask;
-            CategorizeWithProjectsLabel.Text = Resources.CategorizeYourTimeWithProjects;
             AddTagsLabel.Text = Resources.AddTags;
             DeleteButton.SetTitle(Resources.Delete, UIControlState.Normal);
             ConfirmButton.SetTitle(Resources.ConfirmChanges, UIControlState.Normal);
@@ -347,14 +339,6 @@ namespace Toggl.iOS.ViewControllers
         {
             var topOffset = (textView.Bounds.Height - textView.ContentSize.Height) / 2;
             textView.ContentInset = new UIEdgeInsets(topOffset, 0, 0, 0);
-        }
-
-        private void prepareOnboarding()
-        {
-            var storage = ViewModel.OnboardingStorage;
-
-            projectOnboardingDisposable = new CategorizeTimeUsingProjectsOnboardingStep(storage, ViewModel.ProjectClientTask.Select(x => x.HasProject).AsObservable())
-                .ManageDismissableTooltip(CategorizeWithProjectsBubbleView, storage);
         }
 
         private void onContentSizeChanged(NSObservedChange change)
@@ -421,9 +405,6 @@ namespace Toggl.iOS.ViewControllers
 
             contentSizeChangedDisposable?.Dispose();
             contentSizeChangedDisposable = null;
-
-            projectOnboardingDisposable?.Dispose();
-            projectOnboardingDisposable = null;
         }
 
         protected override void KeyboardWillShow(object sender, UIKeyboardEventArgs e)

@@ -33,7 +33,6 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <BundleAssemblies>false</BundleAssemblies>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
@@ -59,7 +58,6 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkMode>Full</AndroidLinkMode>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
@@ -85,7 +83,6 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkMode>Full</AndroidLinkMode>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
@@ -549,9 +546,6 @@
     <Compile Include="Activities\EditDurationActivity.ViewBinds.cs">
       <DependentUpon>EditDurationActivity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Activities\EditTimeEntryActivity.Onboarding.cs">
-      <DependentUpon>EditTimeEntryActivity.cs</DependentUpon>
-    </Compile>
     <Compile Include="Activities\ForgotPasswordActivity.cs" />
     <Compile Include="Activities\ForgotPasswordActivity.ViewBinds.cs">
       <DependentUpon>ForgotPasswordActivity.cs</DependentUpon>
@@ -699,7 +693,6 @@
     <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\DrawableExtensions.cs" />
     <Compile Include="Extensions\MotionEventExtensions.cs" />
-    <Compile Include="Extensions\OnboardingExtensions.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Extensions\PopupOffsets.cs" />
     <Compile Include="Extensions\PopupWindowWithDefaultGravityExtenstions.cs" />
@@ -880,9 +873,6 @@
     </Compile>
     <Compile Include="Fragments\MainFragment.cs" />
     <Compile Include="Fragments\MainFragment.ViewBinds.cs">
-      <DependentUpon>MainFragment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Fragments\MainFragment.Onboardings.cs">
       <DependentUpon>MainFragment.cs</DependentUpon>
     </Compile>
     <Compile Include="Adapters\UserCalendarsRecyclerAdapter.cs" />

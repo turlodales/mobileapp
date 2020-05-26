@@ -38,12 +38,6 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint ButtonsContainerBottomConstraint { get; set; }
 
 		[Outlet]
-		UIKit.UIView CategorizeWithProjectsBubbleView { get; set; }
-
-		[Outlet]
-		UIKit.UILabel CategorizeWithProjectsLabel { get; set; }
-
-		[Outlet]
 		UIKit.UIButton CloseButton { get; set; }
 
 		[Outlet]
@@ -172,14 +166,9 @@ namespace Toggl.iOS.ViewControllers
 				BillableView = null;
 			}
 
-			if (CategorizeWithProjectsBubbleView != null) {
-				CategorizeWithProjectsBubbleView.Dispose ();
-				CategorizeWithProjectsBubbleView = null;
-			}
-
-			if (CategorizeWithProjectsLabel != null) {
-				CategorizeWithProjectsLabel.Dispose ();
-				CategorizeWithProjectsLabel = null;
+			if (ButtonsContainerBottomConstraint != null) {
+				ButtonsContainerBottomConstraint.Dispose ();
+				ButtonsContainerBottomConstraint = null;
 			}
 
 			if (CloseButton != null) {
@@ -195,11 +184,6 @@ namespace Toggl.iOS.ViewControllers
 			if (DeleteButton != null) {
 				DeleteButton.Dispose ();
 				DeleteButton = null;
-			}
-
-			if (ButtonsContainerBottomConstraint != null) {
-				ButtonsContainerBottomConstraint.Dispose ();
-				ButtonsContainerBottomConstraint = null;
 			}
 
 			if (DescriptionTextView != null) {

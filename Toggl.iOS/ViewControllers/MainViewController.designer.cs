@@ -13,9 +13,6 @@ namespace Toggl.iOS.ViewControllers
 	partial class MainViewController
 	{
 		[Outlet]
-		UIKit.UILabel CreatedFirstTimeEntryLabel { get; set; }
-
-		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		Toggl.iOS.Views.AccessibilityAwareView CurrentTimeEntryCard { get; set; }
 
@@ -48,32 +45,11 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIImageView StartTimeEntryButton { get; set; }
 
 		[Outlet]
-		UIKit.UIView StartTimeEntryOnboardingBubbleView { get; set; }
-
-		[Outlet]
-		UIKit.UILabel StartTimerBubbleLabel { get; set; }
-
-		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.UIButton StopTimeEntryButton { get; set; }
 
 		[Outlet]
-		UIKit.UIView StopTimeEntryOnboardingBubbleView { get; set; }
-
-		[Outlet]
 		UIKit.UIView TableShadow { get; set; }
-
-		[Outlet]
-		UIKit.UIView TapToEditBubbleView { get; set; }
-
-		[Outlet]
-		UIKit.NSLayoutConstraint TapToEditBubbleViewTopConstraint { get; set; }
-
-		[Outlet]
-		UIKit.UILabel TapToEditItLabel { get; set; }
-
-		[Outlet]
-		UIKit.UILabel TapToStopTimerLabel { get; set; }
 
 		[Outlet]
 		Toggl.iOS.Views.TimeEntriesLogTableView TimeEntriesLogTableView { get; set; }
@@ -92,11 +68,6 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (CreatedFirstTimeEntryLabel != null) {
-				CreatedFirstTimeEntryLabel.Dispose ();
-				CreatedFirstTimeEntryLabel = null;
-			}
-
 			if (CurrentTimeEntryCard != null) {
 				CurrentTimeEntryCard.Dispose ();
 				CurrentTimeEntryCard = null;
@@ -142,44 +113,14 @@ namespace Toggl.iOS.ViewControllers
 				StartTimeEntryButton = null;
 			}
 
-			if (StartTimeEntryOnboardingBubbleView != null) {
-				StartTimeEntryOnboardingBubbleView.Dispose ();
-				StartTimeEntryOnboardingBubbleView = null;
-			}
-
-			if (StartTimerBubbleLabel != null) {
-				StartTimerBubbleLabel.Dispose ();
-				StartTimerBubbleLabel = null;
-			}
-
 			if (StopTimeEntryButton != null) {
 				StopTimeEntryButton.Dispose ();
 				StopTimeEntryButton = null;
 			}
 
-			if (StopTimeEntryOnboardingBubbleView != null) {
-				StopTimeEntryOnboardingBubbleView.Dispose ();
-				StopTimeEntryOnboardingBubbleView = null;
-			}
-
-			if (TapToEditBubbleView != null) {
-				TapToEditBubbleView.Dispose ();
-				TapToEditBubbleView = null;
-			}
-
-			if (TapToEditBubbleViewTopConstraint != null) {
-				TapToEditBubbleViewTopConstraint.Dispose ();
-				TapToEditBubbleViewTopConstraint = null;
-			}
-
-			if (TapToEditItLabel != null) {
-				TapToEditItLabel.Dispose ();
-				TapToEditItLabel = null;
-			}
-
-			if (TapToStopTimerLabel != null) {
-				TapToStopTimerLabel.Dispose ();
-				TapToStopTimerLabel = null;
+			if (TableShadow != null) {
+				TableShadow.Dispose ();
+				TableShadow = null;
 			}
 
 			if (TimeEntriesLogTableView != null) {
@@ -205,11 +146,6 @@ namespace Toggl.iOS.ViewControllers
 			if (WelcomeBackView != null) {
 				WelcomeBackView.Dispose ();
 				WelcomeBackView = null;
-			}
-
-			if (TableShadow != null) {
-				TableShadow.Dispose ();
-				TableShadow = null;
 			}
 		}
 	}

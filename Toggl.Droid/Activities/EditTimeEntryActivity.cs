@@ -49,18 +49,6 @@ namespace Toggl.Droid.Activities
             ViewModel.TimeEntryIds = viewModelTimeEntryIds;
         }
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-            resetOnboardingOnResume();
-        }
-
-        protected override void OnStop()
-        {
-            base.OnStop();
-            clearOnboardingOnStop();
-        }
-
         protected override void OnSaveInstanceState(Bundle outState)
         {
             outState?.PutLongArray(nameof(ViewModel.TimeEntryIds), ViewModel.TimeEntryIds);
@@ -222,7 +210,7 @@ namespace Toggl.Droid.Activities
                 .Subscribe(ViewModel.Delete.Inputs)
                 .DisposedBy(DisposeBag);
         }
-        
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.OneButtonMenu, menu);

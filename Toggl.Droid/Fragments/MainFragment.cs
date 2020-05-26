@@ -200,10 +200,6 @@ namespace Toggl.Droid.Fragments
 
             setupItemTouchHelper(touchCallback);
 
-            ViewModel.TimeEntriesCount
-                .Subscribe(timeEntriesCountSubject)
-                .DisposedBy(DisposeBag);
-
             ViewModel.ShouldReloadTimeEntryLog
                 .Subscribe(reload)
                 .DisposedBy(DisposeBag);
@@ -224,7 +220,6 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(_ => playButton.StopAnimation())
                 .DisposedBy(DisposeBag);
 
-            setupOnboardingSteps();
         }
 
         private void updateMainLog(IImmutableList<AnimatableSectionModel<MainLogSectionViewModel, MainLogItemViewModel, IMainLogKey>> items)
