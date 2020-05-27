@@ -80,6 +80,12 @@ namespace Toggl.Shared
         public bool Equals(Color other)
             => this == other;
 
+        public static Color ParseAndAdjustToUserTheme(string hex, bool isInDarkMode)
+            => new Color(hex).AdjustForUserTheme(isInDarkMode);
+
+        public static Color ParseAndAdjustToLabel(string hex, bool isInDarkMode)
+            => new Color(hex).ToLabelColor(isInDarkMode);
+
         public static Color FromHSB(float hue, float saturation, float brightness)
         {
             if (!hue.IsInRange(0F, 360F))
@@ -91,57 +97,56 @@ namespace Toggl.Shared
             if (!brightness.IsInRange(0F, 1F))
                 throw new ArgumentOutOfRangeException(nameof(brightness));
 
-            if (0 == saturation)
-            {
-                var normalBrightness = Convert.ToByte(brightness * 255);
-                return new Color(normalBrightness, normalBrightness, normalBrightness);
-            }
+            hue /= 360.0f;
+            byte r = 0, g = 0, b = 0;
 
-            float fMax, fMid, fMin;
-            int iSextant;
-            byte iMax, iMid, iMin;
-
-            if (0.5 < brightness)
+            if (saturation == 0)
             {
-                fMax = brightness - (brightness * saturation) + saturation;
-                fMin = brightness + (brightness * saturation) - saturation;
+                r = g = b = (byte)(brightness * 255.0f + 0.5f);
             }
             else
             {
-                fMax = brightness + (brightness * saturation);
-                fMin = brightness - (brightness * saturation);
+                float h = (hue - (byte)Floor(hue)) * 6.0f;
+                float f = h - (byte)Floor(h);
+                float p = brightness * (1.0f - saturation);
+                float q = brightness * (1.0f - saturation * f);
+                float t = brightness * (1.0f - (saturation * (1.0f - f)));
+                switch ((int)h)
+                {
+                    case 0:
+                        r = (byte)(brightness * 255.0f + 0.5f);
+                        g = (byte)(t * 255.0f + 0.5f);
+                        b = (byte)(p * 255.0f + 0.5f);
+                        break;
+                    case 1:
+                        r = (byte)(q * 255.0f + 0.5f);
+                        g = (byte)(brightness * 255.0f + 0.5f);
+                        b = (byte)(p * 255.0f + 0.5f);
+                        break;
+                    case 2:
+                        r = (byte)(p * 255.0f + 0.5f);
+                        g = (byte)(brightness * 255.0f + 0.5f);
+                        b = (byte)(t * 255.0f + 0.5f);
+                        break;
+                    case 3:
+                        r = (byte)(p * 255.0f + 0.5f);
+                        g = (byte)(q * 255.0f + 0.5f);
+                        b = (byte)(brightness * 255.0f + 0.5f);
+                        break;
+                    case 4:
+                        r = (byte)(t * 255.0f + 0.5f);
+                        g = (byte)(p * 255.0f + 0.5f);
+                        b = (byte)(brightness * 255.0f + 0.5f);
+                        break;
+                    case 5:
+                        r = (byte)(brightness * 255.0f + 0.5f);
+                        g = (byte)(p * 255.0f + 0.5f);
+                        b = (byte)(q * 255.0f + 0.5f);
+                        break;
+                }
             }
 
-            iSextant = (int)Floor(hue / 60f);
-            if (300f <= hue)
-            {
-                hue -= 360f;
-            }
-
-            hue /= 60f;
-            hue -= 2f * (float)Floor(((iSextant + 1f) % 6f) / 2f);
-            if (0 == iSextant % 2)
-            {
-                fMid = (hue * (fMax - fMin)) + fMin;
-            }
-            else
-            {
-                fMid = fMin - (hue * (fMax - fMin));
-            }
-
-            iMax = Convert.ToByte(fMax * 255);
-            iMid = Convert.ToByte(fMid * 255);
-            iMin = Convert.ToByte(fMin * 255);
-
-            return iSextant switch
-            {
-                1 => new Color(iMid, iMax, iMin),
-                2 => new Color(iMin, iMax, iMid),
-                3 => new Color(iMin, iMid, iMax),
-                4 => new Color(iMid, iMin, iMax),
-                5 => new Color(iMax, iMin, iMid),
-                _ => new Color(iMax, iMid, iMin)
-            };
+            return new Color(r, g, b);
         }
     }
 
@@ -149,15 +154,15 @@ namespace Toggl.Shared
     {
         public static Color AdjustForUserTheme(this Color color, bool isUsingDarkMode)
         {
+            if (!isUsingDarkMode)
+                return color;
+
             var hue = color.GetHue();
             var saturation = color.GetSaturation();
             var brightness = color.GetBrightness();
 
-            if (isUsingDarkMode)
-            {
-                saturation = AdjustSaturationToDarkMode(saturation, brightness);
-                brightness = AdjustBrightnessToDarkMode(brightness);
-            }
+            saturation = AdjustSaturationToDarkMode(saturation, brightness);
+            brightness = AdjustBrightnessToDarkMode(brightness);
 
             return Color.FromHSB(hue, saturation, brightness);
         }
@@ -226,56 +231,21 @@ namespace Toggl.Shared
 
         public static float GetSaturation(this Color color)
         {
-            float r = (float)color.Red / 255.0f;
-            float g = (float)color.Green / 255.0f;
-            float b = (float)color.Blue / 255.0f;
+            var min = Min(color.Red, Min(color.Green, color.Blue));
+            var max = Max(color.Red, Max(color.Green, color.Blue));
+            var delta = max - min;
 
-            float max, min;
-            float l, s = 0;
+            if (delta == 0)
+                return 0;
 
-            max = r; min = r;
-
-            if (g > max) max = g;
-            if (b > max) max = b;
-
-            if (g < min) min = g;
-            if (b < min) min = b;
-
-            // if max == min, then there is no color and
-            // the saturation is zero.
-            if (max != min)
-            {
-                l = (max + min) / 2;
-
-                if (l <= .5)
-                {
-                    s = (max - min) / (max + min);
-                }
-                else
-                {
-                    s = (max - min) / (2 - max - min);
-                }
-            }
-            return s;
+            return delta / (float)max;
         }
 
         public static float GetBrightness(this Color color)
         {
-            float r = (float)color.Red / 255.0f;
-            float g = (float)color.Green / 255.0f;
-            float b = (float)color.Blue / 255.0f;
+            var max = Max(color.Red, Max(color.Green, color.Blue));
 
-            float max, min;
-
-            max = r; min = r;
-
-            if (g > max) max = g;
-            if (b > max) max = b;
-
-            if (g < min) min = g;
-            if (b < min) min = b;
-
-            return (max + min) / 2;
+            return (float)(max / 255d);
         }
 
         public static string ToHexString(this Color color)

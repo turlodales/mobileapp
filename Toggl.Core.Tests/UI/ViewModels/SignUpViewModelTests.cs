@@ -556,7 +556,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         ViewModel.SignUp.Execute();
                         TestScheduler.Start();
 
-                        observer.Values().Should().BeEquivalentTo(new[] { "", Resources.IncorrectEmailOrPassword });
+                        observer.Values().Should().BeEquivalentTo(new[] { "", Resources.IncorrectEmailOrPasswordPleaseTryAgain });
                     }
 
                     [Fact, LogIfTooSlow]

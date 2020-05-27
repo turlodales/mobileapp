@@ -225,6 +225,7 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Resources\Colors.xcassets\AlwaysRedErrorText.colorset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -1547,6 +1548,7 @@
     <Compile Include="Extensions\TimeEntryDisplayInfoExtensions.cs" />
     <Compile Include="Extensions\SuggestionExtensions.cs" />
     <Compile Include="Extensions\ViewControllerExtensions.cs" />
+    <Compile Include="Helper\ActiveTheme.cs" />
     <Compile Include="Helper\PermissionsHelper.cs" />
     <Compile Include="Helper\KeyCommandFactory.cs" />
     <Compile Include="Presentation\IosPresenter.cs" />

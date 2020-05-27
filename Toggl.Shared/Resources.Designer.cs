@@ -10,6 +10,7 @@
 
 namespace Toggl.Shared {
     using System;
+    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -127,6 +128,24 @@ namespace Toggl.Shared {
         public static string StrongPasswordCriteria {
             get {
                 return ResourceManager.GetString("StrongPasswordCriteria", resourceCulture);
+            }
+        }
+        
+        public static string IncorrectEmailOrPassword {
+            get {
+                return ResourceManager.GetString("IncorrectEmailOrPassword", resourceCulture);
+            }
+        }
+        
+        public static string IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked {
+            get {
+                return ResourceManager.GetString("IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked", resourceCulture);
+            }
+        }
+        
+        public static string IncorrectEmailOrPasswordAccountIsLocked {
+            get {
+                return ResourceManager.GetString("IncorrectEmailOrPasswordAccountIsLocked", resourceCulture);
             }
         }
         
@@ -250,9 +269,9 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string IncorrectEmailOrPassword {
+        public static string IncorrectEmailOrPasswordPleaseTryAgain {
             get {
-                return ResourceManager.GetString("IncorrectEmailOrPassword", resourceCulture);
+                return ResourceManager.GetString("IncorrectEmailOrPasswordPleaseTryAgain", resourceCulture);
             }
         }
         

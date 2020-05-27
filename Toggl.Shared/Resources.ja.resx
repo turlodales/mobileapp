@@ -138,13 +138,25 @@
     <data name="Yesterday" xml:space="preserve">
         <value>昨日</value>
     </data>
-    <data name="IncorrectEmailOrPassword" xml:space="preserve">
+    <data name="IncorrectEmailOrPasswordPleaseTryAgain" xml:space="preserve">
         <value>メール/パスワードが違います。
 もう一度お試しください</value>
     </data>
     <data name="InvalidEmailOrPassword" xml:space="preserve">
         <value>メール/パスワードは無効です。
 もう一度お試しください</value>
+    </data>
+    <data name="StrongPasswordCriteria" xml:space="preserve">
+        <value>8文字以上で大文字・小文字・数字を最低1回ずつ使用してください。</value>
+    </data>
+    <data name="IncorrectEmailOrPassword" xml:space="preserve">
+        <value>メールまたはパスワードが間違っています。</value>
+    </data>
+    <data name="IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked" xml:space="preserve">
+        <value>メールまたはパスワードが間違っています。もう一度間違えると5分間アカウントにロックがかかります。</value>
+    </data>
+    <data name="IncorrectEmailOrPasswordAccountIsLocked" xml:space="preserve">
+        <value>メールまたはパスワードが間違っています。アカウントがロックされました。アカウントの持ち主に通知されました。</value>
     </data>
     <data name="GenericLoginError" xml:space="preserve">
         <value>ログインに失敗しました。

@@ -138,7 +138,7 @@
     <data name="Yesterday" xml:space="preserve">
         <value>Hier</value>
     </data>
-    <data name="IncorrectEmailOrPassword" xml:space="preserve">
+    <data name="IncorrectEmailOrPasswordPleaseTryAgain" xml:space="preserve">
         <value>Email ou mot de passe incorrect. Veuillez réessayer.</value>
     </data>
     <data name="GenericLoginError" xml:space="preserve">
@@ -485,7 +485,6 @@ Mettez en marche le chronomètre et vos enregistrements les plus utilisés s'aff
     </data>
     <data name="TermsOfServiceDialogMessage" xml:space="preserve">
         <value>Si vous appuyez sur "J´accepte", vous comprenez et acceptez les {0} et {1} de Toggl</value>
-        <comment> This is shown in a popup when the user tries to sign up. {0} is a placeholder for where the words "Terms of Service" will be. {1} is a placeholder for where the words "Privacy Policy" will be. </comment>
     </data>
     <data name="CountryOfResidence" xml:space="preserve">
         <value>Pays de résidence</value>
@@ -1225,6 +1224,18 @@ des informations ci-dessous.</value>
     </data>
     <data name="InvalidPasswordError" xml:space="preserve">
         <value>Le mot de passe doit faire au moins 6 caractères</value>
+    </data>
+    <data name="StrongPasswordCriteria" xml:space="preserve">
+        <value>Inclure 8 caractères minimum, avec au moins une majuscule, une minuscule, et un chiffre.</value>
+    </data>
+    <data name="IncorrectEmailOrPassword" xml:space="preserve">
+        <value>Email ou mot de passe incorrect.</value>
+    </data>
+    <data name="IncorrectEmailOrPasswordOneMoreTryBeforeAccountLocked" xml:space="preserve">
+        <value>Email ou mot de passe incorrect. Vous avez encore un essai, ensuite votre compte sera bloqué pendant 5 minutes.</value>
+    </data>
+    <data name="IncorrectEmailOrPasswordAccountIsLocked" xml:space="preserve">
+        <value>Email ou mot de passe incorrect. Compte bloqué pendant 5 minutes. Le propriétaire du compte a été notifié.</value>
     </data>
     <data name="NoPasswordError" xml:space="preserve">
         <value>Veuillez entrer votre mot de passe</value>

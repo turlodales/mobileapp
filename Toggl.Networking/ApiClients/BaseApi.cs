@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Networking.Exceptions;
 using Toggl.Networking.Helpers;
@@ -84,6 +82,21 @@ namespace Toggl.Networking.ApiClients
                 : default(T);
         }
 
+        protected virtual async Task<Exception> GetExceptionFor(IRequest request, IResponse response, IEnumerable<HttpHeader> headers)
+        {
+            try
+            {
+                if (response.StatusCode == HttpStatusCode.Forbidden && await isLoggedIn(headers).ConfigureAwait(false) == false)
+                    return new UnauthorizedException(request, response);
+            }
+            catch (HttpRequestException)
+            {
+                return new OfflineException();
+            }
+
+            return ApiExceptions.For(request, response);
+        }
+
         // Private methods
 
         private async Task<IResponse> sendRequest(IRequest request, IEnumerable<HttpHeader> headers)
@@ -123,23 +136,7 @@ namespace Toggl.Networking.ApiClients
         {
             if (response.IsSuccess)
                 return;
-
-            throw await getExceptionFor(request, response, headers).ConfigureAwait(false);
-        }
-
-        private async Task<Exception> getExceptionFor(IRequest request, IResponse response, IEnumerable<HttpHeader> headers)
-        {
-            try
-            {
-                if (response.StatusCode == HttpStatusCode.Forbidden && await isLoggedIn(headers).ConfigureAwait(false) == false)
-                    return new UnauthorizedException(request, response);
-            }
-            catch (HttpRequestException)
-            {
-                return new OfflineException();
-            }
-
-            return ApiExceptions.For(request, response);
+            throw await GetExceptionFor(request, response, headers).ConfigureAwait(false);
         }
 
         private async Task<bool> isLoggedIn(IEnumerable<HttpHeader> headers)

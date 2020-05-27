@@ -38,6 +38,9 @@ namespace Toggl.iOS.ViewControllers
             NavigationItem.LeftBarButtonItem = closeButton;
             NavigationItem.BackBarButtonItem = backButton;
 
+            EmailErrorLabel.Lines = 0;
+            PasswordErrorLabel.Lines = 0;
+
             //E-mail
             ViewModel.Email
                 .Select(email => email.ToString())
@@ -79,13 +82,29 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(PasswordTextField.Rx().TextObserver())
                 .DisposedBy(DisposeBag);
 
+            Observable.CombineLatest(
+                ViewModel.PasswordError.Select(error => !string.IsNullOrEmpty(error)),
+                ViewModel.IsPasswordStrong,
+                (hasError, strong) =>
+                {
+                    return (!hasError || strong)
+                        ? ColorAssets.Text2
+                        : ColorAssets.ErrorRed;
+                })
+                .Subscribe(PasswordErrorLabel.Rx().TextColor())
+                .DisposedBy(DisposeBag);
+
             //Errors
             ViewModel.EmailError
                 .Subscribe(EmailErrorLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
             ViewModel.PasswordError
-                .Subscribe(PasswordErrorLabel.Rx().Text())
+                .Subscribe(error =>
+                    PasswordErrorLabel.Text = string.IsNullOrEmpty(error)
+                        ? Resources.StrongPasswordCriteria
+                        : error
+                )
                 .DisposedBy(DisposeBag);
 
             ViewModel.SignUpError
@@ -94,6 +113,12 @@ namespace Toggl.iOS.ViewControllers
 
             ViewModel.ShakeEmailField
                 .Subscribe(EmailTextField.Rx().Shake())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.PasswordError
+                .Where(error => !string.IsNullOrEmpty(error))
+                .SelectUnit()
+                .Subscribe(PasswordTextField.Rx().Shake())
                 .DisposedBy(DisposeBag);
 
             //Actions
@@ -105,8 +130,15 @@ namespace Toggl.iOS.ViewControllers
                 .BindAction(ViewModel.Login)
                 .DisposedBy(DisposeBag);
 
-            SignUpButton.Rx()
-                .BindAction(ViewModel.SignUp)
+            SignUpButton.Rx().Tap()
+                .Subscribe(_ =>
+                {
+                    // We need to do this because programatic changes to textfields don't get sent through the observable stream
+                    // And this text changes programatically because of password Autofill
+                    var password = Password.From(PasswordTextField.Text);
+                    ViewModel.Password.Accept(password);
+                    ViewModel.SignUp.Execute();
+                })
                 .DisposedBy(DisposeBag);
 
             //Loading: disabling all interaction

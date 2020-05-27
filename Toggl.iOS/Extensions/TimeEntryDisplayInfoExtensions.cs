@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Foundation;
 using Toggl.Core.UI.ViewModels.Calendar.ContextualMenu;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -23,7 +24,9 @@ namespace Toggl.iOS.Extensions
             if (string.IsNullOrEmpty(timeEntryDisplayInfo.Project))
                 return attributedString;
 
-            var color = new Color(timeEntryDisplayInfo.ProjectTaskColor).ToNativeColor();
+            var color = Color
+                .ParseAndAdjustToLabel(timeEntryDisplayInfo.ProjectTaskColor, ActiveTheme.Is.DarkTheme)
+                .ToNativeColor();
             attributedString.Append(new NSAttributedString(" "));
             attributedString.Append(getColoredDot(color, fontHeight));
 

@@ -22,6 +22,8 @@ namespace Toggl.iOS.Extensions
         public static readonly UIColor CustomGray5 = UIColor.FromName("CustomGray5");
         public static readonly UIColor CustomGray6 = UIColor.FromName("CustomGray6");
         public static readonly UIColor Spider = UIColor.FromName("Spider");
+        public static readonly UIColor ErrorText = UIColor.FromName("ErrorText");
+        public static readonly UIColor ErrorRed = UIColor.FromName("ErrorRed");
 
         public static readonly UIColor CalendarDeleteAction = UIColor.FromName("CalendarDeleteAction");
         public static readonly UIColor CalendarEditAction = UIColor.FromName("CalendarEditAction");
