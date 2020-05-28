@@ -105,7 +105,13 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(disposeBag);
 
             TimeEntriesLogTableView.Source = tableViewSource;
-            TimeEntriesLogTableView.BackgroundColor = ColorAssets.TableBackground;
+
+            ViewModel.ShouldShowEmptyState
+                .Select(shouldShowEmptyState => shouldShowEmptyState
+                    ? ColorAssets.Background
+                    : ColorAssets.TableBackground)
+                .Subscribe(color => TimeEntriesLogTableView.BackgroundColor = color)
+                .DisposedBy(disposeBag);
 
             ViewModel.MainLogItems
                 .Subscribe(TimeEntriesLogTableView.Rx().AnimateSections<MainLogSection, MainLogSectionViewModel, MainLogItemViewModel, IMainLogKey>(tableViewSource))
@@ -682,7 +688,7 @@ namespace Toggl.iOS.ViewControllers
 
         private void prepareEmptyStateView()
         {
-            emptyStateView.BackgroundColor = UIColor.Clear;
+            emptyStateView.BackgroundColor = ColorAssets.Background;
             emptyStateView.TranslatesAutoresizingMaskIntoConstraints = false;
 
             TimeEntriesLogTableView.AddSubview(emptyStateView);

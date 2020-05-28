@@ -1415,6 +1415,10 @@
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch.png" />
+    <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2285,6 +2289,7 @@
     <Folder Include="Resources\Images.xcassets\ic_hand.imageset\" />
     <Folder Include="Resources\Colors.xcassets\IconTint.colorset\" />
     <Folder Include="Resources\Images.xcassets\ic_eyelid.imageset\" />
+    <Folder Include="Resources\Images.xcassets\stopwatch.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

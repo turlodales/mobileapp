@@ -2,6 +2,7 @@ using Foundation;
 using ObjCRuntime;
 using System;
 using Toggl.iOS.Extensions;
+using Toggl.Shared;
 using UIKit;
 
 namespace Toggl.iOS.Views
@@ -16,7 +17,7 @@ namespace Toggl.iOS.Views
         {
             base.AwakeFromNib();
 
-            HeaderContainer.InsertSeparator();
+            GetReadyLabel.Text = Resources.GetReadyToTrackTimeAndBoostYourProductivity;
         }
 
         public static TimeEntriesEmptyLogView Create()

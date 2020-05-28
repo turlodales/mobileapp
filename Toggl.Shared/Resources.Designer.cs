@@ -10,7 +10,6 @@
 
 namespace Toggl.Shared {
     using System;
-    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -2396,6 +2395,12 @@ namespace Toggl.Shared {
         public static string Next {
             get {
                 return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        public static string GetReadyToTrackTimeAndBoostYourProductivity {
+            get {
+                return ResourceManager.GetString("GetReadyToTrackTimeAndBoostYourProductivity", resourceCulture);
             }
         }
     }

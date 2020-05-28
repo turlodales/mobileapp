@@ -1764,4 +1764,9 @@ No worries. Create a new workspace to continue.</value>
         <value>Next</value>
         <comment>The word `Next` in the context of navigation</comment>
     </data>
+    <data name="GetReadyToTrackTimeAndBoostYourProductivity" xml:space="preserve">
+        <value>Get ready to track time and
+boost your productivity!</value>
+        <comment>A welcome message for users who just signed up</comment>
+    </data>
 </root>
