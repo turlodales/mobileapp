@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Toggl.Droid.Extensions;
+using Toggl.Droid.Helper;
 using static Toggl.Droid.Widgets.WidgetsConstants;
 using Color = Android.Graphics.Color;
 
@@ -52,8 +53,9 @@ namespace Toggl.Droid.Widgets
 
             if (hasProject)
             {
+                var foregroundColor = Shared.Color.ParseAndAdjustToLabel(item.ProjectColor, ActiveTheme.Is.DarkTheme).ToNativeColor();
                 view.SetTextViewText(Resource.Id.ProjectNameTextView, item.ProjectName);
-                view.SetTextColor(Resource.Id.ProjectNameTextView, Color.ParseColor(item.ProjectColor));
+                view.SetTextColor(Resource.Id.ProjectNameTextView, foregroundColor);
                 view.SetTextViewText(Resource.Id.ClientNameTextView, item.ClientName);
             }
 

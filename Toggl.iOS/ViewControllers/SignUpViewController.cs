@@ -130,8 +130,15 @@ namespace Toggl.iOS.ViewControllers
                 .BindAction(ViewModel.Login)
                 .DisposedBy(DisposeBag);
 
-            SignUpButton.Rx()
-                .BindAction(ViewModel.SignUp)
+            SignUpButton.Rx().Tap()
+                .Subscribe(_ =>
+                {
+                    // We need to do this because programatic changes to textfields don't get sent through the observable stream
+                    // And this text changes programatically because of password Autofill
+                    var password = Password.From(PasswordTextField.Text);
+                    ViewModel.Password.Accept(password);
+                    ViewModel.SignUp.Execute();
+                })
                 .DisposedBy(DisposeBag);
 
             //Loading: disabling all interaction
