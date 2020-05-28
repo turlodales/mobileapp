@@ -4,11 +4,15 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
+using Toggl.Core.DataSources;
+using Toggl.Core.DataSources.Interfaces;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Interactors;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Storage.Models;
 
 namespace Toggl.Core.Sync.V2
 {
@@ -21,6 +25,7 @@ namespace Toggl.Core.Sync.V2
         private readonly IInteractorFactory interactorFactory;
         private readonly ISubject<SyncProgress> progress;
         private readonly ISubject<Exception> errors;
+        private readonly IObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry> timeEntriesDataSource;
 
         private bool isRunningSync = false;
         private bool isFrozen = false;
@@ -28,15 +33,21 @@ namespace Toggl.Core.Sync.V2
         public bool IsRunningSync => isRunningSync;
         public int Version => 2;
 
-        public SyncManagerV2(IAnalyticsService analyticsService, IInteractorFactory interactorFactory, ISchedulerProvider schedulerProvider)
+        public SyncManagerV2(
+            IAnalyticsService analyticsService,
+            IInteractorFactory interactorFactory,
+            ISchedulerProvider schedulerProvider,
+            IObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry> timeEntriesSource)
         {
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
+            Ensure.Argument.IsNotNull(timeEntriesSource, nameof(timeEntriesSource));
 
             this.analyticsService = analyticsService;
             this.interactorFactory = interactorFactory;
             this.schedulerProvider = schedulerProvider;
+            this.timeEntriesDataSource = timeEntriesSource;
 
             progress = new BehaviorSubject<SyncProgress>(SyncProgress.Synced);
             errors = new Subject<Exception>();
@@ -103,6 +114,7 @@ namespace Toggl.Core.Sync.V2
                 // if the sync manager is frozen, don't update the progress anymore
                 progress.OnNext(SyncProgress.Synced);
                 analyticsService.SyncCompleted.Track();
+                timeEntriesDataSource.ReportChange();
             }
             catch (Exception error)
             {
