@@ -52,12 +52,12 @@ namespace Toggl.Core.Interactors
                 .Do(pushRequest.CreateTags);
 
             await dataSource.Preferences
-                .Current
+                .Get()
                 .FirstOrDefaultAsync(isDirty)
                 .Do(pushRequest.UpdatePreferences);
 
             await dataSource.User
-                .Current
+                .Get()
                 .FirstOrDefaultAsync(isDirty)
                 .Do(pushRequest.UpdateUser);
 

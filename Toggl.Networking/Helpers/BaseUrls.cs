@@ -23,7 +23,7 @@ namespace Toggl.Networking.Helpers
             => forEnvironment(environment, reportsPrefix);
 
         public static Uri ForSyncServer(ApiEnvironment environment)
-            => new Uri(new Uri("http://localhost:8080"), syncApiPrefix); // @todo: the URL is not known at the moment
+            => new Uri(new Uri("http://localhost:8080/"), syncApiPrefix); // @todo: the URL is not known at the moment
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
         {

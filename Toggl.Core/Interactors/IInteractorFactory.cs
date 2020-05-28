@@ -12,6 +12,7 @@ using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Reports;
 using Toggl.Core.Search;
 using Toggl.Core.Suggestions;
+using Toggl.Networking.Sync.Push;
 using Toggl.Shared;
 using Toggl.Shared.Models.Reports;
 using Task = System.Threading.Tasks.Task;
@@ -115,6 +116,12 @@ namespace Toggl.Core.Interactors
         IInteractor<IObservable<SyncOutcome>> RunPushNotificationInitiatedSyncInForeground();
 
         IInteractor<IObservable<SyncOutcome>> RunPushNotificationInitiatedSyncInBackground();
+
+        IInteractor<Task<Request>> PreparePushRequest();
+
+        IInteractor<Task> PushSync();
+
+        IInteractor<Task> ResolveOutstandingPushRequest();
 
         #endregion
 

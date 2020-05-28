@@ -84,7 +84,7 @@ namespace Toggl.Core.Tests.Mocks
         public string DescriptionBackup { get; set; }
 
         [JsonIgnore]
-        public IList<long> TagIdsBackup { get; set; }
+        public IList<long> TagIdsBackup { get; } = new List<long>();
 
         public MockTimeEntry()
         {
@@ -93,7 +93,7 @@ namespace Toggl.Core.Tests.Mocks
         }
 
         public MockTimeEntry(
-            long id, 
+            long id,
             IThreadSafeWorkspace workspace,
             DateTimeOffset? start = null,
             long? duration = null,

@@ -273,7 +273,7 @@ namespace Toggl.Core.Tests.Interactors.Workspace
             private void returnsValue<TThreadsafe>(ISingletonDataSource<TThreadsafe> dataSource, TThreadsafe value)
               where TThreadsafe : IThreadSafeModel
             {
-                dataSource.Current.Returns(Observable.Return(value));
+                dataSource.Get().Returns(Observable.Return(value));
             }
         }
     }

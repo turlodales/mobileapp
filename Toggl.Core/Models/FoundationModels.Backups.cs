@@ -24,6 +24,6 @@ namespace Toggl.Core.Models
 
         public string DescriptionBackup { get; set; }
 
-        public IList<long> TagIdsBackup { get; set; }
+        public IList<long> TagIdsBackup { get; } = new List<long>();
     }
 }

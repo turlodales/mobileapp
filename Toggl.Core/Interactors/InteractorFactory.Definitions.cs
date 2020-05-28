@@ -10,6 +10,7 @@ using Toggl.Networking;
 using Toggl.Networking.Network;
 using Toggl.Shared;
 using Toggl.Storage;
+using Toggl.Storage.Queries;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.Interactors
@@ -38,6 +39,7 @@ namespace Toggl.Core.Interactors
         private readonly Lazy<IPushNotificationsTokenService> lazyPushNotificationsTokenService;
         private readonly Lazy<IPushNotificationsTokenStorage> lazyPushNotificationsTokenStorage;
         private readonly ReportsMemoryCache reportsMemoryCache = new ReportsMemoryCache();
+        private readonly Lazy<IQueryFactory> lazyQueryFactory;
 
         private ITogglDatabase database => lazyDatabase.Value;
         private IIdProvider idProvider => lazyIdProvider.Value;
@@ -55,6 +57,7 @@ namespace Toggl.Core.Interactors
         private IPrivateSharedStorageService privateSharedStorageService => lazyPrivateSharedStorageService.Value;
         private IKeyValueStorage keyValueStorage => lazyKeyValueStorage.Value;
         private IPushNotificationsTokenService pushNotificationsTokenService => lazyPushNotificationsTokenService.Value;
+        private IQueryFactory queryFactory => lazyQueryFactory.Value;
 
         public InteractorFactory(
             UserAgent userAgent,
@@ -76,7 +79,8 @@ namespace Toggl.Core.Interactors
             Lazy<IPrivateSharedStorageService> privateSharedStorageService,
             Lazy<IKeyValueStorage> keyValueStorage,
             Lazy<IPushNotificationsTokenService> pushNotificationsTokenService,
-            Lazy<IPushNotificationsTokenStorage> pushNotificationsTokenStorage)
+            Lazy<IPushNotificationsTokenStorage> pushNotificationsTokenStorage,
+            Lazy<IQueryFactory> queryFactory)
         {
             Ensure.Argument.IsNotNull(userAgent, nameof(userAgent));
             Ensure.Argument.IsNotNull(api, nameof(api));
@@ -98,6 +102,7 @@ namespace Toggl.Core.Interactors
             Ensure.Argument.IsNotNull(keyValueStorage, nameof(keyValueStorage));
             Ensure.Argument.IsNotNull(pushNotificationsTokenService, nameof(pushNotificationsTokenService));
             Ensure.Argument.IsNotNull(pushNotificationsTokenStorage, nameof(pushNotificationsTokenStorage));
+            Ensure.Argument.IsNotNull(queryFactory, nameof(queryFactory));
 
             this.userAgent = userAgent;
             this.api = api;
@@ -120,6 +125,7 @@ namespace Toggl.Core.Interactors
             lazyKeyValueStorage = keyValueStorage;
             lazyPushNotificationsTokenService = pushNotificationsTokenService;
             lazyPushNotificationsTokenStorage = pushNotificationsTokenStorage;
+            lazyQueryFactory = queryFactory;
         }
     }
 }

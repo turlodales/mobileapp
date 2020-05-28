@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Toggl.Core.Models;
+using Toggl.Networking.Sync.Push;
 
 namespace Toggl.Core.Interactors
 {
@@ -30,8 +31,17 @@ namespace Toggl.Core.Interactors
                 syncManager,
                 analyticsService,
                 PushNotificationSyncSourceState.Background);
-        
+
         public IInteractor<Task<UnsyncedDataDump>> CreateUnsyncedDataDump()
             => new CreateUnsyncedDataDumpInteractor(dataSource);
+
+        public IInteractor<Task<Request>> PreparePushRequest()
+            => new PreparePushRequestInteractor(userAgent.ToString(), dataSource);
+
+        public IInteractor<System.Threading.Tasks.Task> ResolveOutstandingPushRequest()
+            => new ResolveOutstandingPushRequestInteractor(api, database, queryFactory);
+
+        public IInteractor<System.Threading.Tasks.Task> PushSync()
+            => new PushSyncInteractor(api, database.PushRequestIdentifier, this, queryFactory);
     }
 }

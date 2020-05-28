@@ -277,8 +277,8 @@ namespace Toggl.Core
             privateSharedStorageService,
             keyValueStorage,
             pushNotificationsTokenService,
-            pushNotificationsTokenStorage
-        );
+            pushNotificationsTokenStorage,
+            queryFactory);
 
         protected virtual void RecreateLazyDependenciesForLogin(ITogglApi api)
         {

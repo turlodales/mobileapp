@@ -12,6 +12,7 @@ using Toggl.Networking;
 using Toggl.Networking.Network;
 using Toggl.Shared;
 using Toggl.Storage;
+using Toggl.Storage.Queries;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.Tests
@@ -45,7 +46,8 @@ namespace Toggl.Core.Tests
             Substitute.For<IPushNotificationsTokenStorage>();
 
         protected IInteractorFactory InteractorFactory { get; }
-        
+        protected IQueryFactory QueryFactory { get; } = Substitute.For<IQueryFactory>();
+
         protected TestSchedulerProvider SchedulerProvider { get; } = new TestSchedulerProvider();
 
         protected BaseInteractorTests()
@@ -63,14 +65,15 @@ namespace Toggl.Core.Tests
                 new Lazy<ICalendarService>(() => CalendarService),
                 new Lazy<IUserPreferences>(() => UserPreferences),
                 new Lazy<IAnalyticsService>(() => AnalyticsService),
-                new Lazy<IOnboardingStorage>(() => OnboardingStorage), 
+                new Lazy<IOnboardingStorage>(() => OnboardingStorage),
                 new Lazy<INotificationService>(() => NotificationService),
                 new Lazy<ILastTimeUsageStorage>(() => LastTimeUsageStorage),
                 new Lazy<IApplicationShortcutCreator>(() => ApplicationShortcutCreator),
                 new Lazy<IPrivateSharedStorageService>(() => PrivateSharedStorageService),
                 new Lazy<IKeyValueStorage>(() => KeyValueStorage),
                 new Lazy<IPushNotificationsTokenService>(() => PushNotificationsTokenService),
-                new Lazy<IPushNotificationsTokenStorage>(() => PushNotificationsTokenStorage)
+                new Lazy<IPushNotificationsTokenStorage>(() => PushNotificationsTokenStorage),
+                new Lazy<IQueryFactory>(() => QueryFactory)
             );
         }
     }

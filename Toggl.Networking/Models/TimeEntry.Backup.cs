@@ -31,6 +31,6 @@ namespace Toggl.Networking.Models
         public string DescriptionBackup { get; set; }
 
         [JsonIgnore]
-        public IList<long> TagIdsBackup { get; }
+        public IList<long> TagIdsBackup { get; } = new List<long>();
     }
 }

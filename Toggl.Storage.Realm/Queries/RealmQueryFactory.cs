@@ -1,4 +1,6 @@
 using System;
+using System.Reactive;
+using Toggl.Networking.Sync.Push;
 using Toggl.Shared;
 using Toggl.Storage.Queries;
 
@@ -14,5 +16,8 @@ namespace Toggl.Storage.Realm.Queries
 
             this.realmProvider = realmProvider;
         }
+
+        public IQuery<Unit> ProcessPushResult(IResponse response)
+            => new ProcessPushResultQuery(realmProvider, response);
     }
 }
