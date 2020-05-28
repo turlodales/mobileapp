@@ -310,6 +310,12 @@ namespace Toggl.Storage.Settings
 
         public void SetDidShowSiriClipboardInstruction(bool value) => keyValueStorage.SetBool(didShowSiriClipboardInstructionKey, value);
 
+        public void SetOnboardingConditionWasMet(OnboardingCondition onboardingCondition)
+            => keyValueStorage.SetBool(onboardingPrefix + onboardingCondition.Key, true);
+
+        public bool OnboardingConditionWasMetBefore(OnboardingCondition onboardingCondition)
+            => keyValueStorage.GetBool(onboardingPrefix + onboardingCondition.Key);
+
         void IOnboardingStorage.Reset()
         {
             keyValueStorage.SetBool(startButtonWasTappedBeforeKey, false);
