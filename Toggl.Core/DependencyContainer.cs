@@ -240,8 +240,11 @@ namespace Toggl.Core
                 this
             );
 
-            Func<ISyncManager> newSyncManagerCreator =
-                () => new SyncManagerV2(AnalyticsService, InteractorFactory, SchedulerProvider);
+            Func<ISyncManager> newSyncManagerCreator = () => new SyncManagerV2(
+                AnalyticsService,
+                InteractorFactory,
+                SchedulerProvider,
+                DataSource.TimeEntries);
 
             var syncManager = SyncManagerSelector.Select(
                 interactorFactory.Value,
