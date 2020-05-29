@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Toggl.Networking;
+using Toggl.Networking.ApiClients;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Storage;
@@ -10,23 +10,23 @@ namespace Toggl.Core.Interactors
 {
     internal class PushSyncInteractor : IInteractor<Task>
     {
-        private readonly ITogglApi api;
+        private readonly ISyncApi syncApi;
         private readonly IPushRequestIdentifierRepository pushRequestIdentifier;
         private readonly IInteractorFactory interactorFactory;
         private readonly IQueryFactory queryFactory;
 
         public PushSyncInteractor(
-            ITogglApi api,
+            ISyncApi syncApi,
             IPushRequestIdentifierRepository pushRequestIdentifier,
             IInteractorFactory interactorFactory,
             IQueryFactory queryFactory)
         {
-            Ensure.Argument.IsNotNull(api, nameof(api));
+            Ensure.Argument.IsNotNull(syncApi, nameof(syncApi));
             Ensure.Argument.IsNotNull(pushRequestIdentifier, nameof(pushRequestIdentifier));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
             Ensure.Argument.IsNotNull(queryFactory, nameof(queryFactory));
 
-            this.api = api;
+            this.syncApi = syncApi;
             this.pushRequestIdentifier = pushRequestIdentifier;
             this.interactorFactory = interactorFactory;
             this.queryFactory = queryFactory;
@@ -48,7 +48,7 @@ namespace Toggl.Core.Interactors
             try
             {
                 pushRequestIdentifier.Set(id);
-                var response = await api.SyncApi.Push(id, request);
+                var response = await syncApi.Push(id, request);
                 queryFactory.ProcessPushResult(response).Execute();
                 pushRequestIdentifier.Clear();
             }

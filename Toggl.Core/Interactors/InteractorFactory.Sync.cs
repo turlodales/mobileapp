@@ -42,6 +42,6 @@ namespace Toggl.Core.Interactors
             => new ResolveOutstandingPushRequestInteractor(api, database, queryFactory);
 
         public IInteractor<System.Threading.Tasks.Task> PushSync()
-            => new PushSyncInteractor(api, database.PushRequestIdentifier, this, queryFactory);
+            => new PushSyncInteractor(api.SyncApi, database.PushRequestIdentifier, this, queryFactory);
     }
 }
