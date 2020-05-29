@@ -38,12 +38,19 @@ namespace Toggl.Core.Interactors
             if (request.IsEmpty) return;
 
             var id = Guid.NewGuid();
-            pushRequestIdentifier.Set(id);
+            if (pushRequestIdentifier.TryGet(out _))
+            {
+                throw new InvalidOperationException(
+                    "The push interactor can be executed only when"
+                    + " there is no other outstanding push request.");
+            }
 
             try
             {
+                pushRequestIdentifier.Set(id);
                 var response = await api.SyncApi.Push(id, request);
                 queryFactory.ProcessPushResult(response).Execute();
+                pushRequestIdentifier.Clear();
             }
             catch (BadRequestException e)
             {
@@ -56,10 +63,11 @@ namespace Toggl.Core.Interactors
             }
             catch (OfflineException ex) when (ex.HasTimeouted)
             {
-                await interactorFactory.ResolveOutstandingPushRequest().Execute();
+                // When the API request timeouts, it's not necessarily a problem.
+                // We simply need to resolve the outstanding push request and therefore
+                // we can swallow the exception and just keep the outstanding push
+                // request's ID for later.
             }
-
-            pushRequestIdentifier.Clear();
         }
     }
 }

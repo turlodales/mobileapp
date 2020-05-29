@@ -100,6 +100,7 @@ namespace Toggl.Core.Sync.V2
                 interactorFactory.ResolveOutstandingPushRequest(),
                 // interactorFactory.PullSync(),
                 interactorFactory.PushSync(),
+                interactorFactory.ResolveOutstandingPushRequest(),
                 // interactorFactory.PullSync(),
             };
 
