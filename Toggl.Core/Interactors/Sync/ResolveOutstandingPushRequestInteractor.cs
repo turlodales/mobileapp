@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Toggl.Networking;
+using Toggl.Networking.ApiClients;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Storage;
@@ -9,40 +10,40 @@ namespace Toggl.Core.Interactors
 {
     internal class ResolveOutstandingPushRequestInteractor : IInteractor<Task>
     {
-        private readonly ITogglApi api;
-        private readonly ITogglDatabase database;
+        private readonly ISyncApi syncApi;
+        private readonly IPushRequestIdentifierRepository pushRequestIdentifier;
         private readonly IQueryFactory queryFactory;
 
         public ResolveOutstandingPushRequestInteractor(
-            ITogglApi api,
-            ITogglDatabase database,
+            ISyncApi syncApi,
+            IPushRequestIdentifierRepository pushRequestIdentifier,
             IQueryFactory queryFactory)
         {
-            Ensure.Argument.IsNotNull(api, nameof(api));
-            Ensure.Argument.IsNotNull(database, nameof(database));
+            Ensure.Argument.IsNotNull(syncApi, nameof(syncApi));
+            Ensure.Argument.IsNotNull(pushRequestIdentifier, nameof(pushRequestIdentifier));
             Ensure.Argument.IsNotNull(queryFactory, nameof(queryFactory));
 
-            this.api = api;
-            this.database = database;
+            this.syncApi = syncApi;
+            this.pushRequestIdentifier = pushRequestIdentifier;
             this.queryFactory = queryFactory;
         }
 
         public async Task Execute()
         {
-            while (database.PushRequestIdentifier.TryGet(out var id))
+            while (pushRequestIdentifier.TryGet(out var id))
             {
                 try
                 {
-                    var response = await api.SyncApi.OutstandingPush(id);
+                    var response = await syncApi.OutstandingPush(id);
                     queryFactory.ProcessPushResult(response).Execute();
-                    database.PushRequestIdentifier.Clear();
+                    pushRequestIdentifier.Clear();
                 }
                 catch (NotFoundException)
                 {
                     // there is no record of this ID on the server, we're not getting
                     // any data from the server now or in the future, we can forget
                     // about this very request ID
-                    database.PushRequestIdentifier.Clear();
+                    pushRequestIdentifier.Clear();
                 }
                 catch (OfflineException e) when (e.HasTimeouted)
                 {
