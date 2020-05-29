@@ -40,6 +40,8 @@ namespace Toggl.Storage.Realm
 
         public bool IsInaccessible => Workspace.IsInaccessible;
 
+        public DateTimeOffset? ServerDeletedAt { get; set; }
+
         public void SaveSyncResult(ITask entity, Realms.Realm realm)
         {
             Id = entity.Id;
@@ -57,6 +59,7 @@ namespace Toggl.Storage.Realm
             EstimatedSeconds = entity.EstimatedSeconds;
             Active = entity.Active;
             TrackedSeconds = entity.TrackedSeconds;
+            ServerDeletedAt = entity.ServerDeletedAt;
         }
 
         public void PushFailed(string errorMessage)

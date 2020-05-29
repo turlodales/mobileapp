@@ -115,6 +115,7 @@ namespace Toggl.Networking.Models
             Active = entity.Active;
             TrackedSeconds = entity.TrackedSeconds;
             At = entity.At;
+            ServerDeletedAt = entity.ServerDeletedAt;
         }
     }
 

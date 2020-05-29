@@ -2,13 +2,14 @@
 using System;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Models;
 
 namespace Toggl.Storage.Realm
 {
     internal partial class RealmUser
-        : RealmObject, IDatabaseUser, IPushable
+        : RealmObject, IDatabaseUser, IPushable, ISyncable<IUser>
     {
         public string ApiToken { get; set; }
 
@@ -48,6 +49,21 @@ namespace Toggl.Storage.Realm
         {
             SyncStatus = SyncStatus.SyncFailed;
             LastSyncErrorMessage = errorMessage;
+        }
+
+        public void SaveSyncResult(IUser entity, Realms.Realm realm)
+        {
+            ApiToken = entity.ApiToken;
+            At = entity.At;
+            DefaultWorkspaceId = entity.DefaultWorkspaceId;
+            BeginningOfWeek = entity.BeginningOfWeek;
+            Email = entity.Email;
+            Fullname = entity.Fullname;
+            ImageUrl = entity.ImageUrl;
+            Language = entity.Language;
+            Timezone = entity.Timezone;
+            SyncStatus = SyncStatus.InSync;
+            LastSyncErrorMessage = null;
         }
     }
 }

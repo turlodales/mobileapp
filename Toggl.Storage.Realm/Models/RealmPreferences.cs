@@ -1,12 +1,13 @@
 ﻿using Realms;
 using Toggl.Shared;
+using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Models;
 
 namespace Toggl.Storage.Realm
 {
     internal partial class RealmPreferences
-        : RealmObject, IDatabasePreferences, IPushable
+        : RealmObject, IDatabasePreferences, IPushable, ISyncable<IPreferences>
     {
         public const long fakeId = 0;
 
@@ -48,6 +49,17 @@ namespace Toggl.Storage.Realm
         {
             SyncStatus = SyncStatus.SyncFailed;
             LastSyncErrorMessage = errorMessage;
+        }
+
+        public void SaveSyncResult(IPreferences entity, Realms.Realm realm)
+        {
+            TimeOfDayFormat = entity.TimeOfDayFormat;
+            DateFormat = entity.DateFormat;
+            DurationFormat = entity.DurationFormat;
+            CollapseTimeEntries = entity.CollapseTimeEntries;
+            UseNewSync = entity.UseNewSync;
+            SyncStatus = SyncStatus.InSync;
+            LastSyncErrorMessage = null;
         }
     }
 }

@@ -127,6 +127,8 @@ namespace Toggl.Core.Models
         public DateTimeOffset At { get; }
 
         public bool IsInaccessible => Workspace.IsInaccessible;
+
+        public DateTimeOffset? ServerDeletedAt { get; }
     }
 
     internal partial class TimeEntry : IThreadSafeTimeEntry

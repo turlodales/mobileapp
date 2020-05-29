@@ -45,6 +45,8 @@ namespace Toggl.Core.Tests.Mocks
 
         public bool IsInaccessible => Workspace.IsInaccessible;
 
+        public DateTimeOffset? ServerDeletedAt { get; set; }
+
         public MockTask() { }
 
         public MockTask(

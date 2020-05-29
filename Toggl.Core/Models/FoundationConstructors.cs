@@ -138,6 +138,7 @@ namespace Toggl.Core.Models
             SyncStatus = syncStatus;
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
+            ServerDeletedAt = entity.ServerDeletedAt;
         }
 
         public static Task Clean(ITask entity)

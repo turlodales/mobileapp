@@ -9,13 +9,15 @@ namespace Toggl.Storage.Tests.Realm.Queries
     {
         protected IQueryFactory QueryFactory { get; }
         protected Func<Realms.Realm> RealmProvider { get; }
+        protected Func<DateTimeOffset> CurrentTimeProvider { get; }
 
         protected QueryTests()
         {
             var databaseId = $"{Guid.NewGuid().ToString()}.realm";
             var configuration = new InMemoryConfiguration(databaseId);
             RealmProvider = () => Realms.Realm.GetInstance(configuration);
-            QueryFactory = new RealmQueryFactory(RealmProvider);
+            CurrentTimeProvider = () => DateTimeOffset.Now;
+            QueryFactory = new RealmQueryFactory(RealmProvider, CurrentTimeProvider);
         }
 
         public virtual void Dispose()

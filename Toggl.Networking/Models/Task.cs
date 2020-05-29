@@ -23,5 +23,7 @@ namespace Toggl.Networking.Models
         public DateTimeOffset At { get; set; }
 
         public long TrackedSeconds { get; set; }
+
+        public DateTimeOffset? ServerDeletedAt { get; set; }
     }
 }
