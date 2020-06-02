@@ -67,10 +67,10 @@ namespace Toggl.Storage.Realm.Sync
                 processSingletonEntity<RealmUser, IUser>(realm, user);
                 processSingletonEntity<RealmPreferences, IPreferences>(realm, preferences);
 
-                processEntities<RealmWorkspace, IWorkspace>(realm, workspaces);
+                processEntities<RealmWorkspace, IWorkspace>(realm, workspaces, customDeletionProcess: makeWorkspaceInaccessible);
                 processEntities<RealmTag, ITag>(realm, tags);
                 processEntities<RealmClient, IClient>(realm, clients);
-                processEntities<RealmProject, IProject>(realm, projects);
+                processEntities<RealmProject, IProject>(realm, projects, customDeletionProcess: removeRelatedTasks);
                 processEntities<RealmTask, ITask>(realm, tasks);
 
                 processTimeEntries(realm);
@@ -243,7 +243,21 @@ namespace Toggl.Storage.Realm.Sync
                 : SyncStatus.InSync;
         }
 
-        private void processEntities<TRealmEntity, TEntity>(RealmDb realm, IEnumerable<TEntity> serverEntities)
+        private void makeWorkspaceInaccessible(RealmDb realm, RealmWorkspace workspace)
+        {
+            workspace.IsInaccessible = false;
+        }
+
+        private void removeRelatedTasks(RealmDb realm, RealmProject project)
+        {
+            project.RealmTasks
+                .ToList()
+                .ForEach(realm.Remove);
+
+            realm.Remove(project);
+        }
+
+        private void processEntities<TRealmEntity, TEntity>(RealmDb realm, IEnumerable<TEntity> serverEntities, Action<RealmDb, TRealmEntity> customDeletionProcess = null)
             where TRealmEntity : RealmObject, TEntity, ISyncable<TEntity>, new()
             where TEntity : IIdentifiable, IDeletable
         {
@@ -265,9 +279,20 @@ namespace Toggl.Storage.Realm.Sync
                 else
                 {
                     if (isServerDeleted)
-                        realm.Remove(dbEntity);
+                    {
+                        if (customDeletionProcess != null)
+                        {
+                            customDeletionProcess?.Invoke(realm, dbEntity);
+                        }
+                        else
+                        {
+                            realm.Remove(dbEntity);
+                        }
+                    }
                     else
+                    {
                         dbEntity.SaveSyncResult(entity, realm);
+                    }
                 }
             }
         }
