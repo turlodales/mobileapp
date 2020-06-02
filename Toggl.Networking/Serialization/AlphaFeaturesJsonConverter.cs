@@ -2,10 +2,12 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Toggl.Shared;
 using Serializer = Newtonsoft.Json.JsonSerializer;
 
 namespace Toggl.Networking.Serialization
 {
+    [Preserve(AllMembers = true)]
     internal class AlphaFeaturesJsonConverter : JsonConverter<bool>
     {
         private string alphaFeature;
