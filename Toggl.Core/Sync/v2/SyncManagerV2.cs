@@ -57,7 +57,7 @@ namespace Toggl.Core.Sync.V2
         public IObservable<Exception> Errors => errors.AsObservable();
 
         public IObservable<SyncState> CleanUp()
-            => Observable.Return(SyncState.Sleep);
+            => ForceFullSync();
 
         public IObservable<SyncState> ForceFullSync()
             => sync()
@@ -102,6 +102,7 @@ namespace Toggl.Core.Sync.V2
                 interactorFactory.PushSync(),
                 interactorFactory.ResolveOutstandingPushRequest(),
                 // interactorFactory.PullSync(),
+                interactorFactory.CleanUp(),
             };
 
             try

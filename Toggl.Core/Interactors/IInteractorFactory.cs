@@ -125,6 +125,8 @@ namespace Toggl.Core.Interactors
 
         IInteractor<Task> PullSync();
 
+        IInteractor<Task> CleanUp();
+
         #endregion
 
         #region Autocomplete Suggestions

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Toggl.Core.Interactors.Sync;
 using Toggl.Core.Models;
 using Toggl.Networking.Sync.Push;
 
@@ -46,5 +47,8 @@ namespace Toggl.Core.Interactors
 
         public IInteractor<System.Threading.Tasks.Task> PullSync()
             => new PullDataInteractor(api, database.SinceParameters, queryFactory);
+
+        public IInteractor<System.Threading.Tasks.Task> CleanUp()
+            => new CleanUpInteractor(timeService, dataSource, analyticsService);
     }
 }
