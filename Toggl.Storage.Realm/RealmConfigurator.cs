@@ -8,7 +8,7 @@ namespace Toggl.Storage.Realm
         public RealmConfiguration Configuration { get; }
             = new RealmConfiguration
             {
-                SchemaVersion = 8,
+                SchemaVersion = 9,
                 MigrationCallback = (migration, oldSchemaVersion) =>
                 {
                     if (oldSchemaVersion < 3)
@@ -43,6 +43,12 @@ namespace Toggl.Storage.Realm
                     {
                         // RealmUser: Added new property Timezone
                         // A migration is not required because it's acceptable for the timezone to be unspecified (null)
+                    }
+
+                    if (oldSchemaVersion < 9)
+                    {
+                        // RealmTask: Added new property ServerDeletedAt (defaulting to null is a correct behavior)
+                        // Added [PrimaryKey] to all entities that did not yet had one
                     }
                 }
             };

@@ -8,6 +8,7 @@ namespace Toggl.Storage.Realm
 {
     internal partial class RealmClient : IUpdatesFrom<IDatabaseClient>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
@@ -88,6 +89,7 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmProject : IUpdatesFrom<IDatabaseProject>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
@@ -145,6 +147,7 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTag : IUpdatesFrom<IDatabaseTag>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
@@ -190,6 +193,7 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTask : IUpdatesFrom<IDatabaseTask>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
@@ -241,6 +245,7 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTimeEntry : IUpdatesFrom<IDatabaseTimeEntry>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
@@ -316,6 +321,7 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmUser : IUpdatesFrom<IDatabaseUser>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
@@ -365,6 +371,7 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmWorkspace : IUpdatesFrom<IDatabaseWorkspace>, IModifiableId
     {
+        [PrimaryKey]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }

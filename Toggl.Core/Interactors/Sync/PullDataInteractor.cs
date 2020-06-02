@@ -36,7 +36,7 @@ namespace Toggl.Core.Interactors
             var since = sinceRepository.Get<ITimeEntry>();
 
             var response = await api.SyncApi.Pull(since);
-            queryFactory.ProcessPullResult(response);
+            queryFactory.ProcessPullResult(response).Execute();
 
             sinceRepository.Set<ITimeEntry>(DateTimeOffset.FromUnixTimeSeconds(response.ServerTime));
         }

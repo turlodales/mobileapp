@@ -123,6 +123,8 @@ namespace Toggl.Core.Interactors
 
         IInteractor<Task> ResolveOutstandingPushRequest();
 
+        IInteractor<Task> PullSync();
+
         #endregion
 
         #region Autocomplete Suggestions

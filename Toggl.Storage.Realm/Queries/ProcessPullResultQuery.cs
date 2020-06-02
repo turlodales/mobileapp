@@ -138,6 +138,16 @@ namespace Toggl.Storage.Realm.Sync
 
         private void updateTimeEntry(ITimeEntry timeEntry, RealmTimeEntry dbTimeEntry, RealmDb realm)
         {
+            // Temporary hack: the list of entities from the server always contains the currently running TE
+            // even if this entity hasn't change since the `since` timestamp. We need to filter it out manually.
+            var timeEntriesSinceId = SinceParameterStorage.IdFor<ITimeEntry>();
+            var since = realm.Find<RealmSinceParameter>(timeEntriesSinceId);
+            if (since != null && since.Since != null && timeEntry.At < since.Since.Value)
+                return;
+
+            var wasDirty = dbTimeEntry.SyncStatus == SyncStatus.SyncNeeded;
+            var shouldStayDirty = false;
+
             dbTimeEntry.At = timeEntry.At;
             dbTimeEntry.ServerDeletedAt = timeEntry.ServerDeletedAt;
             dbTimeEntry.RealmUser = realm.Find<RealmUser>(timeEntry.UserId);
@@ -151,6 +161,8 @@ namespace Toggl.Storage.Realm.Sync
             dbTimeEntry.DescriptionBackup = dbTimeEntry.Description =
                 ThreeWayMerge.Merge(commonDescription, dbTimeEntry.Description, timeEntry.Description);
 
+            shouldStayDirty |= timeEntry.Description != dbTimeEntry.Description;
+
             // ProjectId
             var commonProjectId = dbTimeEntry.ContainsBackup
                 ? dbTimeEntry.ProjectIdBackup
@@ -162,6 +174,8 @@ namespace Toggl.Storage.Realm.Sync
                 ? realm.Find<RealmProject>(projectId.Value)
                 : null;
 
+            shouldStayDirty |= timeEntry.ProjectId != projectId;
+
             // Billable
             var commonBillable = dbTimeEntry.ContainsBackup
                 ? dbTimeEntry.BillableBackup
@@ -170,6 +184,8 @@ namespace Toggl.Storage.Realm.Sync
             dbTimeEntry.BillableBackup = dbTimeEntry.Billable =
                 ThreeWayMerge.Merge(commonBillable, dbTimeEntry.Billable, timeEntry.Billable);
 
+            shouldStayDirty |= timeEntry.Billable != dbTimeEntry.Billable;
+
             // Start
             var commonStart = dbTimeEntry.ContainsBackup
                 ? dbTimeEntry.StartBackup
@@ -177,12 +193,16 @@ namespace Toggl.Storage.Realm.Sync
 
             dbTimeEntry.Start = ThreeWayMerge.Merge(commonStart, dbTimeEntry.Start, timeEntry.Start);
 
+            shouldStayDirty |= timeEntry.Start != dbTimeEntry.Start;
+
             // Duration
             var commonDuration = dbTimeEntry.ContainsBackup
                 ? dbTimeEntry.DurationBackup
                 : dbTimeEntry.Duration;
 
             dbTimeEntry.Duration = ThreeWayMerge.Merge(commonDuration, dbTimeEntry.Duration, timeEntry.Duration, identifierComparison);
+
+            shouldStayDirty |= timeEntry.Duration != dbTimeEntry.Duration;
 
             // Task
             var commonTaskId = dbTimeEntry.ContainsBackup
@@ -195,6 +215,8 @@ namespace Toggl.Storage.Realm.Sync
                 ? realm.Find<RealmTask>(taskId.Value)
                 : null;
 
+            shouldStayDirty |= timeEntry.TaskId != taskId;
+
             // Tag Ids
             var commonTagIds = dbTimeEntry.ContainsBackup
                 ? Arrays.NotNullOrEmpty(dbTimeEntry.TagIdsBackup)
@@ -203,7 +225,8 @@ namespace Toggl.Storage.Realm.Sync
             var localTagIds = Arrays.NotNullOrEmpty(dbTimeEntry.TagIds);
             var serverTagIds = Arrays.NotNullOrEmpty(timeEntry.TagIds);
 
-            var tagsIds = ThreeWayMerge.Merge(commonTagIds, localTagIds, serverTagIds, collectionEnumerableComparison); ;
+            var tagsIds = ThreeWayMerge.Merge(commonTagIds, localTagIds, serverTagIds, collectionEnumerableComparison);
+            shouldStayDirty |= !tagsIds.SetEquals(localTagIds);
 
             dbTimeEntry.RealmTags.Clear();
             tagsIds
@@ -213,7 +236,11 @@ namespace Toggl.Storage.Realm.Sync
             // the conflict is resolved, the backup is no longer needed until next local change
             dbTimeEntry.ContainsBackup = false;
             dbTimeEntry.LastSyncErrorMessage = null;
-            dbTimeEntry.SyncStatus = SyncStatus.InSync;
+
+            // Update sync status depending on the way the time entry has changed during the 3-way merge
+            dbTimeEntry.SyncStatus = wasDirty && shouldStayDirty
+                ? SyncStatus.SyncNeeded
+                : SyncStatus.InSync;
         }
 
         private void processEntities<TRealmEntity, TEntity>(RealmDb realm, IEnumerable<TEntity> serverEntities)

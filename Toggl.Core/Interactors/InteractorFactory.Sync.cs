@@ -43,5 +43,8 @@ namespace Toggl.Core.Interactors
 
         public IInteractor<System.Threading.Tasks.Task> PushSync()
             => new PushSyncInteractor(api.SyncApi, database.PushRequestIdentifier, this, queryFactory);
+
+        public IInteractor<System.Threading.Tasks.Task> PullSync()
+            => new PullDataInteractor(api, database.SinceParameters, queryFactory);
     }
 }
