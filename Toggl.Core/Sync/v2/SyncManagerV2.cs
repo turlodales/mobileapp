@@ -98,10 +98,10 @@ namespace Toggl.Core.Sync.V2
             var syncSequence = new IInteractor<Task>[]
             {
                 interactorFactory.ResolveOutstandingPushRequest(),
-                // interactorFactory.PullSync(),
+                interactorFactory.PullSync(),
                 interactorFactory.PushSync(),
                 interactorFactory.ResolveOutstandingPushRequest(),
-                // interactorFactory.PullSync(),
+                interactorFactory.PullSync(),
                 interactorFactory.CleanUp(),
             };
 
