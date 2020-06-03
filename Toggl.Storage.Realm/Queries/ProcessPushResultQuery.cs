@@ -5,6 +5,7 @@ using Toggl.Networking.Sync.Push;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Queries;
+using Toggl.Storage.Realm.Extensions;
 using Toggl.Storage.Realm.Models;
 
 namespace Toggl.Storage.Realm.Queries
@@ -66,13 +67,13 @@ namespace Toggl.Storage.Realm.Queries
         }
 
         private void processResult<TEntity, TRealmEntity>(IEntityActionResult<TEntity> entityResult, Realms.Realm realm)
-            where TRealmEntity : Realms.RealmObject, IPushable, IModifiableId, ISyncable<TEntity>
+            where TRealmEntity : Realms.RealmObject, IPushable, IIdentifiable, ISyncable<TEntity>
         {
-            var entity = realm.All<TRealmEntity>().Where(e => e.Id == entityResult.Id).SingleOrDefault();
+            var entity = realm.GetById<TRealmEntity>(entityResult.Id);
 
             // It is possible that the entity was deleted locally since the push.
             // In that case, simply ignore this result.
-            if (entity == null) 
+            if (entity == null)
                 return;
 
             if (entityResult.Result.Success == false && entityResult.Result is ErrorResult<TEntity> error)

@@ -8,13 +8,14 @@ namespace Toggl.Storage.Realm
 {
     internal partial class RealmClient : IUpdatesFrom<IDatabaseClient>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -56,6 +57,7 @@ namespace Toggl.Storage.Realm
     {
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -89,13 +91,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmProject : IUpdatesFrom<IDatabaseProject>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -147,13 +150,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTag : IUpdatesFrom<IDatabaseTag>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -193,13 +197,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTask : IUpdatesFrom<IDatabaseTask>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -245,13 +250,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTimeEntry : IUpdatesFrom<IDatabaseTimeEntry>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -321,13 +327,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmUser : IUpdatesFrom<IDatabaseUser>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -371,13 +378,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmWorkspace : IUpdatesFrom<IDatabaseWorkspace>, IModifiableId
     {
-        [PrimaryKey]
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]

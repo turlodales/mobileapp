@@ -90,7 +90,7 @@ namespace Toggl.Storage.Realm.Sync
                 if (timeEntry.IsRunning())
                     serverRunningTimeEntry = timeEntry;
 
-                var dbTimeEntry = realm.Find<RealmTimeEntry>(timeEntry.Id);
+                var dbTimeEntry = realm.GetById<RealmTimeEntry>(timeEntry.Id);
 
                 if (dbTimeEntry == null)
                 {
@@ -140,18 +140,15 @@ namespace Toggl.Storage.Realm.Sync
         {
             // Temporary hack: the list of entities from the server always contains the currently running TE
             // even if this entity hasn't change since the `since` timestamp. We need to filter it out manually.
-            var timeEntriesSinceId = SinceParameterStorage.IdFor<ITimeEntry>();
-            var since = realm.Find<RealmSinceParameter>(timeEntriesSinceId);
-            if (since != null && since.Since != null && timeEntry.At < since.Since.Value)
-                return;
+            if (isIrrelevantForSyncing(timeEntry, realm)) return;
 
             var wasDirty = dbTimeEntry.SyncStatus == SyncStatus.SyncNeeded;
             var shouldStayDirty = false;
 
             dbTimeEntry.At = timeEntry.At;
             dbTimeEntry.ServerDeletedAt = timeEntry.ServerDeletedAt;
-            dbTimeEntry.RealmUser = realm.Find<RealmUser>(timeEntry.UserId);
-            dbTimeEntry.RealmWorkspace = realm.Find<RealmWorkspace>(timeEntry.WorkspaceId);
+            dbTimeEntry.RealmUser = realm.GetById<RealmUser>(timeEntry.UserId);
+            dbTimeEntry.RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);
 
             // Description
             var commonDescription = dbTimeEntry.ContainsBackup
@@ -171,7 +168,7 @@ namespace Toggl.Storage.Realm.Sync
             var projectId = ThreeWayMerge.Merge(commonProjectId, dbTimeEntry.ProjectId, timeEntry.ProjectId, identifierComparison);
 
             dbTimeEntry.RealmProject = projectId.HasValue
-                ? realm.Find<RealmProject>(projectId.Value)
+                ? realm.GetById<RealmProject>(projectId.Value)
                 : null;
 
             shouldStayDirty |= timeEntry.ProjectId != projectId;
@@ -212,7 +209,7 @@ namespace Toggl.Storage.Realm.Sync
             var taskId = ThreeWayMerge.Merge(commonTaskId, dbTimeEntry.TaskId, timeEntry.TaskId, identifierComparison);
 
             dbTimeEntry.RealmTask = taskId.HasValue
-                ? realm.Find<RealmTask>(taskId.Value)
+                ? realm.GetById<RealmTask>(taskId.Value)
                 : null;
 
             shouldStayDirty |= timeEntry.TaskId != taskId;
@@ -230,7 +227,7 @@ namespace Toggl.Storage.Realm.Sync
 
             dbTimeEntry.RealmTags.Clear();
             tagsIds
-                .Select(tagId => realm.Find<RealmTag>(tagId))
+                .Select(tagId => realm.GetById<RealmTag>(tagId))
                 .AddTo(dbTimeEntry.RealmTags);
 
             // the conflict is resolved, the backup is no longer needed until next local change
@@ -263,7 +260,7 @@ namespace Toggl.Storage.Realm.Sync
         {
             foreach (var entity in serverEntities)
             {
-                var dbEntity = realm.Find<TRealmEntity>(entity.Id);
+                var dbEntity = realm.GetById<TRealmEntity>(entity.Id);
 
                 var isServerDeleted = entity.ServerDeletedAt.HasValue;
 
@@ -317,5 +314,15 @@ namespace Toggl.Storage.Realm.Sync
         private bool identifierComparison(long? a, long? b) => a == b;
 
         private bool collectionEnumerableComparison<T>(T[] a, T[] b) => a.SetEquals(b);
+
+        private bool isIrrelevantForSyncing(ITimeEntry timeEntry, RealmDb realm)
+        {
+            var timeEntriesSinceId = SinceParameterStorage.IdFor<ITimeEntry>();
+            if (!timeEntriesSinceId.HasValue)
+                throw new Exception("Time entries since parameter ID is not defined.");
+
+            var since = realm.GetById<RealmSinceParameter>(timeEntriesSinceId.Value);
+            return since != null && since.Since != null && timeEntry.At < since.Since.Value;
+        }
     }
 }
