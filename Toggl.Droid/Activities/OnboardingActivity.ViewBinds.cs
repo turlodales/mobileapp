@@ -17,6 +17,7 @@ namespace Toggl.Droid.Activities
     {
         private View continueWithGoogleButton;
         private Button continueWithEmailButton;
+        private Button ssoButton;
         private TextView loginGoogleLoginLabel;
         private Group notLoadingViewViews;
         private Group loadingViewViews;
@@ -32,10 +33,12 @@ namespace Toggl.Droid.Activities
             loadingViewIndicator = FindViewById<ImageView>(Resource.Id.loadingIndicator);
             continueWithGoogleButton = FindViewById(Resource.Id.continueWithGoogleButton);
             continueWithEmailButton = FindViewById<Button>(Resource.Id.continueWithEmailButton);
+            ssoButton = FindViewById<Button>(Resource.Id.ssoButton);
             loginGoogleLoginLabel = FindViewById<TextView>(Resource.Id.LoginGoogleLoginLabel);
 
             continueWithEmailButton.Text = Shared.Resources.ContinueWithEmail;
             loginGoogleLoginLabel.Text = Shared.Resources.ContinueWithGoogle;
+            ssoButton.Text = Shared.Resources.LoginWithSso;
 
             onboardingViewPager = FindViewById<ViewPager>(Resource.Id.onboardingViewPager);
             onboardingTabIndicator = FindViewById<TabLayout>(Resource.Id.onboardingTabIndicator);
@@ -50,7 +53,7 @@ namespace Toggl.Droid.Activities
 
             onboardingViewPager.Adapter = new ScreenSlidePagerAdapter(SupportFragmentManager);
             onboardingTabIndicator.SetupWithViewPager(onboardingViewPager);
-            continueWithEmailButton.FitBottomMarginInset();
+            ssoButton.FitBottomMarginInset();
             loadingAnimation = (AnimationDrawable) loadingViewIndicator.Drawable;
         }
 

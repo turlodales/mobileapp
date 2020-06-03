@@ -45,6 +45,8 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction ContinueWithApple { get; }
         public ViewAction ContinueWithGoogle { get; }
         public ViewAction ContinueWithEmail { get; }
+        public ViewAction SingleSignOn { get; }
+
 
         public InputAction<OnboardingScrollParameters> OnOnboardingScroll { get; }
 
@@ -80,6 +82,7 @@ namespace Toggl.Core.UI.ViewModels
             ContinueWithApple = rxActionFactory.FromAction(continueWithApple);
             ContinueWithGoogle = rxActionFactory.FromAction(continueWithGoogle);
             ContinueWithEmail = rxActionFactory.FromAsync(continueWithEmail);
+            SingleSignOn = rxActionFactory.FromAsync(singleSignOn);
             OnOnboardingScroll = rxActionFactory.FromAction<OnboardingScrollParameters>(onOnboardingScroll);
 
             IsLoading = isLoadingSubject
@@ -119,6 +122,11 @@ namespace Toggl.Core.UI.ViewModels
             {
                 return Navigate<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty);
             }
+        }
+
+        private Task singleSignOn()
+        {
+            return Navigate<SsoViewModel>();
         }
 
         private async void onAuthenticated()

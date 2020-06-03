@@ -10,7 +10,6 @@
 
 namespace Toggl.Shared {
     using System;
-    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -218,6 +217,30 @@ namespace Toggl.Shared {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        public static string LoginWithSso {
+            get {
+                return ResourceManager.GetString("LoginWithSso", resourceCulture);
+            }
+        }
+        
+        public static string WorkEmail {
+            get {
+                return ResourceManager.GetString("WorkEmail", resourceCulture);
+            }
+        }
+        
+        public static string SingleSignOn {
+            get {
+                return ResourceManager.GetString("SingleSignOn", resourceCulture);
+            }
+        }
+        
+        public static string SingleSignOnError {
+            get {
+                return ResourceManager.GetString("SingleSignOnError", resourceCulture);
             }
         }
         

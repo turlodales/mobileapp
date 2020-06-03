@@ -36,6 +36,10 @@ namespace Toggl.Droid.Activities
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
                 .DisposedBy(DisposeBag);
 
+            ssoButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOn.Inputs)
+                .DisposedBy(DisposeBag);
+
             ViewModel.IsLoading
                 .Invert()
                 .Subscribe(notLoadingViewViews.Rx().IsVisible())

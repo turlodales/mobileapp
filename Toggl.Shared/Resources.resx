@@ -239,6 +239,22 @@ mobile, desktop or web</value>
         <value>Email</value>
     <comment>Label for emails in the Login, SignUp, Forgot Password and Settings screens</comment>
     </data>
+    <data name="LoginWithSso" xml:space="preserve">
+        <value>Log in with SSO</value>
+        <comment>Label for button that navigates to login with SSO screen</comment>
+    </data>
+    <data name="WorkEmail" xml:space="preserve">
+        <value>Work email</value>
+        <comment>Label for emails in the sso login screen</comment>
+    </data>
+    <data name="SingleSignOn" xml:space="preserve">
+        <value>Single Sign On</value>
+        <comment>Label for the SSO login screen</comment>
+    </data>
+    <data name="SingleSignOnError" xml:space="preserve">
+        <value>Single Sign On is not configured for your email address. Please try a different login method or contact your administrator.</value>
+        <comment>Shown to user when the submitted email is not a part of an SSO-enabled domain</comment>
+    </data>
     <data name="SetPassword" xml:space="preserve">
         <value>Set password</value>
         <comment>A placeholder for the password input field when user is signing up</comment>

@@ -86,19 +86,14 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.InteractorFactory);
             }
 
-            if (viewModelType == typeof(LoginViewModel))
+            if (viewModelType == typeof(SsoViewModel))
             {
-                return new LoginViewModel(
-                    dependencyContainer.UserAccessManager,
+                return new SsoViewModel(
                     dependencyContainer.AnalyticsService,
-                    dependencyContainer.OnboardingStorage,
                     dependencyContainer.NavigationService,
-                    dependencyContainer.ErrorHandlingService,
-                    dependencyContainer.LastTimeUsageStorage,
-                    dependencyContainer.TimeService,
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory,
-                    dependencyContainer.InteractorFactory);
+                    dependencyContainer.UnauthenticatedTogglApi);
             }
 
             if (viewModelType == typeof(MainTabBarViewModel))
