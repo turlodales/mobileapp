@@ -52,6 +52,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
                 .DisposedBy(DisposeBag);
 
+            LoginWithSsoButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOn.Inputs)
+                .DisposedBy(DisposeBag);
+
             ViewModel.IsLoading
                 .Subscribe(toggleLoadingView)
                 .DisposedBy(DisposeBag);
@@ -156,6 +160,11 @@ namespace Toggl.iOS.ViewControllers
             ContinueWithGoogleButton.Layer.ShadowOpacity = (float)0.15;
             ContinueWithGoogleButton.Layer.ShadowRadius = 6;
             ContinueWithGoogleButton.Layer.ShadowOffset = new CGSize(0, 2);
+
+            // Login with SSO
+            LoginWithSsoButton.TitleLabel.Font = UIFont.SystemFontOfSize(17, UIFontWeight.Medium);
+            LoginWithSsoButton.SetTitle(Resources.LoginWithSso, UIControlState.Normal);
+            LoginWithSsoButton.SetTitleColor(ColorAssets.InverseText, UIControlState.Normal);
 
             // Continue with apple
             configureSignInWithApple();

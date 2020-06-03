@@ -22,6 +22,9 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton ContinueWithGoogleButton { get; set; }
 
 		[Outlet]
+		UIKit.UIButton LoginWithSsoButton { get; set; }
+
+		[Outlet]
 		UIKit.UIPageControl PageControl { get; set; }
 
 		[Outlet]
@@ -32,6 +35,11 @@ namespace Toggl.iOS.ViewControllers
 			if (ButtonsStackView != null) {
 				ButtonsStackView.Dispose ();
 				ButtonsStackView = null;
+			}
+
+			if (LoginWithSsoButton != null) {
+				LoginWithSsoButton.Dispose ();
+				LoginWithSsoButton = null;
 			}
 
 			if (ContinueWithEmailButton != null) {

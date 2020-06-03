@@ -4,7 +4,7 @@ using Toggl.Shared.Models;
 
 namespace Toggl.Networking.Models
 {
-    internal sealed class SamlConfig : ISamlConfig
+    internal sealed partial class SamlConfig : ISamlConfig
     {
         [JsonProperty("sso_url")]
         [JsonRequired]

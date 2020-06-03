@@ -85,6 +85,8 @@ namespace Toggl.iOS.Presentation
                     return new SiriShortcutsSelectReportPeriodViewController(vm);
                 case SiriShortcutsViewModel vm:
                     return new SiriShortcutsViewController(vm);
+                case SsoViewModel vm:
+                    return new SsoLoginViewController(vm);
                 case StartTimeEntryViewModel vm:
                     return new StartTimeEntryViewController(vm);
                 case SyncFailuresViewModel vm:
