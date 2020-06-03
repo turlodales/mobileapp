@@ -244,7 +244,7 @@ namespace Toggl.Core
                 AnalyticsService,
                 InteractorFactory,
                 SchedulerProvider,
-                DataSource.TimeEntries);
+                DataSource);
 
             var syncManager = SyncManagerSelector.Select(
                 interactorFactory.Value,

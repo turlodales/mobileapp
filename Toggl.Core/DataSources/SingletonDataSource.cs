@@ -66,6 +66,13 @@ namespace Toggl.Core.DataSources
                 .SingleAsync()
                 .Do(handleConflictResolutionResult);
 
+        public void ReportChange()
+        {
+            // .Wait() is ugly, but we won't be blocking the thread for very long
+            // because we're not doing any intensive task, we're just calling OnNext
+            Get().Do(currentSubject.OnNext).FirstAsync().GetAwaiter().GetResult();
+        }
+
         private void handleConflictResolutionResult(IConflictResolutionResult<TThreadsafe> result)
         {
             switch (result)

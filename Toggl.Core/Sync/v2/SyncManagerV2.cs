@@ -25,7 +25,7 @@ namespace Toggl.Core.Sync.V2
         private readonly IInteractorFactory interactorFactory;
         private readonly ISubject<SyncProgress> progress;
         private readonly ISubject<Exception> errors;
-        private readonly IObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry> timeEntriesDataSource;
+        private readonly ITogglDataSource dataSource;
 
         private bool isRunningSync = false;
         private bool isFrozen = false;
@@ -37,17 +37,17 @@ namespace Toggl.Core.Sync.V2
             IAnalyticsService analyticsService,
             IInteractorFactory interactorFactory,
             ISchedulerProvider schedulerProvider,
-            IObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry> timeEntriesSource)
+            ITogglDataSource dataSource)
         {
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
-            Ensure.Argument.IsNotNull(timeEntriesSource, nameof(timeEntriesSource));
+            Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
 
             this.analyticsService = analyticsService;
             this.interactorFactory = interactorFactory;
             this.schedulerProvider = schedulerProvider;
-            this.timeEntriesDataSource = timeEntriesSource;
+            this.dataSource = dataSource;
 
             progress = new BehaviorSubject<SyncProgress>(SyncProgress.Synced);
             errors = new Subject<Exception>();
@@ -116,7 +116,7 @@ namespace Toggl.Core.Sync.V2
                 // if the sync manager is frozen, don't update the progress anymore
                 progress.OnNext(SyncProgress.Synced);
                 analyticsService.SyncCompleted.Track();
-                timeEntriesDataSource.ReportChange();
+                reportDataChanged();
             }
             catch (Exception error)
             {
@@ -163,6 +163,14 @@ namespace Toggl.Core.Sync.V2
                 errors.OnNext(error);
                 progress.OnNext(SyncProgress.Failed);
             }
+        }
+
+        private void reportDataChanged()
+        {
+            dataSource.TimeEntries.ReportChange();
+            dataSource.Workspaces.ReportChange();
+            dataSource.Preferences.ReportChange();
+            dataSource.User.ReportChange();
         }
     }
 }
