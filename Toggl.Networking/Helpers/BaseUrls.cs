@@ -23,19 +23,26 @@ namespace Toggl.Networking.Helpers
             => forEnvironment(environment, reportsPrefix);
 
         public static Uri ForSyncServer(ApiEnvironment environment)
-            => new Uri(new Uri("http://localhost:8080/"), syncApiPrefix); // @todo: the URL is not known at the moment
+            => new Uri(new Uri("https://http://toggl-sync-staging.appspot.com"), syncApiPrefix); // @todo: the final URL is not known at the moment
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
         {
-            switch (environment)
-            {
-                case ApiEnvironment.Staging:
-                    return new Uri(stagingBaseUrl, prefix);
-                case ApiEnvironment.Production:
-                    return new Uri(productionBaseUrl, prefix);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(environment), environment, "Unknown api environment.");
-            }
+            // switch (environment)
+            // {
+            //     case ApiEnvironment.Staging:
+            //         return new Uri(stagingBaseUrl, prefix);
+            //     case ApiEnvironment.Production:
+            //         return new Uri(productionBaseUrl, prefix);
+            //     default:
+            //         throw new ArgumentOutOfRangeException(nameof(environment), environment, "Unknown api environment.");
+            // }
+
+            // @todo: this must be changed back as soon as possible and definitely before
+            // this is rolled out to users in production...
+            //
+            // THIS MUST NOT BE MERGED INTO `DEVELOP`, it is intended just for testing purposes
+            // on the `sync-team/sync` branch.
+            return new Uri(stagingBaseUrl, prefix);
         }
     }
 }
