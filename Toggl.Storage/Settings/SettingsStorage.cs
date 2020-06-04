@@ -36,6 +36,7 @@ namespace Toggl.Storage.Settings
         private const string hasTimeEntryBeenContinuedKey = "HasTimeEntryBeenContinued";
 
         private const string onboardingPrefix = "Onboarding_";
+        private const string onboardingTimeEntryWasCreatedKey = "OnboardingTimeEntryWasCreated";
 
         private const string ratingViewOutcomeKey = "RatingViewOutcome";
         private const string ratingViewOutcomeTimeKey = "RatingViewOutcomeTime";
@@ -315,6 +316,12 @@ namespace Toggl.Storage.Settings
 
         public bool OnboardingConditionWasMetBefore(OnboardingCondition onboardingCondition)
             => keyValueStorage.GetBool(onboardingPrefix + onboardingCondition.Key);
+
+        public bool OnboardingTimeEntryWasCreated()
+            => keyValueStorage.GetBool(onboardingTimeEntryWasCreatedKey);
+
+        public void SetOnboardingTimeEntryWasCreated()
+            => keyValueStorage.SetBool(onboardingTimeEntryWasCreatedKey, true);
 
         void IOnboardingStorage.Reset()
         {

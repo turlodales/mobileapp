@@ -1769,4 +1769,8 @@ No worries. Create a new workspace to continue.</value>
 boost your productivity!</value>
         <comment>A welcome message for users who just signed up</comment>
     </data>
+    <data name="GettingStartedWithTogglApp" xml:space="preserve">
+        <value>Getting started with Toggl app</value>
+        <comment>Description of the time entry that gets created automatically as a part of user onboarding</comment>
+    </data>
 </root>

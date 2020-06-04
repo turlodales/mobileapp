@@ -2403,5 +2403,11 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("GetReadyToTrackTimeAndBoostYourProductivity", resourceCulture);
             }
         }
+        
+        public static string GettingStartedWithTogglApp {
+            get {
+                return ResourceManager.GetString("GettingStartedWithTogglApp", resourceCulture);
+            }
+        }
     }
 }

@@ -207,6 +207,8 @@ namespace Toggl.Core.UI.ViewModels
 
             await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
 
+            await interactorFactory.CreateOnboardingTimeEntryIfNeeded().Execute();
+
             await Navigate<MainTabBarViewModel>();
         }
 

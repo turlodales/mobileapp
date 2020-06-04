@@ -54,6 +54,8 @@ namespace Toggl.Core.Interactors
 
         IInteractor<IObservable<TimeSpan>> ObserveTimeTrackedToday();
 
+        IInteractor<Task<IThreadSafeTimeEntry>> CreateOnboardingTimeEntryIfNeeded();
+
         #endregion
 
         #region Projects

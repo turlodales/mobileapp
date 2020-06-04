@@ -83,5 +83,10 @@
         /// Starting a time entry from the widgets
         /// </summary>
         Widget,
+
+        /// <summary>
+        /// Time entry that gets started automatically as a part of user onboarding
+        /// </summary>
+        OnboardingTimeEntry,
     }
 }

@@ -51,6 +51,8 @@ namespace Toggl.Storage.Settings
 
         void SetOnboardingConditionWasMet(OnboardingCondition onboardingCondition);
         bool OnboardingConditionWasMetBefore(OnboardingCondition onboardingCondition);
+        bool OnboardingTimeEntryWasCreated();
+        void SetOnboardingTimeEntryWasCreated();
 
         void Reset();
     }

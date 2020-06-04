@@ -512,6 +512,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                         LastTimeUsageStorage.Received().SetLogin(now);
                     }
+
+                    [Fact]
+                    public void ExecutesTheCreateOnboardingTimeEntryIfNeededInteractor()
+                    {
+                        ViewModel.SignUp.Execute();
+
+                        InteractorFactory.CreateOnboardingTimeEntryIfNeeded().Received().Execute();
+                    }
                 }
 
                 public sealed class WhenSignUpFails : SignUpViewModelTest
