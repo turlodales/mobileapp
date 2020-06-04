@@ -10,6 +10,8 @@ namespace Toggl.Core.Analytics
     [Preserve(AllMembers = true)]
     public abstract class BaseAnalyticsService : IAnalyticsService
     {
+        private readonly ITimeService timeService;
+
         public IAnalyticsEvent<AuthenticationMethod> Login { get; }
 
         public IAnalyticsEvent<LoginErrorSource> LoginError { get; }
@@ -258,8 +260,11 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 
-        protected BaseAnalyticsService()
+        protected BaseAnalyticsService(ITimeService timeService)
         {
+            Ensure.Argument.IsNotNull(timeService, nameof(timeService));
+            this.timeService = timeService;
+
             Login = new AnalyticsEvent<AuthenticationMethod>(this, nameof(Login), "AuthenticationMethod");
             LoginError = new AnalyticsEvent<LoginErrorSource>(this, nameof(LoginError), "Source");
             SignUp = new AnalyticsEvent<AuthenticationMethod>(this, nameof(SignUp), "AuthenticationMethod");
@@ -384,6 +389,24 @@ namespace Toggl.Core.Analytics
             CalendarTimeEntryCreated = new AnalyticsEvent<CalendarTimeEntryCreatedType, int, string>(this, nameof(CalendarTimeEntryCreated), "Type", "DaysSinceToday", "DayOfTheWeek");
             ContinueWithEmail = new AnalyticsEvent(this, nameof(ContinueWithEmail));
             UnsyncedDataDumped = new AnalyticsEvent<int, int, int, int>(this, nameof(UnsyncedDataDumped), "TimeEntries", "Projects", "Clients", "Tags");
+        }
+
+        public PerformanceMeasurement StartNewSyncPerformanceMeasurement()
+            => startPerformanceMeasurement("SyncPerformanceNew");
+
+        public PerformanceMeasurement StartOldSyncPerformanceMeasurement()
+            => startPerformanceMeasurement("SyncPerformanceOld");
+
+        private PerformanceMeasurement startPerformanceMeasurement(string name)
+            => new PerformanceMeasurement(name, timeService.CurrentDateTime);
+
+        public void StopAndTrack(PerformanceMeasurement measurement)
+        {
+            const string duration = "duration";
+            var result = measurement.DurationUntil(timeService.CurrentDateTime);
+            Track(
+                measurement.Name,
+                new Dictionary<string, string> { [duration] = result.ToString() });
         }
 
         public void TrackAnonymized(Exception exception)

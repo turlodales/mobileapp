@@ -101,6 +101,7 @@ namespace Toggl.Core.Sync.V2
             {
                 progress.OnNext(SyncProgress.Syncing);
 
+                var performanceMeasurement = analyticsService.StartNewSyncPerformanceMeasurement();
                 while (shouldKeepSyncing())
                 {
                     await syncOnce();
@@ -108,6 +109,7 @@ namespace Toggl.Core.Sync.V2
 
                 progress.OnNext(SyncProgress.Synced);
                 analyticsService.SyncCompleted.Track();
+                analyticsService.StopAndTrack(performanceMeasurement); // we only want to track how long syncing takes in the successful case
                 reportDataChanged();
             }
             catch (Exception error)

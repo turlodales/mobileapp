@@ -24,6 +24,8 @@ namespace Toggl.Core.Sync
 
         private bool isFrozen;
 
+        private PerformanceMeasurement performanceMeasurement;
+
         private readonly ISubject<SyncProgress> progress;
         private readonly ISubject<Exception> errors;
 
@@ -145,6 +147,7 @@ namespace Toggl.Core.Sync
                     if (IsRunningSync == false)
                     {
                         progress.OnNext(SyncProgress.Synced);
+                        stopPerformanceMeasurement(); // we only want to track how long syncing takes in the successful case
                     }
 
                     return;
@@ -215,6 +218,7 @@ namespace Toggl.Core.Sync
 
             if (IsRunningSync && progress.FirstAsync().Wait() != SyncProgress.Syncing)
             {
+                startPerformanceMeasurement();
                 progress.OnNext(SyncProgress.Syncing);
             }
 
@@ -226,5 +230,25 @@ namespace Toggl.Core.Sync
                 .TakeWhile(s => s != Sleep)
                 .Concat(Observable.Return(Sleep))
                 .ConnectedReplay();
+
+        private void startPerformanceMeasurement()
+        {
+            lock (analyticsService)
+            {
+                performanceMeasurement = analyticsService.StartOldSyncPerformanceMeasurement();
+            }
+        }
+
+        private void stopPerformanceMeasurement()
+        {
+            lock (analyticsService)
+            {
+                if (performanceMeasurement != null)
+                {
+                    analyticsService.StopAndTrack(performanceMeasurement);
+                    performanceMeasurement = null;
+                }
+            }
+        }
     }
 }

@@ -7,12 +7,17 @@ using Toggl.Core.Analytics;
 using AppCenterAnalytics = Microsoft.AppCenter.Analytics.Analytics;
 using AppCenter = Microsoft.AppCenter.AppCenter;
 using FirebaseAnalytics = Firebase.Analytics.Analytics;
+using Toggl.Core;
 
 namespace Toggl.iOS.Services
 {
     public sealed class AnalyticsServiceIos : BaseAnalyticsService
     {
         private const int maxAppCenterStringLength = 64;
+
+        public AnalyticsServiceIos(ITimeService timeService) : base(timeService)
+        {
+        }
 
         public override void Track(string eventName, Dictionary<string, string> parameters = null)
         {

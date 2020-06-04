@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Toggl.Core.Analytics;
 using AppCenterAnalytics = Microsoft.AppCenter.Analytics.Analytics;
+using Toggl.Core;
 
 namespace Toggl.Droid.Services
 {
@@ -16,7 +17,7 @@ namespace Toggl.Droid.Services
 
         private FirebaseAnalytics firebaseAnalytics { get; }
 
-        public AnalyticsServiceAndroid()
+        public AnalyticsServiceAndroid(ITimeService timeService) : base(timeService)
         {
 #if USE_ANALYTICS
             firebaseAnalytics = Firebase.Analytics.FirebaseAnalytics.GetInstance(Android.App.Application.Context);
