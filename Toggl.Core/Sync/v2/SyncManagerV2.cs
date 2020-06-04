@@ -1,18 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
-using Toggl.Core.DataSources.Interfaces;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Interactors;
-using Toggl.Core.Models.Interfaces;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
-using Toggl.Storage.Models;
 
 namespace Toggl.Core.Sync.V2
 {
@@ -27,10 +25,11 @@ namespace Toggl.Core.Sync.V2
         private readonly ISubject<Exception> errors;
         private readonly ITogglDataSource dataSource;
 
-        private bool isRunningSync = false;
+        private bool syncQueued = false;
+
         private bool isFrozen = false;
 
-        public bool IsRunningSync => isRunningSync;
+        public bool IsRunningSync { get; private set; }
         public int Version => 2;
 
         public SyncManagerV2(
@@ -87,33 +86,26 @@ namespace Toggl.Core.Sync.V2
         {
             lock (access)
             {
-                if (isFrozen || isRunningSync)
+                if (isFrozen)
                     return;
 
-                isRunningSync = true;
+                syncQueued = true;
+
+                if (IsRunningSync)
+                    return;
+
+                IsRunningSync = true;
             }
-
-            progress.OnNext(SyncProgress.Syncing);
-
-            var syncSequence = new IInteractor<Task>[]
-            {
-                interactorFactory.ResolveOutstandingPushRequest(),
-                interactorFactory.PullSync(),
-                interactorFactory.PushSync(),
-                interactorFactory.ResolveOutstandingPushRequest(),
-                interactorFactory.PullSync(),
-                interactorFactory.CleanUp(),
-            };
 
             try
             {
-                foreach (var interactor in syncSequence)
+                progress.OnNext(SyncProgress.Syncing);
+
+                while (shouldKeepSyncing())
                 {
-                    await interactor.Execute();
-                    if (isFrozen) break; // abort as soon as possible
+                    await syncOnce();
                 }
 
-                // if the sync manager is frozen, don't update the progress anymore
                 progress.OnNext(SyncProgress.Synced);
                 analyticsService.SyncCompleted.Track();
                 reportDataChanged();
@@ -126,8 +118,18 @@ namespace Toggl.Core.Sync.V2
             {
                 lock (access)
                 {
-                    isRunningSync = false;
+                    IsRunningSync = false;
+                    syncQueued = false;
                 }
+            }
+        }
+
+        private async Task syncOnce()
+        {
+            foreach (var interactor in syncSequence())
+            {
+                await interactor.Execute();
+                if (isFrozen) break; // abort as soon as possible
             }
         }
 
@@ -163,6 +165,26 @@ namespace Toggl.Core.Sync.V2
                 errors.OnNext(error);
                 progress.OnNext(SyncProgress.Failed);
             }
+        }
+
+        private bool shouldKeepSyncing()
+        {
+            lock (access)
+            {
+                var wasQueued = syncQueued;
+                syncQueued = false;
+                return wasQueued;
+            }
+        }
+
+        private IEnumerable<IInteractor<Task>> syncSequence()
+        {
+            yield return interactorFactory.ResolveOutstandingPushRequest();
+            yield return interactorFactory.PullSync();
+            yield return interactorFactory.PushSync();
+            yield return interactorFactory.ResolveOutstandingPushRequest();
+            yield return interactorFactory.PullSync();
+            yield return interactorFactory.CleanUp();
         }
 
         private void reportDataChanged()
