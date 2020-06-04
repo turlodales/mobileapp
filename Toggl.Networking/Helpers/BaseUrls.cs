@@ -23,7 +23,7 @@ namespace Toggl.Networking.Helpers
             => forEnvironment(environment, reportsPrefix);
 
         public static Uri ForSyncServer(ApiEnvironment environment)
-            => new Uri(new Uri("https://http://toggl-sync-staging.appspot.com"), syncApiPrefix); // @todo: the final URL is not known at the moment
+            => new Uri(new Uri("https://toggl-sync-staging.appspot.com"), syncApiPrefix); // @todo: the final URL is not known at the moment
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
         {
