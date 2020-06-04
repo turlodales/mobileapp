@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
 using Toggl.Storage;
@@ -49,5 +50,14 @@ namespace Toggl.Core.Tests.Mocks
         public bool IsDeleted { get; set; }
 
         public string Timezone { get; set; }
+
+        [JsonIgnore]
+        public bool ContainsBackup { get; set; }
+
+        [JsonIgnore]
+        public long? DefaultWorkspaceIdBackup { get; set; }
+
+        [JsonIgnore]
+        public BeginningOfWeek BeginningOfWeekBackup { get; set; }
     }
 }

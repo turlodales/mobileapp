@@ -1,6 +1,6 @@
 ﻿namespace Toggl.Shared.Models
 {
-    public interface IPreferences
+    public partial interface IPreferences
     {
         TimeFormat TimeOfDayFormat { get; }
 

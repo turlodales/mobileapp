@@ -6,7 +6,7 @@ using Toggl.Storage.Models;
 
 namespace Toggl.Core.Models
 {
-    internal class Preferences : IThreadSafePreferences
+    internal partial class Preferences : IThreadSafePreferences
     {
         public TimeFormat TimeOfDayFormat { get; }
         public DateFormat DateFormat { get; }

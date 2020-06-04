@@ -11,17 +11,11 @@ namespace Toggl.Storage.Realm
         public bool ContainsBackup { get; set; }
 
         public bool BillableBackup { get; set; }
-
         public DateTimeOffset StartBackup { get; set; }
-
         public long? DurationBackup { get; set; }
-
         public string DescriptionBackup { get; set; }
-
         public long? ProjectIdBackup { get; set; }
-
         public long? TaskIdBackup { get; set; }
-
         public IList<long> TagIdsBackup { get; }
     }
 }

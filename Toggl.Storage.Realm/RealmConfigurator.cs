@@ -47,6 +47,8 @@ namespace Toggl.Storage.Realm
 
                     if (oldSchemaVersion < 9)
                     {
+                        // RealmTimeEntry: Added backup properties
+                        // RealmPreferences: Added backup properties
                         // RealmTask: Added new property ServerDeletedAt (defaulting to null is a correct behavior)
                         // Added [PrimaryKey] to all entities that did not yet had one
                     }

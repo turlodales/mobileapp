@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
-using System.Linq;
 using Toggl.Networking.Serialization;
 using Toggl.Networking.Serialization.Converters;
 using Toggl.Shared;

@@ -113,6 +113,7 @@ namespace Toggl.Core.DataSources
             if (!timeEntryDb.ContainsBackup)
             {
                 timeEntry.ContainsBackup = true;
+
                 timeEntry.BillableBackup = timeEntryDb.Billable;
                 timeEntry.DescriptionBackup = timeEntryDb.Description;
                 timeEntry.DurationBackup = timeEntryDb.Duration;

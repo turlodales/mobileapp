@@ -64,8 +64,8 @@ namespace Toggl.Storage.Realm.Sync
 
             using (var transaction = realm.BeginWrite())
             {
-                processSingletonEntity<RealmUser, IUser>(realm, user);
-                processSingletonEntity<RealmPreferences, IPreferences>(realm, preferences);
+                processUser(realm);
+                processPreferences(realm);
 
                 processEntities<RealmWorkspace, IWorkspace>(realm, workspaces, customDeletionProcess: makeWorkspaceInaccessible);
                 processEntities<RealmTag, ITag>(realm, tags);
@@ -134,6 +134,116 @@ namespace Toggl.Storage.Realm.Sync
             var dbTimeEntry = new RealmTimeEntry();
             dbTimeEntry.SaveSyncResult(timeEntry, realm);
             realm.Add(dbTimeEntry);
+        }
+
+        private void processUser(RealmDb realm)
+        {
+            var dbUser = realm.All<RealmUser>().SingleOrDefault();
+
+            dbUser.ApiToken = user.ApiToken;
+            dbUser.At = user.At;
+            dbUser.Email = user.Email;
+            dbUser.Fullname = user.Fullname;
+            dbUser.ImageUrl = user.ImageUrl;
+            dbUser.Language = user.Language;
+            dbUser.Timezone = user.Timezone;
+
+            var wasDirty = dbUser.SyncStatus == SyncStatus.SyncNeeded;
+            var shouldStayDirty = false;
+
+            // Default Workspace Id
+            var commonDefaultWorkspaceId = dbUser.ContainsBackup
+                ? dbUser.DefaultWorkspaceIdBackup
+                : dbUser.DefaultWorkspaceId;
+
+            dbUser.DefaultWorkspaceIdBackup = dbUser.DefaultWorkspaceId =
+                ThreeWayMerge.Merge(commonDefaultWorkspaceId, dbUser.DefaultWorkspaceId, user.DefaultWorkspaceId, identifierComparison);
+
+            shouldStayDirty |= user.DefaultWorkspaceId != dbUser.DefaultWorkspaceId;
+
+            // Beginning of week
+            var commonBeginningOfWeek = dbUser.ContainsBackup
+                ? dbUser.BeginningOfWeekBackup
+                : dbUser.BeginningOfWeek;
+
+            dbUser.BeginningOfWeek = dbUser.BeginningOfWeekBackup =
+                ThreeWayMerge.Merge(commonBeginningOfWeek, dbUser.BeginningOfWeek, user.BeginningOfWeek, beginningOfWeekComparison);
+
+            shouldStayDirty |= user.BeginningOfWeek != dbUser.BeginningOfWeek;
+
+            // the conflict is resolved, the backup is no longer needed until next local change
+            dbUser.ContainsBackup = false;
+            dbUser.LastSyncErrorMessage = null;
+
+            // Update sync status depending on the way the user has changed during the 3-way merge
+            dbUser.SyncStatus = wasDirty && shouldStayDirty
+                ? SyncStatus.SyncNeeded
+                : SyncStatus.InSync;
+        }
+
+        private void processPreferences(RealmDb realm)
+        {
+            var dbPreferences = realm.All<RealmPreferences>().SingleOrDefault();
+
+            if (dbPreferences == null)
+            {
+                dbPreferences = new RealmPreferences();
+                dbPreferences.SaveSyncResult(preferences, realm);
+                realm.Add(dbPreferences);
+                return;
+            }
+
+            var wasDirty = dbPreferences.SyncStatus == SyncStatus.SyncNeeded;
+            var shouldStayDirty = false;
+
+            // Time of day format
+            var commonTimeOfDayFormat = dbPreferences.ContainsBackup
+                ? dbPreferences.TimeOfDayFormatBackup
+                : dbPreferences.TimeOfDayFormat;
+
+            dbPreferences.TimeOfDayFormatBackup = dbPreferences.TimeOfDayFormat =
+                ThreeWayMerge.Merge(commonTimeOfDayFormat, dbPreferences.TimeOfDayFormat, preferences.TimeOfDayFormat, timeFormatComparison);
+
+            shouldStayDirty |= !preferences.TimeOfDayFormat.Equals(dbPreferences.TimeOfDayFormat);
+
+            // Date format
+            var commonDateFormat = dbPreferences.ContainsBackup
+                ? dbPreferences.DateFormatBackup
+                : dbPreferences.DateFormat;
+
+            dbPreferences.DateFormatBackup = dbPreferences.DateFormat =
+                ThreeWayMerge.Merge(commonDateFormat, dbPreferences.DateFormat, preferences.DateFormat, dateformatComparison);
+
+            shouldStayDirty |= !preferences.DateFormat.Equals(dbPreferences.DateFormat);
+
+            // Duration format backup
+            var commonDurationFormat = dbPreferences.ContainsBackup
+               ? dbPreferences.DurationFormatBackup
+               : dbPreferences.DurationFormat;
+
+            dbPreferences.DurationFormatBackup = dbPreferences.DurationFormat =
+                ThreeWayMerge.Merge(commonDurationFormat, dbPreferences.DurationFormat, preferences.DurationFormat, durationFormatComparison);
+
+            shouldStayDirty |= !preferences.DurationFormat.Equals(dbPreferences.DurationFormat);
+
+            // Collapse time entries backup
+            var commonCollapseTimeEntries = dbPreferences.ContainsBackup
+              ? dbPreferences.CollapseTimeEntriesBackup
+              : dbPreferences.CollapseTimeEntries;
+
+            dbPreferences.CollapseTimeEntriesBackup = dbPreferences.CollapseTimeEntries =
+                ThreeWayMerge.Merge(commonCollapseTimeEntries, dbPreferences.CollapseTimeEntries, preferences.CollapseTimeEntries);
+
+            shouldStayDirty |= preferences.CollapseTimeEntries != dbPreferences.CollapseTimeEntries;
+
+            // the conflict is resolved, the backup is no longer needed until next local change
+            dbPreferences.ContainsBackup = false;
+            dbPreferences.LastSyncErrorMessage = null;
+
+            // Update sync status depending on the way the preferences have changed during the 3-way merge
+            dbPreferences.SyncStatus = wasDirty && shouldStayDirty
+                ? SyncStatus.SyncNeeded
+                : SyncStatus.InSync;
         }
 
         private void updateTimeEntry(ITimeEntry timeEntry, RealmTimeEntry dbTimeEntry, RealmDb realm)
@@ -294,26 +404,23 @@ namespace Toggl.Storage.Realm.Sync
             }
         }
 
-        private void processSingletonEntity<TRealmEntity, TEntity>(RealmDb realm, TEntity serverEntity)
-          where TRealmEntity : RealmObject, TEntity, ISyncable<TEntity>, new()
-        {
-            var dbEntity = realm.All<TRealmEntity>().SingleOrDefault();
+        private bool identifierComparison(long? a, long? b)
+            => a == b;
 
-            if (dbEntity == null)
-            {
-                dbEntity = new TRealmEntity();
-                dbEntity.SaveSyncResult(serverEntity, realm);
-                realm.Add(dbEntity);
-            }
-            else
-            {
-                dbEntity.SaveSyncResult(serverEntity, realm);
-            }
-        }
+        private bool collectionEnumerableComparison<T>(T[] a, T[] b)
+            => a.SetEquals(b);
 
-        private bool identifierComparison(long? a, long? b) => a == b;
+        private bool beginningOfWeekComparison(BeginningOfWeek a, BeginningOfWeek b)
+            => (int)a == (int)b;
 
-        private bool collectionEnumerableComparison<T>(T[] a, T[] b) => a.SetEquals(b);
+        private bool timeFormatComparison(TimeFormat a, TimeFormat b)
+            => a.Equals(b);
+
+        private bool dateformatComparison(DateFormat a, DateFormat b)
+            => a.Equals(b);
+
+        private bool durationFormatComparison(DurationFormat a, DurationFormat b)
+            => (int)a == (int)b;
 
         private bool isIrrelevantForSyncing(ITimeEntry timeEntry, RealmDb realm)
         {

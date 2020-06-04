@@ -10,7 +10,7 @@ namespace Toggl.Core.Models
 {
     internal partial class TimeEntry : IThreadSafeTimeEntry
     {
-        public bool ContainsBackup { get; set;  }
+        public bool ContainsBackup { get; set; }
 
         public long? ProjectIdBackup { get; set; }
 
@@ -25,5 +25,27 @@ namespace Toggl.Core.Models
         public string DescriptionBackup { get; set; }
 
         public IList<long> TagIdsBackup { get; } = new List<long>();
+    }
+
+    internal partial class User : IThreadSafeUser
+    {
+        public bool ContainsBackup { get; set; }
+
+        public long? DefaultWorkspaceIdBackup { get; set; }
+
+        public BeginningOfWeek BeginningOfWeekBackup { get; set; }
+    }
+
+    internal partial class Preferences : IThreadSafePreferences
+    {
+        public bool ContainsBackup { get; set; }
+
+        public TimeFormat TimeOfDayFormatBackup { get; set; }
+
+        public DateFormat DateFormatBackup { get; set; }
+
+        public DurationFormat DurationFormatBackup { get; set; }
+
+        public bool CollapseTimeEntriesBackup { get; set; }
     }
 }
