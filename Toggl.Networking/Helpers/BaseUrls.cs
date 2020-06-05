@@ -23,16 +23,25 @@ namespace Toggl.Networking.Helpers
             => forEnvironment(environment, reportsPrefix);
 
         public static Uri ForSyncServer(ApiEnvironment environment)
-            => new Uri(new Uri("https://toggl-sync-staging.appspot.com"), syncApiPrefix); // @todo: the final URL is not known at the moment
+            => selectByEnvironment(
+                environment,
+                staging: new Uri("https://sync.toggl.space"),
+                production: new Uri("https://sync.toggl.com"));
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
+            => selectByEnvironment(
+                environment,
+                staging: new Uri(stagingBaseUrl, prefix),
+                production: new Uri(productionBaseUrl, prefix));
+
+        private static Uri selectByEnvironment(ApiEnvironment environment, Uri staging, Uri production)
         {
             // switch (environment)
             // {
             //     case ApiEnvironment.Staging:
-            //         return new Uri(stagingBaseUrl, prefix);
+            //         return staging;
             //     case ApiEnvironment.Production:
-            //         return new Uri(productionBaseUrl, prefix);
+            //         return production;
             //     default:
             //         throw new ArgumentOutOfRangeException(nameof(environment), environment, "Unknown api environment.");
             // }
@@ -42,7 +51,7 @@ namespace Toggl.Networking.Helpers
             //
             // THIS MUST NOT BE MERGED INTO `DEVELOP`, it is intended just for testing purposes
             // on the `sync-team/sync` branch.
-            return new Uri(stagingBaseUrl, prefix);
+            return staging;
         }
     }
 }
