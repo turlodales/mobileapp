@@ -5,6 +5,7 @@ using Android.Views;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using Android.OS;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
@@ -12,6 +13,7 @@ using Toggl.Droid.Helper;
 using Toggl.Droid.Presentation;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using EssentialsPlatform = Xamarin.Essentials.Platform;
 
 namespace Toggl.Droid.Activities
 {
@@ -33,8 +35,16 @@ namespace Toggl.Droid.Activities
         {
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            EssentialsPlatform.OnResume();
+        }
+
         protected override void InitializeBindings()
         {
+            EssentialsPlatform.Init(this, Bundle.Empty);
+
             ViewModel.Email.FirstAsync()
                 .Select(email => email.ToString())
                 .SubscribeOn(AndroidDependencyContainer.Instance.SchedulerProvider.MainScheduler)
@@ -70,12 +80,6 @@ namespace Toggl.Droid.Activities
                 })
                 .DisposedBy(DisposeBag);
 
-            ViewModel.SamlConfig
-                .Select(config => config.SsoUrl)
-                .DistinctUntilChanged()
-                .Subscribe(navigateToSsoUrl)
-                .DisposedBy(DisposeBag);
-
                 continueButton.Rx()
                 .BindAction(ViewModel.Continue)
                 .DisposedBy(DisposeBag);
@@ -98,10 +102,6 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             this.CancelAllNotifications();
-        }
-
-        private void navigateToSsoUrl(Uri ssoUrl)
-        {
         }
     }
 }

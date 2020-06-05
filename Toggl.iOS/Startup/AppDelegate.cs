@@ -85,6 +85,11 @@ namespace Toggl.iOS
                 return true;
             }
 
+            if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
+            {
+                return true;
+            }
+
 #if USE_ANALYTICS
             return SignIn.SharedInstance.HandleUrl(url);
 #endif

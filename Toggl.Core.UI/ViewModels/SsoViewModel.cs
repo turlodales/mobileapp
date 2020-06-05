@@ -23,7 +23,6 @@ namespace Toggl.Core.UI.ViewModels
         private readonly IUnauthenticatedTogglApi unauthenticatedTogglApi;
 
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
-        private readonly BehaviorSubject<ISamlConfig> samlConfigSubject = new BehaviorSubject<ISamlConfig>(null);
         private readonly BehaviorSubject<string> errorMessageSubject = new BehaviorSubject<string>("");
         private readonly BehaviorSubject<string> emailErrorMessageSubject = new BehaviorSubject<string>("");
         public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
@@ -31,7 +30,6 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<bool> IsLoading { get; }
         public IObservable<string> ErrorMessage { get; }
         public IObservable<string> EmailErrorMessage { get; }
-        public IObservable<ISamlConfig> SamlConfig { get; }
         public ViewAction Continue { get; }
 
         public SsoViewModel(
@@ -50,7 +48,7 @@ namespace Toggl.Core.UI.ViewModels
             this.schedulerProvider = schedulerProvider;
             this.unauthenticatedTogglApi = unauthenticatedTogglApi;
 
-            Continue = rxActionFactory.FromAsync(getSamlConfig);
+            Continue = rxActionFactory.FromAsync(getSamlConfigAndInitializeAuthFlow);
 
             IsLoading = isLoadingSubject
                 .DistinctUntilChanged()
@@ -63,14 +61,9 @@ namespace Toggl.Core.UI.ViewModels
             EmailErrorMessage = emailErrorMessageSubject
                 .DistinctUntilChanged()
                 .AsDriver(this.schedulerProvider);
-
-            SamlConfig = samlConfigSubject
-                .WhereNotNull()
-                .DistinctUntilChanged()
-                .AsDriver(this.schedulerProvider);
         }
 
-        private async Task getSamlConfig()
+        private async Task getSamlConfigAndInitializeAuthFlow()
         {
             errorMessageSubject.OnNext(string.Empty);
             if (Email.Value.IsEmpty)
@@ -95,14 +88,14 @@ namespace Toggl.Core.UI.ViewModels
             try
             {
                 var config = await unauthenticatedTogglApi.Auth.GetSamlConfig(Email.Value);
-                samlConfigSubject.OnNext(config);
+                await performAuthFlow(config.SsoUrl);
                 return;
             }
             catch (SamlNotConfiguredException samlNotConfiguredException)
             {
                 errorMessageSubject.OnNext(Shared.Resources.SingleSignOnError);
             }
-            catch (Exception deserializationException)
+            catch (Exception exception)
             {
                 errorMessageSubject.OnNext(Shared.Resources.SomethingWentWrongTryAgain);
             }
@@ -110,8 +103,13 @@ namespace Toggl.Core.UI.ViewModels
             {
                 isLoadingSubject.OnNext(false);
             }
+        }
 
-            samlConfigSubject.OnNext(null);
+        private async Task performAuthFlow(Uri ssoUri)
+        {
+            var authResult = await Xamarin.Essentials.WebAuthenticator.AuthenticateAsync(
+                ssoUri,
+                new Uri("togglauth://"));
         }
     }
 }
