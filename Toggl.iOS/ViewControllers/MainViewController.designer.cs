@@ -38,6 +38,21 @@ namespace Toggl.iOS.ViewControllers
 		Toggl.iOS.Views.FadeView RunningEntryDescriptionFadeView { get; set; }
 
 		[Outlet]
+		UIKit.UIView RunningTimeEntryTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView RunningTimeEntryTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView RunningTimeEntryTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView RunningTimeEntryTooltipCloseIcon { get; set; }
+
+		[Outlet]
+		UIKit.UILabel RunningTimeEntryTooltipLabel { get; set; }
+
+		[Outlet]
 		UIKit.UIView SendFeedbackSuccessView { get; set; }
 
 		[Outlet]
@@ -103,6 +118,21 @@ namespace Toggl.iOS.ViewControllers
 				RunningEntryDescriptionFadeView = null;
 			}
 
+			if (RunningTimeEntryTooltip != null) {
+				RunningTimeEntryTooltip.Dispose ();
+				RunningTimeEntryTooltip = null;
+			}
+
+			if (RunningTimeEntryTooltipArrow != null) {
+				RunningTimeEntryTooltipArrow.Dispose ();
+				RunningTimeEntryTooltipArrow = null;
+			}
+
+			if (RunningTimeEntryTooltipCloseIcon != null) {
+				RunningTimeEntryTooltipCloseIcon.Dispose ();
+				RunningTimeEntryTooltipCloseIcon = null;
+			}
+
 			if (SendFeedbackSuccessView != null) {
 				SendFeedbackSuccessView.Dispose ();
 				SendFeedbackSuccessView = null;
@@ -146,6 +176,16 @@ namespace Toggl.iOS.ViewControllers
 			if (WelcomeBackView != null) {
 				WelcomeBackView.Dispose ();
 				WelcomeBackView = null;
+			}
+
+			if (RunningTimeEntryTooltipBackground != null) {
+				RunningTimeEntryTooltipBackground.Dispose ();
+				RunningTimeEntryTooltipBackground = null;
+			}
+
+			if (RunningTimeEntryTooltipLabel != null) {
+				RunningTimeEntryTooltipLabel.Dispose ();
+				RunningTimeEntryTooltipLabel = null;
 			}
 		}
 	}

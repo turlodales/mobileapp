@@ -49,8 +49,8 @@ namespace Toggl.Storage.Settings
         bool IsFirstTimeConnectingCalendars();
         void SetIsFirstTimeConnectingCalendars();
 
-        void SetOnboardingConditionWasMet(OnboardingCondition onboardingCondition);
-        bool OnboardingConditionWasMetBefore(OnboardingCondition onboardingCondition);
+        void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey);
+        bool OnboardingConditionWasMetBefore(OnboardingConditionKey onboardingConditionKey);
         bool OnboardingTimeEntryWasCreated();
         void SetOnboardingTimeEntryWasCreated();
 

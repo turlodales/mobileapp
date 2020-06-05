@@ -89,6 +89,8 @@ namespace Toggl.Core.UI.ViewModels
 
         public IObservable<IImmutableList<MainLogSection>> MainLogItems { get; private set; }
 
+        public OnboardingCondition RunnintgTimeEntryTooltipCondition { get; private set; }
+
         public RatingViewModel RatingViewModel { get; }
         public SuggestionsViewModel SuggestionsViewModel { get; }
         public IOnboardingStorage OnboardingStorage { get; }
@@ -301,6 +303,16 @@ namespace Toggl.Core.UI.ViewModels
                     shouldShowRatingViewObservable,
                     userFeedbackMainLogSection)
                 .AsDriver(ImmutableList<MainLogSection>.Empty, schedulerProvider);
+
+            RunnintgTimeEntryTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.RunningTimeEntryTooltip,
+                OnboardingStorage,
+                CurrentRunningTimeEntry
+                    .DelaySubscription(TimeSpan.FromSeconds(2))
+                    .Distinct()
+                    .Select(te => te?.Description == Resources.GettingStartedWithTogglApp)
+                    .AsDriver(schedulerProvider));
+            RunnintgTimeEntryTooltipCondition.DisposedBy(disposeBag);
         }
 
         public void Track(ITrackableEvent e)

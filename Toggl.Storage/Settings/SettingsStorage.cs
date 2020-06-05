@@ -311,11 +311,11 @@ namespace Toggl.Storage.Settings
 
         public void SetDidShowSiriClipboardInstruction(bool value) => keyValueStorage.SetBool(didShowSiriClipboardInstructionKey, value);
 
-        public void SetOnboardingConditionWasMet(OnboardingCondition onboardingCondition)
-            => keyValueStorage.SetBool(onboardingPrefix + onboardingCondition.Key, true);
+        public void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey)
+            => keyValueStorage.SetBool(onboardingPrefix + onboardingConditionKey, true);
 
-        public bool OnboardingConditionWasMetBefore(OnboardingCondition onboardingCondition)
-            => keyValueStorage.GetBool(onboardingPrefix + onboardingCondition.Key);
+        public bool OnboardingConditionWasMetBefore(OnboardingConditionKey onboardingConditionKey)
+            => keyValueStorage.GetBool(onboardingPrefix + onboardingConditionKey);
 
         public bool OnboardingTimeEntryWasCreated()
             => keyValueStorage.GetBool(onboardingTimeEntryWasCreatedKey);

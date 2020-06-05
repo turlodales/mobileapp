@@ -1419,6 +1419,8 @@
     <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch.png" />
     <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%403x.png" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1539,6 +1541,7 @@
     <Compile Include="Extensions\ColorAssets.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
     <Compile Include="Extensions\IntentPeriod.cs" />
+    <Compile Include="Extensions\OnboardingExtensions.cs" />
     <Compile Include="Extensions\Reactive\DurationFieldExtensions.cs" />
     <Compile Include="Extensions\Reactive\HueSaturationPickerViewExtensions.cs" />
     <Compile Include="Extensions\Reactive\BaseTableViewSourceExtensions.cs" />
@@ -2147,6 +2150,7 @@
     </Compile>
     <Compile Include="Views\Onboarding\VideoView.cs" />
     <Compile Include="Helper\TextHelper.cs" />
+    <Compile Include="Views\TriangleView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">
@@ -2290,6 +2294,8 @@
     <Folder Include="Resources\Colors.xcassets\IconTint.colorset\" />
     <Folder Include="Resources\Images.xcassets\ic_eyelid.imageset\" />
     <Folder Include="Resources\Images.xcassets\stopwatch.imageset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

@@ -25,9 +25,11 @@ using Toggl.iOS.Views;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Storage;
 using UIKit;
 using static Toggl.Core.Analytics.EditTimeEntryOrigin;
 using static Toggl.Core.UI.Helper.Animation;
+using Math = System.Math;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -99,6 +101,7 @@ namespace Toggl.iOS.ViewControllers
             tableViewSource = new TimeEntriesLogViewSource();
 
             prepareViews();
+            prepareRunningTimeEntryTooltip();
 
             ViewModel.SwipeActionsEnabled
                 .Subscribe(tableViewSource.SetSwipeActionsEnabled)
@@ -286,6 +289,29 @@ namespace Toggl.iOS.ViewControllers
             activity.WebPageUrl = Handoff.Url.Log;
             UserActivity = activity;
             activity.BecomeCurrent();
+        }
+
+        private void prepareRunningTimeEntryTooltip()
+        {
+            ViewModel.RunnintgTimeEntryTooltipCondition.ConditionMet
+                .Subscribe(RunningTimeEntryTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(disposeBag);
+
+            RunningTimeEntryTooltip.Rx().Tap()
+                .Subscribe(ViewModel.RunnintgTimeEntryTooltipCondition.Dismiss)
+                .DisposedBy(disposeBag);
+
+            RunningTimeEntryTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
+            RunningTimeEntryTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;;
+            RunningTimeEntryTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;;
+
+            RunningTimeEntryTooltipLabel.Text = Resources.HereIsYourRunningTimeEntryTooltip;
+            RunningTimeEntryTooltipLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Center);
+            RunningTimeEntryTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+
+            RunningTimeEntryTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            RunningTimeEntryTooltip.SetUpTooltipShadow();
         }
 
         private string createAccessibilityLabelForRunningEntryCard(IThreadSafeTimeEntry timeEntry)

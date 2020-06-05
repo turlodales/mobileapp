@@ -18,6 +18,11 @@
                 <outlet property="FeedbackSentDescriptionLabel" destination="FOL-Gh-maB" id="lpK-1b-wEA"/>
                 <outlet property="FeedbackSentSuccessTitleLabel" destination="SNw-4A-zNm" id="KmQ-Rg-CuA"/>
                 <outlet property="RunningEntryDescriptionFadeView" destination="E3W-8n-IfX" id="xWA-xE-taG"/>
+                <outlet property="RunningTimeEntryTooltip" destination="b95-fG-diW" id="dCx-Sa-ZPv"/>
+                <outlet property="RunningTimeEntryTooltipArrow" destination="NVy-Ue-XJn" id="a8Q-W5-Avo"/>
+                <outlet property="RunningTimeEntryTooltipBackground" destination="2ge-kl-RJR" id="b8K-d9-jMV"/>
+                <outlet property="RunningTimeEntryTooltipCloseIcon" destination="aT2-CI-qi9" id="8KX-OM-FZt"/>
+                <outlet property="RunningTimeEntryTooltipLabel" destination="dCP-Af-qYJ" id="mZC-BR-jXO"/>
                 <outlet property="SendFeedbackSuccessView" destination="fge-d2-Ud2" id="J5U-mZ-rsF"/>
                 <outlet property="StartTimeEntryButton" destination="4Kk-Hz-RBS" id="name-outlet-4Kk-Hz-RBS"/>
                 <outlet property="StopTimeEntryButton" destination="Ddo-IW-xE3" id="name-outlet-Ddo-IW-xE3"/>
@@ -239,6 +244,64 @@ time entries will appear here.</string>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b95-fG-diW" userLabel="Running Time Entry Tooltip">
+                    <rect key="frame" x="69.5" y="467" width="236" height="79"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ge-kl-RJR" userLabel="Background">
+                            <rect key="frame" x="0.0" y="0.0" width="236" height="71"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCP-Af-qYJ">
+                                    <rect key="frame" x="14" y="14" width="200" height="43"/>
+                                    <string key="text">Here is your running Time Entry. 
+Tap to edit it.</string>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.023529411764705882" green="0.66666666666666663" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="dCP-Af-qYJ" secondAttribute="trailing" constant="22" id="3TH-56-ZmU"/>
+                                <constraint firstAttribute="bottom" secondItem="dCP-Af-qYJ" secondAttribute="bottom" constant="14" id="9gt-JI-liq"/>
+                                <constraint firstItem="dCP-Af-qYJ" firstAttribute="top" secondItem="2ge-kl-RJR" secondAttribute="top" constant="14" id="jJk-TJ-ZNo"/>
+                                <constraint firstItem="dCP-Af-qYJ" firstAttribute="leading" secondItem="2ge-kl-RJR" secondAttribute="leading" constant="14" id="p7X-ez-dJH"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="x" translatesAutoresizingMaskIntoConstraints="NO" id="aT2-CI-qi9">
+                            <rect key="frame" x="212" y="0.0" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="jhp-mu-TWl"/>
+                                <constraint firstAttribute="width" constant="24" id="lUP-WE-eYG"/>
+                            </constraints>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVy-Ue-XJn" userLabel="Arrow" customClass="TriangleView">
+                            <rect key="frame" x="110" y="71" width="16" height="8"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="SiI-yf-yUq"/>
+                                <constraint firstAttribute="width" constant="16" id="pRQ-DB-rcn"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="2ge-kl-RJR" firstAttribute="leading" secondItem="b95-fG-diW" secondAttribute="leading" id="0oj-JB-QKi"/>
+                        <constraint firstItem="2ge-kl-RJR" firstAttribute="bottom" secondItem="NVy-Ue-XJn" secondAttribute="top" id="3sk-hv-u4G"/>
+                        <constraint firstAttribute="height" constant="79" id="4Ic-Dj-ZRZ"/>
+                        <constraint firstItem="aT2-CI-qi9" firstAttribute="top" secondItem="b95-fG-diW" secondAttribute="top" id="4tM-fz-4Pb"/>
+                        <constraint firstAttribute="width" constant="236" id="4vl-BR-XW5"/>
+                        <constraint firstItem="NVy-Ue-XJn" firstAttribute="centerX" secondItem="b95-fG-diW" secondAttribute="centerX" id="EzO-hk-KfP"/>
+                        <constraint firstAttribute="trailing" secondItem="2ge-kl-RJR" secondAttribute="trailing" id="FN7-ky-MUy"/>
+                        <constraint firstAttribute="bottom" secondItem="NVy-Ue-XJn" secondAttribute="bottom" id="W7W-N5-caX"/>
+                        <constraint firstAttribute="trailing" secondItem="aT2-CI-qi9" secondAttribute="trailing" id="vPr-np-cXf"/>
+                        <constraint firstItem="2ge-kl-RJR" firstAttribute="top" secondItem="b95-fG-diW" secondAttribute="top" id="xRh-BP-UGl"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -247,12 +310,14 @@ time entries will appear here.</string>
                 <constraint firstAttribute="trailing" secondItem="vou-B4-go4" secondAttribute="trailing" priority="750" id="83s-7t-oAW"/>
                 <constraint firstAttribute="trailing" secondItem="4Kk-Hz-RBS" secondAttribute="trailing" id="90o-lU-zgz"/>
                 <constraint firstItem="S4t-q9-ct9" firstAttribute="bottom" secondItem="4Kk-Hz-RBS" secondAttribute="bottom" id="DYd-Ht-tay"/>
+                <constraint firstItem="vou-B4-go4" firstAttribute="top" secondItem="b95-fG-diW" secondAttribute="bottom" id="LFh-9t-a19"/>
                 <constraint firstItem="vou-B4-go4" firstAttribute="top" secondItem="S4t-q9-ct9" secondAttribute="bottom" constant="-72" id="Lpx-CQ-TA7"/>
                 <constraint firstItem="hoP-Tg-vBM" firstAttribute="centerX" secondItem="S4t-q9-ct9" secondAttribute="centerX" id="Q2g-g8-PMQ"/>
                 <constraint firstItem="Ddo-IW-xE3" firstAttribute="trailing" secondItem="vou-B4-go4" secondAttribute="trailing" id="RsZ-Od-g2H"/>
                 <constraint firstAttribute="trailing" secondItem="Jhd-oR-xIN" secondAttribute="trailing" id="TAP-Mf-VjB"/>
                 <constraint firstItem="Jhd-oR-xIN" firstAttribute="top" secondItem="S4t-q9-ct9" secondAttribute="top" id="cO8-xe-txr"/>
                 <constraint firstAttribute="bottom" secondItem="vou-B4-go4" secondAttribute="bottom" id="eTc-gF-8yE"/>
+                <constraint firstItem="b95-fG-diW" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="ffs-iZ-9a1"/>
                 <constraint firstItem="S4t-q9-ct9" firstAttribute="bottom" secondItem="Jhd-oR-xIN" secondAttribute="bottom" priority="750" id="jk0-Wh-1za"/>
                 <constraint firstItem="Jhd-oR-xIN" firstAttribute="bottom" secondItem="vou-B4-go4" secondAttribute="top" id="oMA-0v-07i"/>
                 <constraint firstItem="fge-d2-Ud2" firstAttribute="centerX" secondItem="S4t-q9-ct9" secondAttribute="centerX" id="pke-Cq-lDE"/>
@@ -276,6 +341,7 @@ time entries will appear here.</string>
         <image name="confirmation" width="16" height="16"/>
         <image name="playIcon" width="56" height="56"/>
         <image name="stopIcon" width="34" height="34"/>
+        <image name="x" width="7" height="7"/>
         <namedColor name="Background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
