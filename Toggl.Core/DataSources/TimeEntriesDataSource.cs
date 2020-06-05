@@ -5,7 +5,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models;
@@ -15,6 +14,7 @@ using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Storage;
 using Toggl.Storage.Models;
+using ThreadingTask = System.Threading.Tasks.Task;
 
 namespace Toggl.Core.DataSources
 {
@@ -102,11 +102,28 @@ namespace Toggl.Core.DataSources
                 .SelectMany(_ => base.Update(timeEntry));
 
         public override IObservable<IEnumerable<IConflictResolutionResult<IThreadSafeTimeEntry>>> BatchUpdate(IEnumerable<IThreadSafeTimeEntry> timeEntries)
-            => timeEntriesRepository.GetByIds(timeEntries.Select(te => te.Id).ToArray())
-            .Select(timeEntriesDb => timeEntriesDb.ToDictionary(te => te.Id))
-            .Select(dbMap => timeEntries.Select(te => new { TimeEntry = te, TimeEntryDb = dbMap[te.Id] }))
-            .Do(timeEntryPairs => timeEntryPairs.ForEach(pair => backupTimeEntry(pair.TimeEntryDb, pair.TimeEntry)))
-            .SelectMany(_ => base.BatchUpdate(timeEntries));
+            => backupLocal(timeEntries)
+                .SingleAsync()
+                .SelectMany(_ => base.BatchUpdate(timeEntries))
+                .SingleAsync();
+
+        private IObservable<Unit> backupLocal(IEnumerable<IThreadSafeTimeEntry> timeEntries)
+        {
+            var ids = timeEntries.Select(te => te.Id).ToArray();
+            return timeEntriesRepository.GetByIds(ids)
+                .SingleAsync()
+                .SelectMany(CommonFunctions.Identity)
+                .ToDictionary(te => te.Id)
+                .Do(localTimeEntries =>
+                {
+                    foreach (var remote in timeEntries)
+                    {
+                        if (localTimeEntries.TryGetValue(remote.Id, out var local))
+                            backupTimeEntry(local, remote);
+                    }
+                })
+                .SelectUnit();
+        }
 
         private void backupTimeEntry(IDatabaseTimeEntry timeEntryDb, IThreadSafeTimeEntry timeEntry)
         {
