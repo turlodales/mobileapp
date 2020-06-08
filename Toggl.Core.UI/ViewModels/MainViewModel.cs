@@ -307,12 +307,16 @@ namespace Toggl.Core.UI.ViewModels
             RunnintgTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.RunningTimeEntryTooltip,
                 OnboardingStorage,
-                CurrentRunningTimeEntry
-                    .DelaySubscription(TimeSpan.FromSeconds(2))
-                    .Distinct()
-                    .Select(te => te?.Description == Resources.GettingStartedWithTogglApp)
-                    .AsDriver(schedulerProvider));
-            RunnintgTimeEntryTooltipCondition.DisposedBy(disposeBag);
+                createRunningTimeEntryTooltipPredicate());
+        }
+
+        private IObservable<bool> createRunningTimeEntryTooltipPredicate()
+        {
+            return CurrentRunningTimeEntry
+                .DelaySubscription(TimeSpan.FromSeconds(2))
+                .Distinct()
+                .Select(te => te != null)
+                .AsDriver(schedulerProvider);
         }
 
         public void Track(ITrackableEvent e)

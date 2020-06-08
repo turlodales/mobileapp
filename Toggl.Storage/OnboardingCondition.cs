@@ -9,10 +9,11 @@ using Toggl.Storage.Settings;
 
 namespace Toggl.Storage
 {
-    public sealed class OnboardingCondition : IDisposable
+    public sealed class OnboardingCondition
     {
-        private readonly CompositeDisposable disposeBag = new CompositeDisposable();
         private readonly ISubject<Unit> dismissSubject = new Subject<Unit>();
+
+        private readonly IOnboardingStorage onboardingStorage;
 
         public OnboardingConditionKey Key { get; }
 
@@ -22,28 +23,36 @@ namespace Toggl.Storage
         {
             Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
 
+            this.onboardingStorage = onboardingStorage;
+
             Key = key;
 
-            ConditionMet = onboardingStorage.OnboardingConditionWasMetBefore(Key) || onboardingStorage.CompletedOnboarding()
+            ConditionMet = onboardingStorage.OnboardingConditionWasMetBefore(Key) ||
+                           onboardingStorage.CompletedOnboarding()
                 ? Observable.Return(false)
                 : predicate
-                     .Merge(dismissSubject.Select(_ => false))
-                     .StartWith(false)
-                     .DistinctUntilChanged();
+                    .Merge(dismissSubject.Select(_ => false))
+                    .StartWith(false)
+                    .DistinctUntilChanged()
+                    .Select(conditionWasNotMetBefore)
+                    .Do(setConditionWasMetBeforeIfNeeded);
+        }
 
-            predicate
-                .Where(conditionMet => conditionMet == true)
-                .Subscribe(_ => onboardingStorage.SetOnboardingConditionWasMet(Key))
-                .DisposedBy(disposeBag);
+        private bool conditionWasNotMetBefore(bool shouldShow)
+        {
+            if (onboardingStorage.OnboardingConditionWasMetBefore(Key) || onboardingStorage.CompletedOnboarding())
+                return false;
+            return shouldShow;
+        }
+
+        private void setConditionWasMetBeforeIfNeeded(bool shouldShow)
+        {
+            if (shouldShow)
+                onboardingStorage.SetOnboardingConditionWasMet(Key);
         }
 
         public void Dismiss()
             => dismissSubject.OnNext(Unit.Default);
-
-        public void Dispose()
-        {
-            disposeBag.Dispose();
-        }
     }
 
     public enum OnboardingConditionKey

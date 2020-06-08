@@ -293,6 +293,7 @@ namespace Toggl.iOS.ViewControllers
 
         private void prepareRunningTimeEntryTooltip()
         {
+            RunningTimeEntryTooltip.Alpha = 0;
             ViewModel.RunnintgTimeEntryTooltipCondition.ConditionMet
                 .Subscribe(RunningTimeEntryTooltip.Rx().IsVisibleWithFade())
                 .DisposedBy(disposeBag);
