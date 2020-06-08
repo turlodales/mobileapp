@@ -17,7 +17,7 @@ namespace Toggl.Droid.Services
 
         private FirebaseAnalytics firebaseAnalytics { get; }
 
-        public AnalyticsServiceAndroid(ITimeService timeService) : base(timeService)
+        public AnalyticsServiceAndroid() : base()
         {
 #if USE_ANALYTICS
             firebaseAnalytics = Firebase.Analytics.FirebaseAnalytics.GetInstance(Android.App.Application.Context);

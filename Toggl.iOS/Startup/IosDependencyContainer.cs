@@ -73,7 +73,7 @@ namespace Toggl.iOS
         }
 
         protected override IAnalyticsService CreateAnalyticsService()
-            => new AnalyticsServiceIos(TimeService);
+            => new AnalyticsServiceIos();
 
         protected override IBackgroundSyncService CreateBackgroundSyncService()
             => new BackgroundSyncServiceIos();

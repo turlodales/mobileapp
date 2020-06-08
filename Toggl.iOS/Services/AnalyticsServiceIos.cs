@@ -15,10 +15,6 @@ namespace Toggl.iOS.Services
     {
         private const int maxAppCenterStringLength = 64;
 
-        public AnalyticsServiceIos(ITimeService timeService) : base(timeService)
-        {
-        }
-
         public override void Track(string eventName, Dictionary<string, string> parameters = null)
         {
             parameters = parameters ?? new Dictionary<string, string>();

@@ -1,23 +1,24 @@
 using System;
+using System.Diagnostics;
 
 namespace Toggl.Core.Analytics
 {
     public class PerformanceMeasurement
     {
-        private readonly DateTimeOffset start;
+        private readonly Stopwatch stopwatch;
 
         public string Name { get; }
 
-        internal PerformanceMeasurement(string name, DateTimeOffset start)
+        internal PerformanceMeasurement(string name)
         {
-            this.start = start;
-
             Name = name;
+            stopwatch = Stopwatch.StartNew();
         }
 
-        internal PerformanceResult DurationUntil(DateTimeOffset end)
+        internal PerformanceResult Complete()
         {
-            return new PerformanceResult(end - start);
+            stopwatch.Stop();
+            return new PerformanceResult(stopwatch.Elapsed);
         }
     }
 }

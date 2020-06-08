@@ -65,7 +65,7 @@ namespace Toggl.Droid
         }
 
         protected override IAnalyticsService CreateAnalyticsService()
-            => new AnalyticsServiceAndroid(TimeService);
+            => new AnalyticsServiceAndroid();
 
         protected override IBackgroundSyncService CreateBackgroundSyncService()
             => new BackgroundSyncServiceAndroid();

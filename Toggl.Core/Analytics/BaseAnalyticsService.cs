@@ -10,8 +10,6 @@ namespace Toggl.Core.Analytics
     [Preserve(AllMembers = true)]
     public abstract class BaseAnalyticsService : IAnalyticsService
     {
-        private readonly ITimeService timeService;
-
         public IAnalyticsEvent<AuthenticationMethod> Login { get; }
 
         public IAnalyticsEvent<LoginErrorSource> LoginError { get; }
@@ -260,11 +258,8 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 
-        protected BaseAnalyticsService(ITimeService timeService)
+        protected BaseAnalyticsService()
         {
-            Ensure.Argument.IsNotNull(timeService, nameof(timeService));
-            this.timeService = timeService;
-
             Login = new AnalyticsEvent<AuthenticationMethod>(this, nameof(Login), "AuthenticationMethod");
             LoginError = new AnalyticsEvent<LoginErrorSource>(this, nameof(LoginError), "Source");
             SignUp = new AnalyticsEvent<AuthenticationMethod>(this, nameof(SignUp), "AuthenticationMethod");
@@ -398,12 +393,13 @@ namespace Toggl.Core.Analytics
             => startPerformanceMeasurement("SyncPerformanceOld");
 
         private PerformanceMeasurement startPerformanceMeasurement(string name)
-            => new PerformanceMeasurement(name, timeService.CurrentDateTime);
+            => new PerformanceMeasurement(name);
 
         public void StopAndTrack(PerformanceMeasurement measurement)
         {
             const string duration = "duration";
-            var result = measurement.DurationUntil(timeService.CurrentDateTime);
+            var result = measurement.Complete();
+
             Track(
                 measurement.Name,
                 new Dictionary<string, string> { [duration] = result.ToString() });
