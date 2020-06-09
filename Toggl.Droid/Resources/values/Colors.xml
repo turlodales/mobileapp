@@ -125,5 +125,6 @@
   <color name="onBoardingTabIndicatorDeselected">#33FFFFFF</color>
   <color name="onboardingLoadingIndicatorColor">#CBF2F0</color>
   <color name="onboardingTogglLogoText">#000000</color>
-
+  <color name="tooltipBackground">#FF0FA8F5</color>
+  <color name="tooltipText">#FFFFFFFF</color>
 </resources>

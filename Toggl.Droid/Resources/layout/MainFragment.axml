@@ -44,6 +44,14 @@
       app:layout_behavior="toggl.droid.presentation.RunningTimeEntrySheetBehavior">
         <include layout="@layout/MainRunningTimeEntry" />
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>
+
+    <toggl.droid.views.TooltipLayout
+        android:id="@+id/HereIsYourTimeEntryTooltip"
+        android:layout_marginBottom="96dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        
     <toggl.droid.views.AnimatedFloatingActionButton
         android:id="@+id/MainPlayButton"
         app:elevation="4dp"

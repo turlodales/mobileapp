@@ -1,4 +1,4 @@
-﻿using Android.Views;
+using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -31,6 +31,7 @@ namespace Toggl.Droid.Fragments
         private TextView welcomeBackTitle;
         private TextView welcomeBackSubText;
         private AppBarLayout appBarLayout;
+        private TooltipLayout hereIsYourTimeEntryTooltip;
         private TextView emptyStateGetReadyToTrackTimeTextView;
 
         protected override void InitializeViews(View fragmentView)
@@ -50,8 +51,10 @@ namespace Toggl.Droid.Fragments
             emptyStateViewStub = fragmentView.FindViewById<ViewStub>(Resource.Id.EmptyStateViewStub);
             welcomeBackStub = fragmentView.FindViewById<ViewStub>(Resource.Id.WelcomeBackViewStub);
             appBarLayout = fragmentView.FindViewById<AppBarLayout>(Resource.Id.AppBarLayout);
+            hereIsYourTimeEntryTooltip = fragmentView.FindViewById<TooltipLayout>(Resource.Id.HereIsYourTimeEntryTooltip);
 
             timeEntryCardAddDescriptionLabel.Text = Shared.Resources.AddDescription;
+            hereIsYourTimeEntryTooltip.Text = Shared.Resources.HereIsYourRunningTimeEntryTooltip;
         }
     }
 }

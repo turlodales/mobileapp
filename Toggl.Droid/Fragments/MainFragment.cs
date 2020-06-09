@@ -220,6 +220,13 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(_ => playButton.StopAnimation())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.RunningTimeEntryTooltipCondition.ConditionMet
+                .Subscribe(hereIsYourTimeEntryTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            hereIsYourTimeEntryTooltip.Rx().Tap()
+                .Subscribe(ViewModel.RunningTimeEntryTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
         }
 
         private void updateMainLog(IImmutableList<AnimatableSectionModel<MainLogSectionViewModel, MainLogItemViewModel, IMainLogKey>> items)

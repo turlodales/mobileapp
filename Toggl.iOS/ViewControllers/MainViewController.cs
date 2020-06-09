@@ -294,12 +294,12 @@ namespace Toggl.iOS.ViewControllers
         private void prepareRunningTimeEntryTooltip()
         {
             RunningTimeEntryTooltip.Alpha = 0;
-            ViewModel.RunnintgTimeEntryTooltipCondition.ConditionMet
+            ViewModel.RunningTimeEntryTooltipCondition.ConditionMet
                 .Subscribe(RunningTimeEntryTooltip.Rx().IsVisibleWithFade())
                 .DisposedBy(disposeBag);
 
             RunningTimeEntryTooltip.Rx().Tap()
-                .Subscribe(ViewModel.RunnintgTimeEntryTooltipCondition.Dismiss)
+                .Subscribe(ViewModel.RunningTimeEntryTooltipCondition.Dismiss)
                 .DisposedBy(disposeBag);
 
             RunningTimeEntryTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
