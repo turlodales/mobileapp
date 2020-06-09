@@ -312,10 +312,15 @@ namespace Toggl.Core.UI.ViewModels
 
         private IObservable<bool> createRunningTimeEntryTooltipPredicate()
         {
+            var timeEntryTappedObservable = SelectTimeEntry
+                .Inputs
+                .Select(_ => false);
+
             return CurrentRunningTimeEntry
                 .DelaySubscription(TimeSpan.FromSeconds(2))
                 .Distinct()
                 .Select(te => te != null)
+                .Merge(timeEntryTappedObservable)
                 .AsDriver(schedulerProvider);
         }
 
