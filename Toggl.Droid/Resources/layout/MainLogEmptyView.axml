@@ -1,137 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     android:background="@color/background">
 
-    <View
-        android:layout_width="50dp"
-        android:layout_height="8dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="16dp"
+    <ImageView
+        android:src="@drawable/illustration_stopwatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/MainGetReadyToTrackTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
+        android:gravity="center"
+        android:lineHeight="24dp"
+        android:textSize="16dp"
+        android:text="Get ready to track time and\nboost your productivity!"/>
 
-    <View
-        android:layout_width="50dp"
-        android:layout_height="8dp"
-        android:layout_gravity="right"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <!-- row 1 -->
-
-    <View
-        android:layout_width="200dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="96dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="84dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/halfTransparentPurple" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="108dp"
-        android:background="@color/separator" />
-
-    <!-- row 2 -->
-
-    <View
-        android:layout_width="134dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="126dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="40dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="148dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/halfTransparentBlue" />
-
-    <View
-        android:layout_width="118dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginTop="148dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="172dp"
-        android:background="@color/separator" />
-
-    <!-- row 3 -->
-
-    <View
-        android:layout_width="132dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="236dp"
-        android:background="@color/separator" />
-
-    <!-- row 4 -->
-
-    <View
-        android:layout_width="200dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="254dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="50dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="274dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="300dp"
-        android:background="@color/separator" />
-
-    <!-- row 5 -->
-
-    <View
-        android:layout_width="132dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="328dp"
-        android:background="@drawable/background_empty_view"
-        android:backgroundTint="@color/separator" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="364dp"
-        android:background="@color/separator" />
-
-</FrameLayout>
+</LinearLayout>

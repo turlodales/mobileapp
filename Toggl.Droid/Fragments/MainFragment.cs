@@ -358,6 +358,8 @@ namespace Toggl.Droid.Fragments
                 if (emptyStateView == null)
                 {
                     emptyStateView = emptyStateViewStub.Inflate();
+                    emptyStateGetReadyToTrackTimeTextView = emptyStateView.FindViewById<TextView>(Resource.Id.MainGetReadyToTrackTimeTextView);
+                    emptyStateGetReadyToTrackTimeTextView.Text = Shared.Resources.GetReadyToTrackTimeAndBoostYourProductivity;
                 }
 
                 emptyStateView.Visibility = ViewStates.Visible;
