@@ -131,8 +131,11 @@ namespace Toggl.Core.Sync.V2
             foreach (var interactor in syncSequence())
             {
                 await interactor.Execute();
-                if (isFrozen) break; // abort as soon as possible
+                if (isFrozen)
+                    break; // abort as soon as possible
             }
+
+            await checkForNoWorkspacesScenario();
         }
 
         private void processError(Exception error)
@@ -195,6 +198,15 @@ namespace Toggl.Core.Sync.V2
             dataSource.Workspaces.ReportChange();
             dataSource.Preferences.ReportChange();
             dataSource.User.ReportChange();
+        }
+
+        private async Task checkForNoWorkspacesScenario()
+        {
+            // NOTE: The interactor returns only accessible workspaces.
+            var workspaces = await interactorFactory.GetAllWorkspaces().Execute();
+
+            if (workspaces.None())
+                throw new NoWorkspaceException();
         }
     }
 }
