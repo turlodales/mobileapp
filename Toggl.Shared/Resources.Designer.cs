@@ -2415,5 +2415,11 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("HereIsYourRunningTimeEntryTooltip", resourceCulture);
             }
         }
+        
+        public static string TapHereToStartYourNextTimeEntry {
+            get {
+                return ResourceManager.GetString("TapHereToStartYourNextTimeEntry", resourceCulture);
+            }
+        }
     }
 }

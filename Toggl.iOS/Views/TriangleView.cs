@@ -60,6 +60,7 @@ namespace Toggl.iOS.Views
 
         public override void Draw(CGRect rect)
         {
+            if (color == null) return;
             var context = UIGraphics.GetCurrentContext();
             if (context == null) return;
 

@@ -60,6 +60,21 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIImageView StartTimeEntryButton { get; set; }
 
 		[Outlet]
+		UIKit.UIView StartTimeEntryTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView StartTimeEntryTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView StartTimeEntryTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView StartTimeEntryTooltipCloseIcon { get; set; }
+
+		[Outlet]
+		UIKit.UILabel StartTimeEntryTooltipLabel { get; set; }
+
+		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.UIButton StopTimeEntryButton { get; set; }
 
@@ -128,9 +143,19 @@ namespace Toggl.iOS.ViewControllers
 				RunningTimeEntryTooltipArrow = null;
 			}
 
+			if (RunningTimeEntryTooltipBackground != null) {
+				RunningTimeEntryTooltipBackground.Dispose ();
+				RunningTimeEntryTooltipBackground = null;
+			}
+
 			if (RunningTimeEntryTooltipCloseIcon != null) {
 				RunningTimeEntryTooltipCloseIcon.Dispose ();
 				RunningTimeEntryTooltipCloseIcon = null;
+			}
+
+			if (RunningTimeEntryTooltipLabel != null) {
+				RunningTimeEntryTooltipLabel.Dispose ();
+				RunningTimeEntryTooltipLabel = null;
 			}
 
 			if (SendFeedbackSuccessView != null) {
@@ -178,14 +203,29 @@ namespace Toggl.iOS.ViewControllers
 				WelcomeBackView = null;
 			}
 
-			if (RunningTimeEntryTooltipBackground != null) {
-				RunningTimeEntryTooltipBackground.Dispose ();
-				RunningTimeEntryTooltipBackground = null;
+			if (StartTimeEntryTooltip != null) {
+				StartTimeEntryTooltip.Dispose ();
+				StartTimeEntryTooltip = null;
 			}
 
-			if (RunningTimeEntryTooltipLabel != null) {
-				RunningTimeEntryTooltipLabel.Dispose ();
-				RunningTimeEntryTooltipLabel = null;
+			if (StartTimeEntryTooltipArrow != null) {
+				StartTimeEntryTooltipArrow.Dispose ();
+				StartTimeEntryTooltipArrow = null;
+			}
+
+			if (StartTimeEntryTooltipBackground != null) {
+				StartTimeEntryTooltipBackground.Dispose ();
+				StartTimeEntryTooltipBackground = null;
+			}
+
+			if (StartTimeEntryTooltipCloseIcon != null) {
+				StartTimeEntryTooltipCloseIcon.Dispose ();
+				StartTimeEntryTooltipCloseIcon = null;
+			}
+
+			if (StartTimeEntryTooltipLabel != null) {
+				StartTimeEntryTooltipLabel.Dispose ();
+				StartTimeEntryTooltipLabel = null;
 			}
 		}
 	}

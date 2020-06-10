@@ -29,6 +29,7 @@ using Toggl.Storage;
 using UIKit;
 using static Toggl.Core.Analytics.EditTimeEntryOrigin;
 using static Toggl.Core.UI.Helper.Animation;
+using ImageViewExtensions = Toggl.iOS.Shared.Extensions.ImageViewExtensions;
 using Math = System.Math;
 
 namespace Toggl.iOS.ViewControllers
@@ -102,6 +103,7 @@ namespace Toggl.iOS.ViewControllers
 
             prepareViews();
             prepareRunningTimeEntryTooltip();
+            prepareStartTimeEntryTooltip();
 
             ViewModel.SwipeActionsEnabled
                 .Subscribe(tableViewSource.SetSwipeActionsEnabled)
@@ -313,6 +315,29 @@ namespace Toggl.iOS.ViewControllers
             RunningTimeEntryTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
 
             RunningTimeEntryTooltip.SetUpTooltipShadow();
+        }
+
+        private void prepareStartTimeEntryTooltip()
+        {
+            ViewModel.StartTimeEntryTooltipCondition.ConditionMet
+                .Subscribe(StartTimeEntryTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(disposeBag);
+
+            StartTimeEntryTooltip.Rx().Tap()
+                .Subscribe(ViewModel.StartTimeEntryTooltipCondition.Dismiss)
+                .DisposedBy(disposeBag);
+
+            StartTimeEntryTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
+            StartTimeEntryTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            StartTimeEntryTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;
+
+            StartTimeEntryTooltipLabel.Text = Resources.TapHereToStartYourNextTimeEntry;
+            StartTimeEntryTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            RunningTimeEntryTooltipLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Center);
+
+            StartTimeEntryTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            StartTimeEntryTooltip.SetUpTooltipShadow();
         }
 
         private string createAccessibilityLabelForRunningEntryCard(IThreadSafeTimeEntry timeEntry)

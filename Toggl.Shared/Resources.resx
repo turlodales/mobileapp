@@ -1778,4 +1778,8 @@ boost your productivity!</value>
 Tap to edit it.</value>
         <comment>Text displayed in the onboarding tooltip that's shown above the very first time entry</comment>
     </data>
+    <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
+        <value>Tap here to start your next Time Entry</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the start time entry button</comment>
+    </data>
 </root>

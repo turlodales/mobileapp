@@ -90,6 +90,7 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<IImmutableList<MainLogSection>> MainLogItems { get; private set; }
 
         public OnboardingCondition RunningTimeEntryTooltipCondition { get; private set; }
+        public OnboardingCondition StartTimeEntryTooltipCondition { get; private set; }
 
         public RatingViewModel RatingViewModel { get; }
         public SuggestionsViewModel SuggestionsViewModel { get; }
@@ -308,6 +309,11 @@ namespace Toggl.Core.UI.ViewModels
                 OnboardingConditionKey.RunningTimeEntryTooltip,
                 OnboardingStorage,
                 createRunningTimeEntryTooltipPredicate());
+
+            StartTimeEntryTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.StartTimeEntryTooltip,
+                OnboardingStorage,
+                createStartTimeEntryTooltipPredicate());
         }
 
         private IObservable<bool> createRunningTimeEntryTooltipPredicate()
@@ -322,6 +328,27 @@ namespace Toggl.Core.UI.ViewModels
                 .Select(te => te != null)
                 .Merge(timeEntryTappedObservable)
                 .AsDriver(schedulerProvider);
+        }
+
+        private IObservable<bool> createStartTimeEntryTooltipPredicate()
+        {
+            var timeEntriesExist = TimeEntriesViewModel.TimeEntries
+                .Select(entries => entries.Any())
+                .Take(1);
+
+            var timeEntryIsRunning = CurrentRunningTimeEntry
+                .Select(te => te != null)
+                .Take(1);
+
+            var startTimeEntryTapped = StartTimeEntry
+                .Inputs
+                .Select(_ => false);
+
+            return timeEntriesExist.CombineLatest(
+                timeEntryIsRunning,
+                (timeEntriesExist, timeEntryIsRunning) => timeEntriesExist && !timeEntryIsRunning)
+                .Merge(startTimeEntryTapped)
+                .DistinctUntilChanged();
         }
 
         public void Track(ITrackableEvent e)
