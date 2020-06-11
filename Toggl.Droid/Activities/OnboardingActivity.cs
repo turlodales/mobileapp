@@ -3,8 +3,10 @@ using System.Reactive.Linq;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
+using Android.Views;
 using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
@@ -36,6 +38,10 @@ namespace Toggl.Droid.Activities
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
                 .DisposedBy(DisposeBag);
 
+            ssoCancelButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOnCancel.Inputs)
+                .DisposedBy(DisposeBag);
+
             ssoButton.Rx().Tap()
                 .Subscribe(ViewModel.SingleSignOn.Inputs)
                 .DisposedBy(DisposeBag);
@@ -50,11 +56,21 @@ namespace Toggl.Droid.Activities
                 .Subscribe(loadingViewViews.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.IsForAccountLinking
+                .Subscribe(handleAccountLinkingVisibility)
+                .DisposedBy(DisposeBag);
+
             onboardingViewPager.Rx()
                 .CurrentItem()
                 .DistinctUntilChanged()
                 .Subscribe(onPageChanged)
                 .DisposedBy(DisposeBag);
+        }
+
+        private void handleAccountLinkingVisibility(bool isForAccountLinking)
+        {
+            notLoadingViewViews.Visibility = (!isForAccountLinking).ToVisibility();
+            ssoNotLoadingViewViews.Visibility = isForAccountLinking.ToVisibility();
         }
 
         private void onPageChanged(int page)

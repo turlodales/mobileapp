@@ -16,10 +16,16 @@ namespace Toggl.Droid.Activities
     public partial class OnboardingActivity
     {
         private View continueWithGoogleButton;
+        private View ssoContinueWithGoogleButton;
         private Button continueWithEmailButton;
+        private Button ssoContinueWithEmailButton;
         private Button ssoButton;
+        private Button ssoCancelButton;
         private TextView loginGoogleLoginLabel;
+        private TextView ssoLoginGoogleLoginLabel;
+        private TextView ssoLoginMessage;
         private Group notLoadingViewViews;
+        private Group ssoNotLoadingViewViews;
         private Group loadingViewViews;
         private ImageView loadingViewIndicator;
         private AnimationDrawable loadingAnimation;
@@ -30,15 +36,25 @@ namespace Toggl.Droid.Activities
         {
             notLoadingViewViews = FindViewById<Group>(Resource.Id.notLoadingViewsViewGroup);
             loadingViewViews = FindViewById<Group>(Resource.Id.loadingViewsViewGroup);
+            ssoNotLoadingViewViews = FindViewById<Group>(Resource.Id.ssoNotLoadingViewsViewGroup);
             loadingViewIndicator = FindViewById<ImageView>(Resource.Id.loadingIndicator);
             continueWithGoogleButton = FindViewById(Resource.Id.continueWithGoogleButton);
+            ssoContinueWithGoogleButton = FindViewById(Resource.Id.ssoContinueWithGoogleButton);
             continueWithEmailButton = FindViewById<Button>(Resource.Id.continueWithEmailButton);
+            ssoContinueWithEmailButton = FindViewById<Button>(Resource.Id.ssoContinueWithEmailButton);
             ssoButton = FindViewById<Button>(Resource.Id.ssoButton);
+            ssoCancelButton = FindViewById<Button>(Resource.Id.ssoCancelButton);
             loginGoogleLoginLabel = FindViewById<TextView>(Resource.Id.LoginGoogleLoginLabel);
+            ssoLoginGoogleLoginLabel = FindViewById<TextView>(Resource.Id.ssoLoginGoogleLoginLabel);
+            ssoLoginMessage= FindViewById<TextView>(Resource.Id.ssoLoginMessage);
 
+            ssoContinueWithEmailButton.Text = Shared.Resources.ContinueWithEmail;
             continueWithEmailButton.Text = Shared.Resources.ContinueWithEmail;
+            ssoLoginGoogleLoginLabel.Text = Shared.Resources.ContinueWithGoogle;
             loginGoogleLoginLabel.Text = Shared.Resources.ContinueWithGoogle;
             ssoButton.Text = Shared.Resources.LoginWithSso;
+            ssoCancelButton.Text = Shared.Resources.Cancel;
+            ssoLoginMessage.Text = Shared.Resources.LoginToEnableSso;
 
             onboardingViewPager = FindViewById<ViewPager>(Resource.Id.onboardingViewPager);
             onboardingTabIndicator = FindViewById<TabLayout>(Resource.Id.onboardingTabIndicator);
@@ -54,6 +70,7 @@ namespace Toggl.Droid.Activities
             onboardingViewPager.Adapter = new ScreenSlidePagerAdapter(SupportFragmentManager);
             onboardingTabIndicator.SetupWithViewPager(onboardingViewPager);
             ssoButton.FitBottomMarginInset();
+            ssoCancelButton.FitBottomMarginInset();
             loadingAnimation = (AnimationDrawable) loadingViewIndicator.Drawable;
         }
 

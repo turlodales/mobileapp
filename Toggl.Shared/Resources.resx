@@ -243,6 +243,10 @@ mobile, desktop or web</value>
         <value>Log in with SSO</value>
         <comment>Label for button that navigates to login with SSO screen</comment>
     </data>
+    <data name="LoginToEnableSso" xml:space="preserve">
+        <value>Log in to enable SSO</value>
+        <comment>Label for login screen that handles SSO account linking</comment>
+    </data>
     <data name="WorkEmail" xml:space="preserve">
         <value>Work email</value>
         <comment>Label for emails in the sso login screen</comment>

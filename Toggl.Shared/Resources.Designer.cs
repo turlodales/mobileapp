@@ -226,6 +226,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string LoginToEnableSso {
+            get {
+                return ResourceManager.GetString("LoginToEnableSso", resourceCulture);
+            }
+        }
+        
         public static string WorkEmail {
             get {
                 return ResourceManager.GetString("WorkEmail", resourceCulture);

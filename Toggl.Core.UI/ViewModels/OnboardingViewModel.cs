@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -18,12 +19,13 @@ using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Extensions.Reactive;
 using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels
 {
-    public class OnboardingViewModel : ViewModel
+    public class OnboardingViewModel : ViewModelWithInput<OnboardingParameters>
     {
         private readonly IPlatformInfo platformInfo;
         private readonly ITimeService timeService;
@@ -36,16 +38,19 @@ namespace Toggl.Core.UI.ViewModels
         private CompositeDisposable disposeBag = new CompositeDisposable();
 
         private readonly BehaviorSubject<bool> isLoadingSubject = new BehaviorSubject<bool>(false);
+        private readonly BehaviorSubject<bool> isForAccountLinking = new BehaviorSubject<bool>(false);
 
         private ThirdPartyLoginInfo loginInfo;
         private List<bool> onboardingPagesViewed = new List<bool> { false, false, false };
 
         public IObservable<bool> IsLoading { get; }
+        public IObservable<bool> IsForAccountLinking { get; }
 
         public ViewAction ContinueWithApple { get; }
         public ViewAction ContinueWithGoogle { get; }
         public ViewAction ContinueWithEmail { get; }
         public ViewAction SingleSignOn { get; }
+        public ViewAction SingleSignOnCancel { get; }
 
 
         public InputAction<OnboardingScrollParameters> OnOnboardingScroll { get; }
@@ -83,11 +88,22 @@ namespace Toggl.Core.UI.ViewModels
             ContinueWithGoogle = rxActionFactory.FromAction(continueWithGoogle);
             ContinueWithEmail = rxActionFactory.FromAsync(continueWithEmail);
             SingleSignOn = rxActionFactory.FromAsync(singleSignOn);
+            SingleSignOnCancel = rxActionFactory.FromAction(singleSignOnCancel);
             OnOnboardingScroll = rxActionFactory.FromAction<OnboardingScrollParameters>(onOnboardingScroll);
 
             IsLoading = isLoadingSubject
                 .DistinctUntilChanged()
                 .AsDriver(schedulerProvider);
+
+            IsForAccountLinking = isForAccountLinking
+                .DistinctUntilChanged()
+                .AsDriver(schedulerProvider);
+        }
+
+        public override Task Initialize(OnboardingParameters payload)
+        {
+            isForAccountLinking.OnNext(payload.IsForAccountLinking);
+            return base.Initialize(payload);
         }
 
         public override void ViewDestroyed()
@@ -122,6 +138,11 @@ namespace Toggl.Core.UI.ViewModels
             {
                 return Navigate<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty);
             }
+        }
+
+        private void singleSignOnCancel()
+        {
+            isForAccountLinking.OnNext(false);
         }
 
         private Task singleSignOn()

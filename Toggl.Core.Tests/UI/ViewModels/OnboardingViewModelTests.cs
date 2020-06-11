@@ -22,7 +22,7 @@ using Xunit;
 
 namespace Toggl.Core.Tests.UI.ViewModels
 {
-    public class OnboardingViewModelTest : BaseViewModelTests<OnboardingViewModel>
+    public class OnboardingViewModelTest : BaseViewModelWithInputTests<OnboardingViewModel, OnboardingParameters>
     {
         protected ILastTimeUsageStorage LastTimeUsageStorage { get; } = Substitute.For<ILastTimeUsageStorage>();
 

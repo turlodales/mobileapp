@@ -114,7 +114,7 @@ namespace Toggl.iOS
             var vc = accessLevel switch
             {
                 AccessLevel.AccessRestricted => loadRootViewController<OutdatedAppViewModel, Unit>(),
-                AccessLevel.NotLoggedIn => loadRootViewController<OnboardingViewModel, Unit>(),
+                AccessLevel.NotLoggedIn => loadRootViewController<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default),
                 AccessLevel.TokenRevoked => loadRootViewController<TokenResetViewModel, Unit>(),
                 AccessLevel.LoggedIn => loadRootViewController<MainTabBarViewModel, Unit>()
             };

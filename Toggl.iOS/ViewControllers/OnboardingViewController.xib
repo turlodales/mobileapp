@@ -10,9 +10,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingViewController">
             <connections>
+                <outlet property="ButtonsStackBottomConstraint" destination="L4A-n4-G2p" id="rPF-BH-RE1"/>
+                <outlet property="ButtonsStackTopConstraint" destination="VTa-Ib-RVh" id="1t5-V1-cbp"/>
                 <outlet property="ButtonsStackView" destination="fCG-RA-wVW" id="ou2-Z6-U15"/>
+                <outlet property="CancelSsoButton" destination="p0p-WA-BnJ" id="7nv-gt-DnH"/>
                 <outlet property="ContinueWithEmailButton" destination="nWh-ik-aNy" id="tfB-Vk-1m3"/>
                 <outlet property="ContinueWithGoogleButton" destination="HcQ-CG-vqW" id="D7R-W3-B1w"/>
+                <outlet property="LoginToEnableSsoLabel" destination="vky-sg-lwu" id="O1r-4F-BGE"/>
                 <outlet property="LoginWithSsoButton" destination="7jG-dF-ZOM" id="YfR-eN-dap"/>
                 <outlet property="PageControl" destination="jE3-un-G1X" id="Zy1-W5-mtH"/>
                 <outlet property="TogglLogo" destination="K5R-Ee-235" id="GL7-t7-ZLR"/>
@@ -69,18 +73,44 @@
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="jE3-un-G1X">
                     <rect key="frame" x="187.5" y="645" width="39" height="37"/>
                 </pageControl>
+                <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0p-WA-BnJ" userLabel="Cancel Button">
+                    <rect key="frame" x="31" y="794" width="352" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="U5c-Od-owu"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <state key="normal" title="Cancel"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" text="Login to enable SSO" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vky-sg-lwu" userLabel="Login to enable SSO Label">
+                    <rect key="frame" x="31" y="132" width="214" height="30"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
+                    <color key="textColor" name="Text"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" name="Background"/>
             <constraints>
+                <constraint firstItem="p0p-WA-BnJ" firstAttribute="centerX" secondItem="dbi-b1-aTW" secondAttribute="centerX" id="5YO-dN-uX7"/>
                 <constraint firstItem="fCG-RA-wVW" firstAttribute="top" secondItem="jE3-un-G1X" secondAttribute="bottom" constant="8" id="6mk-NM-IYN"/>
                 <constraint firstItem="K5R-Ee-235" firstAttribute="top" secondItem="dbi-b1-aTW" secondAttribute="top" constant="28" id="7se-Yl-rR1"/>
-                <constraint firstItem="dbi-b1-aTW" firstAttribute="bottom" secondItem="fCG-RA-wVW" secondAttribute="bottom" constant="16" id="L4A-n4-G2p"/>
+                <constraint firstItem="vky-sg-lwu" firstAttribute="top" secondItem="K5R-Ee-235" secondAttribute="bottom" constant="38" id="H4f-Qb-yaQ"/>
+                <constraint firstItem="dbi-b1-aTW" firstAttribute="bottom" secondItem="fCG-RA-wVW" secondAttribute="bottom" constant="16" identifier="buttonsStackBottomConstraint" id="L4A-n4-G2p"/>
                 <constraint firstItem="fCG-RA-wVW" firstAttribute="leading" secondItem="dbi-b1-aTW" secondAttribute="leading" constant="31" id="R37-su-Ey0"/>
                 <constraint firstItem="dbi-b1-aTW" firstAttribute="trailing" secondItem="fCG-RA-wVW" secondAttribute="trailing" constant="31" id="Tx3-xR-cSN"/>
+                <constraint firstItem="fCG-RA-wVW" firstAttribute="top" secondItem="vky-sg-lwu" secondAttribute="bottom" constant="38" identifier="buttonsStackTopConstraint" id="VTa-Ib-RVh"/>
+                <constraint firstItem="dbi-b1-aTW" firstAttribute="bottom" secondItem="p0p-WA-BnJ" secondAttribute="bottom" constant="24" id="bdz-b5-n1C"/>
+                <constraint firstItem="vky-sg-lwu" firstAttribute="leading" secondItem="K5R-Ee-235" secondAttribute="leading" id="cLV-1Q-M8g"/>
                 <constraint firstItem="K5R-Ee-235" firstAttribute="leading" secondItem="dbi-b1-aTW" secondAttribute="leading" constant="31" id="ePT-II-dUT"/>
+                <constraint firstItem="dbi-b1-aTW" firstAttribute="trailing" secondItem="p0p-WA-BnJ" secondAttribute="trailing" constant="31" id="k3z-PI-tU6"/>
                 <constraint firstItem="jE3-un-G1X" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="myU-dJ-TX7"/>
+                <constraint firstItem="p0p-WA-BnJ" firstAttribute="leading" secondItem="dbi-b1-aTW" secondAttribute="leading" constant="31" id="zna-Qw-Ntw"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="dbi-b1-aTW"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="VTa-Ib-RVh"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="33.333333333333336" y="53.571428571428569"/>
         </view>
     </objects>
@@ -92,6 +122,9 @@
         </namedColor>
         <namedColor name="CellBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Text">
+            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Text1">
             <color red="0.23529411852359772" green="0.23529411852359772" blue="0.26274511218070984" alpha="0.78431373834609985" colorSpace="custom" customColorSpace="sRGB"/>

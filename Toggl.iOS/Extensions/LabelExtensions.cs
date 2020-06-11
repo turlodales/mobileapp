@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using System;
+using Foundation;
 using UIKit;
 
 namespace Toggl.iOS.Extensions
@@ -14,6 +15,21 @@ namespace Toggl.iOS.Extensions
             attributedText.AddAttribute(UIStringAttributeKey.KerningAdjustment, new NSNumber(letterSpacing), range);
 
             label.AttributedText = attributedText;
+        }
+
+        public static void SetTextWithOnboardingAppearance(this UILabel label, string message)
+        {
+            var paragraphStyle = new NSMutableParagraphStyle();
+            paragraphStyle.LineSpacing = (nfloat)1.18;
+
+            var attributes = new UIStringAttributes();
+            attributes.ForegroundColor = ColorAssets.InverseText;
+            attributes.Font = UIFont.SystemFontOfSize(25);
+            attributes.ParagraphStyle = paragraphStyle;
+
+            var messageAttributedString = new NSMutableAttributedString(message);
+            messageAttributedString.AddAttributes(attributes, new NSRange(0, message.Length));
+            label.AttributedText = messageAttributedString;
         }
     }
 }
