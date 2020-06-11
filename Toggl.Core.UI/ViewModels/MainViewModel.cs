@@ -324,9 +324,10 @@ namespace Toggl.Core.UI.ViewModels
 
             return CurrentRunningTimeEntry
                 .DelaySubscription(TimeSpan.FromSeconds(2))
-                .Distinct()
+                .DistinctUntilChanged()
                 .Select(te => te != null)
                 .Merge(timeEntryTappedObservable)
+                .Select(shouldShow => !OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.StartTimeEntryTooltip) && shouldShow)
                 .AsDriver(schedulerProvider);
         }
 
