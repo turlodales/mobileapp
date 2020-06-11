@@ -255,6 +255,17 @@ mobile, desktop or web</value>
         <value>Single Sign On</value>
         <comment>Label for the SSO login screen</comment>
     </data>
+    <data name="AccountWithEmailAlreadyExists" xml:space="preserve">
+        <value>An account with this email already exists</value>
+        <comment>Header displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>
+    </data>
+    <data name="ToEnableLoginWithSsoLoginWithExistingCredentials" xml:space="preserve">
+        <value>To enable login with SSO
+for this account
+please log in with your
+existing credentials.</value>
+        <comment>Explanation displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>
+    </data>
     <data name="SingleSignOnError" xml:space="preserve">
         <value>Single Sign On is not configured for your email address. Please try a different login method or contact your administrator.</value>
         <comment>Shown to user when the submitted email is not a part of an SSO-enabled domain</comment>

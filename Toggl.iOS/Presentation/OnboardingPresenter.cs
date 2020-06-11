@@ -14,7 +14,8 @@ namespace Toggl.iOS.Presentation
         {
             typeof(SignUpViewModel),
             typeof(LoginViewModel),
-            typeof(SsoViewModel)
+            typeof(SsoViewModel),
+            typeof(SsoLinkViewModel)
         };
 
         public OnboardingPresenter(UIWindow window, AppDelegate appDelegate) : base(window, appDelegate)
@@ -40,6 +41,9 @@ namespace Toggl.iOS.Presentation
                         return;
                     case SsoLoginViewController ssoLoginViewController:
                         dismissCurrentSheetAndPresentTheNewOne(ssoLoginViewController, viewController);
+                        return;
+                    case SsoLinkViewController ssoLinkViewController:
+                        dismissCurrentSheetAndPresentTheNewOne(ssoLinkViewController, viewController);
                         return;
                     case SignUpViewController signUpViewController:
                         dismissCurrentSheetAndPresentTheNewOne(signUpViewController, viewController);

@@ -127,6 +127,9 @@ namespace Toggl.iOS.Presentation
                 case SsoLoginViewController ssoLoginViewController:
                     detachViewModel(ssoLoginViewController.ViewModel);
                     break;
+                case SsoLinkViewController ssoLinkViewController:
+                    detachViewModel(ssoLinkViewController.ViewModel);
+                    break;
                 case SignUpViewController signupViewController:
                     detachViewModel(signupViewController.ViewModel);
                     break;

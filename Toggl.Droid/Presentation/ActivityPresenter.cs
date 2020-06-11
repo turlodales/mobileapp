@@ -25,6 +25,7 @@ namespace Toggl.Droid.Presentation
             typeof(ForgotPasswordViewModel),
             typeof(LoginViewModel),
             typeof(SsoViewModel),
+            typeof(SsoLinkViewModel),
             typeof(LicensesViewModel),
             typeof(MainTabBarViewModel),
             typeof(OutdatedAppViewModel),
@@ -64,6 +65,7 @@ namespace Toggl.Droid.Presentation
             [typeof(TokenResetViewModel)] = new ActivityPresenterInfo(typeof(TokenResetActivity), clearBackStackFlags),
             [typeof(LoginViewModel)] = new ActivityPresenterInfo(typeof(LoginActivity)),
             [typeof(SsoViewModel)] = new ActivityPresenterInfo(typeof(SsoLoginActivity)),
+            [typeof(SsoLinkViewModel)] = new ActivityPresenterInfo(typeof(SsoLinkActivity)),
             [typeof(SignUpViewModel)] = new ActivityPresenterInfo(typeof(SignUpActivity)),
             [typeof(OnboardingViewModel)] = new ActivityPresenterInfo(typeof(OnboardingActivity), clearBackStackFlags)
         };

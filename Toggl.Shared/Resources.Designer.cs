@@ -244,6 +244,18 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string AccountWithEmailAlreadyExists {
+            get {
+                return ResourceManager.GetString("AccountWithEmailAlreadyExists", resourceCulture);
+            }
+        }
+        
+        public static string ToEnableLoginWithSsoLoginWithExistingCredentials {
+            get {
+                return ResourceManager.GetString("ToEnableLoginWithSsoLoginWithExistingCredentials", resourceCulture);
+            }
+        }
+        
         public static string SingleSignOnError {
             get {
                 return ResourceManager.GetString("SingleSignOnError", resourceCulture);

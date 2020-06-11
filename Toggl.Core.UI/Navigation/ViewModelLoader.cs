@@ -96,6 +96,15 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.UnauthenticatedTogglApi);
             }
 
+            if (viewModelType == typeof(SsoLinkViewModel))
+            {
+                return new SsoLinkViewModel(
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory);
+            }
+
             if (viewModelType == typeof(MainTabBarViewModel))
             {
                 return new MainTabBarViewModel(dependencyContainer);

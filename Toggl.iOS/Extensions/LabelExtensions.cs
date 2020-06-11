@@ -17,15 +17,20 @@ namespace Toggl.iOS.Extensions
             label.AttributedText = attributedText;
         }
 
-        public static void SetTextWithOnboardingAppearance(this UILabel label, string message)
+        public static void SetTextWithOnboardingAppearance(this UILabel label, string message, bool isHeader = true, bool useInverseColor = true)
         {
-            var paragraphStyle = new NSMutableParagraphStyle();
-            paragraphStyle.LineSpacing = (nfloat)1.18;
+            var paragraphStyle = new NSMutableParagraphStyle
+            {
+                MaximumLineHeight = isHeader ? 35 : 21,
+                MinimumLineHeight = isHeader ? 35 : 21
+            };
 
-            var attributes = new UIStringAttributes();
-            attributes.ForegroundColor = ColorAssets.InverseText;
-            attributes.Font = UIFont.SystemFontOfSize(25);
-            attributes.ParagraphStyle = paragraphStyle;
+            var attributes = new UIStringAttributes
+            {
+                ForegroundColor = useInverseColor ? ColorAssets.InverseText : ColorAssets.Text,
+                Font = UIFont.SystemFontOfSize(isHeader  ? 25 : 15),
+                ParagraphStyle = paragraphStyle
+            };
 
             var messageAttributedString = new NSMutableAttributedString(message);
             messageAttributedString.AddAttributes(attributes, new NSRange(0, message.Length));

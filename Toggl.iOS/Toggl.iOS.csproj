@@ -1424,6 +1424,7 @@
     <InterfaceDefinition Include="ViewControllers\EditTimeEntryViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\Siri\SiriShortcutsSelectReportPeriodViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\Siri\SiriShortcutsViewController.xib" />
+    <InterfaceDefinition Include="ViewControllers\SsoLinkViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\SsoLoginViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\StartTimeEntryViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\EditDurationViewController.xib" />
@@ -1639,6 +1640,10 @@
       <DependentUpon>SiriShortcutsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewControllers\Settings\Siri\SiriShortcutViewModel.cs" />
+    <Compile Include="ViewControllers\SsoLinkViewController.cs" />
+    <Compile Include="ViewControllers\SsoLinkViewController.designer.cs">
+      <DependentUpon>SsoLinkViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewControllers\SsoLoginViewController.cs" />
     <Compile Include="ViewControllers\SsoLoginViewController.designer.cs">
       <DependentUpon>SsoLoginViewController.cs</DependentUpon>

@@ -587,6 +587,10 @@
     <Compile Include="Activities\BaseTermsAndCountryActivity.ViewBinds.cs">
       <DependentUpon>BaseTermsAndCountryActivity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Activities\SsoLinkActivity.cs" />
+    <Compile Include="Activities\SsoLinkActivity.ViewBinds.cs">
+      <DependentUpon>SsoLinkActivity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Activities\SsoLoginActivity.cs" />
     <Compile Include="Activities\SsoLoginActivity.ViewBinds.cs">
       <DependentUpon>SsoLoginActivity.cs</DependentUpon>
@@ -1078,6 +1082,7 @@
     <AndroidResource Include="Resources\layout\SettingsNavigationRowView.axml" />
     <AndroidResource Include="Resources\layout\SettingsToggleRowView.axml" />
     <AndroidResource Include="Resources\layout\SettingsToggleRowWithDescription.axml" />
+    <AndroidResource Include="Resources\layout\SsoLinkActivity.axml" />
     <AndroidResource Include="Resources\layout\SsoLoginActivity.axml" />
     <AndroidResource Include="Resources\layout\TermsAndCountryActivity.axml" />
     <AndroidResource Include="Resources\layout\TermsAndCountryModalActivity.axml" />

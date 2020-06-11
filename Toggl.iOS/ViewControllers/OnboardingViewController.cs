@@ -140,7 +140,7 @@ namespace Toggl.iOS.ViewControllers
         private Action fadeinNewElements(bool isForAccountLinking)
         {
             return () =>
-                AnimationExtensions.Animate(
+                    AnimationExtensions.Animate(
                     Animation.Timings.EnterTiming,
                     Animation.Curves.EaseIn,
                     () =>
