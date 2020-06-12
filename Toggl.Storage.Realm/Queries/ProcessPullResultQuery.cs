@@ -352,7 +352,7 @@ namespace Toggl.Storage.Realm.Sync
 
         private void makeWorkspaceInaccessible(RealmDb realm, RealmWorkspace workspace)
         {
-            workspace.IsInaccessible = false;
+            workspace.IsInaccessible = true;
         }
 
         private void removeRelatedTasks(RealmDb realm, RealmProject project)
