@@ -26,7 +26,7 @@ namespace Toggl.iOS.ViewControllers
     public partial class SettingsViewController : ReactiveViewController<SettingsViewModel>
     {
         protected override bool AcceptsCancelKeyCommand { get; } = true;
-        
+
         private readonly float bottomInset = 24;
 
         public SettingsViewController(SettingsViewModel viewModel)
@@ -176,7 +176,7 @@ namespace Toggl.iOS.ViewControllers
             UserActivity = activity;
             activity.BecomeCurrent();
 
-# if DEBUG
+# if !USE_PRODUCTION_API
             recognizer = new UILongPressGestureRecognizer(recognizer =>
             {
                 if (recognizer.State != UIGestureRecognizerState.Began)
@@ -189,7 +189,7 @@ namespace Toggl.iOS.ViewControllers
 #endif
         }
 
-#if DEBUG
+#if !USE_PRODUCTION_API
         private UILongPressGestureRecognizer recognizer;
 
         public override void ViewWillDisappear(bool animated)

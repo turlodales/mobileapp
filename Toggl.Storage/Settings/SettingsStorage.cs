@@ -355,6 +355,8 @@ namespace Toggl.Storage.Settings
             keyValueStorage.Remove(enabledCalendarsKey);
             enabledCalendarsSubject.OnNext(new List<string>());
 
+            keyValueStorage.Remove(onboardingTimeEntryWasCreatedKey);
+
             keyValueStorage.RemoveAllWithPrefix(onboardingPrefix);
         }
 

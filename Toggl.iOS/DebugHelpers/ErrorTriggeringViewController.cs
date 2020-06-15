@@ -41,6 +41,7 @@ namespace Toggl.iOS.DebugHelpers
             var outdatedAppPermanently = createButton("Permanent outdated client error");
             var outdatedApiPermanently = createButton("Permanent outdated API error");
             var shareUnsyncableEntitiesDump = createButton("Share unsyncable entities dump");
+            var resetOnboarding = createButton("Reset onboarding");
 
             tokenReset.Rx().Tap()
                 .Subscribe(dismissAndThenRun(tokenResetErrorTriggered))
@@ -74,6 +75,10 @@ namespace Toggl.iOS.DebugHelpers
                 .Subscribe(showShareDialog)
                 .DisposedBy(disposeBag);
 
+            resetOnboarding.Rx().Tap()
+                .Subscribe(dismissAndThenRun(resetOnboardingTriggered))
+                .DisposedBy(disposeBag);
+
             var buttons = new[]
             {
                 tokenReset,
@@ -83,7 +88,8 @@ namespace Toggl.iOS.DebugHelpers
                 outdatedApi,
                 outdatedAppPermanently,
                 outdatedApiPermanently,
-                shareUnsyncableEntitiesDump
+                shareUnsyncableEntitiesDump,
+                resetOnboarding
             };
 
             View.Add(new UIStackView(buttons)
@@ -161,6 +167,13 @@ namespace Toggl.iOS.DebugHelpers
             var activityController = new UIActivityViewController(new NSObject[] { fileURL }, null);
 
             PresentViewController(activityController, true, null);
+        }
+
+        private void resetOnboardingTriggered()
+        {
+            IosDependencyContainer.Instance
+                .OnboardingStorage
+                .Reset();
         }
     }
 }

@@ -53,6 +53,7 @@ namespace Toggl.Droid.Debug
             var outdatedAppPermanently = createTextView("Permanent outdated client error");
             var outdatedApiPermanently = createTextView("Permanent outdated API error");
             var unsyncedDataDump = createTextView("Share unsynced data dump");
+            var resetOnboarding = createTextView("Reset onboarding");
 
             tokenReset.Rx().Tap()
                 .Subscribe(dismissAndThenRun(tokenResetErrorTriggered))
@@ -86,6 +87,10 @@ namespace Toggl.Droid.Debug
                 .Subscribe(dismissAndThenRun(unsyncedDataDumpTriggered))
                 .DisposedBy(disposeBag);
 
+            resetOnboarding.Rx().Tap()
+                .Subscribe(dismissAndThenRun(resetOnboardingTriggered))
+                .DisposedBy(disposeBag);
+
             view.AddView(tokenReset);
             view.AddView(noWorkspace);
             view.AddView(noDefaultWorkspace);
@@ -94,6 +99,7 @@ namespace Toggl.Droid.Debug
             view.AddView(outdatedAppPermanently);
             view.AddView(outdatedApiPermanently);
             view.AddView(unsyncedDataDump);
+            view.AddView(resetOnboarding);
 
             return view;
         }
@@ -182,6 +188,11 @@ namespace Toggl.Droid.Debug
             var container = AndroidDependencyContainer.Instance;
             container.AccessRestrictionStorage.SetClientOutdated();
             outdatedApiErrorTriggered();
+        }
+
+        private void resetOnboardingTriggered()
+        {
+            AndroidDependencyContainer.Instance.OnboardingStorage.Reset();
         }
 
         private void unsyncedDataDumpTriggered()
