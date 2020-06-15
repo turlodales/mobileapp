@@ -1,26 +1,47 @@
 ﻿using System;
+using Toggl.Shared.Extensions;
 
 namespace Toggl.Storage.Realm.Sync
 {
     public static class ThreeWayMerge
     {
-        public static T Merge<T>(T original, T local, T server) where T : IEquatable<T>
+        public static long? Merge(long? original, long? local, long? server)
         {
-            if (local.Equals(original))
+            if (local == original)
                 return server;
 
-            if (server.Equals(original))
+            if (server == original)
                 return local;
 
             return server;
         }
 
-        public static T Merge<T>(T original, T local, T server, Func<T, T, bool> equal)
+        public static long[] Merge(long[] original, long[] local, long[] server)
         {
-            if (equal(local, original))
+            original ??= Array.Empty<long>();
+            server ??= Array.Empty<long>();
+
+            if (local.SetEquals(original))
                 return server;
 
-            if (equal(server, original))
+            if (server.SetEquals(original))
+                return local;
+
+            return server;
+        }
+
+        public static T Merge<T>(T original, T local, T server) where T : IEquatable<T>
+        {
+            if (local is null)
+                return server;
+
+            if (server is null)
+                return local;
+
+            if (local.Equals(original))
+                return server;
+
+            if (server.Equals(original))
                 return local;
 
             return server;

@@ -136,6 +136,15 @@ namespace Toggl.Storage.Realm.Sync
             realm.Add(dbTimeEntry);
         }
 
+        private void updateTimeEntry(ITimeEntry timeEntry, RealmTimeEntry dbTimeEntry, RealmDb realm)
+        {
+            // Temporary hack: the list of entities from the server always contains the currently running TE
+            // even if this entity hasn't change since the `since` timestamp. We need to filter it out manually.
+            if (isIrrelevantForSyncing(timeEntry, realm)) return;
+
+            dbTimeEntry.SaveSyncResult(timeEntry, realm);
+        }
+
         private void processUser(RealmDb realm)
         {
             var dbUser = realm.All<RealmUser>().SingleOrDefault();
@@ -157,7 +166,7 @@ namespace Toggl.Storage.Realm.Sync
                 : dbUser.DefaultWorkspaceId;
 
             dbUser.DefaultWorkspaceIdBackup = dbUser.DefaultWorkspaceId =
-                ThreeWayMerge.Merge(commonDefaultWorkspaceId, dbUser.DefaultWorkspaceId, user.DefaultWorkspaceId, identifierComparison);
+                ThreeWayMerge.Merge(commonDefaultWorkspaceId, dbUser.DefaultWorkspaceId, user.DefaultWorkspaceId);
 
             shouldStayDirty |= user.DefaultWorkspaceId != dbUser.DefaultWorkspaceId;
 
@@ -167,7 +176,10 @@ namespace Toggl.Storage.Realm.Sync
                 : dbUser.BeginningOfWeek;
 
             dbUser.BeginningOfWeek = dbUser.BeginningOfWeekBackup =
-                ThreeWayMerge.Merge(commonBeginningOfWeek, dbUser.BeginningOfWeek, user.BeginningOfWeek, beginningOfWeekComparison);
+                (BeginningOfWeek)ThreeWayMerge.Merge(
+                    (int)commonBeginningOfWeek,
+                    (int)dbUser.BeginningOfWeek,
+                    (int)user.BeginningOfWeek);
 
             shouldStayDirty |= user.BeginningOfWeek != dbUser.BeginningOfWeek;
 
@@ -202,7 +214,7 @@ namespace Toggl.Storage.Realm.Sync
                 : dbPreferences.TimeOfDayFormat;
 
             dbPreferences.TimeOfDayFormatBackup = dbPreferences.TimeOfDayFormat =
-                ThreeWayMerge.Merge(commonTimeOfDayFormat, dbPreferences.TimeOfDayFormat, preferences.TimeOfDayFormat, timeFormatComparison);
+                ThreeWayMerge.Merge(commonTimeOfDayFormat, dbPreferences.TimeOfDayFormat, preferences.TimeOfDayFormat);
 
             shouldStayDirty |= !preferences.TimeOfDayFormat.Equals(dbPreferences.TimeOfDayFormat);
 
@@ -212,7 +224,7 @@ namespace Toggl.Storage.Realm.Sync
                 : dbPreferences.DateFormat;
 
             dbPreferences.DateFormatBackup = dbPreferences.DateFormat =
-                ThreeWayMerge.Merge(commonDateFormat, dbPreferences.DateFormat, preferences.DateFormat, dateformatComparison);
+                ThreeWayMerge.Merge(commonDateFormat, dbPreferences.DateFormat, preferences.DateFormat);
 
             shouldStayDirty |= !preferences.DateFormat.Equals(dbPreferences.DateFormat);
 
@@ -222,7 +234,10 @@ namespace Toggl.Storage.Realm.Sync
                : dbPreferences.DurationFormat;
 
             dbPreferences.DurationFormatBackup = dbPreferences.DurationFormat =
-                ThreeWayMerge.Merge(commonDurationFormat, dbPreferences.DurationFormat, preferences.DurationFormat, durationFormatComparison);
+                (DurationFormat)ThreeWayMerge.Merge(
+                    (int)commonDurationFormat,
+                    (int)dbPreferences.DurationFormat,
+                    (int)preferences.DurationFormat);
 
             shouldStayDirty |= !preferences.DurationFormat.Equals(dbPreferences.DurationFormat);
 
@@ -242,110 +257,6 @@ namespace Toggl.Storage.Realm.Sync
 
             // Update sync status depending on the way the preferences have changed during the 3-way merge
             dbPreferences.SyncStatus = wasDirty && shouldStayDirty
-                ? SyncStatus.SyncNeeded
-                : SyncStatus.InSync;
-        }
-
-        private void updateTimeEntry(ITimeEntry timeEntry, RealmTimeEntry dbTimeEntry, RealmDb realm)
-        {
-            // Temporary hack: the list of entities from the server always contains the currently running TE
-            // even if this entity hasn't change since the `since` timestamp. We need to filter it out manually.
-            if (isIrrelevantForSyncing(timeEntry, realm)) return;
-
-            var wasDirty = dbTimeEntry.SyncStatus == SyncStatus.SyncNeeded;
-            var shouldStayDirty = false;
-
-            dbTimeEntry.At = timeEntry.At;
-            dbTimeEntry.ServerDeletedAt = timeEntry.ServerDeletedAt;
-            dbTimeEntry.RealmUser = realm.GetById<RealmUser>(timeEntry.UserId);
-            dbTimeEntry.RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);
-
-            // Description
-            var commonDescription = dbTimeEntry.ContainsBackup
-                ? dbTimeEntry.DescriptionBackup
-                : dbTimeEntry.Description;
-
-            dbTimeEntry.DescriptionBackup = dbTimeEntry.Description =
-                ThreeWayMerge.Merge(commonDescription, dbTimeEntry.Description, timeEntry.Description);
-
-            shouldStayDirty |= timeEntry.Description != dbTimeEntry.Description;
-
-            // ProjectId
-            var commonProjectId = dbTimeEntry.ContainsBackup
-                ? dbTimeEntry.ProjectIdBackup
-                : dbTimeEntry.ProjectId;
-
-            var projectId = ThreeWayMerge.Merge(commonProjectId, dbTimeEntry.ProjectId, timeEntry.ProjectId, identifierComparison);
-
-            dbTimeEntry.RealmProject = projectId.HasValue
-                ? realm.GetById<RealmProject>(projectId.Value)
-                : null;
-
-            shouldStayDirty |= timeEntry.ProjectId != projectId;
-
-            // Billable
-            var commonBillable = dbTimeEntry.ContainsBackup
-                ? dbTimeEntry.BillableBackup
-                : dbTimeEntry.Billable;
-
-            dbTimeEntry.BillableBackup = dbTimeEntry.Billable =
-                ThreeWayMerge.Merge(commonBillable, dbTimeEntry.Billable, timeEntry.Billable);
-
-            shouldStayDirty |= timeEntry.Billable != dbTimeEntry.Billable;
-
-            // Start
-            var commonStart = dbTimeEntry.ContainsBackup
-                ? dbTimeEntry.StartBackup
-                : dbTimeEntry.Start;
-
-            dbTimeEntry.Start = ThreeWayMerge.Merge(commonStart, dbTimeEntry.Start, timeEntry.Start);
-
-            shouldStayDirty |= timeEntry.Start != dbTimeEntry.Start;
-
-            // Duration
-            var commonDuration = dbTimeEntry.ContainsBackup
-                ? dbTimeEntry.DurationBackup
-                : dbTimeEntry.Duration;
-
-            dbTimeEntry.Duration = ThreeWayMerge.Merge(commonDuration, dbTimeEntry.Duration, timeEntry.Duration, identifierComparison);
-
-            shouldStayDirty |= timeEntry.Duration != dbTimeEntry.Duration;
-
-            // Task
-            var commonTaskId = dbTimeEntry.ContainsBackup
-                ? dbTimeEntry.TaskIdBackup
-                : dbTimeEntry.TaskId;
-
-            var taskId = ThreeWayMerge.Merge(commonTaskId, dbTimeEntry.TaskId, timeEntry.TaskId, identifierComparison);
-
-            dbTimeEntry.RealmTask = taskId.HasValue
-                ? realm.GetById<RealmTask>(taskId.Value)
-                : null;
-
-            shouldStayDirty |= timeEntry.TaskId != taskId;
-
-            // Tag Ids
-            var commonTagIds = dbTimeEntry.ContainsBackup
-                ? Arrays.NotNullOrEmpty(dbTimeEntry.TagIdsBackup)
-                : Arrays.NotNullOrEmpty(dbTimeEntry.TagIds);
-
-            var localTagIds = Arrays.NotNullOrEmpty(dbTimeEntry.TagIds);
-            var serverTagIds = Arrays.NotNullOrEmpty(timeEntry.TagIds);
-
-            var tagsIds = ThreeWayMerge.Merge(commonTagIds, localTagIds, serverTagIds, collectionEnumerableComparison);
-            shouldStayDirty |= !tagsIds.SetEquals(localTagIds);
-
-            dbTimeEntry.RealmTags.Clear();
-            tagsIds
-                .Select(tagId => realm.GetById<RealmTag>(tagId))
-                .AddTo(dbTimeEntry.RealmTags);
-
-            // the conflict is resolved, the backup is no longer needed until next local change
-            dbTimeEntry.ContainsBackup = false;
-            dbTimeEntry.LastSyncErrorMessage = null;
-
-            // Update sync status depending on the way the time entry has changed during the 3-way merge
-            dbTimeEntry.SyncStatus = wasDirty && shouldStayDirty
                 ? SyncStatus.SyncNeeded
                 : SyncStatus.InSync;
         }
@@ -403,24 +314,6 @@ namespace Toggl.Storage.Realm.Sync
                 }
             }
         }
-
-        private bool identifierComparison(long? a, long? b)
-            => a == b;
-
-        private bool collectionEnumerableComparison<T>(T[] a, T[] b)
-            => a.SetEquals(b);
-
-        private bool beginningOfWeekComparison(BeginningOfWeek a, BeginningOfWeek b)
-            => (int)a == (int)b;
-
-        private bool timeFormatComparison(TimeFormat a, TimeFormat b)
-            => a.Equals(b);
-
-        private bool dateformatComparison(DateFormat a, DateFormat b)
-            => a.Equals(b);
-
-        private bool durationFormatComparison(DurationFormat a, DurationFormat b)
-            => (int)a == (int)b;
 
         private bool isIrrelevantForSyncing(ITimeEntry timeEntry, RealmDb realm)
         {

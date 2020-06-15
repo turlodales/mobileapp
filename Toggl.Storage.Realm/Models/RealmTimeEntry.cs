@@ -5,7 +5,9 @@ using System.Linq;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
 using Toggl.Storage.Models;
+using Toggl.Storage.Realm.Extensions;
 using Toggl.Storage.Realm.Models;
+using Toggl.Storage.Realm.Sync;
 
 namespace Toggl.Storage.Realm
 {
@@ -56,47 +58,106 @@ namespace Toggl.Storage.Realm
 
         public bool IsInaccessible => Workspace.IsInaccessible;
 
-        public void SaveSyncResult(ITimeEntry entity, Realms.Realm realm)
+        public void SaveSyncResult(ITimeEntry timeEntry, Realms.Realm realm)
         {
-            Id = entity.Id;
-            At = entity.At;
-            ServerDeletedAt = entity.ServerDeletedAt;
-            IsDeleted = entity.ServerDeletedAt.HasValue;
-            SyncStatus = SyncStatus.InSync;
-            LastSyncErrorMessage = null;
-            var skipWorkspaceFetch = entity?.WorkspaceId == null || entity.WorkspaceId == 0;
-            RealmWorkspace = skipWorkspaceFetch ? null : realm.All<RealmWorkspace>().Single(x => x.Id == entity.WorkspaceId || x.OriginalId == entity.WorkspaceId);
-            var skipProjectFetch = entity?.ProjectId == null || entity.ProjectId == 0;
-            RealmProject = skipProjectFetch ? null : realm.All<RealmProject>().SingleOrDefault(x => x.Id == entity.ProjectId || x.OriginalId == entity.ProjectId);
-            var skipTaskFetch = RealmProject == null || entity?.TaskId == null || entity.TaskId == 0;
-            RealmTask = skipTaskFetch ? null : realm.All<RealmTask>().SingleOrDefault(x => x.Id == entity.TaskId || x.OriginalId == entity.TaskId);
-            Billable = entity.Billable;
-            Start = entity.Start;
-            Duration = entity.Duration;
-            Description = entity.Description;
+            var wasDirty = SyncStatus == SyncStatus.SyncNeeded;
+            var shouldStayDirty = false;
 
-            var tags = entity.TagIds?.Select(id =>
-                realm.All<RealmTag>().Single(x => x.Id == id || x.OriginalId == id)) ?? new RealmTag[0];
+            Id = timeEntry.Id;
+            At = timeEntry.At;
+            ServerDeletedAt = timeEntry.ServerDeletedAt;
+            IsDeleted = timeEntry.ServerDeletedAt.HasValue;
+            RealmUser = realm.GetById<RealmUser>(timeEntry.UserId);
+            RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);
+
+            // Description
+            var commonDescription = ContainsBackup
+                ? DescriptionBackup
+                : Description;
+
+            DescriptionBackup = Description =
+                ThreeWayMerge.Merge(commonDescription, Description, timeEntry.Description);
+
+            shouldStayDirty |= timeEntry.Description != Description;
+
+            // ProjectId
+            var commonProjectId = ContainsBackup
+                ? ProjectIdBackup
+                : ProjectId;
+
+            var projectId = ThreeWayMerge.Merge(commonProjectId, ProjectId, timeEntry.ProjectId);
+
+            RealmProject = projectId.HasValue
+                ? realm.GetById<RealmProject>(projectId.Value)
+                : null;
+
+            shouldStayDirty |= timeEntry.ProjectId != projectId;
+
+            // Billable
+            var commonBillable = ContainsBackup
+                ? BillableBackup
+                : Billable;
+
+            BillableBackup = Billable =
+                ThreeWayMerge.Merge(commonBillable, Billable, timeEntry.Billable);
+
+            shouldStayDirty |= timeEntry.Billable != Billable;
+
+            // Start
+            var commonStart = ContainsBackup
+                ? StartBackup
+                : Start;
+
+            Start = ThreeWayMerge.Merge(commonStart, Start, timeEntry.Start);
+
+            shouldStayDirty |= timeEntry.Start != Start;
+
+            // Duration
+            var commonDuration = ContainsBackup
+                ? DurationBackup
+                : Duration;
+
+            Duration = ThreeWayMerge.Merge(commonDuration, Duration, timeEntry.Duration);
+
+            shouldStayDirty |= timeEntry.Duration != Duration;
+
+            // Task
+            var commonTaskId = ContainsBackup
+                ? TaskIdBackup
+                : TaskId;
+
+            var taskId = ThreeWayMerge.Merge(commonTaskId, TaskId, timeEntry.TaskId);
+
+            RealmTask = taskId.HasValue
+                ? realm.GetById<RealmTask>(taskId.Value)
+                : null;
+
+            shouldStayDirty |= timeEntry.TaskId != taskId;
+
+            // Tag Ids
+            var commonTagIds = ContainsBackup
+                ? Arrays.NotNullOrEmpty(TagIdsBackup)
+                : Arrays.NotNullOrEmpty(TagIds);
+
+            var localTagIds = Arrays.NotNullOrEmpty(TagIds);
+            var serverTagIds = Arrays.NotNullOrEmpty(timeEntry.TagIds);
+
+            var tagsIds = ThreeWayMerge.Merge(commonTagIds, localTagIds, serverTagIds);
+            shouldStayDirty |= !tagsIds.SetEquals(localTagIds);
+
             RealmTags.Clear();
-            tags.ForEach(RealmTags.Add);
+            tagsIds
+                .Select(tagId => realm.GetById<RealmTag>(tagId))
+                .AddTo(RealmTags);
 
-            var skipUserFetch = entity?.UserId == null || entity.UserId == 0;
-            RealmUser = skipUserFetch ? null : realm.All<RealmUser>().Single(x => x.Id == entity.UserId || x.OriginalId == entity.UserId);
+            // the conflict is resolved, the backup is no longer needed until next local change
+            ContainsBackup = false;
+            LastSyncErrorMessage = null;
 
-            ContainsBackup = entity.ContainsBackup;
-            BillableBackup = entity.BillableBackup;
-            DescriptionBackup = entity.DescriptionBackup;
-            DurationBackup = entity.DurationBackup;
-            ProjectIdBackup = entity.ProjectIdBackup;
-            StartBackup = entity.StartBackup;
-            TaskIdBackup = entity.TaskIdBackup;
-            TagIdsBackup.Clear();
-
-            if (entity.TagIdsBackup != null)
-            {
-                foreach (var tagId in entity.TagIdsBackup)
-                    TagIdsBackup.Add(tagId);
-            }
+            // Update sync status depending on the way the time entry has changed during the 3-way merge
+            SyncStatus = wasDirty && shouldStayDirty
+                ? SyncStatus.SyncNeeded
+                : SyncStatus.InSync;
         }
 
         public void PushFailed(string errorMessage)
