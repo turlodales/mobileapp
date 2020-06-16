@@ -12,6 +12,8 @@ using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Autocomplete;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Shared;
+using Toggl.iOS.Views;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -88,6 +90,7 @@ namespace Toggl.iOS.ViewControllers
             BottomOptionsSheet.InsertSeparator(UIRectEdge.Top);
 
             prepareViews();
+            prepareProjectsTooltip();
 
             var source = new StartTimeEntryTableViewSource(SuggestionsTableView);
             SuggestionsTableView.Source = source;
@@ -195,6 +198,44 @@ namespace Toggl.iOS.ViewControllers
                 .Select(text => text.AsSpans((int)DescriptionTextView.SelectedRange.Location).ToIImmutableList())
                 .Subscribe(ViewModel.SetTextSpans)
                 .DisposedBy(DisposeBag);
+        }
+
+        private void prepareProjectsTooltip()
+        {
+            ProjectsTooltip.Alpha = 0;
+            ViewModel.ProjectsTooltipCondition.ConditionMet
+                .Subscribe(ProjectsTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(DisposeBag);
+
+            ProjectsTooltip.Rx().Tap()
+                .Subscribe(ViewModel.ProjectsTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            ProjectsTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
+            ProjectsTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            ProjectsTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;;
+
+            ProjectsTooltipLabel.AttributedText = createTooltipText();
+            ProjectsTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+
+            ProjectsTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            ProjectsTooltip.SetUpTooltipShadow();
+
+            NSAttributedString createTooltipText()
+            {
+                var stringParts = Resources.ClickOnFolderIconToAssignAProject.Split("$");
+                var fullString = new NSMutableAttributedString(stringParts[0]);
+                var attachment = new NSTextAttachment
+                {
+                    Image = UIImage
+                        .FromBundle("icProjects")
+                        .ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                };
+                fullString.Append(NSAttributedString.FromAttachment(attachment));
+                fullString.Append(new NSAttributedString(stringParts[1]));
+                return fullString;
+            }
         }
 
         private void onTextFieldInfo(TextFieldInfo textFieldInfo)

@@ -1790,4 +1790,10 @@ Tap to edit it.</value>
         <value>Tap here to start your next Time Entry</value>
         <comment>Text displayed in the onboarding tooltip that's shown above the start time entry button</comment>
     </data>
+    <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>Click on $ or use @ to assign
+a Project to a Time Entry</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the start time entry view above the projects button.
+                 The $ sign gets replaced with the icon image in runtime</comment>
+    </data>
 </root>
