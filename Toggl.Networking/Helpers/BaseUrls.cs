@@ -36,22 +36,15 @@ namespace Toggl.Networking.Helpers
 
         private static Uri selectByEnvironment(ApiEnvironment environment, Uri staging, Uri production)
         {
-            // switch (environment)
-            // {
-            //     case ApiEnvironment.Staging:
-            //         return staging;
-            //     case ApiEnvironment.Production:
-            //         return production;
-            //     default:
-            //         throw new ArgumentOutOfRangeException(nameof(environment), environment, "Unknown api environment.");
-            // }
-
-            // @todo: this must be changed back as soon as possible and definitely before
-            // this is rolled out to users in production...
-            //
-            // THIS MUST NOT BE MERGED INTO `DEVELOP`, it is intended just for testing purposes
-            // on the `sync-team/sync` branch.
-            return staging;
+            switch (environment)
+            {
+                case ApiEnvironment.Staging:
+                    return staging;
+                case ApiEnvironment.Production:
+                    return production;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(environment), environment, "Unknown api environment.");
+            }
         }
     }
 }
