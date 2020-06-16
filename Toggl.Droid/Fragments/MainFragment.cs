@@ -224,8 +224,16 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(hereIsYourTimeEntryTooltip.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.StartTimeEntryTooltipCondition.ConditionMet
+                .Subscribe(tapHereToStartYourTimeTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
             hereIsYourTimeEntryTooltip.Rx().Tap()
                 .Subscribe(ViewModel.RunningTimeEntryTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            tapHereToStartYourTimeTooltip.Rx().Tap()
+                .Subscribe(ViewModel.StartTimeEntryTooltipCondition.Dismiss)
                 .DisposedBy(DisposeBag);
         }
 
