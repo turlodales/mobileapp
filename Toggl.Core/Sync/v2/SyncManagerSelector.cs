@@ -6,6 +6,7 @@ using Toggl.Core.Interactors;
 using Toggl.Networking.ApiClients;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
+using Toggl.Storage.Queries;
 
 namespace Toggl.Core.Sync.V2
 {
@@ -13,11 +14,13 @@ namespace Toggl.Core.Sync.V2
     {
         public static ISyncManager Select(
             IInteractorFactory interactorFactory,
+            IQueryFactory queries,
             IPreferencesApi preferencesApi,
             Func<ISyncManager> oldSyncManagerCreator,
             Func<ISyncManager> newSyncManagerCreator)
         {
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
+            Ensure.Argument.IsNotNull(queries, nameof(queries));
             Ensure.Argument.IsNotNull(preferencesApi, nameof(preferencesApi));
             Ensure.Argument.IsNotNull(oldSyncManagerCreator, nameof(oldSyncManagerCreator));
             Ensure.Argument.IsNotNull(newSyncManagerCreator, nameof(newSyncManagerCreator));
@@ -26,6 +29,9 @@ namespace Toggl.Core.Sync.V2
                 .FirstAsync()
                 .GetAwaiter()
                 .GetResult();
+
+            if (!preferences.UseNewSync)
+                queries.MigrateBackToOldSyncing().Execute();
 
             var activeSyncManager = preferences.UseNewSync
                 ? newSyncManagerCreator()

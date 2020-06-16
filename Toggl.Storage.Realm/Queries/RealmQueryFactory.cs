@@ -25,5 +25,11 @@ namespace Toggl.Storage.Realm.Queries
 
         public IQuery<Unit> ProcessPushResult(Networking.Sync.Push.IResponse response)
             => new ProcessPushResultQuery(realmProvider, response);
+
+        public IQuery<Unit> MarkEntitiesAsSyncing(Networking.Sync.Push.Request request)
+            => new MarkEntitiesAsSyncingQuery(realmProvider, request);
+
+        public IQuery<Unit> MigrateBackToOldSyncing()
+            => new MigrateBackToOldSyncingQuery(realmProvider);
     }
 }

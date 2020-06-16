@@ -48,6 +48,7 @@ namespace Toggl.Core.Interactors
             try
             {
                 pushRequestIdentifier.Set(id);
+                queryFactory.MarkEntitiesAsSyncing(request).Execute();
                 var response = await syncApi.Push(id, request);
                 queryFactory.ProcessPushResult(response).Execute();
                 pushRequestIdentifier.Clear();

@@ -12,7 +12,7 @@ using Toggl.Storage.Realm.Sync;
 namespace Toggl.Storage.Realm
 {
     internal partial class RealmTimeEntry
-        : RealmObject, IDatabaseTimeEntry, IPushable, ISyncable<ITimeEntry>
+        : RealmObject, IDatabaseTimeEntry, IUpdatable, ISyncable<ITimeEntry>
     {
         public bool Billable { get; set; }
 
@@ -160,10 +160,21 @@ namespace Toggl.Storage.Realm
                 : SyncStatus.InSync;
         }
 
+        public void PrepareForSyncing()
+        {
+            SyncStatus = SyncStatus.Syncing;
+        }
+
         public void PushFailed(string errorMessage)
         {
             LastSyncErrorMessage = errorMessage;
             SyncStatus = SyncStatus.SyncFailed;
+        }
+
+        public void UpdateSucceeded()
+        {
+            SyncStatus = SyncStatus.InSync;
+            ContainsBackup = false;
         }
     }
 }

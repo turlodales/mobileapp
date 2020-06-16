@@ -188,7 +188,6 @@ namespace Toggl.Core.Sync.V2
             yield return interactorFactory.PullSync();
             yield return interactorFactory.PushSync();
             yield return interactorFactory.ResolveOutstandingPushRequest();
-            yield return interactorFactory.PullSync();
             yield return interactorFactory.CleanUp();
         }
 

@@ -7,7 +7,7 @@ using Toggl.Storage.Realm.Models;
 namespace Toggl.Storage.Realm
 {
     internal partial class RealmPreferences
-        : RealmObject, IDatabasePreferences, IPushable, ISyncable<IPreferences>
+        : RealmObject, IDatabasePreferences, IUpdatable, ISyncable<IPreferences>
     {
         public const long fakeId = 0;
 
@@ -45,10 +45,21 @@ namespace Toggl.Storage.Realm
 
         public bool UseNewSync { get; set; }
 
+        public void PrepareForSyncing()
+        {
+            SyncStatus = SyncStatus.Syncing;
+        }
+
         public void PushFailed(string errorMessage)
         {
             SyncStatus = SyncStatus.SyncFailed;
             LastSyncErrorMessage = errorMessage;
+        }
+
+        public void UpdateSucceeded()
+        {
+            SyncStatus = SyncStatus.InSync;
+            ContainsBackup = false;
         }
 
         public void SaveSyncResult(IPreferences entity, Realms.Realm realm)

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reactive;
+using Realms;
 using Toggl.Networking.Sync.Push;
 using Toggl.Shared;
 using Toggl.Shared.Models;
@@ -50,6 +51,10 @@ namespace Toggl.Storage.Realm.Queries
                 foreach (var res in response.TimeEntries)
                     processResult<ITimeEntry, RealmTimeEntry>(res, realm);
 
+                processRemainingSingleton<RealmPreferences>(realm);
+                processRemainingSingleton<RealmUser>(realm);
+                processRemainingTimeEntries(realm);
+
                 transaction.Commit();
             }
 
@@ -57,7 +62,7 @@ namespace Toggl.Storage.Realm.Queries
         }
 
         private void processSingletonResult<TEntity, TRealmEntity>(IActionResult<TEntity> result, Realms.Realm realm)
-            where TRealmEntity : Realms.RealmObject, IPushable
+            where TRealmEntity : RealmObject, IPushable
         {
             if (result?.Success == false && result is ErrorResult<TEntity> error)
             {
@@ -67,7 +72,7 @@ namespace Toggl.Storage.Realm.Queries
         }
 
         private void processResult<TEntity, TRealmEntity>(IEntityActionResult<TEntity> entityResult, Realms.Realm realm)
-            where TRealmEntity : Realms.RealmObject, IPushable, IIdentifiable, ISyncable<TEntity>
+            where TRealmEntity : RealmObject, IPushable, IIdentifiable, ISyncable<TEntity>
         {
             var entity = realm.GetById<TRealmEntity>(entityResult.Id);
 
@@ -92,6 +97,30 @@ namespace Toggl.Storage.Realm.Queries
                 && create.Result is SuccessPayloadResult<TEntity> success)
             {
                 entity.SaveSyncResult(success.Payload, realm);
+            }
+        }
+
+        private void processRemainingSingleton<T>(Realms.Realm realm)
+            where T : RealmObject, IDatabaseSyncable, IUpdatable
+        {
+            var entity = realm.All<T>().Single();
+            if (entity.SyncStatus == SyncStatus.Syncing)
+                entity.UpdateSucceeded();
+        }
+
+        private void processRemainingTimeEntries(Realms.Realm realm)
+        {
+            var syncing = realm.All<RealmTimeEntry>().Where(e => e.SyncStatusInt == (int)SyncStatus.Syncing);
+            foreach (var entity in syncing)
+            {
+                if (entity.IsDeleted)
+                {
+                    realm.Remove(entity);
+                }
+                else
+                {
+                    entity.UpdateSucceeded();
+                }
             }
         }
     }

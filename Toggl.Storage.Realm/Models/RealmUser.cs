@@ -9,7 +9,7 @@ using Toggl.Storage.Realm.Models;
 namespace Toggl.Storage.Realm
 {
     internal partial class RealmUser
-        : RealmObject, IDatabaseUser, IPushable, ISyncable<IUser>
+        : RealmObject, IDatabaseUser, IUpdatable, ISyncable<IUser>
     {
         public string ApiToken { get; set; }
 
@@ -45,10 +45,21 @@ namespace Toggl.Storage.Realm
 
         public string Timezone { get; set; }
 
+        public void PrepareForSyncing()
+        {
+            SyncStatus = SyncStatus.Syncing;
+        }
+
         public void PushFailed(string errorMessage)
         {
             SyncStatus = SyncStatus.SyncFailed;
             LastSyncErrorMessage = errorMessage;
+        }
+
+        public void UpdateSucceeded()
+        {
+            SyncStatus = SyncStatus.InSync;
+            ContainsBackup = false;
         }
 
         public void SaveSyncResult(IUser entity, Realms.Realm realm)

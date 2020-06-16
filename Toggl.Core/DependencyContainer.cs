@@ -248,6 +248,7 @@ namespace Toggl.Core
 
             var syncManager = SyncManagerSelector.Select(
                 interactorFactory.Value,
+                queryFactory.Value,
                 api.Value.Preferences,
                 oldSyncManagerCreator,
                 newSyncManagerCreator);

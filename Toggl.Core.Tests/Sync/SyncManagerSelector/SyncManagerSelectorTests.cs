@@ -1,11 +1,8 @@
 ﻿using FluentAssertions;
-using FsCheck.Experimental;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Toggl.Core.DTOs;
 using Toggl.Core.Interactors;
@@ -15,6 +12,7 @@ using Toggl.Core.Tests.Generators;
 using Toggl.Core.Tests.Mocks;
 using Toggl.Networking.ApiClients;
 using Toggl.Shared.Models;
+using Toggl.Storage.Queries;
 using Xunit;
 
 namespace Toggl.Core.Tests.Sync
@@ -24,6 +22,7 @@ namespace Toggl.Core.Tests.Sync
         public class TheSelectMethod
         {
             private IInteractorFactory interactorFactory = Substitute.For<IInteractorFactory>();
+            private IQueryFactory queryFactory = Substitute.For<IQueryFactory>();
             private IPreferencesApi preferencesApi = Substitute.For<IPreferencesApi>();
             private Func<ISyncManager> oldSyncManagerCreator = Substitute.For<Func<ISyncManager>>();
             private Func<ISyncManager> newSyncManagerCreator = Substitute.For<Func<ISyncManager>>();
@@ -52,6 +51,7 @@ namespace Toggl.Core.Tests.Sync
             private ISyncManager selectSyncManager()
                 => SyncManagerSelector.Select(
                     interactorFactory,
+                    queryFactory,
                     preferencesApi,
                     oldSyncManagerCreator,
                     newSyncManagerCreator);
@@ -60,16 +60,18 @@ namespace Toggl.Core.Tests.Sync
             [MethodTestData]
             public void ThrowsIfAnyArgumentIsNull(
                 bool useInteractorFactory,
+                bool useQueryFactory,
                 bool usePreferencesApi,
                 bool useOldSyncManagerCreator,
                 bool useNewSyncManagerCreator)
             {
                 var interactorFactory = useInteractorFactory ? this.interactorFactory : null;
+                var queryFactory = useQueryFactory ? this.queryFactory : null;
                 var preferencesApi = usePreferencesApi ? this.preferencesApi : null;
                 var oldSyncManagerCreator = useOldSyncManagerCreator ? this.oldSyncManagerCreator : null;
                 var newSyncManagerCreator = useNewSyncManagerCreator ? this.newSyncManagerCreator : null;
 
-                Action action = () => SyncManagerSelector.Select(interactorFactory, preferencesApi, oldSyncManagerCreator, newSyncManagerCreator);
+                Action action = () => SyncManagerSelector.Select(interactorFactory, queryFactory, preferencesApi, oldSyncManagerCreator, newSyncManagerCreator);
 
                 action.Should().Throw<ArgumentNullException>();
             }
