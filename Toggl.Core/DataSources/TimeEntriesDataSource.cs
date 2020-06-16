@@ -113,6 +113,7 @@ namespace Toggl.Core.DataSources
             return timeEntriesRepository.GetByIds(ids)
                 .SingleAsync()
                 .SelectMany(CommonFunctions.Identity)
+                .Select(Convert)
                 .ToDictionary(te => te.Id)
                 .Do(localTimeEntries =>
                 {
