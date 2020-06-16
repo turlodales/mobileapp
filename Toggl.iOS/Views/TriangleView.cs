@@ -17,7 +17,7 @@ namespace Toggl.iOS.Views
                 if (value == direction)
                     return;
                 direction = value;
-                Draw(Bounds);
+                SetNeedsDisplay();
             }
         }
 
@@ -30,24 +30,69 @@ namespace Toggl.iOS.Views
                 if (value == color)
                     return;
                 color = value;
-                Draw(Bounds);
+                SetNeedsDisplay();
             }
         }
 
-        private CGPoint point1 =>
-            new CGPoint(
-                0,
-                Direction == TriangleDirection.Up ? Bounds.GetMaxY() : 0);
+        private CGPoint point1
+        {
+            get
+            {
+                switch (Direction)
+                {
+                    case TriangleDirection.Up:
+                        return new CGPoint(0, Bounds.GetMaxX());
+                    case TriangleDirection.Down:
+                        return new CGPoint(0, 0);
+                    case TriangleDirection.Left:
+                        return new CGPoint(0, Bounds.GetMaxY() / 2);
+                    case TriangleDirection.Right:
+                        return new CGPoint(0, Bounds.GetMaxY());
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
-        private CGPoint point2 =>
-            new CGPoint(
-                Bounds.GetMaxX(),
-                Direction == TriangleDirection.Up ? Bounds.GetMaxY() : 0);
+        private CGPoint point2
+        {
+            get
+            {
+                switch (Direction)
+                {
+                    case TriangleDirection.Up:
+                        return new CGPoint(Bounds.GetMaxX() / 2, 0);
+                    case TriangleDirection.Down:
+                        return new CGPoint(Bounds.GetMaxX(), 0);
+                    case TriangleDirection.Left:
+                        return new CGPoint(Bounds.GetMaxX(), 0);
+                    case TriangleDirection.Right:
+                        return new CGPoint(0, 0);
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
-        private CGPoint point3 =>
-            new CGPoint(
-                Bounds.GetMaxX() / 2,
-                Direction == TriangleDirection.Up ? 0 : Bounds.GetMaxY());
+        private CGPoint point3
+        {
+            get
+            {
+                switch (Direction)
+                {
+                    case TriangleDirection.Up:
+                        return new CGPoint(Bounds.GetMaxX(), Bounds.GetMaxY());
+                    case TriangleDirection.Down:
+                        return new CGPoint(Bounds.GetMaxX() / 2, Bounds.GetMaxY());
+                    case TriangleDirection.Left:
+                        return new CGPoint(Bounds.GetMaxX(), Bounds.GetMaxY());
+                    case TriangleDirection.Right:
+                        return new CGPoint(Bounds.GetMaxX(), Bounds.GetMaxY() / 2);
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
 
         public TriangleView(CGRect frame) : base(frame) { }
@@ -75,7 +120,9 @@ namespace Toggl.iOS.Views
         public enum TriangleDirection
         {
             Up,
-            Down
+            Down,
+            Left,
+            Right
         }
     }
 }

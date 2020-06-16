@@ -1778,6 +1778,14 @@ boost your productivity!</value>
 Tap to edit it.</value>
         <comment>Text displayed in the onboarding tooltip that's shown above the very first time entry</comment>
     </data>
+    <data name="AssignYourTimeEntryToAProject" xml:space="preserve">
+        <value>Assign your time entry to a larger Project to get more useful time reports</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the edit time entry view below the "+ Add project/task" button</comment>
+    </data>
+    <data name="TapHereToChangeOrAddProjects" xml:space="preserve">
+        <value>Tap here to change or add Projects</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the edit time entry view below the selected project</comment>
+    </data>
     <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
         <value>Tap here to start your next Time Entry</value>
         <comment>Text displayed in the onboarding tooltip that's shown above the start time entry button</comment>

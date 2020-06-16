@@ -58,6 +58,7 @@ namespace Toggl.Storage
     public enum OnboardingConditionKey
     {
         RunningTimeEntryTooltip,
+        EditViewProjectsTooltip,
         StartTimeEntryTooltip
     }
 }

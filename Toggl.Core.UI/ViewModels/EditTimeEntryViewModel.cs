@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -21,6 +20,7 @@ using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
+using Toggl.Storage;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels
@@ -90,6 +90,11 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<bool> IsSyncErrorMessageVisible { get; private set; }
 
         public IObservable<IThreadSafePreferences> Preferences { get; private set; }
+
+        public OnboardingCondition ProjectsTooltipCondition { get; private set; }
+        public string ProjectsTooltipText => projectId.HasValue
+            ? Resources.TapHereToChangeOrAddProjects
+            : Resources.AssignYourTimeEntryToAProject;
 
         public ViewAction SelectProject { get; private set; }
         public ViewAction SelectTags { get; private set; }
@@ -220,6 +225,18 @@ namespace Toggl.Core.UI.ViewModels
             DismissSyncErrorMessage = actionFactory.FromAction(dismissSyncErrorMessage);
             Save = actionFactory.FromAsync(save);
             Delete = actionFactory.FromAsync(delete);
+
+            ProjectsTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.EditViewProjectsTooltip,
+                OnboardingStorage,
+                createProjectsTooltipPredicate());
+        }
+
+        private IObservable<bool> createProjectsTooltipPredicate()
+        {
+            return Observable
+                .Return(true)
+                .Merge(SelectProject.Inputs.Select(_ => false));
         }
 
         public override async Task Initialize(long[] timeEntryIds)

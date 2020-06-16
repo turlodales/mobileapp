@@ -10,7 +10,9 @@ using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Shared;
 using Toggl.iOS.Transformations;
+using Toggl.iOS.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -51,6 +53,7 @@ namespace Toggl.iOS.ViewControllers
 
             localizeLabels();
             prepareViews();
+            prepareProjectsTooltip();
 
             contentSizeChangedDisposable = ScrollViewContent.AddObserver(boundsKey, NSKeyValueObservingOptions.New, onContentSizeChanged);
 
@@ -224,6 +227,30 @@ namespace Toggl.iOS.ViewControllers
             DeleteButton.Rx()
                 .BindAction(ViewModel.Delete)
                 .DisposedBy(DisposeBag);
+        }
+
+        private void prepareProjectsTooltip()
+        {
+            ProjectsTooltip.Alpha = 1;
+            ViewModel.ProjectsTooltipCondition.ConditionMet
+                .Subscribe(ProjectsTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(DisposeBag);
+
+            ProjectsTooltip.Rx().Tap()
+                .Subscribe(ViewModel.ProjectsTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            ProjectsTooltipArrow.Direction = TriangleView.TriangleDirection.Up;
+            ProjectsTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;;
+            ProjectsTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;;
+
+            ProjectsTooltipLabel.Text = ViewModel.ProjectsTooltipText;
+            ProjectsTooltipLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Left);
+            ProjectsTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+
+            ProjectsTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            ProjectsTooltip.SetUpTooltipShadow();
         }
 
         public override void ViewDidLayoutSubviews()
