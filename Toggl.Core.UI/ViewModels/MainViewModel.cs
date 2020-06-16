@@ -43,6 +43,7 @@ namespace Toggl.Core.UI.ViewModels
     {
         private const int ratingViewTimeout = 5;
         private const double throttlePeriodInSeconds = 0.1;
+        private static readonly TimeSpan minTimeBetweenProgressChanges = TimeSpan.FromMilliseconds(20);
 
         private bool noWorkspaceViewPresented;
         private bool hasStopButtonEverBeenUsed;
@@ -193,6 +194,7 @@ namespace Toggl.Core.UI.ViewModels
             widgetsService.Start();
 
             SyncProgressState = syncManager.ProgressObservable
+                .Throttle(minTimeBetweenProgressChanges)
                 .AsDriver(schedulerProvider);
 
             var isWelcome = OnboardingStorage.IsNewUser;
