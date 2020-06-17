@@ -14,7 +14,9 @@ namespace Toggl.Storage.Realm
         [Ignored]
         public TimeFormat TimeOfDayFormatBackup
         {
-            get => TimeFormat.FromLocalizedTimeFormat(TimeOfDayFormatStringBackup);
+            get => TimeOfDayFormatStringBackup != null
+                ? TimeFormat.FromLocalizedTimeFormat(TimeOfDayFormatStringBackup)
+                : default;
             set => TimeOfDayFormatStringBackup = value.Localized;
         }
 
@@ -23,7 +25,9 @@ namespace Toggl.Storage.Realm
         [Ignored]
         public DateFormat DateFormatBackup
         {
-            get => DateFormat.FromLocalizedDateFormat(DateFormatStringBackup);
+            get => TimeOfDayFormatStringBackup != null
+                ? DateFormat.FromLocalizedDateFormat(DateFormatStringBackup)
+                : default;
             set => DateFormatStringBackup = value.Localized;
         }
 
