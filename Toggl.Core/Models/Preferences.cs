@@ -22,7 +22,14 @@ namespace Toggl.Core.Models
 
         private Preferences(IPreferences entity, SyncStatus syncStatus, string lastSyncErrorMessage, bool isDeleted = false)
             : this(entity.TimeOfDayFormat, entity.DateFormat, entity.DurationFormat, entity.CollapseTimeEntries, entity.UseNewSync, syncStatus, lastSyncErrorMessage, isDeleted)
-        { }
+        {
+            ContainsBackup = entity.ContainsBackup;
+
+            TimeOfDayFormatBackup = entity.TimeOfDayFormatBackup;
+            DateFormatBackup = entity.DateFormatBackup;
+            DurationFormatBackup = entity.DurationFormatBackup;
+            CollapseTimeEntriesBackup = entity.CollapseTimeEntriesBackup;
+        }
 
         public Preferences(TimeFormat timeOfDayFormat, DateFormat dateFormat, DurationFormat durationFormat, bool collapseTimeEntries, bool useNewSync, SyncStatus syncStatus = default, string lastSyncErrorMessage = "", bool isDeleted = false)
         {
@@ -41,9 +48,7 @@ namespace Toggl.Core.Models
         }
 
         public static Preferences From(IDatabasePreferences entity)
-        {
-            return new Preferences(entity, entity.SyncStatus, entity.LastSyncErrorMessage, entity.IsDeleted);
-        }
+            => new Preferences(entity, entity.SyncStatus, entity.LastSyncErrorMessage, entity.IsDeleted);
 
         public static Preferences Clean(IPreferences entity)
             => new Preferences(entity, SyncStatus.InSync, null);

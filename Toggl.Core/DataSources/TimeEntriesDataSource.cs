@@ -101,11 +101,14 @@ namespace Toggl.Core.DataSources
                 .Do(timeEntryDb => backupTimeEntry(timeEntryDb, timeEntry))
                 .SelectMany(_ => base.Update(timeEntry));
 
-        public override IObservable<IEnumerable<IConflictResolutionResult<IThreadSafeTimeEntry>>> BatchUpdate(IEnumerable<IThreadSafeTimeEntry> timeEntries)
-            => backupLocal(timeEntries)
+        public override IObservable<IEnumerable<IConflictResolutionResult<IThreadSafeTimeEntry>>> BatchUpdate(IEnumerable<IThreadSafeTimeEntry> entities)
+        {
+            var timeEntries = entities.ToList();
+            return backupLocal(timeEntries)
                 .SingleAsync()
                 .SelectMany(_ => base.BatchUpdate(timeEntries))
                 .SingleAsync();
+        }
 
         private IObservable<Unit> backupLocal(IEnumerable<IThreadSafeTimeEntry> timeEntries)
         {

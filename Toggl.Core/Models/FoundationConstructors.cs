@@ -195,6 +195,16 @@ namespace Toggl.Core.Models
             SyncStatus = syncStatus;
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
+
+            ContainsBackup = entity.ContainsBackup;
+
+            BillableBackup = entity.BillableBackup;
+            DescriptionBackup = entity.DescriptionBackup;
+            DurationBackup = entity.DurationBackup;
+            ProjectIdBackup = entity.ProjectIdBackup;
+            StartBackup = entity.StartBackup;
+            TaskIdBackup = entity.TaskIdBackup;
+            TagIdsBackup = entity.TagIdsBackup?.ToList();
         }
 
         public static TimeEntry Clean(ITimeEntry entity)
@@ -244,6 +254,11 @@ namespace Toggl.Core.Models
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
             Timezone = entity.Timezone;
+
+            ContainsBackup = entity.ContainsBackup;
+
+            DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
+            BeginningOfWeekBackup = entity.BeginningOfWeekBackup;
         }
 
         public static User Clean(IUser entity)
