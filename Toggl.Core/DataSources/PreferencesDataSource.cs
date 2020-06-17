@@ -37,9 +37,9 @@ namespace Toggl.Core.DataSources
                 preferences.ContainsBackup = true;
 
                 preferences.TimeOfDayFormatBackup = preferencesDb.TimeOfDayFormat;
-                preferences.DateFormatBackup = preferencesDb.DateFormatBackup;
-                preferences.DurationFormatBackup = preferencesDb.DurationFormatBackup;
-                preferences.CollapseTimeEntriesBackup = preferencesDb.CollapseTimeEntriesBackup;
+                preferences.DateFormatBackup = preferencesDb.DateFormat;
+                preferences.DurationFormatBackup = preferencesDb.DurationFormat;
+                preferences.CollapseTimeEntriesBackup = preferencesDb.CollapseTimeEntries;
             }
         }
     }
