@@ -13,6 +13,8 @@ using Toggl.Storage.Queries;
 using Toggl.Storage.Realm.Extensions;
 using Toggl.Storage.Realm.Models;
 using RealmDb = Realms.Realm;
+using static Toggl.Storage.Realm.Sync.BackupHelper;
+using static Toggl.Storage.Realm.Sync.ThreeWayMerge;
 
 namespace Toggl.Storage.Realm.Sync
 {
@@ -165,26 +167,26 @@ namespace Toggl.Storage.Realm.Sync
                 ? dbUser.DefaultWorkspaceIdBackup
                 : dbUser.DefaultWorkspaceId;
 
-            dbUser.DefaultWorkspaceIdBackup = dbUser.DefaultWorkspaceId =
-                ThreeWayMerge.Merge(commonDefaultWorkspaceId, dbUser.DefaultWorkspaceId, user.DefaultWorkspaceId);
+            dbUser.DefaultWorkspaceId = Merge(commonDefaultWorkspaceId, dbUser.DefaultWorkspaceId, user.DefaultWorkspaceId);
 
-            shouldStayDirty |= user.DefaultWorkspaceId != dbUser.DefaultWorkspaceId;
+            shouldStayDirty |= ClearBackupIf(user.DefaultWorkspaceId != dbUser.DefaultWorkspaceId, () => dbUser.DefaultWorkspaceIdBackup = dbUser.DefaultWorkspaceId);
 
             // Beginning of week
             var commonBeginningOfWeek = dbUser.ContainsBackup
                 ? dbUser.BeginningOfWeekBackup
                 : dbUser.BeginningOfWeek;
 
-            dbUser.BeginningOfWeek = dbUser.BeginningOfWeekBackup =
-                (BeginningOfWeek)ThreeWayMerge.Merge(
+            dbUser.BeginningOfWeek =
+                (BeginningOfWeek)Merge(
                     (int)commonBeginningOfWeek,
                     (int)dbUser.BeginningOfWeek,
                     (int)user.BeginningOfWeek);
 
-            shouldStayDirty |= user.BeginningOfWeek != dbUser.BeginningOfWeek;
+            shouldStayDirty |= ClearBackupIf(user.BeginningOfWeek != dbUser.BeginningOfWeek, () => dbUser.BeginningOfWeekBackup = dbUser.BeginningOfWeek);
 
-            // the conflict is resolved, the backup is no longer needed until next local change
-            dbUser.ContainsBackup = false;
+            // If there's something that's still going to be pushed to the server in the next push, we shouldn't
+            // get rid of the backup. If there are no local changes though, we should forget about the backup.
+            dbUser.ContainsBackup &= shouldStayDirty;
             dbUser.LastSyncErrorMessage = null;
 
             // Update sync status depending on the way the user has changed during the 3-way merge
@@ -213,20 +215,24 @@ namespace Toggl.Storage.Realm.Sync
                 ? dbPreferences.TimeOfDayFormatBackup
                 : dbPreferences.TimeOfDayFormat;
 
-            dbPreferences.TimeOfDayFormatBackup = dbPreferences.TimeOfDayFormat =
-                ThreeWayMerge.Merge(commonTimeOfDayFormat, dbPreferences.TimeOfDayFormat, preferences.TimeOfDayFormat);
+            dbPreferences.TimeOfDayFormat =
+                Merge(commonTimeOfDayFormat, dbPreferences.TimeOfDayFormat, preferences.TimeOfDayFormat);
 
-            shouldStayDirty |= !preferences.TimeOfDayFormat.Equals(dbPreferences.TimeOfDayFormat);
+            shouldStayDirty |= ClearBackupIf(
+                !preferences.TimeOfDayFormat.Equals(dbPreferences.TimeOfDayFormat),
+                () => dbPreferences.TimeOfDayFormatBackup =  dbPreferences.TimeOfDayFormat);
 
             // Date format
             var commonDateFormat = dbPreferences.ContainsBackup
                 ? dbPreferences.DateFormatBackup
                 : dbPreferences.DateFormat;
 
-            dbPreferences.DateFormatBackup = dbPreferences.DateFormat =
-                ThreeWayMerge.Merge(commonDateFormat, dbPreferences.DateFormat, preferences.DateFormat);
+            dbPreferences.DateFormat =
+                Merge(commonDateFormat, dbPreferences.DateFormat, preferences.DateFormat);
 
-            shouldStayDirty |= !preferences.DateFormat.Equals(dbPreferences.DateFormat);
+            shouldStayDirty |= ClearBackupIf(
+                !preferences.DateFormat.Equals(dbPreferences.DateFormat),
+                () => dbPreferences.DateFormatBackup = dbPreferences.DateFormat);
 
             // Duration format backup
             var commonDurationFormat = dbPreferences.ContainsBackup
@@ -234,25 +240,30 @@ namespace Toggl.Storage.Realm.Sync
                : dbPreferences.DurationFormat;
 
             dbPreferences.DurationFormatBackup = dbPreferences.DurationFormat =
-                (DurationFormat)ThreeWayMerge.Merge(
+                (DurationFormat)Merge(
                     (int)commonDurationFormat,
                     (int)dbPreferences.DurationFormat,
                     (int)preferences.DurationFormat);
 
-            shouldStayDirty |= !preferences.DurationFormat.Equals(dbPreferences.DurationFormat);
+            shouldStayDirty |= ClearBackupIf(
+                !preferences.DurationFormat.Equals(dbPreferences.DurationFormat),
+                () => dbPreferences.DurationFormatBackup = dbPreferences.DurationFormat);
 
             // Collapse time entries backup
             var commonCollapseTimeEntries = dbPreferences.ContainsBackup
               ? dbPreferences.CollapseTimeEntriesBackup
               : dbPreferences.CollapseTimeEntries;
 
-            dbPreferences.CollapseTimeEntriesBackup = dbPreferences.CollapseTimeEntries =
-                ThreeWayMerge.Merge(commonCollapseTimeEntries, dbPreferences.CollapseTimeEntries, preferences.CollapseTimeEntries);
+            dbPreferences.CollapseTimeEntries =
+                Merge(commonCollapseTimeEntries, dbPreferences.CollapseTimeEntries, preferences.CollapseTimeEntries);
 
-            shouldStayDirty |= preferences.CollapseTimeEntries != dbPreferences.CollapseTimeEntries;
+            shouldStayDirty |= ClearBackupIf(
+                preferences.CollapseTimeEntries != dbPreferences.CollapseTimeEntries,
+                () => dbPreferences.CollapseTimeEntriesBackup = dbPreferences.CollapseTimeEntries);
 
-            // the conflict is resolved, the backup is no longer needed until next local change
-            dbPreferences.ContainsBackup = false;
+            // If there's something that's still going to be pushed to the server in the next push, we shouldn't
+            // get rid of the backup. If there are no local changes though, we should forget about the backup.
+            dbPreferences.ContainsBackup &= shouldStayDirty;
             dbPreferences.LastSyncErrorMessage = null;
 
             // Update sync status depending on the way the preferences have changed during the 3-way merge

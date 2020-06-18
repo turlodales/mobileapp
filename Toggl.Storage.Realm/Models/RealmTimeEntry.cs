@@ -7,7 +7,8 @@ using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Extensions;
 using Toggl.Storage.Realm.Models;
-using Toggl.Storage.Realm.Sync;
+using static Toggl.Storage.Realm.Sync.BackupHelper;
+using static Toggl.Storage.Realm.Sync.ThreeWayMerge;
 
 namespace Toggl.Storage.Realm
 {
@@ -75,64 +76,62 @@ namespace Toggl.Storage.Realm
                 ? DescriptionBackup
                 : Description;
 
-            DescriptionBackup = Description =
-                ThreeWayMerge.Merge(commonDescription, Description, timeEntry.Description);
+            Description = Merge(commonDescription, Description, timeEntry.Description);
 
-            shouldStayDirty |= timeEntry.Description != Description;
+            shouldStayDirty |= ClearBackupIf(timeEntry.Description != Description, () => DescriptionBackup = Description);
 
             // ProjectId
             var commonProjectId = ContainsBackup
                 ? ProjectIdBackup
                 : ProjectId;
 
-            var projectId = ThreeWayMerge.Merge(commonProjectId, ProjectId, timeEntry.ProjectId);
+            var projectId = Merge(commonProjectId, ProjectId, timeEntry.ProjectId);
 
             RealmProject = projectId.HasValue
                 ? realm.GetById<RealmProject>(projectId.Value)
                 : null;
 
-            shouldStayDirty |= timeEntry.ProjectId != projectId;
+            shouldStayDirty |= ClearBackupIf(timeEntry.ProjectId != projectId, () => ProjectIdBackup = ProjectId);
 
             // Billable
             var commonBillable = ContainsBackup
                 ? BillableBackup
                 : Billable;
 
-            BillableBackup = Billable =
-                ThreeWayMerge.Merge(commonBillable, Billable, timeEntry.Billable);
+            Billable = Merge(commonBillable, Billable, timeEntry.Billable);
 
-            shouldStayDirty |= timeEntry.Billable != Billable;
+            shouldStayDirty |= ClearBackupIf(timeEntry.Billable != Billable, () => BillableBackup = Billable);
 
             // Start
             var commonStart = ContainsBackup
                 ? StartBackup
                 : Start;
 
-            Start = ThreeWayMerge.Merge(commonStart, Start, timeEntry.Start);
+            Start = Merge(commonStart, Start, timeEntry.Start);
 
-            shouldStayDirty |= timeEntry.Start != Start;
+            shouldStayDirty |= ClearBackupIf(timeEntry.Start != Start, () => StartBackup = Start);
 
             // Duration
             var commonDuration = ContainsBackup
                 ? DurationBackup
                 : Duration;
 
-            Duration = ThreeWayMerge.Merge(commonDuration, Duration, timeEntry.Duration);
+            Duration = Merge(commonDuration, Duration, timeEntry.Duration);
 
-            shouldStayDirty |= timeEntry.Duration != Duration;
+            shouldStayDirty |= ClearBackupIf(timeEntry.Duration != Duration, () => DurationBackup = Duration);
 
             // Task
             var commonTaskId = ContainsBackup
                 ? TaskIdBackup
                 : TaskId;
 
-            var taskId = ThreeWayMerge.Merge(commonTaskId, TaskId, timeEntry.TaskId);
+            var taskId = Merge(commonTaskId, TaskId, timeEntry.TaskId);
 
             RealmTask = taskId.HasValue
                 ? realm.GetById<RealmTask>(taskId.Value)
                 : null;
 
-            shouldStayDirty |= timeEntry.TaskId != taskId;
+            shouldStayDirty |= ClearBackupIf(timeEntry.TaskId != taskId, () => TaskIdBackup = TaskId);
 
             // Tag Ids
             var commonTagIds = ContainsBackup
@@ -142,16 +141,20 @@ namespace Toggl.Storage.Realm
             var localTagIds = Arrays.NotNullOrEmpty(TagIds);
             var serverTagIds = Arrays.NotNullOrEmpty(timeEntry.TagIds);
 
-            var tagsIds = ThreeWayMerge.Merge(commonTagIds, localTagIds, serverTagIds);
-            shouldStayDirty |= !tagsIds.SetEquals(localTagIds);
+            var tagsIds = Merge(commonTagIds, localTagIds, serverTagIds);
+            shouldStayDirty |= ClearBackupIf(!tagsIds.SetEquals(localTagIds), () => {
+                TagIdsBackup.Clear();
+                tagsIds.ForEach(TagIdsBackup.Add);
+            });
 
             RealmTags.Clear();
             tagsIds
                 .Select(tagId => realm.GetById<RealmTag>(tagId))
                 .AddTo(RealmTags);
 
-            // the conflict is resolved, the backup is no longer needed until next local change
-            ContainsBackup = false;
+            // If there's something that's still going to be pushed to the server in the next push, we shouldn't
+            // get rid of the backup. If there are no local changes though, we should forget about the backup.
+            ContainsBackup &= shouldStayDirty;
             LastSyncErrorMessage = null;
 
             // Update sync status depending on the way the time entry has changed during the 3-way merge
