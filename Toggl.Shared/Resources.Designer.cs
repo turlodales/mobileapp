@@ -244,6 +244,18 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string SsoLinkSuccess {
+            get {
+                return ResourceManager.GetString("SsoLinkSuccess", resourceCulture);
+            }
+        }
+        
+        public static string SsoLinkFailure {
+            get {
+                return ResourceManager.GetString("SsoLinkFailure", resourceCulture);
+            }
+        }
+        
         public static string AccountWithEmailAlreadyExists {
             get {
                 return ResourceManager.GetString("AccountWithEmailAlreadyExists", resourceCulture);

@@ -13,6 +13,8 @@ using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
+using Toggl.Core.UI.ViewModels.Extensions;
+using Toggl.Networking;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -45,6 +47,8 @@ namespace Toggl.Core.UI.ViewModels
         private bool credentialsAreValid
              => Email.Value.IsValid && !Password.Value.IsEmpty;
 
+        private bool isForAccountLinking = false;
+        private Email emailForLinking = Shared.Email.Empty;
         public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
         public BehaviorRelay<Password> Password { get; } = new BehaviorRelay<Password>(Shared.Password.Empty);
 
@@ -121,6 +125,11 @@ namespace Toggl.Core.UI.ViewModels
         {
             Email.Accept(parameter.Email);
             Password.Accept(parameter.Password);
+            isForAccountLinking = parameter.IsForAccountLinking;
+            if (isForAccountLinking)
+            {
+                emailForLinking = parameter.Email;
+            }
 
             return base.Initialize(parameter);
         }
@@ -165,12 +174,11 @@ namespace Toggl.Core.UI.ViewModels
             if (isLoadingSubject.Value) return;
 
             isLoadingSubject.OnNext(true);
-
             loginDisposable =
                 userAccessManager
                     .Login(Email.Value, Password.Value)
                     .Track(analyticsService.Login, AuthenticationMethod.EmailAndPassword)
-                    .Subscribe(_ => onAuthenticated(), onError, onCompleted);
+                    .Subscribe(onAuthenticated, onError, onCompleted);
         }
 
         private Task signUp()
@@ -195,7 +203,7 @@ namespace Toggl.Core.UI.ViewModels
         private void togglePasswordVisibility()
             => passwordVisibleSubject.OnNext(!passwordVisibleSubject.Value);
 
-        private async void onAuthenticated()
+        private async void onAuthenticated(ITogglApi api)
         {
             lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
 
@@ -207,7 +215,7 @@ namespace Toggl.Core.UI.ViewModels
 
             await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
 
-            await Navigate<MainTabBarViewModel>();
+            await this.ssoLinkIfNeededAndNavigate(api, isForAccountLinking, emailForLinking);
         }
 
         private void onError(Exception exception)

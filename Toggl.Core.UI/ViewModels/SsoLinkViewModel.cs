@@ -9,10 +9,11 @@ using Toggl.Shared.Extensions;
 namespace Toggl.Core.UI.ViewModels
 {
     [Preserve(AllMembers = true)]
-    public sealed class SsoLinkViewModel : ViewModel
+    public sealed class SsoLinkViewModel : ViewModelWithInput<EmailParameter>
     {
         private readonly IAnalyticsService analyticsService;
         private readonly ISchedulerProvider schedulerProvider;
+        private Email email;
 
         public ViewAction Link { get; }
 
@@ -34,9 +35,15 @@ namespace Toggl.Core.UI.ViewModels
             Link = rxActionFactory.FromAsync(linkAccounts);
         }
 
+        public override Task Initialize(EmailParameter payload)
+        {
+            email = payload.Email;
+            return base.Initialize(payload);
+        }
+
         private Task linkAccounts()
         {
-            return Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.ForAccountLinking);
+            return Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.forAccountLinking(email));
         }
     }
 }

@@ -34,7 +34,15 @@ namespace Toggl.Droid.Activities
                 .Subscribe(ViewModel.ContinueWithEmail.Inputs)
                 .DisposedBy(DisposeBag);
 
+            ssoContinueWithEmailButton.Rx().Tap()
+                .Subscribe(ViewModel.ContinueWithEmail.Inputs)
+                .DisposedBy(DisposeBag);
+
             continueWithGoogleButton.Rx().Tap()
+                .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ssoContinueWithGoogleButton.Rx().Tap()
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
                 .DisposedBy(DisposeBag);
 

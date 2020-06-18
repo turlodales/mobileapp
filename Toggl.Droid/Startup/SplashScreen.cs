@@ -85,7 +85,7 @@ namespace Toggl.Droid
             var viewModel = viewModelLoader.Load<MainTabBarViewModel>();
             viewModelCache.Cache(viewModel);
 
-            viewModel.Initialize();
+            viewModel.Initialize(MainTabBarParameters.Default);
         }
 
         private void registerTimezoneChangedBroadcastReceiver(ITimeService timeService)

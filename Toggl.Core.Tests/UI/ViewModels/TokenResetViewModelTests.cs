@@ -177,7 +177,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.Done.Execute();
 
                 TestScheduler.Start();
-                await NavigationService.Received().Navigate<MainTabBarViewModel>(View);
+                await NavigationService.Received().Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default, View);
             }
 
             [Fact, LogIfTooSlow]

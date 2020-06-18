@@ -255,6 +255,14 @@ mobile, desktop or web</value>
         <value>Single Sign On</value>
         <comment>Label for the SSO login screen</comment>
     </data>
+    <data name="SsoLinkSuccess" xml:space="preserve">
+        <value>SSO login successfully enabled for your account</value>
+        <comment>Shown in a toast when SSO link succeeded</comment>
+    </data>
+    <data name="SsoLinkFailure" xml:space="preserve">
+        <value>SSO login for this account was not enabled as login emails were different</value>
+        <comment>Shown in a toast when SSO link did not succeed</comment>
+    </data>
     <data name="AccountWithEmailAlreadyExists" xml:space="preserve">
         <value>An account with this email already exists</value>
         <comment>Header displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>

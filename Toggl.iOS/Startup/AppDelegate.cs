@@ -116,7 +116,7 @@ namespace Toggl.iOS
                 AccessLevel.AccessRestricted => loadRootViewController<OutdatedAppViewModel, Unit>(),
                 AccessLevel.NotLoggedIn => loadRootViewController<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default),
                 AccessLevel.TokenRevoked => loadRootViewController<TokenResetViewModel, Unit>(),
-                AccessLevel.LoggedIn => loadRootViewController<MainTabBarViewModel, Unit>()
+                AccessLevel.LoggedIn => loadRootViewController<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default)
             };
             Window.RootViewController = vc;
         }

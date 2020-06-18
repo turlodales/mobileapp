@@ -141,6 +141,13 @@ namespace Toggl.Networking.ApiClients
                 .ConfigureAwait(false);
         }
 
+        public async Task<string> LinkSso(Email email, string confirmationCode)
+        {
+            var endpoint = endPoints.EnableSso(email, confirmationCode);
+            return await SendRequest(endpoint, AuthHeader)
+                .ConfigureAwait(false);
+        }
+
         protected override async Task<Exception> GetExceptionFor(IRequest request, IResponse response,
             IEnumerable<HttpHeader> headers)
         {

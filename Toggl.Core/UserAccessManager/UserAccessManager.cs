@@ -51,7 +51,7 @@ namespace Toggl.Core.Login
             this.platformInfo = platformInfo;
         }
 
-        public IObservable<Unit> Login(Email email, Password password)
+        public IObservable<ITogglApi> Login(Email email, Password password)
         {
             if (!email.IsValid)
                 throw new ArgumentException($"A valid {nameof(email)} must be provided when trying to login");
@@ -65,11 +65,10 @@ namespace Toggl.Core.Login
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Create)
                 .Select(apiFromUser)
-                .Do(userLoggedInSubject.OnNext)
-                .SelectUnit();
+                .Do(userLoggedInSubject.OnNext);
         }
 
-        public IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
+        public IObservable<ITogglApi> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
             => database.Value
                 .Clear()
                 .SelectMany(_ => thirdPartyLogin(provider, loginInfo));
@@ -183,7 +182,7 @@ namespace Toggl.Core.Login
             privateSharedStorageService.Value.SaveUserId(user.Id);
         }
 
-        private IObservable<Unit> thirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
+        private IObservable<ITogglApi> thirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
         {
             var credentials = provider == ThirdPartyLoginProvider.Google
                 ? Credentials.WithGoogleToken(loginInfo.Token)
@@ -195,8 +194,7 @@ namespace Toggl.Core.Login
                 .Select(User.Clean)
                 .SelectMany(database.Value.User.Create)
                 .Select(apiFromUser)
-                .Do(userLoggedInSubject.OnNext)
-                .SelectUnit();
+                .Do(userLoggedInSubject.OnNext);
 
             Task<IUser> getUser(ThirdPartyLoginProvider provider, ITogglApi api)
             {
