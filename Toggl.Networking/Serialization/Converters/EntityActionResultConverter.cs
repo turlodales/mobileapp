@@ -43,12 +43,6 @@ namespace Toggl.Networking.Serialization.Converters
                 case "update":
                     {
                         var id = meta.Value<long>("id");
-
-                        if (result is SuccessResult<T>)
-                        {
-                            throw new MissingFieldException("The result of the `update` action must contain the created entity in the case of a success.");
-                        }
-
                         return new UpdateActionResult<T>(id, result);
                     }
 

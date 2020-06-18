@@ -51,10 +51,6 @@ namespace Toggl.Storage.Realm.Queries
                 foreach (var res in response.TimeEntries)
                     processResult<ITimeEntry, RealmTimeEntry>(res, realm);
 
-                processRemainingSingleton<RealmPreferences>(realm);
-                processRemainingSingleton<RealmUser>(realm);
-                processRemainingTimeEntries(realm);
-
                 transaction.Commit();
             }
 
@@ -62,12 +58,16 @@ namespace Toggl.Storage.Realm.Queries
         }
 
         private void processSingletonResult<TEntity, TRealmEntity>(IActionResult<TEntity> result, Realms.Realm realm)
-            where TRealmEntity : RealmObject, IPushable
+            where TRealmEntity : RealmObject, IUpdatable
         {
+            var entity = realm.All<TRealmEntity>().Single();
             if (result?.Success == false && result is ErrorResult<TEntity> error)
             {
-                var entity = realm.All<TRealmEntity>().Single();
                 entity.PushFailed(error.ErrorMessage.DefaultMessage);
+            }
+            else if (result?.Success ?? false)
+            {
+                entity.UpdateSucceeded();
             }
         }
 
@@ -98,29 +98,16 @@ namespace Toggl.Storage.Realm.Queries
             {
                 entity.SaveSyncResult(success.Payload, realm);
             }
-        }
-
-        private void processRemainingSingleton<T>(Realms.Realm realm)
-            where T : RealmObject, IDatabaseSyncable, IUpdatable
-        {
-            var entity = realm.All<T>().Single();
-            if (entity.SyncStatus == SyncStatus.Syncing)
-                entity.UpdateSucceeded();
-        }
-
-        private void processRemainingTimeEntries(Realms.Realm realm)
-        {
-            var syncing = realm.All<RealmTimeEntry>().Where(e => e.SyncStatusInt == (int)SyncStatus.Syncing);
-            foreach (var entity in syncing)
+            else if (entityResult is UpdateActionResult<TEntity> update
+                && update.Result.Success
+                && entity is IUpdatable updatable)
             {
-                if (entity.IsDeleted)
-                {
-                    realm.Remove(entity);
-                }
-                else
-                {
-                    entity.UpdateSucceeded();
-                }
+                updatable.UpdateSucceeded();
+            }
+            else if (entityResult is DeleteActionResult<TEntity> delete
+                && delete.Result.Success)
+            {
+                realm.Remove(entity);
             }
         }
     }

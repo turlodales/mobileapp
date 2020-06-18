@@ -176,8 +176,9 @@ namespace Toggl.Storage.Realm
 
         public void UpdateSucceeded()
         {
-            SyncStatus = SyncStatus.InSync;
-            ContainsBackup = false;
+            var hasLocalChanges = SyncStatus == SyncStatus.SyncNeeded;
+            SyncStatus = hasLocalChanges ? SyncStatus.SyncNeeded : SyncStatus.InSync;
+            ContainsBackup &= hasLocalChanges;
         }
     }
 }

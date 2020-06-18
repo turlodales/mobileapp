@@ -14,12 +14,7 @@ namespace Toggl.Networking.Tests.Sync.Push
             ""type"": ""update"",
             ""meta"": {""id"": ""123""},
             ""payload"": {
-                ""success"": true,
-                ""result"": {
-                    ""id"": 456,
-                    ""name"": ""Tag A"",
-                    ""workspace_id"": 789
-                }
+                ""success"": true
             }
         }";
 
@@ -44,36 +39,8 @@ namespace Toggl.Networking.Tests.Sync.Push
                 {
                     ""type"": ""update"",
                     ""payload"": {
-                        ""success"": true,
-                        ""result"": {
-                            ""id"": 456,
-                            ""name"": ""Tag A"",
-                            ""workspace_id"": 789
-                        }
+                        ""success"": true
                     }
-                }",
-            },
-            new[] {
-                @"
-                {
-                    ""type"": ""update"",
-                    ""meta"": {""id"": 123},
-                    ""payload"": {
-                        ""success"": true,
-                        ""result"": {
-                            ""id"": ""not an int64"",
-                            ""name"": ""Tag A"",
-                            ""workspace_id"": 789
-                        }
-                    }
-                }",
-            },
-            new[] {
-                @"
-                {
-                    ""type"": ""update"",
-                    ""meta"": {""id"": 123},
-                    ""payload"": { ""success"": true }
                 }",
             },
             new[] {
@@ -111,13 +78,7 @@ namespace Toggl.Networking.Tests.Sync.Push
             result.Should().BeOfType<UpdateActionResult<ITag>>();
             result.Id.Should().Be(123);
 
-            result.Result.Should().BeOfType<SuccessPayloadResult<ITag>>();
-            var success = result.Result as SuccessPayloadResult<ITag>;
-
-            success.Payload.Should().NotBeNull();
-            success.Payload.Id.Should().Be(456);
-            success.Payload.WorkspaceId.Should().Be(789);
-            success.Payload.Name.Should().Be("Tag A");
+            result.Result.Success.Should().BeTrue();
         }
 
         [Fact, LogIfTooSlow]

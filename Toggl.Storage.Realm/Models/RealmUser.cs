@@ -52,14 +52,15 @@ namespace Toggl.Storage.Realm
 
         public void PushFailed(string errorMessage)
         {
-            SyncStatus = SyncStatus.SyncFailed;
             LastSyncErrorMessage = errorMessage;
+            SyncStatus = SyncStatus.SyncFailed;
         }
 
         public void UpdateSucceeded()
         {
-            SyncStatus = SyncStatus.InSync;
-            ContainsBackup = false;
+            var hasLocalChanges = SyncStatus == SyncStatus.SyncNeeded;
+            SyncStatus = hasLocalChanges ? SyncStatus.SyncNeeded : SyncStatus.InSync;
+            ContainsBackup &= hasLocalChanges;
         }
 
         public void SaveSyncResult(IUser entity, Realms.Realm realm)
