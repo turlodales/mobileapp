@@ -4,7 +4,8 @@ namespace Toggl.Core.UI.Helper
 {
     public static class OnboardingConstants
     {
-        public static int LineSpacing = 5;
+        public static int LineSpacing = 4;
+        public static int TitleLineSpacing = 6;
         public static float ShadowOpacity = 0.4f;
         public static int ShadowRadius = 6;
         public static int ShadowXOffset = 0;

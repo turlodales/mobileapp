@@ -34,6 +34,30 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UILabel FeedbackSentSuccessTitleLabel { get; set; }
 
 		[Outlet]
+		UIKit.UIView FinalTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView FinalTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView FinalTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint FinalTooltipCenterVerticallyConstraint { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView FinalTooltipCloseIcon { get; set; }
+
+		[Outlet]
+		UIKit.UILabel FinalTooltipMessageLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel FinalTooltipOKGotItLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel FinalTooltipTitleLabel { get; set; }
+
+		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		Toggl.iOS.Views.FadeView RunningEntryDescriptionFadeView { get; set; }
 
@@ -128,6 +152,41 @@ namespace Toggl.iOS.ViewControllers
 				FeedbackSentSuccessTitleLabel = null;
 			}
 
+			if (FinalTooltip != null) {
+				FinalTooltip.Dispose ();
+				FinalTooltip = null;
+			}
+
+			if (FinalTooltipArrow != null) {
+				FinalTooltipArrow.Dispose ();
+				FinalTooltipArrow = null;
+			}
+
+			if (FinalTooltipBackground != null) {
+				FinalTooltipBackground.Dispose ();
+				FinalTooltipBackground = null;
+			}
+
+			if (FinalTooltipCloseIcon != null) {
+				FinalTooltipCloseIcon.Dispose ();
+				FinalTooltipCloseIcon = null;
+			}
+
+			if (FinalTooltipMessageLabel != null) {
+				FinalTooltipMessageLabel.Dispose ();
+				FinalTooltipMessageLabel = null;
+			}
+
+			if (FinalTooltipOKGotItLabel != null) {
+				FinalTooltipOKGotItLabel.Dispose ();
+				FinalTooltipOKGotItLabel = null;
+			}
+
+			if (FinalTooltipTitleLabel != null) {
+				FinalTooltipTitleLabel.Dispose ();
+				FinalTooltipTitleLabel = null;
+			}
+
 			if (RunningEntryDescriptionFadeView != null) {
 				RunningEntryDescriptionFadeView.Dispose ();
 				RunningEntryDescriptionFadeView = null;
@@ -168,6 +227,31 @@ namespace Toggl.iOS.ViewControllers
 				StartTimeEntryButton = null;
 			}
 
+			if (StartTimeEntryTooltip != null) {
+				StartTimeEntryTooltip.Dispose ();
+				StartTimeEntryTooltip = null;
+			}
+
+			if (StartTimeEntryTooltipArrow != null) {
+				StartTimeEntryTooltipArrow.Dispose ();
+				StartTimeEntryTooltipArrow = null;
+			}
+
+			if (StartTimeEntryTooltipBackground != null) {
+				StartTimeEntryTooltipBackground.Dispose ();
+				StartTimeEntryTooltipBackground = null;
+			}
+
+			if (StartTimeEntryTooltipCloseIcon != null) {
+				StartTimeEntryTooltipCloseIcon.Dispose ();
+				StartTimeEntryTooltipCloseIcon = null;
+			}
+
+			if (StartTimeEntryTooltipLabel != null) {
+				StartTimeEntryTooltipLabel.Dispose ();
+				StartTimeEntryTooltipLabel = null;
+			}
+
 			if (StopTimeEntryButton != null) {
 				StopTimeEntryButton.Dispose ();
 				StopTimeEntryButton = null;
@@ -203,29 +287,9 @@ namespace Toggl.iOS.ViewControllers
 				WelcomeBackView = null;
 			}
 
-			if (StartTimeEntryTooltip != null) {
-				StartTimeEntryTooltip.Dispose ();
-				StartTimeEntryTooltip = null;
-			}
-
-			if (StartTimeEntryTooltipArrow != null) {
-				StartTimeEntryTooltipArrow.Dispose ();
-				StartTimeEntryTooltipArrow = null;
-			}
-
-			if (StartTimeEntryTooltipBackground != null) {
-				StartTimeEntryTooltipBackground.Dispose ();
-				StartTimeEntryTooltipBackground = null;
-			}
-
-			if (StartTimeEntryTooltipCloseIcon != null) {
-				StartTimeEntryTooltipCloseIcon.Dispose ();
-				StartTimeEntryTooltipCloseIcon = null;
-			}
-
-			if (StartTimeEntryTooltipLabel != null) {
-				StartTimeEntryTooltipLabel.Dispose ();
-				StartTimeEntryTooltipLabel = null;
+			if (FinalTooltipCenterVerticallyConstraint != null) {
+				FinalTooltipCenterVerticallyConstraint.Dispose ();
+				FinalTooltipCenterVerticallyConstraint = null;
 			}
 		}
 	}

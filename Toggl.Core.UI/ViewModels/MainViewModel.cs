@@ -92,6 +92,8 @@ namespace Toggl.Core.UI.ViewModels
         public OnboardingCondition RunningTimeEntryTooltipCondition { get; private set; }
         public OnboardingCondition StartTimeEntryTooltipCondition { get; private set; }
 
+        public OnboardingCondition FinalTooltipCondition { get; private set; }
+
         public RatingViewModel RatingViewModel { get; }
         public SuggestionsViewModel SuggestionsViewModel { get; }
         public IOnboardingStorage OnboardingStorage { get; }
@@ -314,6 +316,11 @@ namespace Toggl.Core.UI.ViewModels
                 OnboardingConditionKey.StartTimeEntryTooltip,
                 OnboardingStorage,
                 createStartTimeEntryTooltipPredicate());
+
+            FinalTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.FinalTooltip,
+                OnboardingStorage,
+                createFinalTooltipPredicate());
         }
 
         private IObservable<bool> createRunningTimeEntryTooltipPredicate()
@@ -350,6 +357,14 @@ namespace Toggl.Core.UI.ViewModels
                 (timeEntriesExist, timeEntryIsRunning) => timeEntriesExist && !timeEntryIsRunning)
                 .Merge(startTimeEntryTapped)
                 .DistinctUntilChanged();
+        }
+
+        private IObservable<bool> createFinalTooltipPredicate()
+        {
+            return StopTimeEntry.Inputs
+                .Take(1)
+                .SelectValue(true)
+                .Merge(SelectTimeEntry.Inputs.SelectValue(false));
         }
 
         public void Track(ITrackableEvent e)

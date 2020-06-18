@@ -41,7 +41,7 @@ namespace Toggl.iOS.Views
                 switch (Direction)
                 {
                     case TriangleDirection.Up:
-                        return new CGPoint(0, Bounds.GetMaxX());
+                        return new CGPoint(0, Bounds.GetMaxY());
                     case TriangleDirection.Down:
                         return new CGPoint(0, 0);
                     case TriangleDirection.Left:

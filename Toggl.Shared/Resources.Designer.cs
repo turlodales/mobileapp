@@ -2427,7 +2427,7 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("TapHereToChangeOrAddProjects", resourceCulture);
             }
         }
-
+        
         public static string TapHereToStartYourNextTimeEntry {
             get {
                 return ResourceManager.GetString("TapHereToStartYourNextTimeEntry", resourceCulture);
@@ -2437,6 +2437,24 @@ namespace Toggl.Shared {
         public static string ClickOnFolderIconToAssignAProject {
             get {
                 return ResourceManager.GetString("ClickOnFolderIconToAssignAProject", resourceCulture);
+            }
+        }
+        
+        public static string YouveMadeYourFirstTimeEntry {
+            get {
+                return ResourceManager.GetString("YouveMadeYourFirstTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string YouCanAccessTimeEntriesFromAnyTogglApp {
+            get {
+                return ResourceManager.GetString("YouCanAccessTimeEntriesFromAnyTogglApp", resourceCulture);
+            }
+        }
+        
+        public static string OkGotIt {
+            get {
+                return ResourceManager.GetString("OkGotIt", resourceCulture);
             }
         }
     }

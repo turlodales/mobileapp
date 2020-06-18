@@ -60,6 +60,7 @@ namespace Toggl.Storage
         RunningTimeEntryTooltip,
         StartTimeEntryTooltip,
         StartViewProjectsTooltip,
-        EditViewProjectsTooltip
+        EditViewProjectsTooltip,
+        FinalTooltip
     }
 }

@@ -59,11 +59,10 @@ namespace Toggl.iOS.ViewControllers
         };
         private readonly TimeEntriesEmptyLogView emptyStateView = TimeEntriesEmptyLogView.Create();
 
-        private TimeEntriesLogViewCell firstTimeEntryCell;
-
         private bool viewInitialized;
         private CancellationTokenSource cardAnimationCancellation;
 
+        private IDisposable finalTooltipCellSubscription;
         private CompositeDisposable disposeBag = new CompositeDisposable();
 
         private Subject<Unit> traitCollectionSubject = new Subject<Unit>();
@@ -104,6 +103,7 @@ namespace Toggl.iOS.ViewControllers
             prepareViews();
             prepareRunningTimeEntryTooltip();
             prepareStartTimeEntryTooltip();
+            prepareFinalTooltip();
 
             ViewModel.SwipeActionsEnabled
                 .Subscribe(tableViewSource.SetSwipeActionsEnabled)
@@ -130,10 +130,6 @@ namespace Toggl.iOS.ViewControllers
             tableViewSource.ToggleGroupExpansion
                 .Subscribe(ViewModel.TimeEntriesViewModel.ToggleGroupExpansion.Inputs)
                 .DisposedBy(disposeBag);
-
-            tableViewSource.FirstCell
-                .Subscribe(onFirstTimeEntryChanged)
-                .DisposedBy(DisposeBag);
 
             tableViewSource.ContinueTap
                 .Select(item => timeEntryContinuation(item, false))
@@ -293,8 +289,11 @@ namespace Toggl.iOS.ViewControllers
             activity.BecomeCurrent();
         }
 
+        private bool visible;
+
         private void prepareRunningTimeEntryTooltip()
         {
+
             RunningTimeEntryTooltip.Alpha = 0;
             ViewModel.RunningTimeEntryTooltipCondition.ConditionMet
                 .Subscribe(RunningTimeEntryTooltip.Rx().IsVisibleWithFade())
@@ -315,6 +314,59 @@ namespace Toggl.iOS.ViewControllers
             RunningTimeEntryTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
 
             RunningTimeEntryTooltip.SetUpTooltipShadow();
+        }
+
+        private void prepareFinalTooltip()
+        {
+
+            FinalTooltip.Alpha = 0;
+            ViewModel.FinalTooltipCondition.ConditionMet
+                .Do(conditionMet =>
+                {
+                    if (!conditionMet)
+                        return;
+
+                    finalTooltipCellSubscription = tableViewSource
+                        .WillDisplayCell
+                        .FirstAsync()
+                        .Subscribe(
+                            cell =>
+                            {
+                                FinalTooltipCenterVerticallyConstraint.Active = false;
+                                FinalTooltip.TopAnchor.ConstraintEqualTo(cell.BottomAnchor).Active = true;
+                            },
+                            onCompleted: () =>
+                            {
+                                finalTooltipCellSubscription?.Dispose();
+                                finalTooltipCellSubscription = null;
+                            });
+                })
+                .Subscribe(FinalTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(disposeBag);
+
+            FinalTooltip.Rx().Tap()
+                .Subscribe(ViewModel.FinalTooltipCondition.Dismiss)
+                .DisposedBy(disposeBag);
+
+            FinalTooltipArrow.Direction = TriangleView.TriangleDirection.Up;
+            FinalTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            FinalTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;
+
+            FinalTooltipTitleLabel.Text = Resources.YouveMadeYourFirstTimeEntry;
+            FinalTooltipTitleLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            FinalTooltipTitleLabel.SetLineSpacing(OnboardingConstants.TitleLineSpacing, UITextAlignment.Left);
+
+            FinalTooltipMessageLabel.Text = Resources.YouCanAccessTimeEntriesFromAnyTogglApp;
+            FinalTooltipMessageLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            FinalTooltipMessageLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Left);
+
+            FinalTooltipOKGotItLabel.Text = Resources.OkGotIt;
+            FinalTooltipOKGotItLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            FinalTooltipOKGotItLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Left);
+
+            FinalTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            FinalTooltip.SetUpTooltipShadow();
         }
 
         private void prepareStartTimeEntryTooltip()
@@ -749,11 +801,6 @@ namespace Toggl.iOS.ViewControllers
             emptyStateView.HeightAnchor.ConstraintEqualTo(TimeEntriesLogTableView.HeightAnchor).Active = true;
             emptyStateView.CenterYAnchor.ConstraintEqualTo(TimeEntriesLogTableView.CenterYAnchor).Active = true;
             emptyStateView.TopAnchor.ConstraintEqualTo(TimeEntriesLogTableView.TopAnchor).Active = true;
-        }
-
-        private void onFirstTimeEntryChanged(TimeEntriesLogViewCell nextFirstTimeEntry)
-        {
-            firstTimeEntryCell = nextFirstTimeEntry;
         }
     }
 }
