@@ -32,13 +32,27 @@ namespace Toggl.Core.DataSources
 
         private void backupPreferences(IDatabasePreferences preferencesDb, IThreadSafePreferences preferences)
         {
-            if (!preferencesDb.ContainsBackup)
+            if (!preferencesDb.HasTimeOfDayFormatBackup)
             {
-                preferences.ContainsBackup = true;
-
+                preferences.HasTimeOfDayFormatBackup = true;
                 preferences.TimeOfDayFormatBackup = preferencesDb.TimeOfDayFormat;
+            }
+
+            if (!preferencesDb.HasDateFormatBackup)
+            {
+                preferences.HasDateFormatBackup = true;
                 preferences.DateFormatBackup = preferencesDb.DateFormat;
+            }
+
+            if (!preferencesDb.HasDurationFormatBackup)
+            {
+                preferences.HasDurationFormatBackup = true;
                 preferences.DurationFormatBackup = preferencesDb.DurationFormat;
+            }
+
+            if (!preferencesDb.HasCollapseTimeEntriesBackup)
+            {
+                preferences.HasCollapseTimeEntriesBackup = true;
                 preferences.CollapseTimeEntriesBackup = preferencesDb.CollapseTimeEntries;
             }
         }

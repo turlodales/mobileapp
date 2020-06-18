@@ -87,7 +87,11 @@ namespace Toggl.Storage.Realm
             CollapseTimeEntries = entity.CollapseTimeEntries;
             UseNewSync = entity.UseNewSync;
 
-            ContainsBackup = entity.ContainsBackup;
+            HasTimeOfDayFormatBackup = entity.HasTimeOfDayFormatBackup;
+            HasDurationFormatBackup = entity.HasDurationFormatBackup;
+            HasDateFormatBackup = entity.HasDateFormatBackup;
+            HasCollapseTimeEntriesBackup = entity.HasCollapseTimeEntriesBackup;
+
             CollapseTimeEntriesBackup = entity.CollapseTimeEntriesBackup;
             DateFormatBackup = entity.DateFormatBackup;
             DurationFormatBackup = entity.DurationFormatBackup;
@@ -380,7 +384,9 @@ namespace Toggl.Storage.Realm
             ImageUrl = entity.ImageUrl;
             Timezone = entity.Timezone;
 
-            ContainsBackup = entity.ContainsBackup;
+            HasDefaultWorkspaceIdBackup = entity.HasDefaultWorkspaceIdBackup;
+            HasBeginningOfWeekBackup = entity.HasBeginningOfWeekBackup;
+
             DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
             BeginningOfWeekBackup = entity.BeginningOfWeekBackup;
         }

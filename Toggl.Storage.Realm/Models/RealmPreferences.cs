@@ -1,4 +1,5 @@
-﻿using Realms;
+﻿using System.Linq;
+using Realms;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Models;
@@ -17,7 +18,9 @@ namespace Toggl.Storage.Realm
         [Ignored]
         public TimeFormat TimeOfDayFormat
         {
-            get => TimeFormat.FromLocalizedTimeFormat(TimeOfDayFormatString);
+            get => TimeOfDayFormatString != null
+                ? TimeFormat.FromLocalizedTimeFormat(TimeOfDayFormatString)
+                : TimeFormat.TwelveHoursFormat;
             set => TimeOfDayFormatString = value.Localized;
         }
 
@@ -26,7 +29,9 @@ namespace Toggl.Storage.Realm
         [Ignored]
         public DateFormat DateFormat
         {
-            get => DateFormat.FromLocalizedDateFormat(DateFormatString);
+            get => DateFormatString != null
+                ? DateFormat.FromLocalizedDateFormat(DateFormatString)
+                : DateFormat.ValidDateFormats.First();
             set => DateFormatString = value.Localized;
         }
 
@@ -58,9 +63,8 @@ namespace Toggl.Storage.Realm
 
         public void UpdateSucceeded()
         {
-            var hasLocalChanges = SyncStatus == SyncStatus.SyncNeeded;
-            SyncStatus = hasLocalChanges ? SyncStatus.SyncNeeded : SyncStatus.InSync;
-            ContainsBackup &= hasLocalChanges;
+            if (SyncStatus != SyncStatus.SyncNeeded)
+                SyncStatus = SyncStatus.InSync;
         }
 
         public void SaveSyncResult(IPreferences entity, Realms.Realm realm)

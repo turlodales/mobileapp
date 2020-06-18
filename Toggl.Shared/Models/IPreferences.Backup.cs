@@ -2,11 +2,16 @@
 {
     public partial interface IPreferences
     {
-        bool ContainsBackup { get; set; }
-
+        bool HasTimeOfDayFormatBackup { get; set; }
         TimeFormat TimeOfDayFormatBackup { get; set; }
+
+        bool HasDateFormatBackup { get; set; }
         DateFormat DateFormatBackup { get; set; }
+
+        bool HasDurationFormatBackup { get; set; }
         DurationFormat DurationFormatBackup { get; set; }
+
+        bool HasCollapseTimeEntriesBackup { get; set; }
         bool CollapseTimeEntriesBackup { get; set; }
     }
 }

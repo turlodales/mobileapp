@@ -26,7 +26,16 @@ namespace Toggl.Core.Tests.Mocks
         public bool UseNewSync { get; set; }
 
         [JsonIgnore]
-        public bool ContainsBackup { get; set; }
+        public bool HasTimeOfDayFormatBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasDateFormatBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasDurationFormatBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasCollapseTimeEntriesBackup { get; set; }
 
         [JsonIgnore]
         public TimeFormat TimeOfDayFormatBackup { get; set; }

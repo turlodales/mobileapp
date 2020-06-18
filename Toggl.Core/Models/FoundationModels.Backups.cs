@@ -29,16 +29,20 @@ namespace Toggl.Core.Models
 
     internal partial class User : IThreadSafeUser
     {
-        public bool ContainsBackup { get; set; }
+        public bool HasDefaultWorkspaceIdBackup { get; set; }
 
         public long? DefaultWorkspaceIdBackup { get; set; }
 
+        public bool HasBeginningOfWeekBackup { get; set; }
         public BeginningOfWeek BeginningOfWeekBackup { get; set; }
     }
 
     internal partial class Preferences : IThreadSafePreferences
     {
-        public bool ContainsBackup { get; set; }
+        public bool HasTimeOfDayFormatBackup { get; set; }
+        public bool HasDateFormatBackup { get; set; }
+        public bool HasDurationFormatBackup { get; set; }
+        public bool HasCollapseTimeEntriesBackup { get; set; }
 
         public TimeFormat TimeOfDayFormatBackup { get; set; }
 

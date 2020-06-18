@@ -255,7 +255,8 @@ namespace Toggl.Core.Models
             IsDeleted = isDeleted;
             Timezone = entity.Timezone;
 
-            ContainsBackup = entity.ContainsBackup;
+            HasDefaultWorkspaceIdBackup = entity.HasDefaultWorkspaceIdBackup;
+            HasBeginningOfWeekBackup = entity.HasBeginningOfWeekBackup;
 
             DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
             BeginningOfWeekBackup = entity.BeginningOfWeekBackup;

@@ -52,7 +52,10 @@ namespace Toggl.Core.Tests.Mocks
         public string Timezone { get; set; }
 
         [JsonIgnore]
-        public bool ContainsBackup { get; set; }
+        public bool HasDefaultWorkspaceIdBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasBeginningOfWeekBackup { get; set; }
 
         [JsonIgnore]
         public long? DefaultWorkspaceIdBackup { get; set; }

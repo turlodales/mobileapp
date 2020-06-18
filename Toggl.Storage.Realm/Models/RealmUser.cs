@@ -58,9 +58,8 @@ namespace Toggl.Storage.Realm
 
         public void UpdateSucceeded()
         {
-            var hasLocalChanges = SyncStatus == SyncStatus.SyncNeeded;
-            SyncStatus = hasLocalChanges ? SyncStatus.SyncNeeded : SyncStatus.InSync;
-            ContainsBackup &= hasLocalChanges;
+            if (SyncStatus != SyncStatus.SyncNeeded)
+                SyncStatus = SyncStatus.InSync;
         }
 
         public void SaveSyncResult(IUser entity, Realms.Realm realm)

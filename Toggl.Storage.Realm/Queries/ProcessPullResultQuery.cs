@@ -163,7 +163,7 @@ namespace Toggl.Storage.Realm.Sync
             var shouldStayDirty = false;
 
             // Default Workspace Id
-            var commonDefaultWorkspaceId = dbUser.ContainsBackup
+            var commonDefaultWorkspaceId = dbUser.HasDefaultWorkspaceIdBackup
                 ? dbUser.DefaultWorkspaceIdBackup
                 : dbUser.DefaultWorkspaceId;
 
@@ -171,10 +171,10 @@ namespace Toggl.Storage.Realm.Sync
 
             shouldStayDirty |= !ClearBackupIf(
                 user.DefaultWorkspaceId == dbUser.DefaultWorkspaceId,
-                () => dbUser.DefaultWorkspaceIdBackup = dbUser.DefaultWorkspaceId);
+                () => dbUser.HasDefaultWorkspaceIdBackup = false);
 
             // Beginning of week
-            var commonBeginningOfWeek = dbUser.ContainsBackup
+            var commonBeginningOfWeek = dbUser.HasBeginningOfWeekBackup
                 ? dbUser.BeginningOfWeekBackup
                 : dbUser.BeginningOfWeek;
 
@@ -188,9 +188,6 @@ namespace Toggl.Storage.Realm.Sync
                 user.BeginningOfWeek == dbUser.BeginningOfWeek,
                 () => dbUser.BeginningOfWeekBackup = dbUser.BeginningOfWeek);
 
-            // If there's something that's still going to be pushed to the server in the next push, we shouldn't
-            // get rid of the backup. If there are no local changes though, we should forget about the backup.
-            dbUser.ContainsBackup &= shouldStayDirty;
             dbUser.LastSyncErrorMessage = null;
 
             // Update sync status depending on the way the user has changed during the 3-way merge
@@ -215,7 +212,7 @@ namespace Toggl.Storage.Realm.Sync
             var shouldStayDirty = false;
 
             // Time of day format
-            var commonTimeOfDayFormat = dbPreferences.ContainsBackup
+            var commonTimeOfDayFormat = dbPreferences.HasTimeOfDayFormatBackup
                 ? dbPreferences.TimeOfDayFormatBackup
                 : dbPreferences.TimeOfDayFormat;
 
@@ -224,10 +221,10 @@ namespace Toggl.Storage.Realm.Sync
 
             shouldStayDirty |= !ClearBackupIf(
                 preferences.TimeOfDayFormat.Equals(dbPreferences.TimeOfDayFormat),
-                () => dbPreferences.TimeOfDayFormatBackup = dbPreferences.TimeOfDayFormat);
+                () => dbPreferences.HasTimeOfDayFormatBackup = false);
 
             // Date format
-            var commonDateFormat = dbPreferences.ContainsBackup
+            var commonDateFormat = dbPreferences.HasDateFormatBackup
                 ? dbPreferences.DateFormatBackup
                 : dbPreferences.DateFormat;
 
@@ -236,10 +233,10 @@ namespace Toggl.Storage.Realm.Sync
 
             shouldStayDirty |= !ClearBackupIf(
                 preferences.DateFormat.Equals(dbPreferences.DateFormat),
-                () => dbPreferences.DateFormatBackup = dbPreferences.DateFormat);
+                () => dbPreferences.HasDateFormatBackup = false);
 
             // Duration format backup
-            var commonDurationFormat = dbPreferences.ContainsBackup
+            var commonDurationFormat = dbPreferences.HasDurationFormatBackup
                ? dbPreferences.DurationFormatBackup
                : dbPreferences.DurationFormat;
 
@@ -251,10 +248,10 @@ namespace Toggl.Storage.Realm.Sync
 
             shouldStayDirty |= !ClearBackupIf(
                 preferences.DurationFormat.Equals(dbPreferences.DurationFormat),
-                () => dbPreferences.DurationFormatBackup = dbPreferences.DurationFormat);
+                () => dbPreferences.HasDurationFormatBackup = false);
 
             // Collapse time entries backup
-            var commonCollapseTimeEntries = dbPreferences.ContainsBackup
+            var commonCollapseTimeEntries = dbPreferences.HasCollapseTimeEntriesBackup
               ? dbPreferences.CollapseTimeEntriesBackup
               : dbPreferences.CollapseTimeEntries;
 
@@ -263,11 +260,8 @@ namespace Toggl.Storage.Realm.Sync
 
             shouldStayDirty |= !ClearBackupIf(
                 preferences.CollapseTimeEntries == dbPreferences.CollapseTimeEntries,
-                () => dbPreferences.CollapseTimeEntriesBackup = dbPreferences.CollapseTimeEntries);
+                () => dbPreferences.HasCollapseTimeEntriesBackup = false);
 
-            // If there's something that's still going to be pushed to the server in the next push, we shouldn't
-            // get rid of the backup. If there are no local changes though, we should forget about the backup.
-            dbPreferences.ContainsBackup &= shouldStayDirty;
             dbPreferences.LastSyncErrorMessage = null;
 
             // Update sync status depending on the way the preferences have changed during the 3-way merge

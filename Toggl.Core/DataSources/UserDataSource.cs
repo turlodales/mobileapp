@@ -31,11 +31,15 @@ namespace Toggl.Core.DataSources
 
         private void backupUser(IDatabaseUser userDb, IThreadSafeUser user)
         {
-            if (!userDb.ContainsBackup)
+            if (!userDb.HasDefaultWorkspaceIdBackup)
             {
-                user.ContainsBackup = true;
-
+                user.HasDefaultWorkspaceIdBackup = true;
                 user.DefaultWorkspaceIdBackup = userDb.DefaultWorkspaceId;
+            }
+
+            if (!userDb.HasBeginningOfWeekBackup)
+            {
+                user.HasBeginningOfWeekBackup = true;
                 user.BeginningOfWeekBackup = userDb.BeginningOfWeek;
             }
         }

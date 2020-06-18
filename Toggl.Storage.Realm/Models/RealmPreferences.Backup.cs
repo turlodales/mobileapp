@@ -9,7 +9,12 @@ namespace Toggl.Storage.Realm
     internal partial class RealmPreferences
         : RealmObject, IDatabasePreferences, IPushable, ISyncable<IPreferences>
     {
-        public bool ContainsBackup { get; set; }
+        public bool HasTimeOfDayFormatBackup { get; set; }
+        public bool HasDateFormatBackup { get; set; }
+        public bool HasDurationFormatBackup { get; set; }
+        public bool HasCollapseTimeEntriesBackup { get; set; }
+
+        public string TimeOfDayFormatStringBackup { get; set; }
 
         [Ignored]
         public TimeFormat TimeOfDayFormatBackup
@@ -20,12 +25,10 @@ namespace Toggl.Storage.Realm
             set => TimeOfDayFormatStringBackup = value.Localized;
         }
 
-        public string TimeOfDayFormatStringBackup { get; set; }
-
         [Ignored]
         public DateFormat DateFormatBackup
         {
-            get => TimeOfDayFormatStringBackup != null
+            get => DateFormatStringBackup != null
                 ? DateFormat.FromLocalizedDateFormat(DateFormatStringBackup)
                 : default;
             set => DateFormatStringBackup = value.Localized;

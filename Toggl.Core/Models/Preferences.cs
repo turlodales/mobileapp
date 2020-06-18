@@ -23,7 +23,10 @@ namespace Toggl.Core.Models
         private Preferences(IPreferences entity, SyncStatus syncStatus, string lastSyncErrorMessage, bool isDeleted = false)
             : this(entity.TimeOfDayFormat, entity.DateFormat, entity.DurationFormat, entity.CollapseTimeEntries, entity.UseNewSync, syncStatus, lastSyncErrorMessage, isDeleted)
         {
-            ContainsBackup = entity.ContainsBackup;
+            HasTimeOfDayFormatBackup = entity.HasTimeOfDayFormatBackup;
+            HasDurationFormatBackup = entity.HasDurationFormatBackup;
+            HasDateFormatBackup = entity.HasDateFormatBackup;
+            HasCollapseTimeEntriesBackup = entity.HasCollapseTimeEntriesBackup;
 
             TimeOfDayFormatBackup = entity.TimeOfDayFormatBackup;
             DateFormatBackup = entity.DateFormatBackup;

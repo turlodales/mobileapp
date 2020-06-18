@@ -9,7 +9,8 @@ namespace Toggl.Storage.Realm
     internal partial class RealmUser
         : RealmObject, IDatabaseUser, IPushable, ISyncable<IUser>
     {
-        public bool ContainsBackup { get; set; }
+        public bool HasDefaultWorkspaceIdBackup { get; set; }
+        public bool HasBeginningOfWeekBackup { get; set; }
 
         public long? DefaultWorkspaceIdBackup { get; set; }
 
