@@ -98,6 +98,8 @@ namespace Toggl.Core.UI.ViewModels
         public SuggestionsViewModel SuggestionsViewModel { get; }
         public IOnboardingStorage OnboardingStorage { get; }
 
+        public OnboardingCondition TapToStopTooltipCondition { get; private set; }
+
         public ViewAction Refresh { get; private set; }
         public ViewAction OpenSettings { get; private set; }
         public ViewAction OpenSyncFailures { get; private set; }
@@ -317,6 +319,11 @@ namespace Toggl.Core.UI.ViewModels
                 OnboardingStorage,
                 createStartTimeEntryTooltipPredicate());
 
+            TapToStopTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.TapToStopTimeEntryTooltip,
+                OnboardingStorage,
+                createTapToStopTooltipPredicate());
+
             FinalTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.FinalTooltip,
                 OnboardingStorage,
@@ -357,6 +364,37 @@ namespace Toggl.Core.UI.ViewModels
                 (timeEntriesExist, timeEntryIsRunning) => timeEntriesExist && !timeEntryIsRunning)
                 .Merge(startTimeEntryTapped)
                 .DistinctUntilChanged();
+        }
+
+        private IObservable<bool> createTapToStopTooltipPredicate()
+        {
+            if (OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.EditViewProjectsTooltip)
+                || OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.StartViewProjectsTooltip))
+            {
+                return CurrentRunningTimeEntry
+                    .Select(timeEntry => timeEntry == null)
+                    .Merge(StopTimeEntry.Inputs.SelectValue(false));
+            }
+
+            var editViewProjectsTooltipSeen = OnboardingStorage.OnboardingConditionMet
+                .Where(condition => condition == OnboardingConditionKey.EditViewProjectsTooltip)
+                .Select(_ => true);
+
+            var startViewProjectsTooltipSeen = OnboardingStorage.OnboardingConditionMet
+                .Where(condition => condition == OnboardingConditionKey.StartViewProjectsTooltip)
+                .Select(_ => true);
+
+            var projectsTooltipSeen = editViewProjectsTooltipSeen
+                .Merge(startViewProjectsTooltipSeen)
+                .DistinctUntilChanged();
+
+            return projectsTooltipSeen
+                .CombineLatest(CurrentRunningTimeEntry, (tooltipSeen, timeEntry) =>
+                {
+                    var timeEntryIsRunning = timeEntry != null;
+                    return tooltipSeen && timeEntryIsRunning;
+                })
+                .Merge(StopTimeEntry.Inputs.Select(_ => false));
         }
 
         private IObservable<bool> createFinalTooltipPredicate()

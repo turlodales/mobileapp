@@ -81,6 +81,7 @@ namespace Toggl.Storage.Settings
         private readonly ISubject<bool> calendarNotificationsEnabledSubject;
         private readonly ISubject<TimeSpan> timeSpanBeforeCalendarNotificationsSubject;
         private readonly ISubject<bool> swipeActionsEnabledSubject;
+        private readonly ISubject<OnboardingConditionKey> onboardingConditionMetSubject;
 
         private readonly TimeSpan defaultTimeSpanBeforeCalendarNotificationsSubject = TimeSpan.FromMinutes(10);
 
@@ -109,6 +110,9 @@ namespace Toggl.Storage.Settings
             (hasTimeEntryBeenContinuedSubject, HasTimeEntryBeenContinued) = prepareSubjectAndObservable(hasTimeEntryBeenContinuedKey, keyValueStorage.GetBool);
             (timeSpanBeforeCalendarNotificationsSubject, TimeSpanBeforeCalendarNotifications) = prepareSubjectAndObservable(keyValueStorage.GetTimeSpan(timeSpanBeforeCalendarNotificationsKey) ?? defaultTimeSpanBeforeCalendarNotificationsSubject);
             (swipeActionsEnabledSubject, SwipeActionsEnabled) = prepareSubjectAndObservable(swipeActionsDisabledKey, key => !keyValueStorage.GetBool(key));
+
+            onboardingConditionMetSubject = new Subject<OnboardingConditionKey>();
+            OnboardingConditionMet = onboardingConditionMetSubject.AsObservable().DistinctUntilChanged();
         }
 
         #region IAccessRestrictionStorage
@@ -190,6 +194,8 @@ namespace Toggl.Storage.Settings
         public IObservable<bool> NavigatedAwayFromMainViewAfterTappingStopButton { get; }
 
         public IObservable<bool> HasTimeEntryBeenContinued { get; }
+
+        public IObservable<OnboardingConditionKey> OnboardingConditionMet { get; }
 
         public bool CalendarPermissionWasAskedBefore()
             => keyValueStorage.GetBool(calendarViewWasOpenedBeforeKey);
@@ -312,7 +318,10 @@ namespace Toggl.Storage.Settings
         public void SetDidShowSiriClipboardInstruction(bool value) => keyValueStorage.SetBool(didShowSiriClipboardInstructionKey, value);
 
         public void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey)
-            => keyValueStorage.SetBool(onboardingPrefix + onboardingConditionKey, true);
+        {
+            keyValueStorage.SetBool(onboardingPrefix + onboardingConditionKey, true);
+            onboardingConditionMetSubject.OnNext(onboardingConditionKey);
+        }
 
         public bool OnboardingConditionWasMetBefore(OnboardingConditionKey onboardingConditionKey)
             => keyValueStorage.GetBool(onboardingPrefix + onboardingConditionKey);

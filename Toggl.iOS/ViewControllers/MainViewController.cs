@@ -103,6 +103,7 @@ namespace Toggl.iOS.ViewControllers
             prepareViews();
             prepareRunningTimeEntryTooltip();
             prepareStartTimeEntryTooltip();
+            prepareTapToStopTooltip();
             prepareFinalTooltip();
 
             ViewModel.SwipeActionsEnabled
@@ -390,6 +391,29 @@ namespace Toggl.iOS.ViewControllers
             StartTimeEntryTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
 
             StartTimeEntryTooltip.SetUpTooltipShadow();
+        }
+
+        private void prepareTapToStopTooltip()
+        {
+            ViewModel.TapToStopTooltipCondition.ConditionMet
+                .Subscribe(TapToStopTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(disposeBag);
+
+            TapToStopTooltip.Rx().Tap()
+                .Subscribe(ViewModel.TapToStopTooltipCondition.Dismiss)
+                .DisposedBy(disposeBag);
+
+            TapToStopTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
+            TapToStopTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            TapToStopTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;
+
+            // TapToStopTooltipLabel.Text = Resources.TapHereToStartYourNextTimeEntry;
+            TapToStopTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            RunningTimeEntryTooltipLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Center);
+
+            TapToStopTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            TapToStopTooltip.SetUpTooltipShadow();
         }
 
         private string createAccessibilityLabelForRunningEntryCard(IThreadSafeTimeEntry timeEntry)

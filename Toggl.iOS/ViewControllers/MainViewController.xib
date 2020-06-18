@@ -40,6 +40,11 @@
                 <outlet property="StartTimeEntryTooltipLabel" destination="JLj-ez-EYK" id="K8z-Ft-DYv"/>
                 <outlet property="StopTimeEntryButton" destination="Ddo-IW-xE3" id="name-outlet-Ddo-IW-xE3"/>
                 <outlet property="TableShadow" destination="u8c-SR-wNL" id="722-jk-BL5"/>
+                <outlet property="TapToStopTooltip" destination="65C-4h-51c" id="nJQ-d4-ZVw"/>
+                <outlet property="TapToStopTooltipArrow" destination="amM-QK-XMX" id="Znf-3Y-vHK"/>
+                <outlet property="TapToStopTooltipBackground" destination="IGl-zX-WY5" id="Gab-CT-2nR"/>
+                <outlet property="TapToStopTooltipCloseIcon" destination="0Bx-5x-DYk" id="NHp-N8-Sa7"/>
+                <outlet property="TapToStopTooltipLabel" destination="gkV-Mf-DyQ" id="ZBi-yZ-IuX"/>
                 <outlet property="TimeEntriesLogTableView" destination="hoP-Tg-vBM" id="cct-0m-nqm"/>
                 <outlet property="TopConstraint" destination="cO8-xe-txr" id="qX1-k2-wHZ"/>
                 <outlet property="WelcomeBackDescriptionLabel" destination="o5G-e2-nYj" id="czT-og-Awz"/>
@@ -392,7 +397,7 @@ Tap to edit it.</string>
                         <constraint firstItem="2ge-kl-RJR" firstAttribute="top" secondItem="b95-fG-diW" secondAttribute="top" id="xRh-BP-UGl"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcc-wP-og6" userLabel="Tooltip: Tapping Here Will Start The Timer">
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcc-wP-og6" userLabel="Tooltip: Tapping Here Will Start The Timer">
                     <rect key="frame" x="88" y="483" width="267" height="62"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5b1-Hh-Pp9" userLabel="Background">
@@ -448,11 +453,67 @@ Tap to edit it.</string>
                         <constraint firstItem="5b1-Hh-Pp9" firstAttribute="leading" secondItem="bcc-wP-og6" secondAttribute="leading" id="xre-Te-w7b"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65C-4h-51c" userLabel="Tooltip: Tap Here To Stop The Timer">
+                    <rect key="frame" x="169" y="500" width="198" height="62"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IGl-zX-WY5" userLabel="Background">
+                            <rect key="frame" x="0.0" y="0.0" width="198" height="54"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap here to stop the Timer" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkV-Mf-DyQ">
+                                    <rect key="frame" x="15" y="15" width="160" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.023529411760000001" green="0.66666666669999997" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" name="OnboardingTooltipBackground"/>
+                            <constraints>
+                                <constraint firstItem="gkV-Mf-DyQ" firstAttribute="leading" secondItem="IGl-zX-WY5" secondAttribute="leading" constant="15" id="3eJ-5R-AUi"/>
+                                <constraint firstItem="gkV-Mf-DyQ" firstAttribute="top" secondItem="IGl-zX-WY5" secondAttribute="top" constant="15" id="AuU-XJ-iXd"/>
+                                <constraint firstAttribute="bottom" secondItem="gkV-Mf-DyQ" secondAttribute="bottom" constant="23" id="cqP-60-vIt"/>
+                                <constraint firstAttribute="trailing" secondItem="gkV-Mf-DyQ" secondAttribute="trailing" constant="23" id="dey-nP-2qx"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="x" translatesAutoresizingMaskIntoConstraints="NO" id="0Bx-5x-DYk" userLabel="x">
+                            <rect key="frame" x="174" y="0.0" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="24" id="2E3-OF-XGW"/>
+                                <constraint firstAttribute="height" constant="24" id="VVM-0W-N4v"/>
+                            </constraints>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="amM-QK-XMX" userLabel="Arrow" customClass="TriangleView">
+                            <rect key="frame" x="170" y="54" width="16" height="8"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="ctK-gi-Tyt"/>
+                                <constraint firstAttribute="width" constant="16" id="dPN-Ka-AsZ"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="IGl-zX-WY5" firstAttribute="top" secondItem="65C-4h-51c" secondAttribute="top" id="3Rt-mS-jbU"/>
+                        <constraint firstItem="IGl-zX-WY5" firstAttribute="bottom" secondItem="amM-QK-XMX" secondAttribute="top" id="8ge-N7-Vub"/>
+                        <constraint firstAttribute="trailing" secondItem="0Bx-5x-DYk" secondAttribute="trailing" id="QnY-hi-2yB"/>
+                        <constraint firstItem="0Bx-5x-DYk" firstAttribute="top" secondItem="65C-4h-51c" secondAttribute="top" id="hhS-WS-ZdA"/>
+                        <constraint firstItem="IGl-zX-WY5" firstAttribute="leading" secondItem="65C-4h-51c" secondAttribute="leading" id="i83-tk-Brz"/>
+                        <constraint firstAttribute="bottom" secondItem="amM-QK-XMX" secondAttribute="bottom" id="iT2-ey-ant"/>
+                        <constraint firstAttribute="trailing" secondItem="amM-QK-XMX" secondAttribute="trailing" constant="12" id="mru-88-lzZ"/>
+                        <constraint firstAttribute="trailing" secondItem="IGl-zX-WY5" secondAttribute="trailing" id="yIO-Jr-cc7"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="fge-d2-Ud2" secondAttribute="trailing" priority="750" constant="8" id="1SE-ip-Wha"/>
                 <constraint firstItem="4Kk-Hz-RBS" firstAttribute="top" secondItem="fge-d2-Ud2" secondAttribute="bottom" constant="16" id="25m-1j-RN6"/>
+                <constraint firstItem="Ddo-IW-xE3" firstAttribute="top" secondItem="65C-4h-51c" secondAttribute="bottom" constant="-8" id="6Fu-Qw-QZd"/>
                 <constraint firstAttribute="trailing" secondItem="vou-B4-go4" secondAttribute="trailing" priority="750" id="83s-7t-oAW"/>
                 <constraint firstAttribute="trailing" secondItem="4Kk-Hz-RBS" secondAttribute="trailing" id="90o-lU-zgz"/>
                 <constraint firstItem="S4t-q9-ct9" firstAttribute="bottom" secondItem="4Kk-Hz-RBS" secondAttribute="bottom" id="DYd-Ht-tay"/>
@@ -474,6 +535,7 @@ Tap to edit it.</string>
                 <constraint firstItem="75Q-3G-Ryw" firstAttribute="centerX" secondItem="4Kk-Hz-RBS" secondAttribute="centerX" id="xQE-yX-1WF"/>
                 <constraint firstItem="vou-B4-go4" firstAttribute="centerX" secondItem="S4t-q9-ct9" secondAttribute="centerX" id="xZy-96-mgm"/>
                 <constraint firstItem="Jhd-oR-xIN" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="yWZ-Xb-sTX"/>
+                <constraint firstItem="amM-QK-XMX" firstAttribute="centerX" secondItem="Ddo-IW-xE3" secondAttribute="centerX" id="yjZ-fe-0Qp"/>
             </constraints>
             <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="S4t-q9-ct9"/>

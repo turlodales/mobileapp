@@ -106,6 +106,21 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIView TableShadow { get; set; }
 
 		[Outlet]
+		UIKit.UIView TapToStopTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView TapToStopTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView TapToStopTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView TapToStopTooltipCloseIcon { get; set; }
+
+		[Outlet]
+		UIKit.UILabel TapToStopTooltipLabel { get; set; }
+
+		[Outlet]
 		Toggl.iOS.Views.TimeEntriesLogTableView TimeEntriesLogTableView { get; set; }
 
 		[Outlet]
@@ -286,6 +301,31 @@ namespace Toggl.iOS.ViewControllers
 				WelcomeBackView.Dispose ();
 				WelcomeBackView = null;
 			}
+
+			if (TapToStopTooltip != null) {
+				TapToStopTooltip.Dispose ();
+				TapToStopTooltip = null;
+			}
+
+			if (TapToStopTooltipBackground != null) {
+				TapToStopTooltipBackground.Dispose ();
+				TapToStopTooltipBackground = null;
+			}
+
+			if (TapToStopTooltipLabel != null) {
+				TapToStopTooltipLabel.Dispose ();
+				TapToStopTooltipLabel = null;
+			}
+
+			if (TapToStopTooltipCloseIcon != null) {
+				TapToStopTooltipCloseIcon.Dispose ();
+				TapToStopTooltipCloseIcon = null;
+			}
+
+			if (TapToStopTooltipArrow != null) {
+				TapToStopTooltipArrow.Dispose ();
+				TapToStopTooltipArrow = null;
+      }
 
 			if (FinalTooltipCenterVerticallyConstraint != null) {
 				FinalTooltipCenterVerticallyConstraint.Dispose ();
