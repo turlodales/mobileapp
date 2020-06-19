@@ -26,8 +26,15 @@ namespace Toggl.iOS.Shared.Models
         public DateTimeOffset StartBackup { get; set; }
         public long? DurationBackup { get; set; }
         public string DescriptionBackup { get; set; }
-
         public IList<long> TagIdsBackup => throw new NotImplementedException();
+
+        public bool HasProjectIdBackup { get; set; }
+        public bool HasTaskIdBackup { get; set; }
+        public bool HasBillableBackup { get; set; }
+        public bool HasStartBackup { get; set; }
+        public bool HasDurationBackup { get; set; }
+        public bool HasDescriptionBackup { get; set; }
+        public bool HasTagIdsBackup { get; set; }
 
         public TimeEntry(long workspaceId, long? projectId, long? taskId, bool billable, DateTimeOffset start, long? duration,
                          string description, IEnumerable<long> tagIds, long userId, long id, DateTimeOffset? serverDeletedAt, DateTimeOffset at)

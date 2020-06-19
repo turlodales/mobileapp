@@ -10,21 +10,26 @@ namespace Toggl.Core.Models
 {
     internal partial class TimeEntry : IThreadSafeTimeEntry
     {
-        public bool ContainsBackup { get; set; }
-
-        public long? ProjectIdBackup { get; set; }
-
         public long? TaskIdBackup { get; set; }
+        public bool HasTaskIdBackup { get; set; }
 
         public bool BillableBackup { get; set; }
+        public bool HasBillableBackup { get; set; }
 
         public DateTimeOffset StartBackup { get; set; }
-
+        public bool HasStartBackup { get; set; }
+        
         public long? DurationBackup { get; set; }
-
+        public bool HasDurationBackup { get; set; }
+         
         public string DescriptionBackup { get; set; }
-
+        public bool HasDescriptionBackup { get; set; }
+        
         public IList<long> TagIdsBackup { get; } = new List<long>();
+        public bool HasTagIdsBackup { get; set; }
+
+        public long? ProjectIdBackup { get; set; }
+        public bool HasProjectIdBackup { get; set; }
     }
 
     internal partial class User : IThreadSafeUser

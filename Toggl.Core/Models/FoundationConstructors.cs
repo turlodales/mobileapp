@@ -196,7 +196,13 @@ namespace Toggl.Core.Models
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
 
-            ContainsBackup = entity.ContainsBackup;
+            HasBillableBackup = entity.HasBillableBackup;
+            HasDescriptionBackup = entity.HasDescriptionBackup;
+            HasDurationBackup = entity.HasDurationBackup;
+            HasProjectIdBackup = entity.HasProjectIdBackup;
+            HasStartBackup = entity.HasStartBackup;
+            HasTaskIdBackup = entity.HasTaskIdBackup;
+            HasTagIdsBackup = entity.HasTagIdsBackup;
 
             BillableBackup = entity.BillableBackup;
             DescriptionBackup = entity.DescriptionBackup;

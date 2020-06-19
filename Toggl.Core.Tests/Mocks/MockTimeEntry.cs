@@ -63,9 +63,6 @@ namespace Toggl.Core.Tests.Mocks
         public bool IsInaccessible => Workspace.IsInaccessible;
 
         [JsonIgnore]
-        public bool ContainsBackup { get; set; }
-
-        [JsonIgnore]
         public long? ProjectIdBackup { get; set; }
 
         [JsonIgnore]
@@ -85,6 +82,27 @@ namespace Toggl.Core.Tests.Mocks
 
         [JsonIgnore]
         public IList<long> TagIdsBackup { get; } = new List<long>();
+
+        [JsonIgnore]
+        public bool HasProjectIdBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasTaskIdBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasBillableBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasStartBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasDurationBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasDescriptionBackup { get; set; }
+
+        [JsonIgnore]
+        public bool HasTagIdsBackup { get; set; }
 
         public MockTimeEntry()
         {

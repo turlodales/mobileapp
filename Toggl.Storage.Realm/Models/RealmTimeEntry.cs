@@ -72,16 +72,18 @@ namespace Toggl.Storage.Realm
             RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);
 
             // Description
-            var commonDescription = ContainsBackup
+            var commonDescription = HasDescriptionBackup
                 ? DescriptionBackup
                 : Description;
 
             Description = Merge(commonDescription, Description, timeEntry.Description);
 
-            shouldStayDirty |= ClearBackupIf(timeEntry.Description != Description, () => DescriptionBackup = Description);
+            shouldStayDirty |= ClearBackupIf(
+                timeEntry.Description != Description,
+                () => HasDescriptionBackup = false);
 
             // ProjectId
-            var commonProjectId = ContainsBackup 
+            var commonProjectId = HasProjectIdBackup 
                 ? ProjectIdBackup
                 : ProjectId;
 
@@ -91,37 +93,45 @@ namespace Toggl.Storage.Realm
                 ? realm.GetById<RealmProject>(projectId.Value)
                 : null;
 
-            shouldStayDirty |= !ClearBackupIf(timeEntry.ProjectId == projectId, () => ProjectIdBackup = ProjectId);
+            shouldStayDirty |= !ClearBackupIf(
+                timeEntry.ProjectId == projectId,
+                () => HasProjectIdBackup = false);
 
             // Billable
-            var commonBillable = ContainsBackup
+            var commonBillable = HasBillableBackup
                 ? BillableBackup
                 : Billable;
 
             Billable = Merge(commonBillable, Billable, timeEntry.Billable);
 
-            shouldStayDirty |= !ClearBackupIf(timeEntry.Billable == Billable, () => BillableBackup = Billable);
+            shouldStayDirty |= !ClearBackupIf(
+                timeEntry.Billable == Billable,
+                () => HasBillableBackup = false);
 
             // Start
-            var commonStart = ContainsBackup
+            var commonStart = HasStartBackup
                 ? StartBackup
                 : Start;
 
             Start = Merge(commonStart, Start, timeEntry.Start);
 
-            shouldStayDirty |= !ClearBackupIf(timeEntry.Start == Start, () => StartBackup = Start);
+            shouldStayDirty |= !ClearBackupIf(
+                timeEntry.Start == Start,
+                () => HasStartBackup = false);
 
             // Duration
-            var commonDuration = ContainsBackup
+            var commonDuration = HasDurationBackup
                 ? DurationBackup
                 : Duration;
 
             Duration = Merge(commonDuration, Duration, timeEntry.Duration);
 
-            shouldStayDirty |= !ClearBackupIf(timeEntry.Duration == Duration, () => DurationBackup = Duration);
+            shouldStayDirty |= !ClearBackupIf(
+                timeEntry.Duration == Duration,
+                () => HasDurationBackup = false);
 
             // Task
-            var commonTaskId = ContainsBackup
+            var commonTaskId = HasTaskIdBackup
                 ? TaskIdBackup
                 : TaskId;
 
@@ -131,10 +141,12 @@ namespace Toggl.Storage.Realm
                 ? realm.GetById<RealmTask>(taskId.Value)
                 : null;
 
-            shouldStayDirty |= !ClearBackupIf(timeEntry.TaskId == taskId, () => TaskIdBackup = TaskId);
+            shouldStayDirty |= !ClearBackupIf(
+                timeEntry.TaskId == taskId,
+                () => HasTaskIdBackup = false);
 
             // Tag Ids
-            var commonTagIds = ContainsBackup
+            var commonTagIds = HasTagIdsBackup
                 ? Arrays.NotNullOrEmpty(TagIdsBackup)
                 : Arrays.NotNullOrEmpty(TagIds);
 
@@ -142,19 +154,15 @@ namespace Toggl.Storage.Realm
             var serverTagIds = Arrays.NotNullOrEmpty(timeEntry.TagIds);
 
             var tagsIds = Merge(commonTagIds, localTagIds, serverTagIds);
-            shouldStayDirty |= !ClearBackupIf(tagsIds.SetEquals(localTagIds), () => {
-                TagIdsBackup.Clear();
-                tagsIds.ForEach(TagIdsBackup.Add);
-            });
+            shouldStayDirty |= !ClearBackupIf(
+                tagsIds.SetEquals(localTagIds),
+                () => HasTagIdsBackup = false);
 
             RealmTags.Clear();
             tagsIds
                 .Select(tagId => realm.GetById<RealmTag>(tagId))
                 .AddTo(RealmTags);
 
-            // If there's something that's still going to be pushed to the server in the next push, we shouldn't
-            // get rid of the backup. If there are no local changes though, we should forget about the backup.
-            ContainsBackup &= shouldStayDirty;
             LastSyncErrorMessage = null;
 
             // Update sync status depending on the way the time entry has changed during the 3-way merge
@@ -176,9 +184,8 @@ namespace Toggl.Storage.Realm
 
         public void UpdateSucceeded()
         {
-            var hasLocalChanges = SyncStatus == SyncStatus.SyncNeeded;
-            SyncStatus = hasLocalChanges ? SyncStatus.SyncNeeded : SyncStatus.InSync;
-            ContainsBackup &= hasLocalChanges;
+            if (SyncStatus != SyncStatus.SyncNeeded)
+                SyncStatus = SyncStatus.InSync;
         }
     }
 }

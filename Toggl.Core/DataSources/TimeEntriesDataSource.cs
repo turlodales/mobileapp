@@ -131,18 +131,48 @@ namespace Toggl.Core.DataSources
 
         private void backupTimeEntry(IDatabaseTimeEntry timeEntryDb, IThreadSafeTimeEntry timeEntry)
         {
-            if (!timeEntryDb.ContainsBackup)
+            if (!timeEntryDb.HasBillableBackup)
             {
-                timeEntry.ContainsBackup = true;
-
+                timeEntry.HasBillableBackup = true;
                 timeEntry.BillableBackup = timeEntryDb.Billable;
+            }
+
+            if (!timeEntryDb.HasDescriptionBackup)
+            {
+                timeEntry.HasDescriptionBackup = true;
                 timeEntry.DescriptionBackup = timeEntryDb.Description;
+            }
+
+            if (!timeEntryDb.HasDurationBackup)
+            {
+                timeEntry.HasDurationBackup = true;
                 timeEntry.DurationBackup = timeEntryDb.Duration;
+            }
+
+            if (!timeEntryDb.HasProjectIdBackup)
+            {
+                timeEntry.HasProjectIdBackup = true;
                 timeEntry.ProjectIdBackup = timeEntryDb.ProjectId;
+            }
+
+            if (!timeEntryDb.HasStartBackup)
+            {
+                timeEntry.HasStartBackup = true;
                 timeEntry.StartBackup = timeEntryDb.Start;
+            }
+
+            if (!timeEntryDb.HasTaskIdBackup)
+            {
+                timeEntry.HasTaskIdBackup = true;
                 timeEntry.TaskIdBackup = timeEntryDb.TaskId;
-                foreach (var tagId in timeEntryDb.TagIds)
-                    timeEntry.TagIdsBackup.Add(tagId);
+            }
+
+            if (!timeEntryDb.HasTagIdsBackup)
+            {
+                timeEntry.HasTagIdsBackup = true;
+
+                timeEntry.TagIdsBackup.Clear();
+                timeEntryDb.TagIds.AddTo(timeEntry.TagIdsBackup);
             }
         }
 
