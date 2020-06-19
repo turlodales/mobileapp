@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
-using NUnit.Framework;
 using Toggl.Core.Interactors;
 using Toggl.Core.Interactors.Suggestions;
 using Toggl.Core.Models.Interfaces;
@@ -49,6 +48,9 @@ namespace Toggl.Core.Tests.Interactors.Suggestions
 
         public sealed class TheExecuteMethod : BaseInteractorTests
         {
+            private IObservable<IEnumerable<IThreadSafeTimeEntry>> validTimeEntries =
+                Observable.Return(Enumerable.Range(0, 5).Select(i => new MockTimeEntry { Id = i }));
+
             [Fact, LogIfTooSlow]
             public async Task ReturnsSuggestionsWithoutDuplicates()
             {
@@ -67,6 +69,9 @@ namespace Toggl.Core.Tests.Interactors.Suggestions
                 var interactorFactory = Substitute.For<IInteractorFactory>();
                 interactorFactory.GetSuggestionProviders(3).Execute()
                     .Returns(suggestionProvidersObservable);
+
+                interactorFactory.GetAllTimeEntriesVisibleToTheUser().Execute()
+                    .Returns(validTimeEntries);
 
                 var interactor = new GetSuggestionsInteractor(3, interactorFactory);
 
@@ -103,6 +108,9 @@ namespace Toggl.Core.Tests.Interactors.Suggestions
                 interactorFactory.GetSuggestionProviders(3).Execute()
                     .Returns(suggestionProvidersObservable);
 
+                interactorFactory.GetAllTimeEntriesVisibleToTheUser().Execute()
+                    .Returns(validTimeEntries);
+
                 var interactor = new GetSuggestionsInteractor(3, interactorFactory);
 
                 var suggestions = await interactor.Execute();
@@ -122,10 +130,41 @@ namespace Toggl.Core.Tests.Interactors.Suggestions
                 interactorFactory.GetSuggestionProviders(3).Execute()
                     .Returns(suggestionProvidersObservable);
 
+                interactorFactory.GetAllTimeEntriesVisibleToTheUser().Execute()
+                    .Returns(validTimeEntries);
+
                 var interactor = new GetSuggestionsInteractor(3, interactorFactory);
 
                 var suggestions = await interactor.Execute();
                 suggestions.Should().HaveCountLessOrEqualTo(3);
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task ReturnsNothingWhenTheresLessThan5TimeEntries()
+            {
+                var randomProvider = makeProvider(new List<Suggestion>
+                {
+                    makeSuggestion("same description", 12, SuggestionProviderType.MostUsedTimeEntries)
+                });
+
+                var suggestionProvidersObservable = Observable.Return(new List<ISuggestionProvider>
+                {
+                    randomProvider,
+                    randomProvider,
+                    randomProvider
+                });
+
+                var interactorFactory = Substitute.For<IInteractorFactory>();
+                interactorFactory.GetSuggestionProviders(3).Execute()
+                    .Returns(suggestionProvidersObservable);
+
+                interactorFactory.GetAllTimeEntriesVisibleToTheUser().Execute()
+                    .Returns(Observable.Return(Enumerable.Empty<IThreadSafeTimeEntry>()));
+
+                var interactor = new GetSuggestionsInteractor(3, interactorFactory);
+
+                var suggestions = await interactor.Execute();
+                suggestions.Should().HaveCount(0);
             }
 
             private Suggestion makeSuggestion(string description, long? projectId, SuggestionProviderType type)
