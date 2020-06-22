@@ -17,6 +17,9 @@ namespace Toggl.Networking.Sync.Push.Serialization
         {
             var obj = new JObject();
 
+            if (Entity.WorkspaceIdSyncStatus != PropertySyncStatus.InSync)
+                obj.Add(new JProperty("workspace_id", Entity.ProjectId));
+
             if (Entity.ProjectIdSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("project_id", Entity.ProjectId));
 

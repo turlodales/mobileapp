@@ -69,7 +69,6 @@ namespace Toggl.Storage.Realm
             At = timeEntry.At;
             ServerDeletedAt = timeEntry.ServerDeletedAt;
             RealmUser = realm.GetById<RealmUser>(timeEntry.UserId);
-            RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);;
 
             // Simple types - three way merge
             (IsDeletedSyncStatus, IsDeleted) = Resolve(IsDeletedSyncStatus, IsDeleted, IsDeletedBackup, timeEntry.ServerDeletedAt.HasValue);
@@ -79,6 +78,11 @@ namespace Toggl.Storage.Realm
             (DurationSyncStatus, Duration) = Resolve(DurationSyncStatus, Duration, DurationBackup, timeEntry.Duration);
 
             // Relationships - three way merge
+            // Workspaces
+            var (workspaceStatus, workspaceId) = Resolve(WorkspaceIdSyncStatus, WorkspaceId, WorkspaceIdBackup ?? WorkspaceId, timeEntry.WorkspaceId);
+            WorkspaceIdSyncStatus = workspaceStatus;
+            RealmWorkspace = realm.GetById<RealmWorkspace>(workspaceId);
+
             // Project
             var (projectStatus, projectId) = Resolve(ProjectIdSyncStatus, ProjectId, ProjectIdBackup, timeEntry.ProjectId);
             ProjectIdSyncStatus = projectStatus;
@@ -128,6 +132,9 @@ namespace Toggl.Storage.Realm
             if (IsDeletedSyncStatus == from)
                 IsDeletedSyncStatus = to;
 
+            if (WorkspaceIdSyncStatus == from)
+                WorkspaceIdSyncStatus = to;
+
             if (ProjectIdSyncStatus == from)
                 ProjectIdSyncStatus = to;
 
@@ -152,6 +159,7 @@ namespace Toggl.Storage.Realm
 
         private bool hasAtLeastOneDirtyProperty
             => IsDeletedSyncStatus == SyncNeeded
+                || WorkspaceIdSyncStatus == SyncNeeded
                 || ProjectIdSyncStatus == SyncNeeded
                 || TaskIdSyncStatus == SyncNeeded
                 || BillableSyncStatus == SyncNeeded

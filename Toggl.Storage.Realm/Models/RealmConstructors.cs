@@ -322,6 +322,7 @@ namespace Toggl.Storage.Realm
             BillableSyncStatus = entity.BillableSyncStatus;
             DescriptionSyncStatus = entity.DescriptionSyncStatus;
             DurationSyncStatus = entity.DurationSyncStatus;
+            WorkspaceIdSyncStatus = entity.WorkspaceIdSyncStatus;
             ProjectIdSyncStatus = entity.ProjectIdSyncStatus;
             StartSyncStatus = entity.StartSyncStatus;
             TaskIdSyncStatus = entity.TaskIdSyncStatus;
@@ -331,6 +332,7 @@ namespace Toggl.Storage.Realm
             BillableBackup = entity.BillableBackup;
             DescriptionBackup = entity.DescriptionBackup;
             DurationBackup = entity.DurationBackup;
+            WorkspaceIdBackup = entity.WorkspaceIdBackup;
             ProjectIdBackup = entity.ProjectIdBackup;
             StartBackup = entity.StartBackup;
             TaskIdBackup = entity.TaskIdBackup;

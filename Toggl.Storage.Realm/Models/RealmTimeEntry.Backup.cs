@@ -14,6 +14,7 @@ namespace Toggl.Storage.Realm
         public long? DurationBackup { get; set; }
         public string DescriptionBackup { get; set; }
 
+        public long? WorkspaceIdBackup { get; set; }
         public long? ProjectIdBackup { get; set; }
         public long? TaskIdBackup { get; set; }
         public IList<long> TagIdsBackup { get; }
@@ -62,6 +63,15 @@ namespace Toggl.Storage.Realm
         }
 
         public int DescriptionSyncStatusInt { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus WorkspaceIdSyncStatus
+        {
+            get => (PropertySyncStatus)WorkspaceIdSyncStatusInt;
+            set => WorkspaceIdSyncStatusInt = (int)value;
+        }
+
+        public int WorkspaceIdSyncStatusInt { get; set; }
 
         [Ignored]
         public PropertySyncStatus ProjectIdSyncStatus

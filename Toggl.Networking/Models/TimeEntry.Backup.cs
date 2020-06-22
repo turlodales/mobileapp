@@ -12,13 +12,19 @@ namespace Toggl.Networking.Models
         public PropertySyncStatus ProjectIdSyncStatus { get; set; }
 
         [JsonIgnore]
+        public long? ProjectIdBackup { get; set; }
+
+        [JsonIgnore]
+        public PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
+
+        [JsonIgnore]
+        public long? WorkspaceIdBackup { get; set; }
+
+        [JsonIgnore]
         public bool IsDeletedBackup { get; set; }
 
         [JsonIgnore]
         public PropertySyncStatus IsDeletedSyncStatus { get; set; }
-
-        [JsonIgnore]
-        public long? ProjectIdBackup { get; set; }
 
         [JsonIgnore]
         public PropertySyncStatus TaskIdSyncStatus { get; set; }

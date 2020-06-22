@@ -153,6 +153,12 @@ namespace Toggl.Core.DataSources
                 timeEntry.DurationBackup = timeEntryDb.Duration;
             }
 
+            if (timeEntryDb.WorkspaceIdSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.WorkspaceIdSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.WorkspaceIdBackup = timeEntryDb.WorkspaceId;
+            }
+
             if (timeEntryDb.ProjectIdSyncStatus == PropertySyncStatus.InSync)
             {
                 timeEntry.ProjectIdSyncStatus = PropertySyncStatus.SyncNeeded;

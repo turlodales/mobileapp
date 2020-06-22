@@ -54,6 +54,8 @@ namespace Toggl.Networking.Tests.Sync.Push
             #region Backup properties
             public PropertySyncStatus IsDeletedSyncStatus { get; set; }
             public bool IsDeletedBackup { get; set; }
+            public PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
+            public long? WorkspaceIdBackup { get; set; }
             public PropertySyncStatus ProjectIdSyncStatus { get; set; }
             public long? ProjectIdBackup { get; set; }
             public PropertySyncStatus TaskIdSyncStatus { get; set; }

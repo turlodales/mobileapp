@@ -21,6 +21,7 @@ namespace Toggl.iOS.Shared.Models
         public DateTimeOffset At { get; }
 
         public bool IsDeletedBackup { get; set; }
+        public long? WorkspaceIdBackup { get; set; }
         public long? ProjectIdBackup { get; set; }
         public long? TaskIdBackup { get; set; }
         public bool BillableBackup { get; set; }
@@ -30,6 +31,7 @@ namespace Toggl.iOS.Shared.Models
         public IList<long> TagIdsBackup => throw new NotImplementedException();
 
         public PropertySyncStatus IsDeletedSyncStatus { get; set; }
+        public PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
         public PropertySyncStatus ProjectIdSyncStatus { get; set; }
         public PropertySyncStatus TaskIdSyncStatus { get; set; }
         public PropertySyncStatus BillableSyncStatus { get; set; }

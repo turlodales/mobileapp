@@ -200,6 +200,7 @@ namespace Toggl.Core.Models
             BillableSyncStatus = entity.BillableSyncStatus;
             DescriptionSyncStatus = entity.DescriptionSyncStatus;
             DurationSyncStatus = entity.DurationSyncStatus;
+            WorkspaceIdSyncStatus = entity.WorkspaceIdSyncStatus;
             ProjectIdSyncStatus = entity.ProjectIdSyncStatus;
             StartSyncStatus = entity.StartSyncStatus;
             TaskIdSyncStatus = entity.TaskIdSyncStatus;
@@ -209,6 +210,7 @@ namespace Toggl.Core.Models
             BillableBackup = entity.BillableBackup;
             DescriptionBackup = entity.DescriptionBackup;
             DurationBackup = entity.DurationBackup;
+            WorkspaceIdBackup = entity.WorkspaceIdBackup;
             ProjectIdBackup = entity.ProjectIdBackup;
             StartBackup = entity.StartBackup;
             TaskIdBackup = entity.TaskIdBackup;

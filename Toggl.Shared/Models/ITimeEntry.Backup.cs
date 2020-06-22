@@ -8,6 +8,9 @@ namespace Toggl.Shared.Models
         bool IsDeletedBackup { get; set; }
         PropertySyncStatus IsDeletedSyncStatus { get; set; }
 
+        long? WorkspaceIdBackup { get; set; }
+        PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
+
         long? ProjectIdBackup { get; set; }
         PropertySyncStatus ProjectIdSyncStatus { get; set; }
 

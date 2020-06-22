@@ -9,6 +9,7 @@ namespace Toggl.Core.Models
     {
         public bool IsDeletedBackup { get; set; }
         public PropertySyncStatus IsDeletedSyncStatus { get; set; }
+
         public long? TaskIdBackup { get; set; }
         public PropertySyncStatus TaskIdSyncStatus { get; set; }
 
@@ -29,6 +30,9 @@ namespace Toggl.Core.Models
 
         public long? ProjectIdBackup { get; set; }
         public PropertySyncStatus ProjectIdSyncStatus { get; set; }
+
+        public long? WorkspaceIdBackup { get; set; }
+        public PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
     }
 
     internal partial class User : IThreadSafeUser

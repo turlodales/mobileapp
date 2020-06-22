@@ -67,6 +67,9 @@ namespace Toggl.Core.Tests.Mocks
         public bool IsDeletedBackup { get; set; }
 
         [JsonIgnore]
+        public long? WorkspaceIdBackup { get; set; }
+
+        [JsonIgnore]
         public long? ProjectIdBackup { get; set; }
 
         [JsonIgnore]
@@ -92,6 +95,9 @@ namespace Toggl.Core.Tests.Mocks
 
         [JsonIgnore]
         public PropertySyncStatus ProjectIdSyncStatus { get; set; }
+
+        [JsonIgnore]
+        public PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
 
         [JsonIgnore]
         public PropertySyncStatus TaskIdSyncStatus { get; set; }
