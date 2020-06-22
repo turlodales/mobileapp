@@ -13,6 +13,8 @@ using Toggl.Droid.Activities;
 using Toggl.Droid.BroadcastReceivers;
 using Toggl.Droid.Presentation;
 using static Android.Content.Intent;
+using Toggl.Core.Sync.V2;
+using Android.Util;
 
 namespace Toggl.Droid
 {
@@ -42,12 +44,19 @@ namespace Toggl.Droid
 #endif
         }
 
+        private IDisposable syncSubscription;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             var dependencyContainer = AndroidDependencyContainer.Instance;
             registerTimezoneChangedBroadcastReceiver(dependencyContainer.TimeService);
+
+            if (dependencyContainer.SyncManager is SyncManagerV2 syncv2)
+            {
+                syncSubscription = syncv2.AllErrors.Subscribe(err => Log.Info("TOGGLSYNCERROR", err.ToString()));
+            }
 
             var app = new AppStart(dependencyContainer);
             app.UpdateOnboardingProgress();
@@ -111,7 +120,7 @@ namespace Toggl.Droid
                     loadAndCacheViewModelWithParams<OutdatedAppViewModel, Unit>(Unit.Default);
                     return new Intent(this, typeof(OutdatedAppActivity))
                         .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                
+
                 case AccessLevel.NotLoggedIn:
                     loadAndCacheViewModelWithParams<OnboardingViewModel, Unit>(Unit.Default);
                     return new Intent(this, typeof(OnboardingActivity))
@@ -121,7 +130,7 @@ namespace Toggl.Droid
                     loadAndCacheViewModelWithParams<TokenResetViewModel, Unit>(Unit.Default);
                     return new Intent(this, typeof(TokenResetActivity))
                         .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                
+
                 default:
                     throw new ArgumentException("Invalid not logged in access level");
             }
@@ -130,6 +139,7 @@ namespace Toggl.Droid
         public override void Finish()
         {
             base.Finish();
+            syncSubscription.Dispose();
             OverridePendingTransition(0, Transitions.Fade.OtherIn);
         }
     }

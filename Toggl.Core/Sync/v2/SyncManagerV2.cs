@@ -25,6 +25,8 @@ namespace Toggl.Core.Sync.V2
         private readonly ISubject<Exception> errors;
         private readonly ITogglDataSource dataSource;
 
+        public ISubject<Exception> AllErrors { get; private set; }
+
         private bool syncQueued = false;
 
         private bool isFrozen = false;
@@ -50,6 +52,7 @@ namespace Toggl.Core.Sync.V2
 
             progress = new BehaviorSubject<SyncProgress>(SyncProgress.Synced);
             errors = new Subject<Exception>();
+            AllErrors = new Subject<Exception>();
         }
 
         public IObservable<SyncProgress> ProgressObservable => progress.AsObservable();
@@ -114,6 +117,7 @@ namespace Toggl.Core.Sync.V2
             }
             catch (Exception error)
             {
+                AllErrors.OnNext(error);
                 processError(error);
             }
             finally
