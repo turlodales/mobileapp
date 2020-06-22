@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Reactive.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models;
@@ -14,7 +13,6 @@ using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Storage;
 using Toggl.Storage.Models;
-using ThreadingTask = System.Threading.Tasks.Task;
 
 namespace Toggl.Core.DataSources
 {
@@ -131,45 +129,51 @@ namespace Toggl.Core.DataSources
 
         private void backupTimeEntry(IDatabaseTimeEntry timeEntryDb, IThreadSafeTimeEntry timeEntry)
         {
-            if (!timeEntryDb.HasBillableBackup)
+            if (timeEntryDb.IsDeletedSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasBillableBackup = true;
+                timeEntry.IsDeletedSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.IsDeletedBackup = timeEntryDb.IsDeleted;
+            }
+
+            if (timeEntryDb.BillableSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.BillableSyncStatus = PropertySyncStatus.SyncNeeded;
                 timeEntry.BillableBackup = timeEntryDb.Billable;
             }
 
-            if (!timeEntryDb.HasDescriptionBackup)
+            if (timeEntryDb.DescriptionSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasDescriptionBackup = true;
+                timeEntry.DescriptionSyncStatus = PropertySyncStatus.SyncNeeded;
                 timeEntry.DescriptionBackup = timeEntryDb.Description;
             }
 
-            if (!timeEntryDb.HasDurationBackup)
+            if (timeEntryDb.DurationSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasDurationBackup = true;
+                timeEntry.DurationSyncStatus = PropertySyncStatus.SyncNeeded;
                 timeEntry.DurationBackup = timeEntryDb.Duration;
             }
 
-            if (!timeEntryDb.HasProjectIdBackup)
+            if (timeEntryDb.ProjectIdSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasProjectIdBackup = true;
+                timeEntry.ProjectIdSyncStatus = PropertySyncStatus.SyncNeeded;
                 timeEntry.ProjectIdBackup = timeEntryDb.ProjectId;
             }
 
-            if (!timeEntryDb.HasStartBackup)
+            if (timeEntryDb.StartSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasStartBackup = true;
+                timeEntry.StartSyncStatus = PropertySyncStatus.SyncNeeded;
                 timeEntry.StartBackup = timeEntryDb.Start;
             }
 
-            if (!timeEntryDb.HasTaskIdBackup)
+            if (timeEntryDb.TaskIdSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasTaskIdBackup = true;
+                timeEntry.TaskIdSyncStatus = PropertySyncStatus.SyncNeeded;
                 timeEntry.TaskIdBackup = timeEntryDb.TaskId;
             }
 
-            if (!timeEntryDb.HasTagIdsBackup)
+            if (timeEntryDb.TagIdsSyncStatus == PropertySyncStatus.InSync)
             {
-                timeEntry.HasTagIdsBackup = true;
+                timeEntry.TagIdsSyncStatus = PropertySyncStatus.SyncNeeded;
 
                 timeEntry.TagIdsBackup.Clear();
                 timeEntryDb.TagIds.AddTo(timeEntry.TagIdsBackup);

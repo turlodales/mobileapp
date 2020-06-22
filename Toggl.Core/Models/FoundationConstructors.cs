@@ -196,14 +196,16 @@ namespace Toggl.Core.Models
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
 
-            HasBillableBackup = entity.HasBillableBackup;
-            HasDescriptionBackup = entity.HasDescriptionBackup;
-            HasDurationBackup = entity.HasDurationBackup;
-            HasProjectIdBackup = entity.HasProjectIdBackup;
-            HasStartBackup = entity.HasStartBackup;
-            HasTaskIdBackup = entity.HasTaskIdBackup;
-            HasTagIdsBackup = entity.HasTagIdsBackup;
+            IsDeletedSyncStatus = entity.IsDeletedSyncStatus;
+            BillableSyncStatus = entity.BillableSyncStatus;
+            DescriptionSyncStatus = entity.DescriptionSyncStatus;
+            DurationSyncStatus = entity.DurationSyncStatus;
+            ProjectIdSyncStatus = entity.ProjectIdSyncStatus;
+            StartSyncStatus = entity.StartSyncStatus;
+            TaskIdSyncStatus = entity.TaskIdSyncStatus;
+            TagIdsSyncStatus = entity.TagIdsSyncStatus;
 
+            IsDeletedBackup = entity.IsDeletedBackup;
             BillableBackup = entity.BillableBackup;
             DescriptionBackup = entity.DescriptionBackup;
             DurationBackup = entity.DurationBackup;
@@ -261,8 +263,8 @@ namespace Toggl.Core.Models
             IsDeleted = isDeleted;
             Timezone = entity.Timezone;
 
-            HasDefaultWorkspaceIdBackup = entity.HasDefaultWorkspaceIdBackup;
-            HasBeginningOfWeekBackup = entity.HasBeginningOfWeekBackup;
+            DefaultWorkspaceIdSyncStatus = entity.DefaultWorkspaceIdSyncStatus;
+            BeginningOfWeekSyncStatus = entity.BeginningOfWeekSyncStatus;
 
             DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
             BeginningOfWeekBackup = entity.BeginningOfWeekBackup;

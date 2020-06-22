@@ -1,5 +1,7 @@
 ﻿using System;
+using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using static Toggl.Shared.PropertySyncStatus;
 
 namespace Toggl.Storage.Realm.Sync
 {
@@ -45,6 +47,34 @@ namespace Toggl.Storage.Realm.Sync
                 return local;
 
             return server;
+        }
+
+        public static (PropertySyncStatus, long?) Resolve(PropertySyncStatus propertyStatus, long? local, long? backup, long? server)
+        {
+            var original = propertyStatus == InSync ? local : backup;
+            var resolvedValue = Merge(original, local, server);
+            var resolvedStatus = server == resolvedValue ? InSync : SyncNeeded;
+            return (resolvedStatus, resolvedValue);
+        }
+        public static (PropertySyncStatus, long[]) Resolve(PropertySyncStatus propertyStatus, long[] local, long[] backup, long[] server)
+        {
+            local ??= Array.Empty<long>();
+            backup ??= Array.Empty<long>();
+            server ??= Array.Empty<long>();
+
+            var original = propertyStatus == InSync ? local : backup;
+            var resolvedValue = Merge(original, local, server);
+            var resolvedStatus = server.SetEquals(resolvedValue) ? InSync : SyncNeeded;
+            return (resolvedStatus, resolvedValue);
+        }
+
+        public static (PropertySyncStatus, T) Resolve<T>(PropertySyncStatus propertyStatus, T local, T backup, T server)
+            where T : IEquatable<T>
+        {
+            var original = propertyStatus == InSync ? local : backup;
+            var resolvedValue = Merge<T>(original, local, server);
+            var resolvedStatus = server.Equals(resolvedValue) ? InSync : SyncNeeded;
+            return (resolvedStatus, resolvedValue);
         }
     }
 }

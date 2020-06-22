@@ -87,10 +87,10 @@ namespace Toggl.Storage.Realm
             CollapseTimeEntries = entity.CollapseTimeEntries;
             UseNewSync = entity.UseNewSync;
 
-            HasTimeOfDayFormatBackup = entity.HasTimeOfDayFormatBackup;
-            HasDurationFormatBackup = entity.HasDurationFormatBackup;
-            HasDateFormatBackup = entity.HasDateFormatBackup;
-            HasCollapseTimeEntriesBackup = entity.HasCollapseTimeEntriesBackup;
+            TimeOfDayFormatSyncStatus = entity.TimeOfDayFormatSyncStatus;
+            DurationFormatSyncStatus = entity.DurationFormatSyncStatus;
+            DateFormatSyncStatus = entity.DateFormatSyncStatus;
+            CollapseTimeEntriesSyncStatus = entity.CollapseTimeEntriesSyncStatus;
 
             CollapseTimeEntriesBackup = entity.CollapseTimeEntriesBackup;
             DateFormatBackup = entity.DateFormatBackup;
@@ -318,14 +318,16 @@ namespace Toggl.Storage.Realm
             var skipUserFetch = entity?.UserId == null || entity.UserId == 0;
             RealmUser = skipUserFetch ? null : realm.All<RealmUser>().Single(x => x.Id == entity.UserId || x.OriginalId == entity.UserId);
 
-            HasBillableBackup = entity.HasBillableBackup;
-            HasDescriptionBackup = entity.HasDescriptionBackup;
-            HasDurationBackup = entity.HasDurationBackup;
-            HasProjectIdBackup = entity.HasProjectIdBackup;
-            HasStartBackup = entity.HasStartBackup;
-            HasTaskIdBackup = entity.HasTaskIdBackup;
-            HasTagIdsBackup = entity.HasTagIdsBackup;
+            IsDeletedSyncStatus = entity.IsDeletedSyncStatus;
+            BillableSyncStatus = entity.BillableSyncStatus;
+            DescriptionSyncStatus = entity.DescriptionSyncStatus;
+            DurationSyncStatus = entity.DurationSyncStatus;
+            ProjectIdSyncStatus = entity.ProjectIdSyncStatus;
+            StartSyncStatus = entity.StartSyncStatus;
+            TaskIdSyncStatus = entity.TaskIdSyncStatus;
+            TagIdsSyncStatus = entity.TagIdsSyncStatus;
 
+            IsDeletedBackup = entity.IsDeletedBackup;
             BillableBackup = entity.BillableBackup;
             DescriptionBackup = entity.DescriptionBackup;
             DurationBackup = entity.DurationBackup;
@@ -391,8 +393,8 @@ namespace Toggl.Storage.Realm
             ImageUrl = entity.ImageUrl;
             Timezone = entity.Timezone;
 
-            HasDefaultWorkspaceIdBackup = entity.HasDefaultWorkspaceIdBackup;
-            HasBeginningOfWeekBackup = entity.HasBeginningOfWeekBackup;
+            DefaultWorkspaceIdSyncStatus = entity.DefaultWorkspaceIdSyncStatus;
+            BeginningOfWeekSyncStatus = entity.BeginningOfWeekSyncStatus;
 
             DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
             BeginningOfWeekBackup = entity.BeginningOfWeekBackup;

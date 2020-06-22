@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Sync.ConflictResolution;
+using Toggl.Shared;
 using Toggl.Storage;
 using Toggl.Storage.Models;
 
@@ -31,15 +32,15 @@ namespace Toggl.Core.DataSources
 
         private void backupUser(IDatabaseUser userDb, IThreadSafeUser user)
         {
-            if (!userDb.HasDefaultWorkspaceIdBackup)
+            if (userDb.DefaultWorkspaceIdSyncStatus == PropertySyncStatus.InSync)
             {
-                user.HasDefaultWorkspaceIdBackup = true;
+                user.DefaultWorkspaceIdSyncStatus = PropertySyncStatus.SyncNeeded;
                 user.DefaultWorkspaceIdBackup = userDb.DefaultWorkspaceId;
             }
 
-            if (!userDb.HasBeginningOfWeekBackup)
+            if (userDb.BeginningOfWeekSyncStatus == PropertySyncStatus.InSync)
             {
-                user.HasBeginningOfWeekBackup = true;
+                user.BeginningOfWeekSyncStatus = PropertySyncStatus.SyncNeeded;
                 user.BeginningOfWeekBackup = userDb.BeginningOfWeek;
             }
         }

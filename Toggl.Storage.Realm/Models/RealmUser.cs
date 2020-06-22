@@ -5,6 +5,7 @@ using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Models;
+using static Toggl.Shared.PropertySyncStatus;
 
 namespace Toggl.Storage.Realm
 {
@@ -48,18 +49,22 @@ namespace Toggl.Storage.Realm
         public void PrepareForSyncing()
         {
             SyncStatus = SyncStatus.Syncing;
+            changePropertiesSyncStatus(from: SyncNeeded, to: Syncing);
         }
 
         public void PushFailed(string errorMessage)
         {
             LastSyncErrorMessage = errorMessage;
             SyncStatus = SyncStatus.SyncFailed;
+            changePropertiesSyncStatus(from: Syncing, to: SyncNeeded);
         }
 
         public void UpdateSucceeded()
         {
             if (SyncStatus != SyncStatus.SyncNeeded)
                 SyncStatus = SyncStatus.InSync;
+
+            changePropertiesSyncStatus(from: Syncing, to: InSync);
         }
 
         public void SaveSyncResult(IUser entity, Realms.Realm realm)
@@ -74,7 +79,18 @@ namespace Toggl.Storage.Realm
             Language = entity.Language;
             Timezone = entity.Timezone;
             SyncStatus = SyncStatus.InSync;
+            DefaultWorkspaceIdSyncStatus = InSync;
+            BeginningOfWeekSyncStatus = InSync;
             LastSyncErrorMessage = null;
+        }
+
+        private void changePropertiesSyncStatus(PropertySyncStatus from, PropertySyncStatus to)
+        {
+            if (DefaultWorkspaceIdSyncStatus == from)
+                DefaultWorkspaceIdSyncStatus = to;
+
+            if (BeginningOfWeekSyncStatus == from)
+                BeginningOfWeekSyncStatus = to;
         }
     }
 }

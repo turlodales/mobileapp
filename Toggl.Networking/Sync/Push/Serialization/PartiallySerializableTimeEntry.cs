@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using Toggl.Networking.Models;
-using Toggl.Shared.Extensions;
+using Toggl.Shared;
 using Toggl.Shared.Models;
 
 namespace Toggl.Networking.Sync.Push.Serialization
@@ -19,29 +17,26 @@ namespace Toggl.Networking.Sync.Push.Serialization
         {
             var obj = new JObject();
 
-            if (Entity.ProjectId != Entity.ProjectIdBackup)
+            if (Entity.ProjectIdSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("project_id", Entity.ProjectId));
 
-            if (Entity.TaskId != Entity.TaskIdBackup)
+            if (Entity.TaskIdSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("task_id", Entity.TaskId));
 
-            if (Entity.Billable != Entity.BillableBackup)
+            if (Entity.BillableSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("billable", Entity.Billable));
 
-            if (Entity.Start != Entity.StartBackup)
+            if (Entity.StartSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("start", Entity.Start));
 
-            if (Entity.Duration != Entity.DurationBackup)
+            if (Entity.DurationSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("duration", Entity.Duration));
 
-            if (Entity.Description != Entity.DescriptionBackup)
+            if (Entity.DescriptionSyncStatus != PropertySyncStatus.InSync)
                 obj.Add(new JProperty("description", Entity.Description));
 
-            var entityTags = Entity.TagIds ?? new long[0];
-            var backupEntityTags = Entity.TagIdsBackup ?? new long[0];
-
-            if (!entityTags.SetEquals(backupEntityTags))
-                obj.Add(new JProperty("tag_ids", new JArray(entityTags)));
+            if (Entity.TagIdsSyncStatus != PropertySyncStatus.InSync)
+                obj.Add(new JProperty("tag_ids", Entity.TagIds ?? new long[0]));
 
             return obj;
         }

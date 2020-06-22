@@ -13,7 +13,6 @@ using Toggl.Storage.Queries;
 using Toggl.Storage.Realm.Extensions;
 using Toggl.Storage.Realm.Models;
 using RealmDb = Realms.Realm;
-using static Toggl.Storage.Realm.Sync.BackupHelper;
 using static Toggl.Storage.Realm.Sync.ThreeWayMerge;
 
 namespace Toggl.Storage.Realm.Sync
@@ -77,6 +76,9 @@ namespace Toggl.Storage.Realm.Sync
 
                 processTimeEntries(realm);
 
+                var serverRunningTimeEntry = timeEntries.SingleOrDefault(te => !te.ServerDeletedAt.HasValue && te.IsRunning());
+                preventMultipleRunningTimeEntries(serverRunningTimeEntry, realm);
+
                 transaction.Commit();
             }
 
@@ -85,13 +87,8 @@ namespace Toggl.Storage.Realm.Sync
 
         private void processTimeEntries(RealmDb realm)
         {
-            var serverRunningTimeEntry = (ITimeEntry)null;
-
             foreach (var timeEntry in timeEntries)
             {
-                if (timeEntry.IsRunning())
-                    serverRunningTimeEntry = timeEntry;
-
                 var dbTimeEntry = realm.GetById<RealmTimeEntry>(timeEntry.Id);
 
                 if (dbTimeEntry == null)
@@ -108,16 +105,20 @@ namespace Toggl.Storage.Realm.Sync
                 else
                     updateTimeEntry(timeEntry, dbTimeEntry, realm);
             }
-
-            preventMultipleRunningTimeEntries(serverRunningTimeEntry, realm);
         }
 
         private void preventMultipleRunningTimeEntries(ITimeEntry serverRunningTimeEntry, RealmDb realm)
         {
             var time = currentTimeProvider();
 
-            if (serverRunningTimeEntry != null)
+            if (serverRunningTimeEntry != null && !isIrrelevantForSyncing(serverRunningTimeEntry, realm))
             {
+                // Is it still running? it could have been stopped by 3WM or it could have been deleted from the database.
+                // If so, we don't want to stop the other locally running TE;
+                var dbServerRunningTimeEntry = realm.GetById<RealmTimeEntry>(serverRunningTimeEntry.Id);
+                if (dbServerRunningTimeEntry == null || !dbServerRunningTimeEntry.IsRunning())
+                    return;
+
                 var otherLocallyRunningTimeEntries = realm.All<RealmTimeEntry>()
                     .Where(te => te.Duration == null && te.Id != serverRunningTimeEntry.Id)
                     .ToList();
@@ -160,38 +161,27 @@ namespace Toggl.Storage.Realm.Sync
             dbUser.Timezone = user.Timezone;
 
             var wasDirty = dbUser.SyncStatus == SyncStatus.SyncNeeded;
-            var shouldStayDirty = false;
+            
+            (dbUser.DefaultWorkspaceIdSyncStatus, dbUser.DefaultWorkspaceId) =
+                Resolve(
+                    dbUser.DefaultWorkspaceIdSyncStatus,
+                    dbUser.DefaultWorkspaceId,
+                    dbUser.DefaultWorkspaceIdBackup,
+                    user.DefaultWorkspaceId);
 
-            // Default Workspace Id
-            var commonDefaultWorkspaceId = dbUser.HasDefaultWorkspaceIdBackup
-                ? dbUser.DefaultWorkspaceIdBackup
-                : dbUser.DefaultWorkspaceId;
-
-            dbUser.DefaultWorkspaceId = Merge(commonDefaultWorkspaceId, dbUser.DefaultWorkspaceId, user.DefaultWorkspaceId);
-
-            shouldStayDirty |= !ClearBackupIf(
-                user.DefaultWorkspaceId == dbUser.DefaultWorkspaceId,
-                () => dbUser.HasDefaultWorkspaceIdBackup = false);
-
-            // Beginning of week
-            var commonBeginningOfWeek = dbUser.HasBeginningOfWeekBackup
-                ? dbUser.BeginningOfWeekBackup
-                : dbUser.BeginningOfWeek;
-
-            dbUser.BeginningOfWeek =
-                (BeginningOfWeek)Merge(
-                    (int)commonBeginningOfWeek,
+            (dbUser.BeginningOfWeekSyncStatus, dbUser.BeginningOfWeek) =
+                ((PropertySyncStatus, BeginningOfWeek))Resolve(
+                    dbUser.BeginningOfWeekSyncStatus,
                     (int)dbUser.BeginningOfWeek,
+                    (int)dbUser.BeginningOfWeekBackup,
                     (int)user.BeginningOfWeek);
-
-            shouldStayDirty |= !ClearBackupIf(
-                user.BeginningOfWeek == dbUser.BeginningOfWeek,
-                () => dbUser.BeginningOfWeekBackup = dbUser.BeginningOfWeek);
 
             dbUser.LastSyncErrorMessage = null;
 
-            // Update sync status depending on the way the user has changed during the 3-way merge
-            dbUser.SyncStatus = wasDirty && shouldStayDirty
+            var hasAtLeastOneDirtyProperty =
+                dbUser.DefaultWorkspaceIdSyncStatus == PropertySyncStatus.SyncNeeded
+                || dbUser.BeginningOfWeekSyncStatus == PropertySyncStatus.SyncNeeded;
+            dbUser.SyncStatus = wasDirty && hasAtLeastOneDirtyProperty
                 ? SyncStatus.SyncNeeded
                 : SyncStatus.InSync;
         }
@@ -209,63 +199,43 @@ namespace Toggl.Storage.Realm.Sync
             }
 
             var wasDirty = dbPreferences.SyncStatus == SyncStatus.SyncNeeded;
-            var shouldStayDirty = false;
+            
+            (dbPreferences.TimeOfDayFormatSyncStatus, dbPreferences.TimeOfDayFormat) =
+                Resolve(
+                    dbPreferences.TimeOfDayFormatSyncStatus,
+                    dbPreferences.TimeOfDayFormat,
+                    dbPreferences.TimeOfDayFormatBackup,
+                    preferences.TimeOfDayFormat);
 
-            // Time of day format
-            var commonTimeOfDayFormat = dbPreferences.HasTimeOfDayFormatBackup
-                ? dbPreferences.TimeOfDayFormatBackup
-                : dbPreferences.TimeOfDayFormat;
+            (dbPreferences.DateFormatSyncStatus, dbPreferences.DateFormat) =
+                Resolve(
+                    dbPreferences.DateFormatSyncStatus,
+                    dbPreferences.DateFormat,
+                    dbPreferences.DateFormatBackup,
+                    preferences.DateFormat);
 
-            dbPreferences.TimeOfDayFormat =
-                Merge(commonTimeOfDayFormat, dbPreferences.TimeOfDayFormat, preferences.TimeOfDayFormat);
-
-            shouldStayDirty |= !ClearBackupIf(
-                preferences.TimeOfDayFormat.Equals(dbPreferences.TimeOfDayFormat),
-                () => dbPreferences.HasTimeOfDayFormatBackup = false);
-
-            // Date format
-            var commonDateFormat = dbPreferences.HasDateFormatBackup
-                ? dbPreferences.DateFormatBackup
-                : dbPreferences.DateFormat;
-
-            dbPreferences.DateFormat =
-                Merge(commonDateFormat, dbPreferences.DateFormat, preferences.DateFormat);
-
-            shouldStayDirty |= !ClearBackupIf(
-                preferences.DateFormat.Equals(dbPreferences.DateFormat),
-                () => dbPreferences.HasDateFormatBackup = false);
-
-            // Duration format backup
-            var commonDurationFormat = dbPreferences.HasDurationFormatBackup
-               ? dbPreferences.DurationFormatBackup
-               : dbPreferences.DurationFormat;
-
-            dbPreferences.DurationFormatBackup = dbPreferences.DurationFormat =
-                (DurationFormat)Merge(
-                    (int)commonDurationFormat,
+            (dbPreferences.DurationFormatSyncStatus, dbPreferences.DurationFormat) =
+                ((PropertySyncStatus, DurationFormat))Resolve(
+                    dbPreferences.DurationFormatSyncStatus,
                     (int)dbPreferences.DurationFormat,
+                    (int)dbPreferences.DurationFormatBackup,
                     (int)preferences.DurationFormat);
 
-            shouldStayDirty |= !ClearBackupIf(
-                preferences.DurationFormat.Equals(dbPreferences.DurationFormat),
-                () => dbPreferences.HasDurationFormatBackup = false);
-
-            // Collapse time entries backup
-            var commonCollapseTimeEntries = dbPreferences.HasCollapseTimeEntriesBackup
-              ? dbPreferences.CollapseTimeEntriesBackup
-              : dbPreferences.CollapseTimeEntries;
-
-            dbPreferences.CollapseTimeEntries =
-                Merge(commonCollapseTimeEntries, dbPreferences.CollapseTimeEntries, preferences.CollapseTimeEntries);
-
-            shouldStayDirty |= !ClearBackupIf(
-                preferences.CollapseTimeEntries == dbPreferences.CollapseTimeEntries,
-                () => dbPreferences.HasCollapseTimeEntriesBackup = false);
+            (dbPreferences.CollapseTimeEntriesSyncStatus, dbPreferences.CollapseTimeEntries) =
+                Resolve(
+                    dbPreferences.CollapseTimeEntriesSyncStatus,
+                    dbPreferences.CollapseTimeEntries,
+                    dbPreferences.CollapseTimeEntriesBackup,
+                    preferences.CollapseTimeEntries);
 
             dbPreferences.LastSyncErrorMessage = null;
 
-            // Update sync status depending on the way the preferences have changed during the 3-way merge
-            dbPreferences.SyncStatus = wasDirty && shouldStayDirty
+            var hasAtLeastOneDirtyProperty =
+                dbPreferences.TimeOfDayFormatSyncStatus == PropertySyncStatus.SyncNeeded
+                || dbPreferences.DateFormatSyncStatus == PropertySyncStatus.SyncNeeded
+                || dbPreferences.DurationFormatSyncStatus == PropertySyncStatus.SyncNeeded
+                || dbPreferences.CollapseTimeEntriesSyncStatus == PropertySyncStatus.SyncNeeded;
+            dbPreferences.SyncStatus = wasDirty && hasAtLeastOneDirtyProperty
                 ? SyncStatus.SyncNeeded
                 : SyncStatus.InSync;
         }

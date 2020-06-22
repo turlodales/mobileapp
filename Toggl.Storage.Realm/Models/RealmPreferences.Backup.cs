@@ -9,11 +9,6 @@ namespace Toggl.Storage.Realm
     internal partial class RealmPreferences
         : RealmObject, IDatabasePreferences, IPushable, ISyncable<IPreferences>
     {
-        public bool HasTimeOfDayFormatBackup { get; set; }
-        public bool HasDateFormatBackup { get; set; }
-        public bool HasDurationFormatBackup { get; set; }
-        public bool HasCollapseTimeEntriesBackup { get; set; }
-
         public string TimeOfDayFormatStringBackup { get; set; }
 
         [Ignored]
@@ -46,5 +41,41 @@ namespace Toggl.Storage.Realm
         public int DurationFormatIntBackup { get; set; }
 
         public bool CollapseTimeEntriesBackup { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus TimeOfDayFormatSyncStatus
+        {
+            get => (PropertySyncStatus)TimeOfDayFormatSyncStatusInt;
+            set => TimeOfDayFormatSyncStatusInt = (int)value;
+        }
+
+        public int TimeOfDayFormatSyncStatusInt { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus DateFormatSyncStatus
+        {
+            get => (PropertySyncStatus)DateFormatSyncStatusInt;
+            set => DateFormatSyncStatusInt = (int)value;
+        }
+
+        public int DateFormatSyncStatusInt { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus DurationFormatSyncStatus
+        {
+            get => (PropertySyncStatus)DurationFormatSyncStatusInt;
+            set => DurationFormatSyncStatusInt = (int)value;
+        }
+
+        public int DurationFormatSyncStatusInt { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus CollapseTimeEntriesSyncStatus
+        {
+            get => (PropertySyncStatus)CollapseTimeEntriesSyncStatusInt;
+            set => CollapseTimeEntriesSyncStatusInt = (int)value;
+        }
+
+        public int CollapseTimeEntriesSyncStatusInt { get; set; }
     }
 }

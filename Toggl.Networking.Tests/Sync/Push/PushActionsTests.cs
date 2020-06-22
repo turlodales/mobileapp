@@ -5,8 +5,10 @@ using System.Linq;
 using Toggl.Networking.Network;
 using Toggl.Networking.Serialization;
 using Toggl.Networking.Sync.Push;
+using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
+using Newtonsoft.Json.Linq;
 using Xunit;
 using Request = Toggl.Networking.Sync.Push.Request;
 
@@ -50,19 +52,21 @@ namespace Toggl.Networking.Tests.Sync.Push
             public DateTimeOffset At { get; } = DateTimeOffset.Now;
 
             #region Backup properties
-            public bool HasProjectIdBackup { get; set; }
+            public PropertySyncStatus IsDeletedSyncStatus { get; set; }
+            public bool IsDeletedBackup { get; set; }
+            public PropertySyncStatus ProjectIdSyncStatus { get; set; }
             public long? ProjectIdBackup { get; set; }
-            public bool HasTaskIdBackup { get; set; }
+            public PropertySyncStatus TaskIdSyncStatus { get; set; }
             public long? TaskIdBackup { get; set; }
-            public bool HasBillableBackup { get; set; }
+            public PropertySyncStatus BillableSyncStatus { get; set; }
             public bool BillableBackup { get; set; }
-            public bool HasStartBackup { get; set; }
+            public PropertySyncStatus StartSyncStatus { get; set; }
             public DateTimeOffset StartBackup { get; set; }
-            public bool HasDurationBackup { get; set; }
+            public PropertySyncStatus DurationSyncStatus { get; set; }
             public long? DurationBackup { get; set; }
-            public bool HasDescriptionBackup { get; set; }
+            public PropertySyncStatus DescriptionSyncStatus { get; set; }
             public string DescriptionBackup { get; set; }
-            public bool HasTagIdsBackup { get; set; }
+            public PropertySyncStatus TagIdsSyncStatus { get; set; }
             public IList<long> TagIdsBackup { get; set; }
             #endregion
 
@@ -141,7 +145,9 @@ namespace Toggl.Networking.Tests.Sync.Push
         {
             var timeEntry = new MockTimeEntry(id, wid, description);
             timeEntry.Description = "changed description";
+            timeEntry.DescriptionSyncStatus = PropertySyncStatus.SyncNeeded;
             timeEntry.ProjectId = 987654321;
+            timeEntry.ProjectIdSyncStatus = PropertySyncStatus.SyncNeeded;
 
             var request = new Request(userAgent);
             request.UpdateTimeEntries(timeEntry.Yield());
@@ -151,13 +157,14 @@ namespace Toggl.Networking.Tests.Sync.Push
             json.GetString("time_entries[0].type").Should().Be("update");
             json.GetLong("time_entries[0].meta.id").Should().Be(id);
             json.GetLong("time_entries[0].meta.workspace_id").Should().Be(wid);
+
+            var payload = json.SelectToken("time_entries[0].payload") as JObject;
+            payload.Should().NotBeNull();
+            payload.Properties().Should().HaveCount(2);
+
             json.GetLong("time_entries[0].payload.project_id").Should().Be(timeEntry.ProjectId);
             json.GetString("time_entries[0].payload.description").Should().Be(timeEntry.Description);
 
-            json.Get("time_entries[0].payload.task_id").Should().BeNull();
-            json.Get("time_entries[0].payload.billable").Should().BeNull();
-            json.Get("time_entries[0].payload.start").Should().BeNull();
-            json.Get("time_entries[0].payload.duration").Should().BeNull();
         }
 
         [Fact, LogIfTooSlow]

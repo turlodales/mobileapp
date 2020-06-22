@@ -2,10 +2,10 @@
 {
     public partial interface IUser 
     {
-        bool HasDefaultWorkspaceIdBackup { get; set; }
+        PropertySyncStatus DefaultWorkspaceIdSyncStatus { get; set; }
         long? DefaultWorkspaceIdBackup { get; set; }
 
-        bool HasBeginningOfWeekBackup { get; set; }
+        PropertySyncStatus BeginningOfWeekSyncStatus { get; set; }
         BeginningOfWeek BeginningOfWeekBackup { get; set; }
     }
 }

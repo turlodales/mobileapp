@@ -26,16 +26,16 @@ namespace Toggl.Core.Tests.Mocks
         public bool UseNewSync { get; set; }
 
         [JsonIgnore]
-        public bool HasTimeOfDayFormatBackup { get; set; }
+        public PropertySyncStatus TimeOfDayFormatSyncStatus { get; set; }
 
         [JsonIgnore]
-        public bool HasDateFormatBackup { get; set; }
+        public PropertySyncStatus DateFormatSyncStatus { get; set; }
 
         [JsonIgnore]
-        public bool HasDurationFormatBackup { get; set; }
+        public PropertySyncStatus DurationFormatSyncStatus { get; set; }
 
         [JsonIgnore]
-        public bool HasCollapseTimeEntriesBackup { get; set; }
+        public PropertySyncStatus CollapseTimeEntriesSyncStatus { get; set; }
 
         [JsonIgnore]
         public TimeFormat TimeOfDayFormatBackup { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Toggl.Core.Models;
+using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
 using Toggl.Storage;
@@ -46,7 +47,7 @@ namespace Toggl.Core.Sync.ConflictResolution
                 .Min();
             var duration = (long)(stopTime - toBeStopped.Start).TotalSeconds; // truncates towards zero (floor)
 
-            return TimeEntry.Builder.Create(toBeStopped.Id)
+            var stopped = TimeEntry.Builder.Create(toBeStopped.Id)
                 .SetDescription(toBeStopped.Description)
                 .SetDuration(duration)
                 .SetTagIds(toBeStopped.TagIds)
@@ -61,6 +62,11 @@ namespace Toggl.Core.Sync.ConflictResolution
                 .SetSyncStatus(SyncStatus.SyncNeeded)
                 .SetAt(timeService.CurrentDateTime)
                 .Build();
+
+            stopped.DurationBackup = toBeStopped.Duration;
+            stopped.DurationSyncStatus = PropertySyncStatus.SyncNeeded;
+
+            return stopped;
         }
 
         private Expression<Func<TDatabaseObject, bool>> startsAfter<TDatabaseObject>(DateTimeOffset start)

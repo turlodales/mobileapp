@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Extensions;
 using Toggl.Storage.Realm.Models;
-using static Toggl.Storage.Realm.Sync.BackupHelper;
 using static Toggl.Storage.Realm.Sync.ThreeWayMerge;
+using static Toggl.Shared.PropertySyncStatus;
 
 namespace Toggl.Storage.Realm
 {
@@ -62,111 +63,41 @@ namespace Toggl.Storage.Realm
         public void SaveSyncResult(ITimeEntry timeEntry, Realms.Realm realm)
         {
             var wasDirty = SyncStatus == SyncStatus.SyncNeeded;
-            var shouldStayDirty = false;
 
+            // Simplest part - these properties should always overwrite the local state
             Id = timeEntry.Id;
             At = timeEntry.At;
             ServerDeletedAt = timeEntry.ServerDeletedAt;
-            IsDeleted = timeEntry.ServerDeletedAt.HasValue;
             RealmUser = realm.GetById<RealmUser>(timeEntry.UserId);
-            RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);
+            RealmWorkspace = realm.GetById<RealmWorkspace>(timeEntry.WorkspaceId);;
 
-            // Description
-            var commonDescription = HasDescriptionBackup
-                ? DescriptionBackup
-                : Description;
+            // Simple types - three way merge
+            (IsDeletedSyncStatus, IsDeleted) = Resolve(IsDeletedSyncStatus, IsDeleted, IsDeletedBackup, timeEntry.ServerDeletedAt.HasValue);
+            (DescriptionSyncStatus, Description) = Resolve(DescriptionSyncStatus, Description, DescriptionBackup, timeEntry.Description);
+            (BillableSyncStatus, Billable) = Resolve(BillableSyncStatus, Billable, BillableBackup, timeEntry.Billable);
+            (StartSyncStatus, Start) = Resolve(StartSyncStatus, Start, StartBackup, timeEntry.Start);
+            (DurationSyncStatus, Duration) = Resolve(DurationSyncStatus, Duration, DurationBackup, timeEntry.Duration);
 
-            Description = Merge(commonDescription, Description, timeEntry.Description);
-
-            shouldStayDirty |= ClearBackupIf(
-                timeEntry.Description != Description,
-                () => HasDescriptionBackup = false);
-
-            // ProjectId
-            var commonProjectId = HasProjectIdBackup 
-                ? ProjectIdBackup
-                : ProjectId;
-
-            var projectId = Merge(commonProjectId, ProjectId, timeEntry.ProjectId);
-
-            RealmProject = projectId.HasValue
-                ? realm.GetById<RealmProject>(projectId.Value)
-                : null;
-
-            shouldStayDirty |= !ClearBackupIf(
-                timeEntry.ProjectId == projectId,
-                () => HasProjectIdBackup = false);
-
-            // Billable
-            var commonBillable = HasBillableBackup
-                ? BillableBackup
-                : Billable;
-
-            Billable = Merge(commonBillable, Billable, timeEntry.Billable);
-
-            shouldStayDirty |= !ClearBackupIf(
-                timeEntry.Billable == Billable,
-                () => HasBillableBackup = false);
-
-            // Start
-            var commonStart = HasStartBackup
-                ? StartBackup
-                : Start;
-
-            Start = Merge(commonStart, Start, timeEntry.Start);
-
-            shouldStayDirty |= !ClearBackupIf(
-                timeEntry.Start == Start,
-                () => HasStartBackup = false);
-
-            // Duration
-            var commonDuration = HasDurationBackup
-                ? DurationBackup
-                : Duration;
-
-            Duration = Merge(commonDuration, Duration, timeEntry.Duration);
-
-            shouldStayDirty |= !ClearBackupIf(
-                timeEntry.Duration == Duration,
-                () => HasDurationBackup = false);
+            // Relationships - three way merge
+            // Project
+            var (projectStatus, projectId) = Resolve(ProjectIdSyncStatus, ProjectId, ProjectIdBackup, timeEntry.ProjectId);
+            ProjectIdSyncStatus = projectStatus;
+            RealmProject = projectId.HasValue ? realm.GetById<RealmProject>(projectId.Value) : null;
 
             // Task
-            var commonTaskId = HasTaskIdBackup
-                ? TaskIdBackup
-                : TaskId;
+            var (taskStatus, taskId) = Resolve(TaskIdSyncStatus, TaskId, TaskIdBackup, timeEntry.TaskId);
+            TaskIdSyncStatus = taskStatus;
+            RealmTask = taskId.HasValue ? realm.GetById<RealmTask>(taskId.Value) : null;
 
-            var taskId = Merge(commonTaskId, TaskId, timeEntry.TaskId);
-
-            RealmTask = taskId.HasValue
-                ? realm.GetById<RealmTask>(taskId.Value)
-                : null;
-
-            shouldStayDirty |= !ClearBackupIf(
-                timeEntry.TaskId == taskId,
-                () => HasTaskIdBackup = false);
-
-            // Tag Ids
-            var commonTagIds = HasTagIdsBackup
-                ? Arrays.NotNullOrEmpty(TagIdsBackup)
-                : Arrays.NotNullOrEmpty(TagIds);
-
-            var localTagIds = Arrays.NotNullOrEmpty(TagIds);
-            var serverTagIds = Arrays.NotNullOrEmpty(timeEntry.TagIds);
-
-            var tagsIds = Merge(commonTagIds, localTagIds, serverTagIds);
-            shouldStayDirty |= !ClearBackupIf(
-                tagsIds.SetEquals(localTagIds),
-                () => HasTagIdsBackup = false);
-
+            // Tags
+            var (tagsStatus, tagIds) = Resolve(TagIdsSyncStatus, TagIds?.ToArray(), TagIdsBackup?.ToArray(), timeEntry.TagIds?.ToArray());
+            TagIdsSyncStatus = tagsStatus;
             RealmTags.Clear();
-            tagsIds
-                .Select(tagId => realm.GetById<RealmTag>(tagId))
-                .AddTo(RealmTags);
+            tagIds.Select(tagId => realm.GetById<RealmTag>(tagId)).AddTo(RealmTags);
 
             LastSyncErrorMessage = null;
 
-            // Update sync status depending on the way the time entry has changed during the 3-way merge
-            SyncStatus = wasDirty && shouldStayDirty
+            SyncStatus = wasDirty && hasAtLeastOneDirtyProperty
                 ? SyncStatus.SyncNeeded
                 : SyncStatus.InSync;
         }
@@ -174,18 +105,59 @@ namespace Toggl.Storage.Realm
         public void PrepareForSyncing()
         {
             SyncStatus = SyncStatus.Syncing;
+            changePropertiesSyncStatus(from: SyncNeeded, to: Syncing);
         }
 
         public void PushFailed(string errorMessage)
         {
             LastSyncErrorMessage = errorMessage;
             SyncStatus = SyncStatus.SyncFailed;
+            changePropertiesSyncStatus(from: Syncing, to: SyncNeeded);
         }
 
         public void UpdateSucceeded()
         {
             if (SyncStatus != SyncStatus.SyncNeeded)
                 SyncStatus = SyncStatus.InSync;
+
+            changePropertiesSyncStatus(from: Syncing, to: InSync);
         }
+
+        private void changePropertiesSyncStatus(PropertySyncStatus from, PropertySyncStatus to)
+        {
+            if (IsDeletedSyncStatus == from)
+                IsDeletedSyncStatus = to;
+
+            if (ProjectIdSyncStatus == from)
+                ProjectIdSyncStatus = to;
+
+            if (TaskIdSyncStatus == from)
+                TaskIdSyncStatus = to;
+
+            if (BillableSyncStatus == from)
+                BillableSyncStatus = to;
+
+            if (StartSyncStatus == from)
+                StartSyncStatus = to;
+
+            if (DurationSyncStatus == from)
+                DurationSyncStatus = to;
+
+            if (DescriptionSyncStatus == from)
+                DescriptionSyncStatus = to;
+
+            if (TagIdsSyncStatus == from)
+                TagIdsSyncStatus = to;
+        }
+
+        private bool hasAtLeastOneDirtyProperty
+            => IsDeletedSyncStatus == SyncNeeded
+                || ProjectIdSyncStatus == SyncNeeded
+                || TaskIdSyncStatus == SyncNeeded
+                || BillableSyncStatus == SyncNeeded
+                || StartSyncStatus == SyncNeeded
+                || DurationSyncStatus == SyncNeeded
+                || DescriptionSyncStatus == SyncNeeded
+                || TagIdsSyncStatus == SyncNeeded;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Toggl.Shared;
 using Toggl.Shared.Models;
 
 namespace Toggl.iOS.Shared.Models
@@ -19,7 +20,7 @@ namespace Toggl.iOS.Shared.Models
         public DateTimeOffset? ServerDeletedAt { get; }
         public DateTimeOffset At { get; }
 
-        public bool ContainsBackup { get; set; }
+        public bool IsDeletedBackup { get; set; }
         public long? ProjectIdBackup { get; set; }
         public long? TaskIdBackup { get; set; }
         public bool BillableBackup { get; set; }
@@ -28,13 +29,14 @@ namespace Toggl.iOS.Shared.Models
         public string DescriptionBackup { get; set; }
         public IList<long> TagIdsBackup => throw new NotImplementedException();
 
-        public bool HasProjectIdBackup { get; set; }
-        public bool HasTaskIdBackup { get; set; }
-        public bool HasBillableBackup { get; set; }
-        public bool HasStartBackup { get; set; }
-        public bool HasDurationBackup { get; set; }
-        public bool HasDescriptionBackup { get; set; }
-        public bool HasTagIdsBackup { get; set; }
+        public PropertySyncStatus IsDeletedSyncStatus { get; set; }
+        public PropertySyncStatus ProjectIdSyncStatus { get; set; }
+        public PropertySyncStatus TaskIdSyncStatus { get; set; }
+        public PropertySyncStatus BillableSyncStatus { get; set; }
+        public PropertySyncStatus StartSyncStatus { get; set; }
+        public PropertySyncStatus DurationSyncStatus { get; set; }
+        public PropertySyncStatus DescriptionSyncStatus { get; set; }
+        public PropertySyncStatus TagIdsSyncStatus { get; set; }
 
         public TimeEntry(long workspaceId, long? projectId, long? taskId, bool billable, DateTimeOffset start, long? duration,
                          string description, IEnumerable<long> tagIds, long userId, long id, DateTimeOffset? serverDeletedAt, DateTimeOffset at)

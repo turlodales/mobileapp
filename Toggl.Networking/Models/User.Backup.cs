@@ -7,13 +7,13 @@ namespace Toggl.Networking.Models
     internal sealed partial class User : IUser
     {
         [JsonIgnore]
-        public bool HasDefaultWorkspaceIdBackup { get; set; }
+        public PropertySyncStatus DefaultWorkspaceIdSyncStatus { get; set; }
 
         [JsonIgnore]
         public long? DefaultWorkspaceIdBackup { get; set; }
 
         [JsonIgnore]
-        public bool HasBeginningOfWeekBackup { get; set; }
+        public PropertySyncStatus BeginningOfWeekSyncStatus { get; set; }
 
         [JsonIgnore]
         public BeginningOfWeek BeginningOfWeekBackup { get; set; }

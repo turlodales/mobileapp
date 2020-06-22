@@ -65,7 +65,7 @@ namespace Toggl.Storage.Realm.Queries
             {
                 entity.PushFailed(error.ErrorMessage.DefaultMessage);
             }
-            else if (result?.Success ?? false)
+            else
             {
                 entity.UpdateSucceeded();
             }

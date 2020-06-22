@@ -5,25 +5,28 @@ namespace Toggl.Shared.Models
 {
     public partial interface ITimeEntry
     {
+        bool IsDeletedBackup { get; set; }
+        PropertySyncStatus IsDeletedSyncStatus { get; set; }
+
         long? ProjectIdBackup { get; set; }
-        bool HasProjectIdBackup { get; set; }
+        PropertySyncStatus ProjectIdSyncStatus { get; set; }
 
         long? TaskIdBackup { get; set; }
-        bool HasTaskIdBackup { get; set; }
+        PropertySyncStatus TaskIdSyncStatus { get; set; }
 
         bool BillableBackup { get; set; }
-        bool HasBillableBackup { get; set; }
+        PropertySyncStatus BillableSyncStatus { get; set; }
 
         DateTimeOffset StartBackup { get; set; }
-        bool HasStartBackup { get; set; }
+        PropertySyncStatus StartSyncStatus { get; set; }
 
         long? DurationBackup { get; set; }
-        bool HasDurationBackup { get; set; }
+        PropertySyncStatus DurationSyncStatus { get; set; }
 
         string DescriptionBackup { get; set; }
-        bool HasDescriptionBackup { get; set; }
+        PropertySyncStatus DescriptionSyncStatus { get; set; }
 
         IList<long> TagIdsBackup { get; }
-        bool HasTagIdsBackup { get; set; }
+        PropertySyncStatus TagIdsSyncStatus { get; set; }
     }
 }

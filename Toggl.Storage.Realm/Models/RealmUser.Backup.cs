@@ -9,8 +9,24 @@ namespace Toggl.Storage.Realm
     internal partial class RealmUser
         : RealmObject, IDatabaseUser, IPushable, ISyncable<IUser>
     {
-        public bool HasDefaultWorkspaceIdBackup { get; set; }
-        public bool HasBeginningOfWeekBackup { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus DefaultWorkspaceIdSyncStatus
+        {
+            get => (PropertySyncStatus)DefaultWorkspaceIdSyncStatusInt;
+            set => DefaultWorkspaceIdSyncStatusInt = (int)value;
+        }
+
+        public int DefaultWorkspaceIdSyncStatusInt { get; set; }
+
+        [Ignored]
+        public PropertySyncStatus BeginningOfWeekSyncStatus
+        {
+            get => (PropertySyncStatus)BeginningOfWeekSyncStatusInt;
+            set => BeginningOfWeekSyncStatusInt = (int)value;
+        }
+
+        public int BeginningOfWeekSyncStatusInt { get; set; }
 
         public long? DefaultWorkspaceIdBackup { get; set; }
 

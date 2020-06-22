@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Sync.ConflictResolution;
+using Toggl.Shared;
 using Toggl.Storage;
 using Toggl.Storage.Models;
 
@@ -32,27 +33,27 @@ namespace Toggl.Core.DataSources
 
         private void backupPreferences(IDatabasePreferences preferencesDb, IThreadSafePreferences preferences)
         {
-            if (!preferencesDb.HasTimeOfDayFormatBackup)
+            if (preferencesDb.TimeOfDayFormatSyncStatus == PropertySyncStatus.InSync)
             {
-                preferences.HasTimeOfDayFormatBackup = true;
+                preferences.TimeOfDayFormatSyncStatus = PropertySyncStatus.SyncNeeded;
                 preferences.TimeOfDayFormatBackup = preferencesDb.TimeOfDayFormat;
             }
 
-            if (!preferencesDb.HasDateFormatBackup)
+            if (preferencesDb.DateFormatSyncStatus == PropertySyncStatus.InSync)
             {
-                preferences.HasDateFormatBackup = true;
+                preferences.DateFormatSyncStatus = PropertySyncStatus.SyncNeeded;
                 preferences.DateFormatBackup = preferencesDb.DateFormat;
             }
 
-            if (!preferencesDb.HasDurationFormatBackup)
+            if (preferencesDb.DurationFormatSyncStatus == PropertySyncStatus.InSync)
             {
-                preferences.HasDurationFormatBackup = true;
+                preferences.DurationFormatSyncStatus = PropertySyncStatus.SyncNeeded;
                 preferences.DurationFormatBackup = preferencesDb.DurationFormat;
             }
 
-            if (!preferencesDb.HasCollapseTimeEntriesBackup)
+            if (preferencesDb.CollapseTimeEntriesSyncStatus == PropertySyncStatus.InSync)
             {
-                preferences.HasCollapseTimeEntriesBackup = true;
+                preferences.CollapseTimeEntriesSyncStatus = PropertySyncStatus.SyncNeeded;
                 preferences.CollapseTimeEntriesBackup = preferencesDb.CollapseTimeEntries;
             }
         }
