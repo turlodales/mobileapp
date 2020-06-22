@@ -199,7 +199,9 @@ namespace Toggl.Storage.Realm.Sync
             }
 
             var wasDirty = dbPreferences.SyncStatus == SyncStatus.SyncNeeded;
-            
+
+            dbPreferences.UseNewSync = preferences.UseNewSync;
+
             (dbPreferences.TimeOfDayFormatSyncStatus, dbPreferences.TimeOfDayFormat) =
                 Resolve(
                     dbPreferences.TimeOfDayFormatSyncStatus,
@@ -235,6 +237,7 @@ namespace Toggl.Storage.Realm.Sync
                 || dbPreferences.DateFormatSyncStatus == PropertySyncStatus.SyncNeeded
                 || dbPreferences.DurationFormatSyncStatus == PropertySyncStatus.SyncNeeded
                 || dbPreferences.CollapseTimeEntriesSyncStatus == PropertySyncStatus.SyncNeeded;
+
             dbPreferences.SyncStatus = wasDirty && hasAtLeastOneDirtyProperty
                 ? SyncStatus.SyncNeeded
                 : SyncStatus.InSync;
