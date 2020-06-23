@@ -26,6 +26,7 @@ namespace Toggl.Storage.Realm.Sync
         private IPreferences preferences = null;
         private IUser user = null;
         private ImmutableList<IWorkspace> workspaces;
+        private ImmutableList<IWorkspaceFeatureCollection> workspaceFeatures;
         private ImmutableList<ITag> tags;
         private ImmutableList<IClient> clients;
         private ImmutableList<IProject> projects;
@@ -49,6 +50,7 @@ namespace Toggl.Storage.Realm.Sync
             preferences = response.Preferences;
 
             workspaces = response.Workspaces;
+            workspaceFeatures = response.WorkspaceFeatures;
             tags = response.Tags;
             clients = response.Clients;
             projects = response.Projects;
@@ -69,6 +71,7 @@ namespace Toggl.Storage.Realm.Sync
                 processPreferences(realm);
 
                 processEntities<RealmWorkspace, IWorkspace>(realm, workspaces, customDeletionProcess: makeWorkspaceInaccessible);
+                processWorkspaceFeatures(realm);
                 processEntities<RealmTag, ITag>(realm, tags);
                 processEntities<RealmClient, IClient>(realm, clients);
                 processEntities<RealmProject, IProject>(realm, projects, customDeletionProcess: removeRelatedTasks);
@@ -241,6 +244,17 @@ namespace Toggl.Storage.Realm.Sync
             dbPreferences.SyncStatus = wasDirty && hasAtLeastOneDirtyProperty
                 ? SyncStatus.SyncNeeded
                 : SyncStatus.InSync;
+        }
+
+        private void processWorkspaceFeatures(RealmDb realm)
+        {
+            foreach (var collection in workspaceFeatures)
+            {
+                var dbCollection = realm.Find<RealmWorkspaceFeatureCollection>(collection.WorkspaceId);
+                dbCollection ??= new RealmWorkspaceFeatureCollection();
+                dbCollection.SetPropertiesFrom(collection, realm);
+                realm.Add(dbCollection, update: true);
+            }
         }
 
         private void makeWorkspaceInaccessible(RealmDb realm, RealmWorkspace workspace)

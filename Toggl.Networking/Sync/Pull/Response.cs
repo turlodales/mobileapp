@@ -17,6 +17,7 @@ namespace Toggl.Networking.Sync.Pull
         public ImmutableList<ITask> Tasks { get; }
         public ImmutableList<ITimeEntry> TimeEntries { get; }
         public ImmutableList<IWorkspace> Workspaces { get; }
+        public ImmutableList<IWorkspaceFeatureCollection> WorkspaceFeatures { get; }
         public IUser User { get; }
         public IPreferences Preferences { get; }
 
@@ -28,6 +29,7 @@ namespace Toggl.Networking.Sync.Pull
             IEnumerable<Task> tasks,
             IEnumerable<TimeEntry> timeEntries,
             IEnumerable<Workspace> workspaces,
+            IEnumerable<WorkspaceFeatureCollection> workspaceFeatures,
             User user,
             Preferences preferences)
         {
@@ -40,6 +42,22 @@ namespace Toggl.Networking.Sync.Pull
             Workspaces = workspaces?.ToList<IWorkspace>().ToImmutableList() ?? ImmutableList<IWorkspace>.Empty;
             User = user;
             Preferences = preferences;
+
+            // There's currently a bug in the API which returns the same workspace 
+            // feature  collection MANY times (19x actually). This piece of code can
+            // be removed as soon as the bug is fixed.
+            WorkspaceFeatures = workspaceFeatures?.ToList<IWorkspaceFeatureCollection>()
+                .Distinct(new WorkspaceFeatureCollectionEqualityComparer())
+                .ToImmutableList() ?? ImmutableList<IWorkspaceFeatureCollection>.Empty;
+        }
+
+        private sealed class WorkspaceFeatureCollectionEqualityComparer : IEqualityComparer<IWorkspaceFeatureCollection>
+        {
+            public bool Equals(IWorkspaceFeatureCollection x, IWorkspaceFeatureCollection y)
+                => x?.WorkspaceId == y?.WorkspaceId;
+
+            public int GetHashCode(IWorkspaceFeatureCollection obj)
+                => obj?.WorkspaceId.GetHashCode() ?? 0;
         }
     }
 }

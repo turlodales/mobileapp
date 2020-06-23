@@ -1,6 +1,7 @@
 ﻿using Realms;
 using System.Linq;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Models;
 
@@ -486,6 +487,9 @@ namespace Toggl.Storage.Realm
         }
 
         public void SetPropertiesFrom(IDatabaseWorkspaceFeatureCollection entity, Realms.Realm realm)
+            => SetPropertiesFrom((IWorkspaceFeatureCollection)entity, realm);
+
+        public void SetPropertiesFrom(IWorkspaceFeatureCollection entity, Realms.Realm realm)
         {
             var skipWorkspaceFetch = entity?.WorkspaceId == null || entity.WorkspaceId == 0;
             RealmWorkspace = skipWorkspaceFetch ? null : realm.All<RealmWorkspace>().Single(x => x.Id == entity.WorkspaceId || x.OriginalId == entity.WorkspaceId);
