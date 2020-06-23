@@ -407,7 +407,7 @@ namespace Toggl.iOS.ViewControllers
             TapToStopTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
             TapToStopTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;
 
-            // TapToStopTooltipLabel.Text = Resources.TapHereToStartYourNextTimeEntry;
+            TapToStopTooltipLabel.Text = Resources.TapHereToStopYourTimeEntry;
             TapToStopTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
             RunningTimeEntryTooltipLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Center);
 

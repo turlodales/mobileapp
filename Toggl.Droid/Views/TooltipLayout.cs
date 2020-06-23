@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Java.Lang;
 
 namespace Toggl.Droid.Views
 {
@@ -13,11 +14,28 @@ namespace Toggl.Droid.Views
     {
         private static Dictionary<int, int> arrowPositionToLayoutDictionary = new Dictionary<int, int>
         {
-            { 0, Resource.Layout.TooltipWithCenteredBottomArrow },
-            { 1, Resource.Layout.TooltipWithRightBottomArrow }
+            { 0, Resource.Layout.TooltipWithRightBottomArrow },
+            { 1, Resource.Layout.TooltipWithLeftBottomArrow},
+            { 2, Resource.Layout.TooltipWithCenteredBottomArrow },
+            { 3, Resource.Layout.TooltipWithLeftTopArrow },
+            { 4, Resource.Layout.TooltipWithCenteredTopArrow }
         };
 
+        private TextView title;
         private TextView label;
+        private TextView button;
+
+        public string Title
+        {
+            get => title?.Text;
+            set
+            {
+                if (title == null)
+                    return;
+
+                title.Text = value;
+            }
+        }
 
         public string Text
         {
@@ -28,6 +46,30 @@ namespace Toggl.Droid.Views
                     return;
 
                 label.Text = value;
+            }
+        }
+
+        public ICharSequence TextFormatted
+        {
+            get => label?.TextFormatted;
+            set
+            {
+                if (label == null)
+                    return;
+
+                label.TextFormatted = value;
+            }
+        }
+
+        public string ButtonText
+        {
+            get => button?.Text;
+            set
+            {
+                if (button == null)
+                    return;
+
+                button.Text = value;
             }
         }
 
@@ -75,7 +117,9 @@ namespace Toggl.Droid.Views
 
             LayoutInflater.From(Context).Inflate(layoutToInflate, this, true);
 
+            title = FindViewById<TextView>(Resource.Id.TooltipTitle);
             label = FindViewById<TextView>(Resource.Id.TooltipText);
+            button = FindViewById<TextView>(Resource.Id.TooltipButton);
         }
     }
 }

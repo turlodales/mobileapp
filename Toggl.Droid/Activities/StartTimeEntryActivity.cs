@@ -12,6 +12,7 @@ using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Helper;
+using Toggl.Core.UI.Extensions;
 using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
 
@@ -108,6 +109,14 @@ namespace Toggl.Droid.Activities
                 .Select(text => text.AsImmutableSpans(descriptionField.SelectionStart))
                 .Subscribe(ViewModel.SetTextSpans)
                 .DisposedBy(DisposeBag);
+
+            ViewModel.ProjectsTooltipCondition.ConditionMet
+                .Subscribe(projectTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            projectTooltip.Rx().Tap()
+               .Subscribe(ViewModel.ProjectsTooltipCondition.Dismiss)
+               .DisposedBy(DisposeBag);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

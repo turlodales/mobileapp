@@ -209,6 +209,16 @@ namespace Toggl.Droid.Activities
             deleteButton.Rx().Tap()
                 .Subscribe(ViewModel.Delete.Inputs)
                 .DisposedBy(DisposeBag);
+
+            ViewModel.ProjectsTooltipCondition.ConditionMet
+                .Subscribe(projectTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            projectTooltip.Rx().Tap()
+               .Subscribe(ViewModel.ProjectsTooltipCondition.Dismiss)
+               .DisposedBy(DisposeBag);
+
+            projectTooltip.Text = ViewModel.ProjectsTooltipText;
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

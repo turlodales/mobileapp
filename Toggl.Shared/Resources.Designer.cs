@@ -2435,6 +2435,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string TapHereToStopYourTimeEntry {
+            get {
+                return ResourceManager.GetString("TapHereToStopYourTimeEntry", resourceCulture);
+            }
+        }
+        
         public static string ClickOnFolderIconToAssignAProject {
             get {
                 return ResourceManager.GetString("ClickOnFolderIconToAssignAProject", resourceCulture);

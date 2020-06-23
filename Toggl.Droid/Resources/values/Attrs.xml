@@ -7,8 +7,11 @@
         
     <declare-styleable name="TooltipLayout">
         <attr name="arrowDirection" format="enum">
-          <enum name="center" value="0"/>
-          <enum name="bottomRight" value="1"/>
+          <enum name="bottomRight" value="0"/>
+          <enum name="bottomLeft" value="1"/>
+          <enum name="bottomCenter" value="2"/>
+          <enum name="topLeft" value="3"/>
+          <enum name="topCenter" value="4"/>
         </attr>
     </declare-styleable>
 </resources>

@@ -508,6 +508,17 @@
                 android:layout_marginLeft="56dp"
                 android:background="@color/separator"
                 app:layout_constraintTop_toBottomOf="@id/DeleteLabel" />
+
+
+          <toggl.droid.views.TooltipLayout
+              android:id="@+id/ProjectTooltip"
+              app:arrowDirection="topLeft"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/ProjectTaskClient"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
   

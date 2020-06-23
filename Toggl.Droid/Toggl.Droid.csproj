@@ -1193,6 +1193,7 @@
     <AndroidResource Include="Resources\layout\TooltipWithRightTopArrow.axml" />
     <AndroidResource Include="Resources\layout\TooltipWithRightBottomArrow.axml" />
     <AndroidResource Include="Resources\layout\TooltipWithRightArrow.axml" />
+    <AndroidResource Include="Resources\layout\TooltipWithLeftBottomArrow.axml" />
     <AndroidResource Include="Resources\anim\abc_slide_in_right.xml" />
     <AndroidResource Include="Resources\anim\abc_slide_out_left.xml" />
     <AndroidResource Include="Resources\anim\abc_slide_in_left.xml" />
@@ -1311,6 +1312,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="ProGuard.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TooltipWithCenteredTopArrow.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Fody.2.4.6\build\Fody.targets" Condition="Exists('..\packages\Fody.2.4.6\build\Fody.targets')" />
