@@ -44,19 +44,12 @@ namespace Toggl.Droid
 #endif
         }
 
-        private IDisposable syncSubscription;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             var dependencyContainer = AndroidDependencyContainer.Instance;
             registerTimezoneChangedBroadcastReceiver(dependencyContainer.TimeService);
-
-            if (dependencyContainer.SyncManager is SyncManagerV2 syncv2)
-            {
-                syncSubscription = syncv2.AllErrors.Subscribe(err => Log.Info("TOGGLSYNCERROR", err.ToString()));
-            }
 
             var app = new AppStart(dependencyContainer);
             app.UpdateOnboardingProgress();
@@ -139,7 +132,6 @@ namespace Toggl.Droid
         public override void Finish()
         {
             base.Finish();
-            syncSubscription.Dispose();
             OverridePendingTransition(0, Transitions.Fade.OtherIn);
         }
     }
