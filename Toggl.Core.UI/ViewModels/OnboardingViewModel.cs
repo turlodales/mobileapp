@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -41,6 +42,7 @@ namespace Toggl.Core.UI.ViewModels
         private List<bool> onboardingPagesViewed = new List<bool> { false, false, false };
 
         public IObservable<bool> IsLoading { get; }
+        public IObservable<Unit> GoToNextPageObservable { get; }
 
         public ViewAction ContinueWithApple { get; }
         public ViewAction ContinueWithGoogle { get; }
@@ -84,6 +86,11 @@ namespace Toggl.Core.UI.ViewModels
 
             IsLoading = isLoadingSubject
                 .DistinctUntilChanged()
+                .AsDriver(schedulerProvider);
+
+            GoToNextPageObservable = Observable
+                .Interval(TimeSpan.FromSeconds(5), schedulerProvider.MainScheduler)
+                .SelectValue(Unit.Default)
                 .AsDriver(schedulerProvider);
         }
 

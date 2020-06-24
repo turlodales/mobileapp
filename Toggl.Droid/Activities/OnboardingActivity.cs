@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
+using Toggl.Core.Analytics;
 using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions.Reactive;
@@ -16,6 +17,9 @@ namespace Toggl.Droid.Activities
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public partial class OnboardingActivity : ReactiveActivity<OnboardingViewModel>
     {
+        private int oldPage = 0;
+        private bool scrollWasAutomatic = false;
+
         public OnboardingActivity() : base(
             Resource.Layout.OnboardingActivity, Resource.Style.AppTheme_Onboarding, Transitions.Fade
         )
@@ -51,6 +55,15 @@ namespace Toggl.Droid.Activities
                 .DistinctUntilChanged()
                 .Subscribe(onPageChanged)
                 .DisposedBy(DisposeBag);
+
+            ViewModel.GoToNextPageObservable
+                .Subscribe(_ =>
+                {
+                    var nextPage = (onboardingViewPager.CurrentItem + 1) % 3;
+                    scrollWasAutomatic = true;
+                    onboardingViewPager.SetCurrentItem(nextPage, true);
+                })
+                .DisposedBy(DisposeBag);
         }
 
         private void onPageChanged(int page)
@@ -58,11 +71,14 @@ namespace Toggl.Droid.Activities
             ViewModel.OnOnboardingScroll.Execute(
                 new OnboardingScrollParameters
                 {
-                    Action = Core.Analytics.OnboardingScrollAction.Manual,
-                    Direction = Core.Analytics.OnboardingScrollDirection.None,
+                    Action = scrollWasAutomatic ? OnboardingScrollAction.Automatic : OnboardingScrollAction.Manual,
+                    Direction = scrollWasAutomatic || oldPage < page ? OnboardingScrollDirection.Right : OnboardingScrollDirection.Left,
                     PageNumber = page
                 }
             );
+
+            oldPage = page;
+            scrollWasAutomatic = false;
         }
 
         private void setAnimationStatus(bool isLoading)
