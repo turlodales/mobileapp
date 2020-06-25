@@ -23,6 +23,6 @@ namespace Toggl.Networking.Network
         public Endpoint Put => Endpoint.Put(baseUrl, "me");
 
         public Endpoint ResetPassword => Endpoint.Post(baseUrl, "me/lost_passwords");
-        public Endpoint EnableSso(Email email, string confirmationCode) => Endpoint.Post(baseUrl, $"me/enable_sso?email={email.ToString()}&confirmation_code={confirmationCode}");
+        public Endpoint EnableSso => Endpoint.Post(baseUrl, $"me/enable_sso");
     }
 }

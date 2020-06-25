@@ -213,8 +213,12 @@ namespace Toggl.iOS.Extensions
                 viewController.View, NSLayoutAttribute.CenterX, 1, 0);
             var c4 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Width,
                 NSLayoutRelation.GreaterThanOrEqual, viewController.View, NSLayoutAttribute.Width, (nfloat)0.3, (nfloat)1.0);
+            var c5 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Leading, NSLayoutRelation.GreaterThanOrEqual,
+                viewController.View, NSLayoutAttribute.Leading, 1, 50);
+            var c6 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal,
+                viewController.View, NSLayoutAttribute.Trailing, 1, -50);
 
-            viewController.View.AddConstraints(new [] {c1, c2, c3, c4});
+            viewController.View.AddConstraints(new [] {c1, c2, c3, c4, c5, c6});
 
             UIView.Animate(2.5, 0.0, UIViewAnimationOptions.CurveEaseIn, () => { toastContainer.Alpha = 1.0f; },
                 () =>

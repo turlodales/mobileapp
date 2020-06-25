@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Navigation;
@@ -9,11 +10,12 @@ using Toggl.Shared.Extensions;
 namespace Toggl.Core.UI.ViewModels
 {
     [Preserve(AllMembers = true)]
-    public sealed class SsoLinkViewModel : ViewModelWithInput<EmailParameter>
+    public sealed class SsoLinkViewModel : ViewModelWithInput<SsoLinkParameters>
     {
         private readonly IAnalyticsService analyticsService;
         private readonly ISchedulerProvider schedulerProvider;
         private Email email;
+        private string confirmationCode;
 
         public ViewAction Link { get; }
 
@@ -35,15 +37,24 @@ namespace Toggl.Core.UI.ViewModels
             Link = rxActionFactory.FromAsync(linkAccounts);
         }
 
-        public override Task Initialize(EmailParameter payload)
+        public override Task Initialize(SsoLinkParameters payload)
         {
             email = payload.Email;
+            confirmationCode = payload.ConfirmationCode;
+
             return base.Initialize(payload);
         }
 
         private Task linkAccounts()
         {
-            return Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.forAccountLinking(email));
+            analyticsService.SsoLinkStarted.Track();
+            return Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.forAccountLinking(email, confirmationCode));
+        }
+
+        public override void Close()
+        {
+            analyticsService.SsoLinkCancelled.Track();
+            base.Close();
         }
     }
 }

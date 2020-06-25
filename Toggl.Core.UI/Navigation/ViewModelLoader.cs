@@ -93,7 +93,13 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.NavigationService,
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory,
-                    dependencyContainer.UnauthenticatedTogglApi);
+                    dependencyContainer.UnauthenticatedTogglApi,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.TimeService,
+                    Xamarin.Essentials.WebAuthenticator.AuthenticateAsync);
             }
 
             if (viewModelType == typeof(SsoLinkViewModel))

@@ -11,6 +11,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
+using NSubstitute.ClearExtensions;
+using NSubstitute.ExceptionExtensions;
+using NUnit.Framework.Internal;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Helper;
@@ -23,6 +26,7 @@ using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
 using Toggl.Networking;
+using Toggl.Networking.ApiClients;
 using Toggl.Networking.Exceptions;
 using Toggl.Networking.Network;
 using Toggl.Shared;
@@ -36,6 +40,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
         public abstract class LoginViewModelTest : BaseViewModelWithInputTests<LoginViewModel, CredentialsParameter>
         {
             protected readonly ITogglApi TogglApi = Substitute.For<ITogglApi>();
+            protected readonly IUserApi UserApi = Substitute.For<IUserApi>();
             protected Email ValidEmail { get; } = Email.From("person@company.com");
             protected Email InvalidEmail { get; } = Email.From("this is not an email");
 
@@ -141,6 +146,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 public WhenLoginSucceeds()
                 {
+                    TogglApi.User.Returns(UserApi);
                     ViewModel.Initialize(CredentialsParameter.Empty).Wait();
                     ViewModel.Email.Accept(ValidEmail);
                     ViewModel.Password.Accept(ValidPassword);
@@ -163,6 +169,51 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                     await NavigationService.Received()
                         .Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default,
+                            ViewModel.View);
+                }
+
+                [Fact, LogIfTooSlow]
+                public async Task LinksAccountIfNeeded()
+                {
+                    ViewModel.Initialize(CredentialsParameter.With(ValidEmail, ValidPassword, true, "code")).Wait();
+                    UserApi.LinkSso(Arg.Any<Email>(), Arg.Any<string>()).Returns("");
+
+                    ViewModel.Login.Execute();
+
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(Arg.Is<MainTabBarParameters>(parameters => parameters.LinkResult == MainTabBarParameters.SsoLinkResult.SUCCESS),
+                            ViewModel.View);
+                }
+
+                [Fact, LogIfTooSlow]
+                public async Task TriesToLinkAccountsAndReportsErrorIfEmailsDontMatch()
+                {
+                    ViewModel.Initialize(CredentialsParameter.With(ValidEmail, ValidPassword, true, "code")).Wait();
+                    var request = Substitute.For<IRequest>();
+                    var response = Substitute.For<IResponse>();
+                    response.RawData.Returns("");
+                    var exception = new BadSsoEmailException(request, response);
+                    UserApi.LinkSso(Arg.Any<Email>(), Arg.Any<string>())
+                        .Returns(Task.FromException<string>(exception));
+
+                    ViewModel.Login.Execute();
+
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(Arg.Is<MainTabBarParameters>(parameters => parameters.LinkResult == MainTabBarParameters.SsoLinkResult.BAD_EMAIL_ERROR),
+                            ViewModel.View);
+                }
+
+                [Fact, LogIfTooSlow]
+                public async Task TriesToLinkAccountAndReportsError()
+                {
+                    ViewModel.Initialize(CredentialsParameter.With(ValidEmail, ValidPassword, true, "code")).Wait();
+                    UserApi.LinkSso(Arg.Any<Email>(), Arg.Any<string>())
+                        .Returns(Task.FromException<string>(new Exception()));
+
+                    ViewModel.Login.Execute();
+
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(Arg.Is<MainTabBarParameters>(parameters => parameters.LinkResult == MainTabBarParameters.SsoLinkResult.GENERIC_ERROR),
                             ViewModel.View);
                 }
 

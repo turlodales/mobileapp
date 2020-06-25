@@ -11,6 +11,6 @@ namespace Toggl.Networking.Network
             this.baseUrl = baseUrl;
         }
 
-        public Endpoint Get => Endpoint.Get(baseUrl, "auth/saml2/url");
+        public Endpoint Get => Endpoint.Get(baseUrl, "auth/saml2/login");
     }
 }

@@ -68,6 +68,18 @@ namespace Toggl.Core.Login
                 .Do(userLoggedInSubject.OnNext);
         }
 
+        public IObservable<ITogglApi> LoginWithApiToken(string apiToken)
+        {
+            return database.Value
+                .Clear()
+                .Select(_ => Credentials.WithApiToken(apiToken))
+                .SelectMany(credentials => apiFactory.Value.CreateApiWith(credentials, timeService.Value).User.Get())
+                .Select(User.Clean)
+                .SelectMany(database.Value.User.Create)
+                .Select(apiFromUser)
+                .Do(userLoggedInSubject.OnNext);
+        }
+
         public IObservable<ITogglApi> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo)
             => database.Value
                 .Clear()

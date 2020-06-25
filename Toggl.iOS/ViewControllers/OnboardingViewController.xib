@@ -91,13 +91,13 @@
             <color key="backgroundColor" name="Background"/>
             <constraints>
                 <constraint firstItem="p0p-WA-BnJ" firstAttribute="centerX" secondItem="dbi-b1-aTW" secondAttribute="centerX" id="5YO-dN-uX7"/>
-                <constraint firstItem="fCG-RA-wVW" firstAttribute="top" secondItem="jE3-un-G1X" secondAttribute="bottom" constant="0" id="6mk-NM-IYN"/>
+                <constraint firstItem="fCG-RA-wVW" firstAttribute="top" secondItem="jE3-un-G1X" secondAttribute="bottom" id="6mk-NM-IYN"/>
                 <constraint firstItem="K5R-Ee-235" firstAttribute="top" secondItem="dbi-b1-aTW" secondAttribute="top" constant="28" id="7se-Yl-rR1"/>
                 <constraint firstItem="vky-sg-lwu" firstAttribute="top" secondItem="K5R-Ee-235" secondAttribute="bottom" constant="38" id="H4f-Qb-yaQ"/>
                 <constraint firstItem="dbi-b1-aTW" firstAttribute="bottom" secondItem="fCG-RA-wVW" secondAttribute="bottom" constant="16" identifier="buttonsStackBottomConstraint" id="L4A-n4-G2p"/>
                 <constraint firstItem="fCG-RA-wVW" firstAttribute="leading" secondItem="dbi-b1-aTW" secondAttribute="leading" constant="31" id="R37-su-Ey0"/>
                 <constraint firstItem="dbi-b1-aTW" firstAttribute="trailing" secondItem="fCG-RA-wVW" secondAttribute="trailing" constant="31" id="Tx3-xR-cSN"/>
-                <constraint firstItem="fCG-RA-wVW" firstAttribute="top" secondItem="vky-sg-lwu" secondAttribute="bottom" constant="38" identifier="buttonsStackTopConstraint" id="VTa-Ib-RVh"/>
+                <constraint firstItem="fCG-RA-wVW" firstAttribute="top" secondItem="vky-sg-lwu" secondAttribute="bottom" priority="200" constant="38" identifier="buttonsStackTopConstraint" id="VTa-Ib-RVh"/>
                 <constraint firstItem="dbi-b1-aTW" firstAttribute="bottom" secondItem="p0p-WA-BnJ" secondAttribute="bottom" constant="24" id="bdz-b5-n1C"/>
                 <constraint firstItem="vky-sg-lwu" firstAttribute="leading" secondItem="K5R-Ee-235" secondAttribute="leading" id="cLV-1Q-M8g"/>
                 <constraint firstItem="K5R-Ee-235" firstAttribute="leading" secondItem="dbi-b1-aTW" secondAttribute="leading" constant="31" id="ePT-II-dUT"/>
@@ -106,11 +106,6 @@
                 <constraint firstItem="p0p-WA-BnJ" firstAttribute="leading" secondItem="dbi-b1-aTW" secondAttribute="leading" constant="31" id="zna-Qw-Ntw"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="dbi-b1-aTW"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="VTa-Ib-RVh"/>
-                </mask>
-            </variation>
             <point key="canvasLocation" x="33.333333333333336" y="53.571428571428569"/>
         </view>
     </objects>

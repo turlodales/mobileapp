@@ -49,6 +49,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private bool isForAccountLinking = false;
         private Email emailForLinking = Shared.Email.Empty;
+        private string confirmationCode;
         public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
         public BehaviorRelay<Password> Password { get; } = new BehaviorRelay<Password>(Shared.Password.Empty);
 
@@ -129,6 +130,7 @@ namespace Toggl.Core.UI.ViewModels
             if (isForAccountLinking)
             {
                 emailForLinking = parameter.Email;
+                confirmationCode = parameter.ConfirmationCode;
             }
 
             return base.Initialize(parameter);
@@ -205,17 +207,9 @@ namespace Toggl.Core.UI.ViewModels
 
         private async void onAuthenticated(ITogglApi api)
         {
-            lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
+            await this.onLoggedIn(lastTimeUsageStorage, onboardingStorage, interactorFactory, timeService, analyticsService);
 
-            onboardingStorage.SetIsNewUser(false);
-
-            interactorFactory.GetCurrentUser().Execute()
-                .Select(u => u.Id)
-                .Subscribe(analyticsService.SetUserId);
-
-            await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
-
-            await this.ssoLinkIfNeededAndNavigate(api, isForAccountLinking, emailForLinking);
+            await this.ssoLinkIfNeededAndNavigate(api, analyticsService, isForAccountLinking, emailForLinking, confirmationCode);
         }
 
         private void onError(Exception exception)

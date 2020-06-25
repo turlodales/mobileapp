@@ -157,6 +157,7 @@ namespace Toggl.iOS.ViewControllers
                             page1.RestartAnimations();
                             page2.RestartAnimations();
                         }
+                        View.BackgroundColor = ColorAssets.OnboardingPage1BackgroundColor;
                     });
         }
 

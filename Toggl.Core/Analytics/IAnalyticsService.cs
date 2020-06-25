@@ -255,6 +255,15 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 
+        IAnalyticsEvent LoginWithSso { get; }
+        IAnalyticsEvent SsoFlowStarted { get; }
+        IAnalyticsEvent SsoUrlRequested { get; }
+        IAnalyticsEvent SsoLinkStarted { get; }
+        IAnalyticsEvent SsoLinkCancelled { get; }
+        IAnalyticsEvent<string> SsoUrlOutcome { get; }
+        IAnalyticsEvent<string> SsoFlowOutcome { get; }
+        IAnalyticsEvent<string> SsoLinkOutcome { get; }
+
         void SetUserId(long id);
         void ResetUserId();
 

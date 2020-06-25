@@ -29,7 +29,8 @@ namespace Toggl.Networking.ApiClients
         {
             var endpoint = endpoints.Get;
             var url = new UriBuilder(endpoint.Url);
-            url.Query = $"email={email.ToString()}";
+            url.Query = $"email={Uri.EscapeDataString(email.ToString())}&client=mobile";
+
             var request = new Request("", url.Uri, Enumerable.Empty<HttpHeader>(), endpoint.Method);
             var response = await apiClient.Send(request).ConfigureAwait(false);
 
@@ -40,7 +41,7 @@ namespace Toggl.Networking.ApiClients
 
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                if (response.RawData.ToUpper().Contains("SAML2 CONFIGURATION"))
+                if (response.RawData.ToUpper().Contains("SSO"))
                 {
                     throw new SamlNotConfiguredException(request, response);
                 }

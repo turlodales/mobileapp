@@ -143,8 +143,14 @@ namespace Toggl.Networking.ApiClients
 
         public async Task<string> LinkSso(Email email, string confirmationCode)
         {
-            var endpoint = endPoints.EnableSso(email, confirmationCode);
-            return await SendRequest(endpoint, AuthHeader)
+            var endpoint = endPoints.EnableSso;
+
+            var json = serializer.Serialize(new SsoLinkParameters
+            {
+                ConfirmationCode = confirmationCode
+            }, SerializationReason.Post);
+
+            return await SendRequest(endpoint, AuthHeader, json)
                 .ConfigureAwait(false);
         }
 
@@ -204,6 +210,12 @@ namespace Toggl.Networking.ApiClients
             public int CountryId { get; set; }
 
             public string Timezone { get; set; }
+        }
+
+        [Preserve(AllMembers = true)]
+        private class SsoLinkParameters
+        {
+            public string ConfirmationCode { get; set; }
         }
     }
 }
