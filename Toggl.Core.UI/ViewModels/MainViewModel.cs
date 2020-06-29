@@ -89,16 +89,14 @@ namespace Toggl.Core.UI.ViewModels
 
         public IObservable<IImmutableList<MainLogSection>> MainLogItems { get; private set; }
 
-        public OnboardingCondition RunningTimeEntryTooltipCondition { get; private set; }
-        public OnboardingCondition StartTimeEntryTooltipCondition { get; private set; }
-
-        public OnboardingCondition FinalTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition RunningTimeEntryTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition StartTimeEntryTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition FinalTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition TapToStopTooltipCondition { get; private set; }
 
         public RatingViewModel RatingViewModel { get; }
         public SuggestionsViewModel SuggestionsViewModel { get; }
         public IOnboardingStorage OnboardingStorage { get; }
-
-        public OnboardingCondition TapToStopTooltipCondition { get; private set; }
 
         public ViewAction Refresh { get; private set; }
         public ViewAction OpenSettings { get; private set; }
@@ -312,29 +310,34 @@ namespace Toggl.Core.UI.ViewModels
             RunningTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.RunningTimeEntryTooltip,
                 OnboardingStorage,
-                createRunningTimeEntryTooltipPredicate());
+                createRunningTimeEntryTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
 
             StartTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.StartTimeEntryTooltip,
                 OnboardingStorage,
-                createStartTimeEntryTooltipPredicate());
+                createStartTimeEntryTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
 
             TapToStopTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.TapToStopTimeEntryTooltip,
                 OnboardingStorage,
-                createTapToStopTooltipPredicate());
+                createTapToStopTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
 
             FinalTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.FinalTooltip,
                 OnboardingStorage,
-                createFinalTooltipPredicate());
+                createFinalTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
         }
 
         private IObservable<bool> createRunningTimeEntryTooltipPredicate()
         {
             var timeEntryTappedObservable = SelectTimeEntry
                 .Inputs
-                .Select(_ => false);
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.RunningTimeEntryTooltip, TooltipDismissReason.ConditionMet);
 
             return CurrentRunningTimeEntry
                 .DelaySubscription(TimeSpan.FromSeconds(2))
@@ -357,7 +360,8 @@ namespace Toggl.Core.UI.ViewModels
 
             var startTimeEntryTapped = StartTimeEntry
                 .Inputs
-                .Select(_ => false);
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.StartTimeEntryTooltip, TooltipDismissReason.ConditionMet);
 
             return timeEntriesExist.CombineLatest(
                 timeEntryIsRunning,
@@ -368,12 +372,18 @@ namespace Toggl.Core.UI.ViewModels
 
         private IObservable<bool> createTapToStopTooltipPredicate()
         {
-            if (OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.EditViewProjectsTooltip)
-                || OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.StartViewProjectsTooltip))
+            var editViewTooltipWasShown = OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.EditViewProjectsTooltip);
+            var startViewTooltipWasShown = OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.StartViewProjectsTooltip);
+
+            var conditionMetObservable = StopTimeEntry.Inputs
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.TapToStopTimeEntryTooltip, TooltipDismissReason.ConditionMet);
+
+            if (startViewTooltipWasShown || editViewTooltipWasShown)
             {
                 return CurrentRunningTimeEntry
                     .Select(timeEntry => timeEntry == null)
-                    .Merge(StopTimeEntry.Inputs.SelectValue(false));
+                    .Merge(conditionMetObservable);
             }
 
             var editViewProjectsTooltipSeen = OnboardingStorage.OnboardingConditionMet
@@ -394,7 +404,7 @@ namespace Toggl.Core.UI.ViewModels
                     var timeEntryIsRunning = timeEntry != null;
                     return tooltipSeen && timeEntryIsRunning;
                 })
-                .Merge(StopTimeEntry.Inputs.Select(_ => false));
+                .Merge(conditionMetObservable);
         }
 
         private IObservable<bool> createFinalTooltipPredicate()
@@ -402,7 +412,8 @@ namespace Toggl.Core.UI.ViewModels
             return StopTimeEntry.Inputs
                 .Take(1)
                 .SelectValue(true)
-                .Merge(SelectTimeEntry.Inputs.SelectValue(false));
+                .Merge(SelectTimeEntry.Inputs.SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.FinalTooltip, TooltipDismissReason.ConditionMet));
         }
 
         public void Track(ITrackableEvent e)

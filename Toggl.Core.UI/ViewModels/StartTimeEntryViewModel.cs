@@ -85,7 +85,7 @@ namespace Toggl.Core.UI.ViewModels
 
         public IOnboardingStorage OnboardingStorage { get; }
 
-        public OnboardingCondition ProjectsTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition ProjectsTooltipCondition { get; private set; }
 
         public OutputAction<IThreadSafeTimeEntry> Done { get; }
         public ViewAction DurationTapped { get; }
@@ -176,14 +176,24 @@ namespace Toggl.Core.UI.ViewModels
             ProjectsTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.StartViewProjectsTooltip,
                 onboardingStorage,
-                createProjectsTooltipPredicate());
+                createProjectsTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
         }
 
         private IObservable<bool> createProjectsTooltipPredicate()
         {
+            var projectsStartBeingSuggested = isSuggestingProjects
+                .Where(isSuggesting => isSuggesting)
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.StartViewProjectsTooltip, TooltipDismissReason.ConditionMet);
+
+            var doneTapped = Done.Inputs
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.StartViewProjectsTooltip, TooltipDismissReason.Invalidated);
+
             return Observable.Return(true)
-                .Merge(isSuggestingProjects.Where(isSuggesting => isSuggesting).SelectValue(false))
-                .Merge(Done.Inputs.SelectValue(false));
+                .Merge(projectsStartBeingSuggested)
+                .Merge(doneTapped);
         }
 
         public override async Task Initialize(StartTimeEntryParameters parameter)

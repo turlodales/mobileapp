@@ -14,6 +14,7 @@ using Toggl.Core.Interactors;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;
+using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.Views;
@@ -91,7 +92,8 @@ namespace Toggl.Core.UI.ViewModels
 
         public IObservable<IThreadSafePreferences> Preferences { get; private set; }
 
-        public OnboardingCondition ProjectsTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition ProjectsTooltipCondition { get; private set; }
+
         public string ProjectsTooltipText => projectId.HasValue
             ? Resources.TapHereToChangeOrAddProjects
             : Resources.AssignYourTimeEntryToAProject;
@@ -229,14 +231,20 @@ namespace Toggl.Core.UI.ViewModels
             ProjectsTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.EditViewProjectsTooltip,
                 OnboardingStorage,
-                createProjectsTooltipPredicate());
+                createProjectsTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
         }
 
         private IObservable<bool> createProjectsTooltipPredicate()
         {
+            var selectProjectTapped = SelectProject
+                .Inputs
+                .Select(_ => false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.EditViewProjectsTooltip, TooltipDismissReason.ConditionMet);
+
             return Observable
                 .Return(true)
-                .Merge(SelectProject.Inputs.Select(_ => false));
+                .Merge(selectProjectTapped);
         }
 
         public override async Task Initialize(long[] timeEntryIds)
