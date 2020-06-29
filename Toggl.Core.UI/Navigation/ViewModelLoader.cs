@@ -86,19 +86,29 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.InteractorFactory);
             }
 
-            if (viewModelType == typeof(LoginViewModel))
+            if (viewModelType == typeof(SsoViewModel))
             {
-                return new LoginViewModel(
-                    dependencyContainer.UserAccessManager,
+                return new SsoViewModel(
                     dependencyContainer.AnalyticsService,
-                    dependencyContainer.OnboardingStorage,
                     dependencyContainer.NavigationService,
-                    dependencyContainer.ErrorHandlingService,
-                    dependencyContainer.LastTimeUsageStorage,
-                    dependencyContainer.TimeService,
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory,
-                    dependencyContainer.InteractorFactory);
+                    dependencyContainer.UnauthenticatedTogglApi,
+                    dependencyContainer.UserAccessManager,
+                    dependencyContainer.LastTimeUsageStorage,
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.TimeService,
+                    Xamarin.Essentials.WebAuthenticator.AuthenticateAsync);
+            }
+
+            if (viewModelType == typeof(SsoLinkViewModel))
+            {
+                return new SsoLinkViewModel(
+                    dependencyContainer.AnalyticsService,
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory);
             }
 
             if (viewModelType == typeof(MainTabBarViewModel))

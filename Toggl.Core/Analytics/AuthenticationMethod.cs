@@ -4,6 +4,7 @@
     {
         EmailAndPassword,
         Google,
-        Apple
+        Apple,
+        SSO
     }
 }

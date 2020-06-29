@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using AuthenticationServices;
 using CoreGraphics;
 using Foundation;
 using Toggl.Core.Analytics;
+using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Extensions;
@@ -26,6 +28,7 @@ namespace Toggl.iOS.ViewControllers
 
         private const int totalPages = 3;
         private int currentPage = 0;
+        private bool shouldAllowSwipe = true;
 
         private OnboardingLoadingView loadingView;
 
@@ -42,7 +45,9 @@ namespace Toggl.iOS.ViewControllers
             loadingView = new OnboardingLoadingView();
             loadingView.TranslatesAutoresizingMaskIntoConstraints = false;
 
+            View.BackgroundColor = ColorAssets.OnboardingPage1BackgroundColor;
             configureButtonsAppearance();
+            configureLabelsAppearance();
 
             ContinueWithEmailButton.Rx().Tap()
                 .Subscribe(ViewModel.ContinueWithEmail.Inputs)
@@ -52,8 +57,20 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
                 .DisposedBy(DisposeBag);
 
+            CancelSsoButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOnCancel.Inputs)
+                .DisposedBy(DisposeBag);
+
+            LoginWithSsoButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOn.Inputs)
+                .DisposedBy(DisposeBag);
+
             ViewModel.IsLoading
                 .Subscribe(toggleLoadingView)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsForAccountLinking
+                .Subscribe(handleAccountLinkingVisibilityAndSwiping)
                 .DisposedBy(DisposeBag);
 
             ViewModel.GoToNextPageObservable
@@ -89,6 +106,63 @@ namespace Toggl.iOS.ViewControllers
             // Update shadows and borders in the buttons
             // this is needed because CGColor doesn't know about the current trait collection
             configureButtonsAppearance();
+        }
+
+        private void handleAccountLinkingVisibilityAndSwiping(bool isForAccountLinking)
+        {
+            shouldAllowSwipe = !isForAccountLinking;
+
+            AnimationExtensions.Animate(
+                Animation.Timings.EnterTiming,
+                Animation.Curves.EaseIn,
+                fadeoutActiveElements(isForAccountLinking),
+                fadeinNewElements(isForAccountLinking));
+        }
+
+        private Action fadeoutActiveElements(bool isForAccountLinking)
+        {
+            return () =>
+            {
+                ButtonsStackBottomConstraint.Active = !isForAccountLinking;
+                ButtonsStackTopConstraint.Active = isForAccountLinking;
+
+                if (isForAccountLinking)
+                {
+                    containerView.Alpha = 0;
+                    PageControl.Alpha = 0;
+                    ButtonsStackView.ArrangedSubviews.Last().Hidden = true;
+                }
+                else
+                {
+                    CancelSsoButton.Alpha = 0;
+                    LoginToEnableSsoLabel.Alpha = 0;
+                    ButtonsStackView.ArrangedSubviews.Last().Hidden = false;
+                }
+            };
+        }
+
+        private Action fadeinNewElements(bool isForAccountLinking)
+        {
+            return () =>
+                    AnimationExtensions.Animate(
+                    Animation.Timings.EnterTiming,
+                    Animation.Curves.EaseIn,
+                    () =>
+                    {
+                        if (isForAccountLinking)
+                        {
+                            CancelSsoButton.Alpha = 1;
+                            LoginToEnableSsoLabel.Alpha = 1;
+                        }
+                        else
+                        {
+                            containerView.Alpha = 1;
+                            PageControl.Alpha = 1;
+                            page1.RestartAnimations();
+                            page2.RestartAnimations();
+                        }
+                        View.BackgroundColor = ColorAssets.OnboardingPage1BackgroundColor;
+                    });
         }
 
         private void configureOnboardingPages()
@@ -140,6 +214,11 @@ namespace Toggl.iOS.ViewControllers
             });
         }
 
+        private void configureLabelsAppearance()
+        {
+            LoginToEnableSsoLabel.SetTextWithOnboardingAppearance(Resources.LoginToEnableSso);
+        }
+
         private void configureButtonsAppearance()
         {
             // Continue with email
@@ -161,8 +240,20 @@ namespace Toggl.iOS.ViewControllers
             ContinueWithGoogleButton.Layer.ShadowRadius = 6;
             ContinueWithGoogleButton.Layer.ShadowOffset = new CGSize(0, 2);
 
+            // Login with SSO
+            LoginWithSsoButton.TitleLabel.Font = UIFont.SystemFontOfSize(17, UIFontWeight.Medium);
+            LoginWithSsoButton.SetTitle(Resources.LoginWithSso, UIControlState.Normal);
+            LoginWithSsoButton.SetTitleColor(ColorAssets.InverseText, UIControlState.Normal);
+
+            ButtonsStackView.SetCustomSpacing(4, ContinueWithEmailButton);
+
             // Continue with apple
             configureSignInWithApple();
+
+            // Cancel SSO
+            CancelSsoButton.TitleLabel.Font = UIFont.SystemFontOfSize(17, UIFontWeight.Medium);
+            CancelSsoButton.SetTitle(Resources.Cancel, UIControlState.Normal);
+            CancelSsoButton.SetTitleColor(ColorAssets.InverseText, UIControlState.Normal);
         }
 
         private void configureSignInWithApple()
@@ -190,6 +281,8 @@ namespace Toggl.iOS.ViewControllers
 
         private void moveToNextPage(OnboardingScrollAction scrollAction)
         {
+            if (!shouldAllowSwipe) return;
+
             var next = nextPageView();
             var frame = View.Bounds;
             frame.Offset(View.Bounds.Width, 0);
@@ -204,6 +297,8 @@ namespace Toggl.iOS.ViewControllers
 
         private void moveToPreviousPage(OnboardingScrollAction scrollAction)
         {
+            if (!shouldAllowSwipe) return;
+
             var previous = previousPageView();
             var frame = View.Bounds;
             frame.Offset(-View.Bounds.Width, 0);

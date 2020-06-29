@@ -1,4 +1,5 @@
 ﻿using System;
+using Toggl.Shared;
 
 namespace Toggl.Networking.Network
 {
@@ -22,5 +23,6 @@ namespace Toggl.Networking.Network
         public Endpoint Put => Endpoint.Put(baseUrl, "me");
 
         public Endpoint ResetPassword => Endpoint.Post(baseUrl, "me/lost_passwords");
+        public Endpoint EnableSso => Endpoint.Post(baseUrl, $"me/enable_sso");
     }
 }

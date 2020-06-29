@@ -8,7 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Threading;
 using System.Threading.Tasks;
+using NSubstitute.ClearExtensions;
+using NSubstitute.ExceptionExtensions;
+using NUnit.Framework.Internal;
 using Toggl.Core.Analytics;
 using Toggl.Core.Exceptions;
 using Toggl.Core.Helper;
@@ -19,6 +24,9 @@ using Toggl.Core.UI;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Core.UI.Views;
+using Toggl.Networking;
+using Toggl.Networking.ApiClients;
 using Toggl.Networking.Exceptions;
 using Toggl.Networking.Network;
 using Toggl.Shared;
@@ -31,6 +39,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
     {
         public abstract class LoginViewModelTest : BaseViewModelWithInputTests<LoginViewModel, CredentialsParameter>
         {
+            protected readonly ITogglApi TogglApi = Substitute.For<ITogglApi>();
+            protected readonly IUserApi UserApi = Substitute.For<IUserApi>();
             protected Email ValidEmail { get; } = Email.From("person@company.com");
             protected Email InvalidEmail { get; } = Email.From("this is not an email");
 
@@ -55,6 +65,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             protected override void AdditionalSetup()
             {
+                UserAccessManager.UserLoggedIn.Returns(Observable.Return(TogglApi));
                 var container = new TestDependencyContainer { MockSyncManager = SyncManager };
                 TestDependencyContainer.Initialize(container);
             }
@@ -120,7 +131,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void DoesNothingWhenThePageIsCurrentlyLoading()
             {
-                var never = Observable.Never<Unit>();
+                var never = Observable.Never<ITogglApi>();
                 UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>()).Returns(never);
                 ViewModel.Email.Accept(ValidEmail);
                 ViewModel.Password.Accept(ValidPassword);
@@ -135,10 +146,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 public WhenLoginSucceeds()
                 {
+                    TogglApi.User.Returns(UserApi);
+                    ViewModel.Initialize(CredentialsParameter.Empty).Wait();
                     ViewModel.Email.Accept(ValidEmail);
                     ViewModel.Password.Accept(ValidPassword);
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Return(Unit.Default));
+                        .Returns(Observable.Return(TogglApi));
                 }
 
                 [Fact, LogIfTooSlow]
@@ -150,11 +163,58 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 }
 
                 [Fact, LogIfTooSlow]
-                public void NavigatesToTheTimeEntriesViewModel()
+                public async Task NavigatesToTheTimeEntriesViewModel()
                 {
                     ViewModel.Login.Execute();
 
-                    NavigationService.Received().Navigate<MainTabBarViewModel>(ViewModel.View);
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default,
+                            ViewModel.View);
+                }
+
+                [Fact, LogIfTooSlow]
+                public async Task LinksAccountIfNeeded()
+                {
+                    ViewModel.Initialize(CredentialsParameter.With(ValidEmail, ValidPassword, true, "code")).Wait();
+                    UserApi.LinkSso(Arg.Any<Email>(), Arg.Any<string>()).Returns("");
+
+                    ViewModel.Login.Execute();
+
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(Arg.Is<MainTabBarParameters>(parameters => parameters.LinkResult == MainTabBarParameters.SsoLinkResult.SUCCESS),
+                            ViewModel.View);
+                }
+
+                [Fact, LogIfTooSlow]
+                public async Task TriesToLinkAccountsAndReportsErrorIfEmailsDontMatch()
+                {
+                    ViewModel.Initialize(CredentialsParameter.With(ValidEmail, ValidPassword, true, "code")).Wait();
+                    var request = Substitute.For<IRequest>();
+                    var response = Substitute.For<IResponse>();
+                    response.RawData.Returns("");
+                    var exception = new BadSsoEmailException(request, response);
+                    UserApi.LinkSso(Arg.Any<Email>(), Arg.Any<string>())
+                        .Returns(Task.FromException<string>(exception));
+
+                    ViewModel.Login.Execute();
+
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(Arg.Is<MainTabBarParameters>(parameters => parameters.LinkResult == MainTabBarParameters.SsoLinkResult.BAD_EMAIL_ERROR),
+                            ViewModel.View);
+                }
+
+                [Fact, LogIfTooSlow]
+                public async Task TriesToLinkAccountAndReportsError()
+                {
+                    ViewModel.Initialize(CredentialsParameter.With(ValidEmail, ValidPassword, true, "code")).Wait();
+                    UserApi.LinkSso(Arg.Any<Email>(), Arg.Any<string>())
+                        .Returns(Task.FromException<string>(new Exception()));
+
+                    ViewModel.Login.Execute();
+
+                    await NavigationService.Received()
+                        .Navigate<MainTabBarViewModel, MainTabBarParameters>(Arg.Is<MainTabBarParameters>(parameters => parameters.LinkResult == MainTabBarParameters.SsoLinkResult.GENERIC_ERROR),
+                            ViewModel.View);
                 }
 
                 [Fact, LogIfTooSlow]
@@ -208,7 +268,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var observer = TestScheduler.CreateObserver<bool>();
                     ViewModel.IsLoading.Subscribe(observer);
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(new Exception()));
+                        .Returns(Observable.Throw<ITogglApi>(new Exception()));
 
                     ViewModel.Login.Execute();
 
@@ -224,7 +284,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 public void DoesNotNavigate()
                 {
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(new Exception()));
+                        .Returns(Observable.Throw<ITogglApi>(new Exception()));
 
                     ViewModel.Login.Execute();
 
@@ -239,7 +299,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var exception = new UnauthorizedException(
                         Substitute.For<IRequest>(), Substitute.For<IResponse>());
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(exception));
+                        .Returns(Observable.Throw<ITogglApi>(exception));
 
                     ViewModel.Login.Execute();
 
@@ -256,7 +316,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var exception = new UnauthorizedException(
                         Substitute.For<IRequest>(), Substitute.For<IResponse>());
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(exception));
+                        .Returns(Observable.Throw<ITogglApi>(exception));
 
                     ViewModel.Login.Execute();
 
@@ -306,7 +366,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var exception = new Exception();
                     ViewModel.LoginErrorMessage.Subscribe(observer);
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(exception));
+                        .Returns(Observable.Throw<ITogglApi>(exception));
 
                     ViewModel.Login.Execute();
 
@@ -324,7 +384,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     var exception = new Exception();
                     ViewModel.LoginErrorMessage.Subscribe(observer);
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(exception));
+                        .Returns(Observable.Throw<ITogglApi>(exception));
                     ErrorHandlingService.TryHandleDeprecationError(Arg.Any<Exception>())
                         .Returns(true);
 
@@ -341,7 +401,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 {
                     var exception = new Exception();
                     UserAccessManager.Login(Arg.Any<Email>(), Arg.Any<Password>())
-                        .Returns(Observable.Throw<Unit>(exception));
+                        .Returns(Observable.Throw<ITogglApi>(exception));
 
                     ViewModel.Login.Execute();
 

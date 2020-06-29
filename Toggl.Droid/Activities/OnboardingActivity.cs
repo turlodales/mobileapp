@@ -6,6 +6,7 @@ using Android.Runtime;
 using Toggl.Core.Analytics;
 using Toggl.Core.UI.Models;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
@@ -36,8 +37,24 @@ namespace Toggl.Droid.Activities
                 .Subscribe(ViewModel.ContinueWithEmail.Inputs)
                 .DisposedBy(DisposeBag);
 
+            ssoContinueWithEmailButton.Rx().Tap()
+                .Subscribe(ViewModel.ContinueWithEmail.Inputs)
+                .DisposedBy(DisposeBag);
+
             continueWithGoogleButton.Rx().Tap()
                 .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ssoContinueWithGoogleButton.Rx().Tap()
+                .Subscribe(ViewModel.ContinueWithGoogle.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ssoCancelButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOnCancel.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ssoButton.Rx().Tap()
+                .Subscribe(ViewModel.SingleSignOn.Inputs)
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsLoading
@@ -48,6 +65,10 @@ namespace Toggl.Droid.Activities
             ViewModel.IsLoading
                 .Do(setAnimationStatus)
                 .Subscribe(loadingViewViews.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsForAccountLinking
+                .Subscribe(handleAccountLinkingVisibility)
                 .DisposedBy(DisposeBag);
 
             onboardingViewPager.Rx()
@@ -64,6 +85,12 @@ namespace Toggl.Droid.Activities
                     onboardingViewPager.SetCurrentItem(nextPage, true);
                 })
                 .DisposedBy(DisposeBag);
+        }
+
+        private void handleAccountLinkingVisibility(bool isForAccountLinking)
+        {
+            notLoadingViewViews.Visibility = (!isForAccountLinking).ToVisibility();
+            ssoNotLoadingViewViews.Visibility = isForAccountLinking.ToVisibility();
         }
 
         private void onPageChanged(int page)
