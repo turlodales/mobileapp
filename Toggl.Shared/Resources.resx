@@ -268,10 +268,7 @@ mobile, desktop or web</value>
         <comment>Header displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>
     </data>
     <data name="ToEnableLoginWithSsoLoginWithExistingCredentials" xml:space="preserve">
-        <value>To enable login with SSO
-for this account
-please log in with your
-existing credentials.</value>
+        <value>To enable login with SSO for this account, please log in with your existing credentials.</value>
         <comment>Explanation displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>
     </data>
     <data name="SingleSignOnError" xml:space="preserve">

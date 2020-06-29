@@ -241,6 +241,8 @@ namespace Toggl.iOS.ViewControllers
             LoginWithSsoButton.SetTitle(Resources.LoginWithSso, UIControlState.Normal);
             LoginWithSsoButton.SetTitleColor(ColorAssets.InverseText, UIControlState.Normal);
 
+            ButtonsStackView.SetCustomSpacing(4, ContinueWithEmailButton);
+
             // Continue with apple
             configureSignInWithApple();
 
