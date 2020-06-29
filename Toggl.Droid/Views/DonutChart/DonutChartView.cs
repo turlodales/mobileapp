@@ -12,6 +12,7 @@ using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Point = Toggl.Shared.Point;
 using Color = Android.Graphics.Color;
+using Toggl.Droid.Helper;
 
 namespace Toggl.Droid.Views
 {
@@ -215,7 +216,11 @@ namespace Toggl.Droid.Views
 
         private void drawSlice(Canvas canvas, RectF circle, Slice slice)
         {
-            paint.Color = Color.ParseColor(slice.PercentageSegment.Segment.Color);
+            paint.Color = Shared.Color.ParseAndAdjustToUserTheme(
+                slice.PercentageSegment.Segment.Color,
+                ActiveTheme.Is.DarkTheme
+            ).ToNativeColor();
+
             canvas.DrawArc(circle, slice.StartAngle, slice.SweepAngle, true, paint);
 
             drawSegmentPercentageLabel(canvas, slice);

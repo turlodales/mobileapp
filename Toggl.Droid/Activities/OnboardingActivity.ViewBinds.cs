@@ -76,7 +76,7 @@ namespace Toggl.Droid.Activities
 
         private class ScreenSlidePagerAdapter : FragmentPagerAdapter
         {
-            public override int Count { get; } = 1;
+            public override int Count { get; } = 3;
             public ScreenSlidePagerAdapter(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
             {
             }

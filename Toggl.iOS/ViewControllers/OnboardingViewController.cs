@@ -72,6 +72,10 @@ namespace Toggl.iOS.ViewControllers
             ViewModel.IsForAccountLinking
                 .Subscribe(handleAccountLinkingVisibilityAndSwiping)
                 .DisposedBy(DisposeBag);
+
+            ViewModel.GoToNextPageObservable
+                .Subscribe(_ => moveToNextPage(OnboardingScrollAction.Automatic))
+                .DisposedBy(DisposeBag);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -166,10 +170,10 @@ namespace Toggl.iOS.ViewControllers
             PageControl.CurrentPageIndicatorTintColor = ColorAssets.Background;
             PageControl.PageIndicatorTintColor = ColorAssets.Background.ColorWithAlpha((nfloat)0.5);
 
-            swipeLeftGesture = new UISwipeGestureRecognizer(moveToNextPage);
+            swipeLeftGesture = new UISwipeGestureRecognizer(_ => moveToNextPage(OnboardingScrollAction.Manual));
             swipeLeftGesture.Direction = UISwipeGestureRecognizerDirection.Left;
 
-            swipeRightGesture = new UISwipeGestureRecognizer(moveToPreviousPage);
+            swipeRightGesture = new UISwipeGestureRecognizer(_ => moveToPreviousPage(OnboardingScrollAction.Manual));
             swipeRightGesture.Direction = UISwipeGestureRecognizerDirection.Right;
 
             containerView = new UIView();
@@ -275,7 +279,7 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.ContinueWithApple.Inputs);
         }
 
-        private void moveToNextPage(UISwipeGestureRecognizer swipe)
+        private void moveToNextPage(OnboardingScrollAction scrollAction)
         {
             if (!shouldAllowSwipe) return;
 
@@ -288,10 +292,10 @@ namespace Toggl.iOS.ViewControllers
             UIView.Animate(
                 duration,
                 () => { animatePage(next); },
-                () => { moveIndicatorToNextPage(OnboardingScrollAction.Manual); });
+                () => { moveIndicatorToNextPage(scrollAction); });
         }
 
-        private void moveToPreviousPage(UISwipeGestureRecognizer swipe)
+        private void moveToPreviousPage(OnboardingScrollAction scrollAction)
         {
             if (!shouldAllowSwipe) return;
 
@@ -304,7 +308,7 @@ namespace Toggl.iOS.ViewControllers
             UIView.Animate(
                 duration,
                 () => { animatePage(previous); },
-                () => { moveIndicatorToPreviousPage(OnboardingScrollAction.Manual); });
+                () => { moveIndicatorToPreviousPage(scrollAction); });
         }
 
         private void animatePage(OnboardingPageView page)

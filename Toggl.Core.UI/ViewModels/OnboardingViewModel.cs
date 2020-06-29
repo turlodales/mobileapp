@@ -50,6 +50,7 @@ namespace Toggl.Core.UI.ViewModels
 
         public IObservable<bool> IsLoading { get; }
         public IObservable<bool> IsForAccountLinking { get; }
+        public IObservable<Unit> GoToNextPageObservable { get; }
 
         public ViewAction ContinueWithApple { get; }
         public ViewAction ContinueWithGoogle { get; }
@@ -102,6 +103,11 @@ namespace Toggl.Core.UI.ViewModels
 
             IsForAccountLinking = isForAccountLinking
                 .DistinctUntilChanged()
+                .AsDriver(schedulerProvider);
+
+            GoToNextPageObservable = Observable
+                .Interval(TimeSpan.FromSeconds(5), schedulerProvider.MainScheduler)
+                .SelectValue(Unit.Default)
                 .AsDriver(schedulerProvider);
         }
 

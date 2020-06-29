@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.iOS.Extensions;
+using Toggl.iOS.Helper;
 using UIKit;
 using static Toggl.Core.UI.ViewModels.Reports.ReportDonutChartElement;
 using static Toggl.Shared.Math;
@@ -66,7 +67,10 @@ namespace Toggl.iOS.Views.Reports
 
         private void drawSegment(CGContext ctx, PercentageDecoratedSegment percentageSegment, ref float startAngle)
         {
-            ctx.SetFillColor(new Color(percentageSegment.Segment.Color).ToNativeColor().CGColor);
+            ctx.SetFillColor(Color.ParseAndAdjustToUserTheme(
+                percentageSegment.Segment.Color,
+                ActiveTheme.Is.DarkTheme
+            ).ToNativeColor().CGColor);
 
             var endAngle = startAngle + (float)(FullCircle * percentageSegment.NormalizedPercentage);
 
