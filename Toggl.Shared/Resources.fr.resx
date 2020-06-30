@@ -1170,6 +1170,9 @@ Ouvrez l'application pour suivre le temps.</value>
     <data name="ContinueWithGoogle" xml:space="preserve">
         <value>Continuer avec Google</value>
     </data>
+    <data name="LoginWithSso" xml:space="preserve">
+        <value>Se connecter avec SSO</value>
+    </data>
     <data name="RatingViewPositiveCallToActionDescription" xml:space="preserve">
         <value>Pourriez-vous évaluer Toggl sur {0}? Votre avis fera vraiment la différence.</value>
     </data>

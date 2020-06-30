@@ -1238,6 +1238,9 @@ redefinir a sua senha</value>
   <data name="ContinueWithEmail" xml:space="preserve">
     <value>Continuar com email</value>
   </data>
+  <data name="LoginWithSso" xml:space="preserve">
+        <value>Entrar usando SSO</value>
+    </data>
   <data name="LoginWelcomeMessage" xml:space="preserve">
     <value>Boas-vindas!</value>
   </data>
