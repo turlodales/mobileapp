@@ -1800,4 +1800,54 @@ No worries. Create a new workspace to continue.</value>
         <value>Next</value>
         <comment>The word `Next` in the context of navigation</comment>
     </data>
+    <data name="GetReadyToTrackTimeAndBoostYourProductivity" xml:space="preserve">
+        <value>Get ready to track time and
+boost your productivity!</value>
+        <comment>A welcome message for users who just signed up</comment>
+    </data>
+    <data name="GettingStartedWithTogglApp" xml:space="preserve">
+        <value>Getting started with Toggl app</value>
+        <comment>Description of the time entry that gets created automatically as a part of user onboarding</comment>
+    </data>
+    <data name="HereIsYourRunningTimeEntryTooltip" xml:space="preserve">
+        <value>Here is your first running Time Entry.
+Tap to edit it.</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the very first time entry</comment>
+    </data>
+    <data name="AssignYourTimeEntryToAProject" xml:space="preserve">
+        <value>Assign your time entry to a larger 
+Project to get more useful time reports</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the edit time entry view below the "+ Add project/task" button</comment>
+    </data>
+    <data name="TapHereToChangeOrAddProjects" xml:space="preserve">
+        <value>Tap here to change or add Projects</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the edit time entry view below the selected project</comment>
+    </data>
+    <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
+        <value>Tap here to start your next Time Entry</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the start time entry button</comment>
+    </data>
+    <data name="TapHereToStopYourTimeEntry" xml:space="preserve">
+        <value>Tapping here will stop the timer</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the stop time entry button</comment>
+    </data>
+    <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>Click on $ or use @ to assign
+a Project to a Time Entry</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the start time entry view above the projects button.
+                 The $ sign gets replaced with the icon image in runtime</comment>
+    </data>
+    <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
+        <value>You've made your first
+Time Entry on Toggl mobile app 🎉</value>
+        <comment>Title of the final tooltip of onboarding. Displayed below the created time entry</comment>
+    </data>
+    <data name="YouCanAccessTimeEntriesFromAnyTogglApp" xml:space="preserve">
+        <value>You can easily access and edit all your Time Entries from any Toggl app.</value>
+        <comment>Message in the final tooltip of onboarding. Displayed below the created time entry</comment>
+    </data>
+    <data name="OkGotIt" xml:space="preserve">
+        <value>Ok, got it!</value>
+        <comment>Button in the final tooltip of onboarding. Displayed below the created time entry</comment>
+    </data>
 </root>

@@ -38,12 +38,6 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint ButtonsContainerBottomConstraint { get; set; }
 
 		[Outlet]
-		UIKit.UIView CategorizeWithProjectsBubbleView { get; set; }
-
-		[Outlet]
-		UIKit.UILabel CategorizeWithProjectsLabel { get; set; }
-
-		[Outlet]
 		UIKit.UIButton CloseButton { get; set; }
 
 		[Outlet]
@@ -87,6 +81,21 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.UILabel GroupDuration { get; set; }
+
+		[Outlet]
+		UIKit.UIView ProjectsTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView ProjectsTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView ProjectsTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView ProjectsTooltipCloseIcon { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ProjectsTooltipLabel { get; set; }
 
 		[Outlet]
 		UIKit.UILabel ProjectTaskClientLabel { get; set; }
@@ -172,14 +181,9 @@ namespace Toggl.iOS.ViewControllers
 				BillableView = null;
 			}
 
-			if (CategorizeWithProjectsBubbleView != null) {
-				CategorizeWithProjectsBubbleView.Dispose ();
-				CategorizeWithProjectsBubbleView = null;
-			}
-
-			if (CategorizeWithProjectsLabel != null) {
-				CategorizeWithProjectsLabel.Dispose ();
-				CategorizeWithProjectsLabel = null;
+			if (ButtonsContainerBottomConstraint != null) {
+				ButtonsContainerBottomConstraint.Dispose ();
+				ButtonsContainerBottomConstraint = null;
 			}
 
 			if (CloseButton != null) {
@@ -195,11 +199,6 @@ namespace Toggl.iOS.ViewControllers
 			if (DeleteButton != null) {
 				DeleteButton.Dispose ();
 				DeleteButton = null;
-			}
-
-			if (ButtonsContainerBottomConstraint != null) {
-				ButtonsContainerBottomConstraint.Dispose ();
-				ButtonsContainerBottomConstraint = null;
 			}
 
 			if (DescriptionTextView != null) {
@@ -335,6 +334,31 @@ namespace Toggl.iOS.ViewControllers
 			if (TitleLabel != null) {
 				TitleLabel.Dispose ();
 				TitleLabel = null;
+			}
+
+			if (ProjectsTooltip != null) {
+				ProjectsTooltip.Dispose ();
+				ProjectsTooltip = null;
+			}
+
+			if (ProjectsTooltipArrow != null) {
+				ProjectsTooltipArrow.Dispose ();
+				ProjectsTooltipArrow = null;
+			}
+
+			if (ProjectsTooltipBackground != null) {
+				ProjectsTooltipBackground.Dispose ();
+				ProjectsTooltipBackground = null;
+			}
+
+			if (ProjectsTooltipCloseIcon != null) {
+				ProjectsTooltipCloseIcon.Dispose ();
+				ProjectsTooltipCloseIcon = null;
+			}
+
+			if (ProjectsTooltipLabel != null) {
+				ProjectsTooltipLabel.Dispose ();
+				ProjectsTooltipLabel = null;
 			}
 		}
 	}

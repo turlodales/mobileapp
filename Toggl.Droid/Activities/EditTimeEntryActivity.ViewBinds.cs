@@ -11,6 +11,7 @@ using static Toggl.Droid.Resource.Id;
 using TextResources = Toggl.Shared.Resources;
 using TagsAdapter = Toggl.Droid.Adapters.SimpleAdapter<string>;
 using Toggl.Droid.ViewHolders;
+using Toggl.Droid.Views;
 
 namespace Toggl.Droid.Activities
 {
@@ -67,6 +68,8 @@ namespace Toggl.Droid.Activities
         private AppBarLayout appBarLayout;
         private NestedScrollView scrollView;
 
+        private TooltipLayout projectTooltip;
+
         protected override void InitializeViews()
         {
             descriptionEditText = FindViewById<EditText>(DescriptionEditText);
@@ -115,6 +118,8 @@ namespace Toggl.Droid.Activities
 
             scrollView = FindViewById<NestedScrollView>(Resource.Id.ScrollView);
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.AppBarLayout);
+
+            projectTooltip = FindViewById<TooltipLayout>(Resource.Id.ProjectTooltip);
 
             singleTimeEntryModeViews.Visibility = (!ViewModel.IsEditingGroup).ToVisibility();
             timeEntriesGroupModeViews.Visibility = ViewModel.IsEditingGroup.ToVisibility();

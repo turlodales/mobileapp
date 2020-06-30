@@ -6,20 +6,12 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
-using Toggl.iOS.Views;
-using Toggl.iOS.Views.EditDuration;
 
 namespace Toggl.iOS.ViewControllers
 {
 	[Register ("StartTimeEntryViewController")]
 	partial class StartTimeEntryViewController
 	{
-		[Outlet]
-		UIKit.UILabel AddProjectBubbleLabel { get; set; }
-
-		[Outlet]
-		UIKit.UIView AddProjectOnboardingBubble { get; set; }
-
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.UIButton BillableButton { get; set; }
@@ -45,9 +37,6 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton DateTimeButton { get; set; }
 
 		[Outlet]
-		UIKit.UILabel DescriptionRemainingLengthLabel { get; set; }
-
-		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.UITextView DescriptionTextView { get; set; }
 
@@ -56,11 +45,26 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton DoneButton { get; set; }
 
 		[Outlet]
-		AutocompleteTextViewPlaceholder Placeholder { get; set; }
+		Toggl.iOS.Views.AutocompleteTextViewPlaceholder Placeholder { get; set; }
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.UIButton ProjectsButton { get; set; }
+
+		[Outlet]
+		UIKit.UIView ProjectsTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView ProjectsTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView ProjectsTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView ProjectsTooltipCloseIcon { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ProjectsTooltipLabel { get; set; }
 
 		[Outlet]
 		UIKit.UIButton StartDateButton { get; set; }
@@ -74,7 +78,7 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIButton TagsButton { get; set; }
 
 		[Outlet]
-		DurationField TimeInput { get; set; }
+		Toggl.iOS.Views.EditDuration.DurationField TimeInput { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint TimeInputTrailingConstraint { get; set; }
@@ -84,49 +88,9 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.NSLayoutConstraint TimeLabelTrailingConstraint { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
-			if (AddProjectOnboardingBubble != null) {
-				AddProjectOnboardingBubble.Dispose ();
-				AddProjectOnboardingBubble = null;
-			}
-
-			if (DescriptionRemainingLengthLabel != null) {
-				DescriptionRemainingLengthLabel.Dispose ();
-				DescriptionRemainingLengthLabel = null;
-			}
-
-			if (Placeholder != null) {
-				Placeholder.Dispose ();
-				Placeholder = null;
-			}
-
-			if (StartDateButton != null) {
-				StartDateButton.Dispose ();
-				StartDateButton = null;
-			}
-
-			if (TimeInput != null) {
-				TimeInput.Dispose ();
-				TimeInput = null;
-			}
-
-			if (TimeInputTrailingConstraint != null) {
-				TimeInputTrailingConstraint.Dispose ();
-				TimeInputTrailingConstraint = null;
-			}
-
-			if (TimeLabel != null) {
-				TimeLabel.Dispose ();
-				TimeLabel = null;
-			}
-
-			if (TimeLabelTrailingConstraint != null) {
-				TimeLabelTrailingConstraint.Dispose ();
-				TimeLabelTrailingConstraint = null;
-			}
-
 			if (BillableButton != null) {
 				BillableButton.Dispose ();
 				BillableButton = null;
@@ -167,9 +131,44 @@ namespace Toggl.iOS.ViewControllers
 				DoneButton = null;
 			}
 
+			if (Placeholder != null) {
+				Placeholder.Dispose ();
+				Placeholder = null;
+			}
+
 			if (ProjectsButton != null) {
 				ProjectsButton.Dispose ();
 				ProjectsButton = null;
+			}
+
+			if (ProjectsTooltip != null) {
+				ProjectsTooltip.Dispose ();
+				ProjectsTooltip = null;
+			}
+
+			if (ProjectsTooltipArrow != null) {
+				ProjectsTooltipArrow.Dispose ();
+				ProjectsTooltipArrow = null;
+			}
+
+			if (ProjectsTooltipBackground != null) {
+				ProjectsTooltipBackground.Dispose ();
+				ProjectsTooltipBackground = null;
+			}
+
+			if (ProjectsTooltipCloseIcon != null) {
+				ProjectsTooltipCloseIcon.Dispose ();
+				ProjectsTooltipCloseIcon = null;
+			}
+
+			if (ProjectsTooltipLabel != null) {
+				ProjectsTooltipLabel.Dispose ();
+				ProjectsTooltipLabel = null;
+			}
+
+			if (StartDateButton != null) {
+				StartDateButton.Dispose ();
+				StartDateButton = null;
 			}
 
 			if (SuggestionsTableView != null) {
@@ -182,9 +181,24 @@ namespace Toggl.iOS.ViewControllers
 				TagsButton = null;
 			}
 
-			if (AddProjectBubbleLabel != null) {
-				AddProjectBubbleLabel.Dispose ();
-				AddProjectBubbleLabel = null;
+			if (TimeInput != null) {
+				TimeInput.Dispose ();
+				TimeInput = null;
+			}
+
+			if (TimeInputTrailingConstraint != null) {
+				TimeInputTrailingConstraint.Dispose ();
+				TimeInputTrailingConstraint = null;
+			}
+
+			if (TimeLabel != null) {
+				TimeLabel.Dispose ();
+				TimeLabel = null;
+			}
+
+			if (TimeLabelTrailingConstraint != null) {
+				TimeLabelTrailingConstraint.Dispose ();
+				TimeLabelTrailingConstraint = null;
 			}
 		}
 	}

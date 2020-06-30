@@ -2451,5 +2451,71 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("Next", resourceCulture);
             }
         }
+        
+        public static string GetReadyToTrackTimeAndBoostYourProductivity {
+            get {
+                return ResourceManager.GetString("GetReadyToTrackTimeAndBoostYourProductivity", resourceCulture);
+            }
+        }
+        
+        public static string GettingStartedWithTogglApp {
+            get {
+                return ResourceManager.GetString("GettingStartedWithTogglApp", resourceCulture);
+            }
+        }
+        
+        public static string HereIsYourRunningTimeEntryTooltip {
+            get {
+                return ResourceManager.GetString("HereIsYourRunningTimeEntryTooltip", resourceCulture);
+            }
+        }
+        
+        public static string AssignYourTimeEntryToAProject {
+            get {
+                return ResourceManager.GetString("AssignYourTimeEntryToAProject", resourceCulture);
+            }
+        }
+        
+        public static string TapHereToChangeOrAddProjects {
+            get {
+                return ResourceManager.GetString("TapHereToChangeOrAddProjects", resourceCulture);
+            }
+        }
+        
+        public static string TapHereToStartYourNextTimeEntry {
+            get {
+                return ResourceManager.GetString("TapHereToStartYourNextTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string TapHereToStopYourTimeEntry {
+            get {
+                return ResourceManager.GetString("TapHereToStopYourTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string ClickOnFolderIconToAssignAProject {
+            get {
+                return ResourceManager.GetString("ClickOnFolderIconToAssignAProject", resourceCulture);
+            }
+        }
+        
+        public static string YouveMadeYourFirstTimeEntry {
+            get {
+                return ResourceManager.GetString("YouveMadeYourFirstTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string YouCanAccessTimeEntriesFromAnyTogglApp {
+            get {
+                return ResourceManager.GetString("YouCanAccessTimeEntriesFromAnyTogglApp", resourceCulture);
+            }
+        }
+        
+        public static string OkGotIt {
+            get {
+                return ResourceManager.GetString("OkGotIt", resourceCulture);
+            }
+        }
     }
 }

@@ -175,6 +175,9 @@ namespace Toggl.Core.UI.ViewModels
                 .DisposedBy(disposeBag);
 
             await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
+
+            await interactorFactory.CreateOnboardingTimeEntryIfNeeded().Execute();
+
             await this.ssoLinkIfNeededAndNavigate(api, analyticsService, isForAccountLinking.Value, emailForLinking, confirmationCode);
         }
 

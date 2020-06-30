@@ -33,19 +33,19 @@ namespace Toggl.iOS.ViewSources
         private readonly Subject<TimeEntryLogItemViewModel> deleteSwipeSubject = new Subject<TimeEntryLogItemViewModel>();
         private readonly Subject<GroupId> toggleGroupExpansionSubject = new Subject<GroupId>();
 
-        private readonly ReplaySubject<TimeEntriesLogViewCell> firstCellSubject = new ReplaySubject<TimeEntriesLogViewCell>(1);
+        private readonly Subject<UITableViewCell> willDisplayCellSubject = new Subject<UITableViewCell>();
         private readonly Subject<bool> isDraggingSubject = new Subject<bool>();
 
         private bool swipeActionsEnabled = true;
 
         public const int SpaceBetweenSections = 20;
 
+        public IObservable<UITableViewCell> WillDisplayCell { get; }
         public IObservable<TimeEntryLogItemViewModel> ContinueTap { get; }
         public IObservable<TimeEntryLogItemViewModel> SwipeToContinue { get; }
         public IObservable<TimeEntryLogItemViewModel> SwipeToDelete { get; }
         public IObservable<GroupId> ToggleGroupExpansion { get; }
 
-        public IObservable<TimeEntriesLogViewCell> FirstCell { get; }
         public IObservable<bool> IsDragging { get; }
 
         public TimeEntriesLogViewSource()
@@ -58,9 +58,9 @@ namespace Toggl.iOS.ViewSources
             ContinueTap = continueTapSubject.AsObservable();
             SwipeToContinue = continueSwipeSubject.AsObservable();
             SwipeToDelete = deleteSwipeSubject.AsObservable();
+            WillDisplayCell = willDisplayCellSubject.AsObservable();
             ToggleGroupExpansion = toggleGroupExpansionSubject.AsObservable();
 
-            FirstCell = firstCellSubject.AsObservable();
             IsDragging = isDraggingSubject.AsObservable();
         }
 
@@ -153,9 +153,6 @@ namespace Toggl.iOS.ViewSources
                 .Subscribe(() => toggleGroupExpansionSubject.OnNext(viewModel.GroupId))
                 .DisposedBy(cell.DisposeBag);
 
-            if (indexPath.Row == 0 && indexPath.Section == firstDaySummarySectionIndex)
-                firstCellSubject.OnNext(cell);
-
             cell.Item = viewModel;
         }
 
@@ -212,6 +209,11 @@ namespace Toggl.iOS.ViewSources
         public override void DraggingEnded(UIScrollView scrollView, bool willDecelerate)
         {
             isDraggingSubject.OnNext(false);
+        }
+
+        public override void WillDisplay(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath)
+        {
+            willDisplayCellSubject.OnNext(cell);
         }
 
         private UISwipeActionsConfiguration createSwipeActionConfiguration(

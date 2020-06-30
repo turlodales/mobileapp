@@ -89,6 +89,11 @@ namespace Toggl.Core.UI.ViewModels
 
         public IObservable<IImmutableList<MainLogSection>> MainLogItems { get; private set; }
 
+        public TrackingOnboardingCondition RunningTimeEntryTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition StartTimeEntryTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition FinalTooltipCondition { get; private set; }
+        public TrackingOnboardingCondition TapToStopTooltipCondition { get; private set; }
+
         public RatingViewModel RatingViewModel { get; }
         public SuggestionsViewModel SuggestionsViewModel { get; }
         public IOnboardingStorage OnboardingStorage { get; }
@@ -301,6 +306,114 @@ namespace Toggl.Core.UI.ViewModels
                     shouldShowRatingViewObservable,
                     userFeedbackMainLogSection)
                 .AsDriver(ImmutableList<MainLogSection>.Empty, schedulerProvider);
+
+            RunningTimeEntryTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.RunningTimeEntryTooltip,
+                OnboardingStorage,
+                createRunningTimeEntryTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
+
+            StartTimeEntryTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.StartTimeEntryTooltip,
+                OnboardingStorage,
+                createStartTimeEntryTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
+
+            TapToStopTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.TapToStopTimeEntryTooltip,
+                OnboardingStorage,
+                createTapToStopTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
+
+            FinalTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.FinalTooltip,
+                OnboardingStorage,
+                createFinalTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
+        }
+
+        private IObservable<bool> createRunningTimeEntryTooltipPredicate()
+        {
+            var timeEntryTappedObservable = SelectTimeEntry
+                .Inputs
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.RunningTimeEntryTooltip, TooltipDismissReason.ConditionMet);
+
+            return CurrentRunningTimeEntry
+                .DelaySubscription(TimeSpan.FromSeconds(2))
+                .DistinctUntilChanged()
+                .Select(te => te != null)
+                .Merge(timeEntryTappedObservable)
+                .Select(shouldShow => !OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.StartTimeEntryTooltip) && shouldShow)
+                .AsDriver(schedulerProvider);
+        }
+
+        private IObservable<bool> createStartTimeEntryTooltipPredicate()
+        {
+            var timeEntriesExist = TimeEntriesViewModel.TimeEntries
+                .Select(entries => entries.Any())
+                .Take(1);
+
+            var timeEntryIsRunning = CurrentRunningTimeEntry
+                .Select(te => te != null)
+                .Take(1);
+
+            var startTimeEntryTapped = StartTimeEntry
+                .Inputs
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.StartTimeEntryTooltip, TooltipDismissReason.ConditionMet);
+
+            return timeEntriesExist.CombineLatest(
+                timeEntryIsRunning,
+                (timeEntriesExist, timeEntryIsRunning) => timeEntriesExist && !timeEntryIsRunning)
+                .Merge(startTimeEntryTapped)
+                .DistinctUntilChanged();
+        }
+
+        private IObservable<bool> createTapToStopTooltipPredicate()
+        {
+            var editViewTooltipWasShown = OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.EditViewProjectsTooltip);
+            var startViewTooltipWasShown = OnboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.StartViewProjectsTooltip);
+
+            var conditionMetObservable = StopTimeEntry.Inputs
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.TapToStopTimeEntryTooltip, TooltipDismissReason.ConditionMet);
+
+            if (startViewTooltipWasShown || editViewTooltipWasShown)
+            {
+                return CurrentRunningTimeEntry
+                    .Select(timeEntry => timeEntry == null)
+                    .Merge(conditionMetObservable);
+            }
+
+            var editViewProjectsTooltipSeen = OnboardingStorage.OnboardingConditionMet
+                .Where(condition => condition == OnboardingConditionKey.EditViewProjectsTooltip)
+                .Select(_ => true);
+
+            var startViewProjectsTooltipSeen = OnboardingStorage.OnboardingConditionMet
+                .Where(condition => condition == OnboardingConditionKey.StartViewProjectsTooltip)
+                .Select(_ => true);
+
+            var projectsTooltipSeen = editViewProjectsTooltipSeen
+                .Merge(startViewProjectsTooltipSeen)
+                .DistinctUntilChanged();
+
+            return projectsTooltipSeen
+                .CombineLatest(CurrentRunningTimeEntry, (tooltipSeen, timeEntry) =>
+                {
+                    var timeEntryIsRunning = timeEntry != null;
+                    return tooltipSeen && timeEntryIsRunning;
+                })
+                .Merge(conditionMetObservable);
+        }
+
+        private IObservable<bool> createFinalTooltipPredicate()
+        {
+            return StopTimeEntry.Inputs
+                .Take(1)
+                .SelectValue(true)
+                .Merge(SelectTimeEntry.Inputs.SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.FinalTooltip, TooltipDismissReason.ConditionMet));
         }
 
         public void Track(ITrackableEvent e)

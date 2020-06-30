@@ -25,6 +25,7 @@ using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
+using Toggl.Storage;
 using Toggl.Storage.Settings;
 using static Toggl.Core.Helper.Constants;
 using static Toggl.Shared.Extensions.CommonFunctions;
@@ -83,6 +84,8 @@ namespace Toggl.Core.UI.ViewModels
         public ITogglDataSource DataSource { get; }
 
         public IOnboardingStorage OnboardingStorage { get; }
+
+        public TrackingOnboardingCondition ProjectsTooltipCondition { get; private set; }
 
         public OutputAction<IThreadSafeTimeEntry> Done { get; }
         public ViewAction DurationTapped { get; }
@@ -169,6 +172,28 @@ namespace Toggl.Core.UI.ViewModels
                 .Select(toCollections)
                 .Select(addStaticElements)
                 .AsDriver(schedulerProvider);
+
+            ProjectsTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.StartViewProjectsTooltip,
+                onboardingStorage,
+                createProjectsTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
+        }
+
+        private IObservable<bool> createProjectsTooltipPredicate()
+        {
+            var projectsStartBeingSuggested = isSuggestingProjects
+                .Where(isSuggesting => isSuggesting)
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.StartViewProjectsTooltip, TooltipDismissReason.ConditionMet);
+
+            var doneTapped = Done.Inputs
+                .SelectValue(false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.StartViewProjectsTooltip, TooltipDismissReason.Invalidated);
+
+            return Observable.Return(true)
+                .Merge(projectsStartBeingSuggested)
+                .Merge(doneTapped);
         }
 
         public override async Task Initialize(StartTimeEntryParameters parameter)

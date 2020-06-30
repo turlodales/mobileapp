@@ -7,9 +7,17 @@
     android:layout_height="match_parent"
     android:importantForAutofill="noExcludeDescendants">
 
+    <toggl.droid.views.TooltipLayout
+        android:id="@+id/ProjectTooltip"
+        app:arrowDirection="bottomLeft"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="86dp"
+        android:layout_marginBottom="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/SuggestionsRecyclerView"
-        tools:visibility="gone"
         android:scrollbars="vertical"
         android:layout_marginBottom="64dp"
         android:layout_width="match_parent"

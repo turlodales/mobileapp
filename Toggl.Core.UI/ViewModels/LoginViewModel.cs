@@ -209,6 +209,8 @@ namespace Toggl.Core.UI.ViewModels
         {
             await this.onLoggedIn(lastTimeUsageStorage, onboardingStorage, interactorFactory, timeService, analyticsService);
 
+            await interactorFactory.CreateOnboardingTimeEntryIfNeeded().Execute();
+
             await this.ssoLinkIfNeededAndNavigate(api, analyticsService, isForAccountLinking, emailForLinking, confirmationCode);
         }
 

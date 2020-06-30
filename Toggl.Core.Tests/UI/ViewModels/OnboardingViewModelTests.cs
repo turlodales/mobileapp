@@ -112,6 +112,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     .Returns(country);
             }
 
+            [Fact]
+            public void ExecutesTheCreateOnboardingTimeEntryIfNeededInteractor()
+            {
+                ViewModel.ContinueWithGoogle.Execute();
+
+                InteractorFactory.CreateOnboardingTimeEntryIfNeeded().Received().Execute();
+            }
+
             [Fact, LogIfTooSlow]
             public void SetsIsLoadingToTrueWhenContinuing()
             {

@@ -4,6 +4,7 @@ using Toggl.Core.Extensions;
 using Toggl.Core.Suggestions;
 using Toggl.Core.Sync;
 using Toggl.Shared;
+using Toggl.Storage;
 
 namespace Toggl.Core.Analytics
 {
@@ -258,6 +259,8 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 
+        public IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
+
         public IAnalyticsEvent LoginWithSso { get; }
         public IAnalyticsEvent SsoFlowStarted { get; }
         public IAnalyticsEvent SsoUrlRequested { get; }
@@ -393,6 +396,7 @@ namespace Toggl.Core.Analytics
             CalendarTimeEntryCreated = new AnalyticsEvent<CalendarTimeEntryCreatedType, int, string>(this, nameof(CalendarTimeEntryCreated), "Type", "DaysSinceToday", "DayOfTheWeek");
             ContinueWithEmail = new AnalyticsEvent(this, nameof(ContinueWithEmail));
             UnsyncedDataDumped = new AnalyticsEvent<int, int, int, int>(this, nameof(UnsyncedDataDumped), "TimeEntries", "Projects", "Clients", "Tags");
+            TooltipDismissed = new AnalyticsEvent<OnboardingConditionKey, TooltipDismissReason>(this, nameof(TooltipDismissed), "Tooltip", "Reason");
             LoginWithSso = new AnalyticsEvent(this, nameof(LoginWithSso));
             SsoFlowStarted = new AnalyticsEvent(this, nameof(SsoFlowStarted));
             SsoLinkStarted = new AnalyticsEvent(this, nameof(SsoLinkStarted));

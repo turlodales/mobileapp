@@ -49,6 +49,8 @@ namespace Toggl.iOS.Extensions
         public static readonly UIColor OnboardingPage1BackgroundColor = UIColor.FromName("OnboardingPage1BackgroundColor");
         public static readonly UIColor OnboardingPage2BackgroundColor = UIColor.FromName("OnboardingPage2BackgroundColor");
         public static readonly UIColor OnboardingPage3BackgroundColor = UIColor.FromName("OnboardingPage3BackgroundColor");
+        public static readonly UIColor OnboardingTooltipBackground = UIColor.FromName("OnboardingTooltipBackground");
+        public static readonly UIColor OnboardingTooltipTextColor = UIColor.FromName("OnboardingTooltipTextColor");
 
         public static readonly UIColor IconTint = UIColor.FromName("IconTint");
 

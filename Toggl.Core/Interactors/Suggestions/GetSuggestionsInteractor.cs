@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Suggestions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -11,6 +12,7 @@ namespace Toggl.Core.Interactors.Suggestions
     public sealed class GetSuggestionsInteractor : IInteractor<IObservable<IEnumerable<Suggestion>>>
     {
         private readonly int suggestionCount;
+        private readonly IInteractor<IObservable<IEnumerable<IThreadSafeTimeEntry>>> getTimeEntries;
         private readonly IInteractor<IObservable<IReadOnlyList<ISuggestionProvider>>> getSuggestionProvidersInteractor;
 
         public GetSuggestionsInteractor(
@@ -21,18 +23,26 @@ namespace Toggl.Core.Interactors.Suggestions
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
 
             this.getSuggestionProvidersInteractor = interactorFactory.GetSuggestionProviders(suggestionCount);
+            this.getTimeEntries = interactorFactory.GetAllTimeEntriesVisibleToTheUser();
             this.suggestionCount = suggestionCount;
         }
 
         public IObservable<IEnumerable<Suggestion>> Execute()
-            => getSuggestionProvidersInteractor
-                .Execute()
-                .Flatten()
-                .Select(provider => provider.GetSuggestions())
-                .Flatten()
-                .ToList()
-                .Select(removingDuplicates)
-                .Select(suggestions => suggestions.Take(suggestionCount));
+            => Observable.DeferAsync(async cancellationToken =>
+            {
+                var numberOfTimeEntries = await getTimeEntries.Execute().Select(x => x.Count());
+                if (numberOfTimeEntries < 5)
+                    return Observable.Return(Enumerable.Empty<Suggestion>());
+
+                return getSuggestionProvidersInteractor
+                    .Execute()
+                    .Flatten()
+                    .Select(provider => provider.GetSuggestions())
+                    .Flatten()
+                    .ToList()
+                    .Select(removingDuplicates)
+                    .Select(suggestions => suggestions.Take(suggestionCount));
+            });
 
         private IList<Suggestion> removingDuplicates(IList<Suggestion> suggestions)
             => suggestions

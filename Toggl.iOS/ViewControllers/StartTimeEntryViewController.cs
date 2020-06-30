@@ -2,22 +2,18 @@
 using Foundation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Security.Policy;
-using System.Threading;
 using Toggl.Core.Autocomplete;
 using Toggl.Core.Autocomplete.Suggestions;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
-using Toggl.Core.UI.Onboarding.CreationView;
-using Toggl.Core.UI.Onboarding.StartTimeEntryView;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Autocomplete;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Shared;
+using Toggl.iOS.Views;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -37,10 +33,6 @@ namespace Toggl.iOS.ViewControllers
         private UIImage greyCheckmarkButtonImage;
         private UIImage greenCheckmarkButtonImage;
 
-        private IDisposable descriptionDisposable;
-        private IDisposable addProjectOrTagOnboardingDisposable;
-        private IDisposable disabledConfirmationButtonOnboardingDisposable;
-
         private ISubject<bool> isDescriptionEmptySubject = new BehaviorSubject<bool>(true);
 
         private IUITextInputDelegate emptyInputDelegate = new EmptyInputDelegate();
@@ -55,15 +47,6 @@ namespace Toggl.iOS.ViewControllers
             base.Dispose(disposing);
 
             if (!disposing) return;
-
-            descriptionDisposable?.Dispose();
-            descriptionDisposable = null;
-
-            addProjectOrTagOnboardingDisposable?.Dispose();
-            addProjectOrTagOnboardingDisposable = null;
-
-            disabledConfirmationButtonOnboardingDisposable?.Dispose();
-            disabledConfirmationButtonOnboardingDisposable = null;
 
             TimeInput.LostFocus -= onTimeInputLostFocus;
         }
@@ -106,10 +89,8 @@ namespace Toggl.iOS.ViewControllers
 
             BottomOptionsSheet.InsertSeparator(UIRectEdge.Top);
 
-            AddProjectBubbleLabel.Text = Resources.AddProjectBubbleText;
-
             prepareViews();
-            prepareOnboarding();
+            prepareProjectsTooltip();
 
             var source = new StartTimeEntryTableViewSource(SuggestionsTableView);
             SuggestionsTableView.Source = source;
@@ -217,6 +198,44 @@ namespace Toggl.iOS.ViewControllers
                 .Select(text => text.AsSpans((int)DescriptionTextView.SelectedRange.Location).ToIImmutableList())
                 .Subscribe(ViewModel.SetTextSpans)
                 .DisposedBy(DisposeBag);
+        }
+
+        private void prepareProjectsTooltip()
+        {
+            ProjectsTooltip.Alpha = 0;
+            ViewModel.ProjectsTooltipCondition.ConditionMet
+                .Subscribe(ProjectsTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(DisposeBag);
+
+            ProjectsTooltip.Rx().Tap()
+                .Subscribe(ViewModel.ProjectsTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            ProjectsTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
+            ProjectsTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            ProjectsTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;;
+
+            ProjectsTooltipLabel.AttributedText = createTooltipText();
+            ProjectsTooltipLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+
+            ProjectsTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            ProjectsTooltip.SetUpTooltipShadow();
+
+            NSAttributedString createTooltipText()
+            {
+                var stringParts = Resources.ClickOnFolderIconToAssignAProject.Split("$");
+                var fullString = new NSMutableAttributedString(stringParts[0]);
+                var attachment = new NSTextAttachment
+                {
+                    Image = UIImage
+                        .FromBundle("icProjects")
+                        .ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                };
+                fullString.Append(NSAttributedString.FromAttachment(attachment));
+                fullString.Append(new NSAttributedString(stringParts[1]));
+                return fullString;
+            }
         }
 
         private void onTextFieldInfo(TextFieldInfo textFieldInfo)
@@ -404,45 +423,6 @@ namespace Toggl.iOS.ViewControllers
             ViewModel.ToggleTasks.Execute(parameter);
 
             SuggestionsTableView.CorrectOffset(offset, frameHeight);
-        }
-
-        private void prepareOnboarding()
-        {
-            prepareAddProjectOnboardingStep();
-            prepareDisableConfirmationButtonOnboardingStep();
-        }
-
-        private void prepareAddProjectOnboardingStep()
-        {
-            var onboardingStorage = ViewModel.OnboardingStorage;
-            var addProjectOrtagOnboardingStep = new AddProjectOrTagOnboardingStep(
-                onboardingStorage,
-                ViewModel.DataSource
-            );
-
-            addProjectOrTagOnboardingDisposable = addProjectOrtagOnboardingStep
-                .ManageDismissableTooltip(AddProjectOnboardingBubble, onboardingStorage);
-        }
-
-        private void prepareDisableConfirmationButtonOnboardingStep()
-        {
-            greyCheckmarkButtonImage = UIImage.FromBundle("icCheckGrey");
-            greenCheckmarkButtonImage = UIImage.FromBundle("doneGreen");
-
-            var disabledConfirmationButtonOnboardingStep
-                = new DisabledConfirmationButtonOnboardingStep(
-                    ViewModel.OnboardingStorage,
-                    isDescriptionEmptySubject.AsObservable());
-
-            disabledConfirmationButtonOnboardingDisposable
-                = disabledConfirmationButtonOnboardingStep
-                    .ShouldBeVisible
-                    .ObserveOn(IosDependencyContainer.Instance.SchedulerProvider.MainScheduler)
-                    .Subscribe(visible =>
-                    {
-                        var image = visible ? greyCheckmarkButtonImage : greenCheckmarkButtonImage;
-                        DoneButton.SetImage(image, UIControlState.Normal);
-                    });
         }
     }
 }

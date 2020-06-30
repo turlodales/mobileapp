@@ -200,10 +200,6 @@ namespace Toggl.Droid.Fragments
 
             setupItemTouchHelper(touchCallback);
 
-            ViewModel.TimeEntriesCount
-                .Subscribe(timeEntriesCountSubject)
-                .DisposedBy(DisposeBag);
-
             ViewModel.ShouldReloadTimeEntryLog
                 .Subscribe(reload)
                 .DisposedBy(DisposeBag);
@@ -224,7 +220,37 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(_ => playButton.StopAnimation())
                 .DisposedBy(DisposeBag);
 
-            setupOnboardingSteps();
+            ViewModel.RunningTimeEntryTooltipCondition.ConditionMet
+                .Subscribe(hereIsYourTimeEntryTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.StartTimeEntryTooltipCondition.ConditionMet
+                .Subscribe(tapHereToStartYourTimeTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.TapToStopTooltipCondition.ConditionMet
+                .Subscribe(tapHereToStopYourTimeTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.FinalTooltipCondition.ConditionMet
+                .Subscribe(finalTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            hereIsYourTimeEntryTooltip.Rx().Tap()
+                .Subscribe(ViewModel.RunningTimeEntryTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            tapHereToStartYourTimeTooltip.Rx().Tap()
+                .Subscribe(ViewModel.StartTimeEntryTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            tapHereToStopYourTimeTooltip.Rx().Tap()
+                .Subscribe(ViewModel.TapToStopTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
+
+            finalTooltip.Rx().Tap()
+                .Subscribe(ViewModel.FinalTooltipCondition.Dismiss)
+                .DisposedBy(DisposeBag);
         }
 
         private void updateMainLog(IImmutableList<AnimatableSectionModel<MainLogSectionViewModel, MainLogItemViewModel, IMainLogKey>> items)
@@ -363,6 +389,8 @@ namespace Toggl.Droid.Fragments
                 if (emptyStateView == null)
                 {
                     emptyStateView = emptyStateViewStub.Inflate();
+                    emptyStateGetReadyToTrackTimeTextView = emptyStateView.FindViewById<TextView>(Resource.Id.MainGetReadyToTrackTimeTextView);
+                    emptyStateGetReadyToTrackTimeTextView.Text = Shared.Resources.GetReadyToTrackTimeAndBoostYourProductivity;
                 }
 
                 emptyStateView.Visibility = ViewStates.Visible;

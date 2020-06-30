@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Toggl.Core.Suggestions;
 using Toggl.Core.Sync;
+using Toggl.Storage;
 
 namespace Toggl.Core.Analytics
 {
@@ -252,6 +253,8 @@ namespace Toggl.Core.Analytics
         IAnalyticsEvent<CalendarSwipeDirection, int, string> CalendarSingleSwipe { get; }
 
         IAnalyticsEvent ContinueWithEmail { get; }
+
+        IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
         public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 

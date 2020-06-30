@@ -33,7 +33,6 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <BundleAssemblies>false</BundleAssemblies>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
@@ -59,7 +58,6 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkMode>Full</AndroidLinkMode>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
@@ -85,7 +83,6 @@
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkMode>Full</AndroidLinkMode>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
@@ -549,9 +546,6 @@
     <Compile Include="Activities\EditDurationActivity.ViewBinds.cs">
       <DependentUpon>EditDurationActivity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Activities\EditTimeEntryActivity.Onboarding.cs">
-      <DependentUpon>EditTimeEntryActivity.cs</DependentUpon>
-    </Compile>
     <Compile Include="Activities\ForgotPasswordActivity.cs" />
     <Compile Include="Activities\ForgotPasswordActivity.ViewBinds.cs">
       <DependentUpon>ForgotPasswordActivity.cs</DependentUpon>
@@ -708,7 +702,6 @@
     <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\DrawableExtensions.cs" />
     <Compile Include="Extensions\MotionEventExtensions.cs" />
-    <Compile Include="Extensions\OnboardingExtensions.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Extensions\PopupOffsets.cs" />
     <Compile Include="Extensions\PopupWindowWithDefaultGravityExtenstions.cs" />
@@ -797,6 +790,7 @@
     <Compile Include="Views\CircleView.cs" />
     <Compile Include="Views\HueSaturationPickerView.cs" />
     <Compile Include="Fragments\SelectColorFragment.cs" />
+    <Compile Include="Views\TooltipLayout.cs" />
     <Compile Include="Views\ValueSlider.cs" />
     <Compile Include="Activities\SelectClientActivity.cs" />
     <Compile Include="Adapters\SelectClientRecyclerAdapter.cs" />
@@ -891,9 +885,6 @@
     <Compile Include="Fragments\MainFragment.ViewBinds.cs">
       <DependentUpon>MainFragment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Fragments\MainFragment.Onboardings.cs">
-      <DependentUpon>MainFragment.cs</DependentUpon>
-    </Compile>
     <Compile Include="Adapters\UserCalendarsRecyclerAdapter.cs" />
     <Compile Include="ViewHolders\UserCalendarViewHolder.cs" />
     <Compile Include="ViewHolders\UserCalendarHeaderViewHolder.cs" />
@@ -952,12 +943,18 @@
     <AndroidResource Include="Resources\color\FlatButtonTextColor.xml" />
     <AndroidResource Include="Resources\color\outline_text_input_color.xml" />
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_periscope.png" />
     <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\illustration_stopwatch.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-mdpi\togglman.png" />
     <AndroidResource Include="Resources\drawable-hdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\togglman.png" />
     <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_periscope.png" />
     <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_pupil.png" />
@@ -1207,6 +1204,7 @@
     <AndroidResource Include="Resources\layout\TooltipWithRightTopArrow.axml" />
     <AndroidResource Include="Resources\layout\TooltipWithRightBottomArrow.axml" />
     <AndroidResource Include="Resources\layout\TooltipWithRightArrow.axml" />
+    <AndroidResource Include="Resources\layout\TooltipWithLeftBottomArrow.axml" />
     <AndroidResource Include="Resources\anim\abc_slide_in_right.xml" />
     <AndroidResource Include="Resources\anim\abc_slide_out_left.xml" />
     <AndroidResource Include="Resources\anim\abc_slide_in_left.xml" />
@@ -1325,6 +1323,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="ProGuard.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TooltipWithCenteredTopArrow.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Fody.2.4.6\build\Fody.targets" Condition="Exists('..\packages\Fody.2.4.6\build\Fody.targets')" />

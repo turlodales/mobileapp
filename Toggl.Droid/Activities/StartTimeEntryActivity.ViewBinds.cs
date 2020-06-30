@@ -1,5 +1,7 @@
+using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Toggl.Droid.Adapters;
 using Toggl.Droid.Extensions;
@@ -24,6 +26,8 @@ namespace Toggl.Droid.Activities
         private AutocompleteEditText descriptionField;
         private StartTimeEntryRecyclerAdapter adapter;
 
+        private TooltipLayout projectTooltip;
+
         protected override void InitializeViews()
         {
             selectTagToolbarButton = FindViewById<ImageView>(ToolbarTagButton);
@@ -38,6 +42,8 @@ namespace Toggl.Droid.Activities
             recyclerView = FindViewById<RecyclerView>(SuggestionsRecyclerView);
 
             descriptionField = FindViewById<AutocompleteEditText>(DescriptionTextField);
+            projectTooltip = FindViewById<TooltipLayout>(ProjectTooltip);
+            projectTooltip.FitBottomPaddingInset();
 
             adapter = new StartTimeEntryRecyclerAdapter();
             recyclerView.SetLayoutManager(new UnpredictiveLinearLayoutManager(this));
@@ -45,6 +51,13 @@ namespace Toggl.Droid.Activities
 
             SetupToolbar();
             SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_close);
+
+            var spannable = new SpannableString(Shared.Resources.ClickOnFolderIconToAssignAProject);
+            var indexOfDrawable = Shared.Resources.ClickOnFolderIconToAssignAProject.IndexOf("$");
+            var span = new VerticallyCenteredImageSpan(this, Resource.Drawable.ic_project);
+            span.Drawable.SetTint(ContextCompat.GetColor(this, Resource.Color.tooltipText));
+            spannable.SetSpan(span, indexOfDrawable, indexOfDrawable + 1, SpanTypes.InclusiveExclusive);
+            projectTooltip.TextFormatted = spannable;
         }
     }
 }

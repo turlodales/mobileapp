@@ -1,3 +1,4 @@
+using System;
 using Android.Hardware;
 using Android.OS;
 using Android.Views;
@@ -10,8 +11,10 @@ namespace Toggl.Droid.Fragments.Onboarding
     {
         private SensorManager sensorManager;
         private Sensor sensor;
-        private const float baseLeftOffset = 0.66496f;
-        private const float baseTopOffset = 0.1265f;
+        private int baseLeftPosition = 0;
+        private int baseTopPosition = 0;
+        private const float baseLeftOffset = 0.6551724138f;
+        private const float baseTopOffset = 0.1219512195f;
         private const float g = 9.81f;
         private int maxPupilMovement;
 
@@ -20,9 +23,17 @@ namespace Toggl.Droid.Fragments.Onboarding
             var view = inflater.Inflate(Resource.Layout.OnboardingSecondSlideFragment, container, false);
             InitializeViews(view);
 
-            maxPupilMovement = 10.DpToPixels(Context);
+            maxPupilMovement = 5.DpToPixels(Context);
             sensorManager = (SensorManager) Context.GetSystemService(Android.Content.Context.SensorService);
             sensor = sensorManager.GetDefaultSensor(SensorType.Accelerometer);
+
+            periscopeView.Post(() =>
+            {
+                baseLeftPosition = periscopeView.Left;
+                baseTopPosition = periscopeView.Top;
+
+                updateMarginOnPupilView(0, 0);
+            });
 
             return view;
         }
@@ -49,11 +60,15 @@ namespace Toggl.Droid.Fragments.Onboarding
             {
                 float x = sensorEvent.Values[0];
                 float y = sensorEvent.Values[1];
-                float z = sensorEvent.Values[2];
 
-                pupilView.UpdateMargin((int) (periscopeView.Width * baseLeftOffset) + (int) -(maxPupilMovement * x / g),
-                    (int) (periscopeView.Height * baseTopOffset) + (int) (maxPupilMovement * y / g));
+                updateMarginOnPupilView(x, y);
             }
+        }
+
+        private void updateMarginOnPupilView(float x, float y)
+        {
+            pupilView.UpdateMargin(baseLeftPosition + (int) (periscopeView.Width * baseLeftOffset) + (int) -(maxPupilMovement * x / g),
+                baseTopPosition + (int) (periscopeView.Height * baseTopOffset) + (int) (maxPupilMovement * y / g));
         }
     }
 }
