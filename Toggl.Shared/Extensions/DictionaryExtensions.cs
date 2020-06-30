@@ -100,5 +100,10 @@ namespace Toggl.Shared.Extensions
                 return dictionary[key];
             return defaultValue;
         }
+
+        public static bool HasAllKeys<K, V>(this IDictionary<K, V> dictionary, IEnumerable<K> keys)
+        {
+            return keys.Aggregate(true, (hasAllKeys,  key) => hasAllKeys && dictionary.ContainsKey(key));
+        }
     }
 }

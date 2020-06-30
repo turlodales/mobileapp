@@ -4,6 +4,7 @@ using CoreGraphics;
 using Foundation;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.iOS.Extensions;
+using Toggl.iOS.Helper;
 using Toggl.Shared;
 using UIKit;
 
@@ -54,9 +55,13 @@ namespace Toggl.iOS.Cells.Reports
 
             ClientLabel.Hidden = element.Client == string.Empty;
 
-            var color = new Color(element.Color).ToNativeColor();
-            ProjectLabel.TextColor = color;
-            CircleView.BackgroundColor = color;
+            ProjectLabel.TextColor = Color.ParseAndAdjustToLabel(
+                element.Color, ActiveTheme.Is.DarkTheme
+            ).ToNativeColor();
+
+            CircleView.BackgroundColor = Color.ParseAndAdjustToUserTheme(
+                element.Color, ActiveTheme.Is.DarkTheme
+            ).ToNativeColor(); ;
 
             isLast = last;
         }

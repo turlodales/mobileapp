@@ -19,8 +19,9 @@ namespace Toggl.Core.Login
 
         void LoginWithSavedCredentials();
 
-        IObservable<Unit> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo);
-        IObservable<Unit> Login(Email email, Password password);
+        IObservable<ITogglApi> ThirdPartyLogin(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo);
+        IObservable<ITogglApi> Login(Email email, Password password);
+        IObservable<ITogglApi> LoginWithApiToken(string apiToken);
 
         IObservable<Unit> ThirdPartySignUp(ThirdPartyLoginProvider provider, ThirdPartyLoginInfo loginInfo, bool termsAccepted, int countryId, string timezone);
         IObservable<Unit> SignUp(Email email, Password password, bool termsAccepted, int countryId, string timezone);

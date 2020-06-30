@@ -6,6 +6,7 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
+using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
@@ -73,6 +74,7 @@ namespace Toggl.Core
         public ISyncManager SyncManager => syncManager.Value;
         public IInteractorFactory InteractorFactory => interactorFactory.Value;
 
+        public IUnauthenticatedTogglApi UnauthenticatedTogglApi;
         public IApiFactory ApiFactory => apiFactory.Value;
         public ITogglDatabase Database => database.Value;
         public ITimeService TimeService => timeService.Value;
@@ -146,6 +148,9 @@ namespace Toggl.Core
             pushNotificationsTokenStorage =
                 new Lazy<IPushNotificationsTokenStorage>(CreatePushNotificationsTokenStorage);
             httpClient = new Lazy<HttpClient>(CreateHttpClient);
+
+            UnauthenticatedTogglApi = UnauthenticatedTogglApiFactory.With(
+                new ApiConfiguration(apiEnvironment, Credentials.None, userAgent), httpClient.Value);
 
             api = apiFactory.Select(factory => factory.CreateApiWith(Credentials.None, timeService.Value));
             UserAccessManager = new UserAccessManager(

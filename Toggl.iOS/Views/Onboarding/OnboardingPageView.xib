@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -26,17 +27,17 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yx8-Zz-DUc">
-                    <rect key="frame" x="31" y="272" width="352" height="352"/>
+                    <rect key="frame" x="62" y="263" width="290" height="290"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Yx8-Zz-DUc" secondAttribute="trailing" priority="750" constant="31" id="G3f-Ya-JXt"/>
+                <constraint firstAttribute="trailing" secondItem="Yx8-Zz-DUc" secondAttribute="trailing" priority="750" constant="62" id="G3f-Ya-JXt"/>
                 <constraint firstItem="2Mt-HR-eKs" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="31" id="GOx-9j-HDV"/>
                 <constraint firstItem="Yx8-Zz-DUc" firstAttribute="width" secondItem="Yx8-Zz-DUc" secondAttribute="height" id="HGa-yO-54x"/>
                 <constraint firstItem="Yx8-Zz-DUc" firstAttribute="centerX" secondItem="1" secondAttribute="centerX" id="HIt-DT-puN"/>
-                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" priority="250" id="JB2-ah-yK3"/>
+                <constraint firstItem="Yx8-Zz-DUc" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" priority="250" constant="-40" id="JB2-ah-yK3"/>
                 <constraint firstItem="Yx8-Zz-DUc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2Mt-HR-eKs" secondAttribute="bottom" constant="16" id="KEJ-u7-wjP">
                     <variation key="heightClass=regular-widthClass=regular" constant="50"/>
                 </constraint>
