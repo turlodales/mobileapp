@@ -22,7 +22,7 @@ using static Toggl.Core.UI.Helper.TemporalInconsistency;
 namespace Toggl.Droid.Activities
 {
     [Activity(Theme = "@style/Theme.Splash",
-        WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustResize,
+        WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan,
         ScreenOrientation = ScreenOrientation.Portrait,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public sealed partial class EditDurationActivity : ReactiveActivity<EditDurationViewModel>

@@ -13,7 +13,9 @@ namespace Toggl.iOS.Presentation
         protected override HashSet<Type> AcceptedViewModels { get; } = new HashSet<Type>
         {
             typeof(SignUpViewModel),
-            typeof(LoginViewModel)
+            typeof(LoginViewModel),
+            typeof(SsoViewModel),
+            typeof(SsoLinkViewModel)
         };
 
         public OnboardingPresenter(UIWindow window, AppDelegate appDelegate) : base(window, appDelegate)
@@ -36,6 +38,12 @@ namespace Toggl.iOS.Presentation
                 {
                     case LoginViewController loginViewController:
                         dismissCurrentSheetAndPresentTheNewOne(loginViewController, viewController);
+                        return;
+                    case SsoLoginViewController ssoLoginViewController:
+                        dismissCurrentSheetAndPresentTheNewOne(ssoLoginViewController, viewController);
+                        return;
+                    case SsoLinkViewController ssoLinkViewController:
+                        dismissCurrentSheetAndPresentTheNewOne(ssoLinkViewController, viewController);
                         return;
                     case SignUpViewController signUpViewController:
                         dismissCurrentSheetAndPresentTheNewOne(signUpViewController, viewController);

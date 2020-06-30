@@ -46,6 +46,15 @@ namespace Toggl.iOS
             SetContentView(videoView);
         }
 
+        public void RestartAnimations()
+        {
+            videoView?.RestartVideo();
+            if (ContentView.Subviews.Any() && ContentView.Subviews[0] is PeriscopeView)
+            {
+                (ContentView.Subviews[0] as PeriscopeView)?.restartAnimation(null);
+            }
+        }
+
         public void SetImageView(UIImage image)
         {
             var imageView = new UIImageView(image);
@@ -74,17 +83,7 @@ namespace Toggl.iOS
 
         private void configureMessageAppearance()
         {
-            var paragraphStyle = new NSMutableParagraphStyle();
-            paragraphStyle.LineSpacing = (nfloat)1.18;
-
-            var attributes = new UIStringAttributes();
-            attributes.ForegroundColor = ColorAssets.InverseText;
-            attributes.Font = UIFont.SystemFontOfSize(25);
-            attributes.ParagraphStyle = paragraphStyle;
-
-            var messageAttributedString = new NSMutableAttributedString(message);
-            messageAttributedString.AddAttributes(attributes, new NSRange(0, message.Length));
-            MessageLabel.AttributedText = messageAttributedString;
+            MessageLabel.SetTextWithOnboardingAppearance(message);
         }
     }
 }

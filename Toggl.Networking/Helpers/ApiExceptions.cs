@@ -1,4 +1,5 @@
-﻿using Toggl.Networking.Exceptions;
+﻿using System.Net;
+using Toggl.Networking.Exceptions;
 using Toggl.Networking.Network;
 
 namespace Toggl.Networking.Helpers
@@ -8,6 +9,19 @@ namespace Toggl.Networking.Helpers
         public static ApiException For(IRequest request, IResponse response)
         {
             var rawData = response.RawData;
+
+            if (request.Endpoint.ToString().Contains("me/enable_sso") && response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var lowerData = rawData.ToLower();
+                if (lowerData.Contains("confirmation code"))
+                {
+                    return new InvalidConfirmationCodeException(request, response);
+                } else if (lowerData.Contains("sso credentials"))
+                {
+                    return new BadSsoEmailException(request, response);
+                }
+            }
+
             switch (response.StatusCode)
             {
                 // Client errors

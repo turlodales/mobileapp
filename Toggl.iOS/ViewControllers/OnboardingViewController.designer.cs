@@ -13,13 +13,28 @@ namespace Toggl.iOS.ViewControllers
 	partial class OnboardingViewController
 	{
 		[Outlet]
+		UIKit.NSLayoutConstraint ButtonsStackBottomConstraint { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint ButtonsStackTopConstraint { get; set; }
+
+		[Outlet]
 		UIKit.UIStackView ButtonsStackView { get; set; }
+
+		[Outlet]
+		UIKit.UIButton CancelSsoButton { get; set; }
 
 		[Outlet]
 		UIKit.UIButton ContinueWithEmailButton { get; set; }
 
 		[Outlet]
 		UIKit.UIButton ContinueWithGoogleButton { get; set; }
+
+		[Outlet]
+		UIKit.UILabel LoginToEnableSsoLabel { get; set; }
+
+		[Outlet]
+		UIKit.UIButton LoginWithSsoButton { get; set; }
 
 		[Outlet]
 		UIKit.UIPageControl PageControl { get; set; }
@@ -34,6 +49,11 @@ namespace Toggl.iOS.ViewControllers
 				ButtonsStackView = null;
 			}
 
+			if (CancelSsoButton != null) {
+				CancelSsoButton.Dispose ();
+				CancelSsoButton = null;
+			}
+
 			if (ContinueWithEmailButton != null) {
 				ContinueWithEmailButton.Dispose ();
 				ContinueWithEmailButton = null;
@@ -44,6 +64,16 @@ namespace Toggl.iOS.ViewControllers
 				ContinueWithGoogleButton = null;
 			}
 
+			if (LoginToEnableSsoLabel != null) {
+				LoginToEnableSsoLabel.Dispose ();
+				LoginToEnableSsoLabel = null;
+			}
+
+			if (LoginWithSsoButton != null) {
+				LoginWithSsoButton.Dispose ();
+				LoginWithSsoButton = null;
+			}
+
 			if (PageControl != null) {
 				PageControl.Dispose ();
 				PageControl = null;
@@ -52,6 +82,16 @@ namespace Toggl.iOS.ViewControllers
 			if (TogglLogo != null) {
 				TogglLogo.Dispose ();
 				TogglLogo = null;
+			}
+
+			if (ButtonsStackBottomConstraint != null) {
+				ButtonsStackBottomConstraint.Dispose ();
+				ButtonsStackBottomConstraint = null;
+			}
+
+			if (ButtonsStackTopConstraint != null) {
+				ButtonsStackTopConstraint.Dispose ();
+				ButtonsStackTopConstraint = null;
 			}
 		}
 	}

@@ -20,6 +20,8 @@ using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
 using Fragment = AndroidX.Fragment.App.Fragment;
 using System.Threading.Tasks;
+using Android.Widget;
+using Toggl.Core.UI.Parameters;
 
 namespace Toggl.Droid.Activities
 {
@@ -58,6 +60,23 @@ namespace Toggl.Droid.Activities
 
         protected override void InitializeBindings()
         {
+            ViewModel.SsoLinkResult
+                .Subscribe(result =>
+                {
+                    if (result == MainTabBarParameters.SsoLinkResult.SUCCESS)
+                    {
+                        Toast.MakeText(this, Shared.Resources.SsoLinkSuccess, ToastLength.Long).Show();
+                    }
+                    else if (result == MainTabBarParameters.SsoLinkResult.GENERIC_ERROR)
+                    {
+                        Toast.MakeText(this, Shared.Resources.SomethingWentWrongTryAgain, ToastLength.Long).Show();
+                    }
+                    else if (result == MainTabBarParameters.SsoLinkResult.BAD_EMAIL_ERROR)
+                    {
+                        Toast.MakeText(this, Shared.Resources.SsoLinkFailure, ToastLength.Long).Show();
+                    }
+                })
+                .DisposedBy(DisposeBag);
         }
 
         private int getInitialTab(Intent intent, Bundle bundle = null)

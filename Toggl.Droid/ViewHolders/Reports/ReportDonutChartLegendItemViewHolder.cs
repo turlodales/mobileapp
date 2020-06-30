@@ -3,9 +3,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System;
-using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels.Reports;
-using Toggl.Droid.Views;
+using Toggl.Droid.Extensions;
+using Toggl.Droid.Helper;
 
 namespace Toggl.Droid.ViewHolders.Reports
 {
@@ -35,7 +35,9 @@ namespace Toggl.Droid.ViewHolders.Reports
         protected override void UpdateView()
         {
             projectName.Text = Item.Name;
-            projectName.SetTextColor(Color.ParseColor(Item.Color));
+            projectName.SetTextColor(Shared.Color.ParseAndAdjustToLabel(
+                Item.Color, ActiveTheme.Is.DarkTheme
+            ).ToNativeColor());
             clientName.Text = Item.Client;
             duration.Text = Item.Value;
             percentage.Text = $"{Item.Percentage:0.00}%";

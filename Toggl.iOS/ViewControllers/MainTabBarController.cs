@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.UI.Helper;
+using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.Reports;
@@ -17,6 +19,7 @@ namespace Toggl.iOS.ViewControllers
     public sealed partial class MainTabBarController : UITabBarController
     {
         public MainTabBarViewModel ViewModel { get; set; }
+        private IDisposable? ssoLinkResultDisposable;
 
         private static readonly Dictionary<Type, string> imageNameForType = new Dictionary<Type, string>
         {
@@ -43,6 +46,24 @@ namespace Toggl.iOS.ViewControllers
                 .GetAwaiter()
                 .GetResult();
 
+            ssoLinkResultDisposable = ViewModel.SsoLinkResult
+                .DistinctUntilChanged()
+                .Subscribe(result =>
+                {
+                    if (result == MainTabBarParameters.SsoLinkResult.SUCCESS)
+                    {
+                        this.ShowToast(Resources.SsoLinkSuccess);
+                    }
+                    else if (result == MainTabBarParameters.SsoLinkResult.BAD_EMAIL_ERROR)
+                    {
+                        this.ShowToast(Resources.SsoLinkFailure);
+                    }
+                    else if (result == MainTabBarParameters.SsoLinkResult.GENERIC_ERROR)
+                    {
+                        this.ShowToast(Resources.SomethingWentWrongTryAgain);
+                    }
+                });
+
             async Task<UIViewController> createTabFor(Lazy<ViewModel> lazyViewModel)
             {
                 var viewModel = lazyViewModel.Value;
@@ -64,6 +85,16 @@ namespace Toggl.iOS.ViewControllers
             base.ViewWillAppear(animated);
             recalculateTabBarInsets();
             setupAppearance();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                ssoLinkResultDisposable?.Dispose();
+                ssoLinkResultDisposable = null;
+            }
         }
 
         public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)

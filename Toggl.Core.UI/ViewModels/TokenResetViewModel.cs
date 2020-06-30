@@ -120,7 +120,7 @@ namespace Toggl.Core.UI.ViewModels
 
         private void onLogin()
         {
-            Navigate<MainTabBarViewModel>();
+            Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default);
         }
 
         private string transformException(Exception ex)
