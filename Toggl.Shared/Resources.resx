@@ -1837,6 +1837,86 @@ a Project to a Time Entry</value>
         <comment>Text displayed in the onboarding tooltip that's shown in the start time entry view above the projects button.
                  The $ sign gets replaced with the icon image in runtime</comment>
     </data>
+    <data name="YourPlan" xml:space="preserve">
+        <value>Your Plan</value>
+        <comment>One of the sections in the settings. Tapping on this opens details about the current pricing plan</comment>
+    </data>
+    <data name="Free" xml:space="preserve">
+        <value>Free</value>
+        <comment>Name for the free plan. Displayed in the settings in the Your Plan section</comment>
+    </data>
+    <data name="TrackingTime" xml:space="preserve">
+        <value>Tracking Time</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="UserGroups" xml:space="preserve">
+        <value>User Groups</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="SummaryAndWeeklyReports" xml:space="preserve">
+        <value>Summary and Weekly Reports</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="BillableHours" xml:space="preserve">
+        <value>Billable Hours</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Exporting" xml:space="preserve">
+        <value>Exporting (PDF, CSV, XLS)</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Rounding" xml:space="preserve">
+        <value>Rounding</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="SavedReports" xml:space="preserve">
+        <value>Saved Reports</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="WorkspaceLogo" xml:space="preserve">
+        <value>Workspace Logo</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Estimates" xml:space="preserve">
+        <value>Estimates</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Alerts" xml:space="preserve">
+        <value>Alerts</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Tasks" xml:space="preserve">
+        <value>Tasks</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="ProjectDashboard" xml:space="preserve">
+        <value>Project Dashboard</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="IcalFeed" xml:space="preserve">
+        <value>iCal Feed</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="CustomProjectColor" xml:space="preserve">
+        <value>Custom Project Color</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="ProjectTemplate" xml:space="preserve">
+        <value>Project Template</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="MobileAppDesktopAppWebAppTogglButton" xml:space="preserve">
+        <value>Mobile App, Desktop App, Web App &amp; Toggl Button</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
+        <value>Login to your account on Toggl.com to see more detailed info about you account and plan.</value>
+        <comment>A message at the bottom of Your Plan view</comment>
+    </data>
+    <data name="TogglUrl" xml:space="preserve">
+        <value>https://toggl.com</value>
+        <comment>Url to the Toggl landing page</comment>
+    </data>
     <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
         <value>You've made your first
 Time Entry on Toggl mobile app 🎉</value>

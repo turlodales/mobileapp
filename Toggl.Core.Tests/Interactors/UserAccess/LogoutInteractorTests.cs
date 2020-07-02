@@ -158,13 +158,5 @@ namespace Toggl.Core.Tests.Interactors.UserAccess
             PushNotificationsTokenService.Received().InvalidateCurrentToken();
             PushNotificationsTokenStorage.Received().Clear();
         }
-
-        [Fact, LogIfTooSlow]
-        public async Task ClearsOnboardingStorage()
-        {
-            await interactor.Execute();
-
-            OnboardingStorage.Received().Reset();
-        }
     }
 }

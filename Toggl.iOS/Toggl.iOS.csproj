@@ -1522,6 +1522,7 @@
     <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
     <InterfaceDefinition Include="Views\Onboarding\OnboardingPageView.xib" />
+    <InterfaceDefinition Include="ViewControllers\Settings\YourPlanViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -2163,6 +2164,10 @@
     <Compile Include="Views\Onboarding\VideoView.cs" />
     <Compile Include="Helper\TextHelper.cs" />
     <Compile Include="Views\TriangleView.cs" />
+    <Compile Include="ViewControllers\Settings\YourPlanViewController.cs" />
+    <Compile Include="ViewControllers\Settings\YourPlanViewController.designer.cs">
+      <DependentUpon>YourPlanViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">

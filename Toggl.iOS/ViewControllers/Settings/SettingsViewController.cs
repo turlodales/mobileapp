@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Reactive.Linq;
 using CoreGraphics;
 using Foundation;
@@ -83,14 +84,23 @@ namespace Toggl.iOS.ViewControllers
         {
             var sections = new List<IObservable<SettingSection>>();
 
+            var yourPlanSection = ViewModel.ShouldShowYourPlanSection.Select(shouldShow =>
+                shouldShow
+                    ? new SettingSection("",new ISettingRow[] { new NavigationRow(
+                        Resources.YourPlan,
+                        Resources.Free,
+                        ViewModel.OpenYourPlanSettings) })
+                    : null);
+            sections.Add(yourPlanSection);
+
             var profileSection = Observable.CombineLatest(ViewModel.Name, ViewModel.Email, ViewModel.WorkspaceName,
-                (name, email, workspace)
-                    => new SettingSection(Resources.YourProfile, new ISettingRow[]
-                    {
-                        new InfoRow(Resources.Name, name),
-                        new InfoRow(Resources.EmailAddress, email),
-                        new NavigationRow(Resources.Workspace, workspace, ViewModel.PickDefaultWorkspace)
-                    }));
+            (name, email, workspace)
+                => new SettingSection(Resources.YourProfile, new ISettingRow[]
+                {
+                    new InfoRow(Resources.Name, name),
+                    new InfoRow(Resources.EmailAddress, email),
+                    new NavigationRow(Resources.Workspace, workspace, ViewModel.PickDefaultWorkspace)
+                }));
 
             sections.Add(profileSection);
 
@@ -163,7 +173,8 @@ namespace Toggl.iOS.ViewControllers
 
             sections.Add(footerSection);
 
-            return sections.CombineLatest().Select(list => list.ToImmutableList());
+            return sections.CombineLatest().Select(list =>
+                list.Where(CommonFunctions.NotNull).ToImmutableList());
         }
 
         public override void ViewDidAppear(bool animated)
