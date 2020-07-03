@@ -714,81 +714,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             [Fact, LogIfTooSlow]
-            public async Task ShowsAConfirmationDialogIfUserEnteredSomething()
-            {
-                makeDirty();
-
-                ViewModel.CloseWithDefaultResult();
-
-                TestScheduler.Start();
-                await View.Received().ConfirmDestructiveAction(ActionType.DiscardNewTimeEntry);
-            }
-
-            [Fact, LogIfTooSlow]
-            public void DoesNotCloseTheViewIfUserWantsToContinueEditing()
-            {
-                makeDirty();
-                View.ConfirmDestructiveAction(ActionType.DiscardNewTimeEntry)
-                    .Returns(_ => Observable.Return(false));
-
-                ViewModel.CloseWithDefaultResult();
-
-                TestScheduler.Start();
-                View.DidNotReceive().Close();
-            }
-
-            [Fact, LogIfTooSlow]
-            public void ClosesTheViewIfUserWantsToDiscardTheEnteredInformation()
-            {
-                makeDirty();
-                View.ConfirmDestructiveAction(ActionType.DiscardNewTimeEntry)
-                    .Returns(_ => Observable.Return(true));
-
-                ViewModel.CloseWithDefaultResult();
-
-                TestScheduler.Start();
-                View.Received().Close();
-            }
-
-            [Fact, LogIfTooSlow]
             public void DoesNotCallTheAnalyticsServiceSinceNoTimeEntryWasCreated()
             {
                 ViewModel.CloseWithDefaultResult();
 
                 TestScheduler.Start();
                 AnalyticsService.DidNotReceive().Track(Arg.Any<StartTimeEntryEvent>());
-            }
-
-            private void makeDirty()
-            {
-                ViewModel.ToggleBillable.Execute();
-            }
-        }
-
-        public sealed class TheToggleBillableAction : StartTimeEntryViewModelTest
-        {
-            [Fact, LogIfTooSlow]
-            public void TogglesTheIsBillableProperty()
-            {
-                var observer = TestScheduler.CreateObserver<bool>();
-                ViewModel.IsBillable.Subscribe(observer);
-
-                ViewModel.ToggleBillable.Execute();
-                TestScheduler.Start();
-
-                observer.Values().Count().Should().Be(2);
-                var billableValues = observer.Values().ToList();
-                billableValues[0].Should().Be(!billableValues[1]);
-            }
-
-            [Fact, LogIfTooSlow]
-            public void TracksBillableTap()
-            {
-                ViewModel.ToggleBillable.Execute();
-
-                AnalyticsService.Received()
-                                .StartViewTapped
-                                .Track(StartViewTapSource.Billable);
             }
         }
 

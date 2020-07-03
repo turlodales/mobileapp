@@ -159,7 +159,7 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             BillableButton.Rx()
-                .BindAction(ViewModel.ToggleBillable)
+                .BindAction(ViewModel.BillableTapped)
                 .DisposedBy(DisposeBag);
 
             StartDateButton.Rx()

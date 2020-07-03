@@ -49,6 +49,7 @@ namespace Toggl.Core.UI.ViewModels
         private readonly BehaviorRelay<bool> isSuggestingTags = new BehaviorRelay<bool>(false);
         private readonly BehaviorRelay<bool> isSuggestingProjects = new BehaviorRelay<bool>(false);
         private readonly BehaviorRelay<bool> isBillableAvailable = new BehaviorRelay<bool>(false);
+        private readonly BehaviorRelay<bool> isBillablePremiumTooltipVisibile = new BehaviorRelay<bool>(false);
 
         private bool isDirty => !string.IsNullOrEmpty(textFieldInfo.Value.Description)
                                 || textFieldInfo.Value.Spans.Any(s => s is ProjectSpan || s is TagSpan)
@@ -78,6 +79,7 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<bool> IsSuggestingTags { get; }
         public IObservable<bool> IsSuggestingProjects { get; }
         public IObservable<bool> IsBillableAvailable { get; }
+        public IObservable<bool> IsBillablePremiumTooltipVisibile { get; }
 
         public string PlaceholderText { get; private set; }
 
@@ -89,11 +91,14 @@ namespace Toggl.Core.UI.ViewModels
 
         public OutputAction<IThreadSafeTimeEntry> Done { get; }
         public ViewAction DurationTapped { get; }
-        public ViewAction ToggleBillable { get; }
+        public ViewAction BillableTapped { get; }
+        public ViewAction DismissBillableTooltip { get; }
+        public ViewAction OpenPlanSettings { get; }
         public ViewAction SetStartDate { get; }
         public ViewAction ChangeTime { get; }
         public ViewAction ToggleTagSuggestions { get; }
         public ViewAction ToggleProjectSuggestions { get; }
+        
         public InputAction<AutocompleteSuggestion> SelectSuggestion { get; }
         public InputAction<TimeSpan> SetRunningTime { get; }
         public InputAction<ProjectSuggestion> ToggleTasks { get; }
@@ -138,13 +143,14 @@ namespace Toggl.Core.UI.ViewModels
             IsSuggestingTags = isSuggestingTags.AsDriver(schedulerProvider);
             IsSuggestingProjects = isSuggestingProjects.AsDriver(schedulerProvider);
             IsBillableAvailable = isBillableAvailable.AsDriver(schedulerProvider);
+            IsBillablePremiumTooltipVisibile = isBillablePremiumTooltipVisibile.AsDriver(schedulerProvider);
             DisplayedTime = displayedTime
                 .Select(time => time.ToFormattedString(DurationFormat.Improved))
                 .AsDriver(schedulerProvider);
 
             Done = rxActionFactory.FromObservable<IThreadSafeTimeEntry>(done);
             DurationTapped = rxActionFactory.FromAction(durationTapped);
-            ToggleBillable = rxActionFactory.FromAction(toggleBillable);
+            BillableTapped = rxActionFactory.FromAction(billableTapped);
             SetStartDate = rxActionFactory.FromAsync(setStartDate);
             ChangeTime = rxActionFactory.FromAsync(changeTime);
             ToggleTagSuggestions = rxActionFactory.FromAction(toggleTagSuggestions);
@@ -152,6 +158,8 @@ namespace Toggl.Core.UI.ViewModels
             SelectSuggestion = rxActionFactory.FromAsync<AutocompleteSuggestion>(selectSuggestion);
             SetRunningTime = rxActionFactory.FromAction<TimeSpan>(setRunningTime);
             ToggleTasks = rxActionFactory.FromAction<ProjectSuggestion>(toggleTasks);
+            DismissBillableTooltip = rxActionFactory.FromAction(dismissBillableTooltip);
+            OpenPlanSettings = rxActionFactory.FromAsync(openPlanSettings);
 
             var queryByType = queryByTypeSubject
                 .AsObservable()
@@ -475,11 +483,25 @@ namespace Toggl.Core.UI.ViewModels
             expandedProjects.OnNext(currentExpandedProjects);
         }
 
-        private void toggleBillable()
+        private void billableTapped()
         {
-            analyticsService.StartViewTapped.Track(StartViewTapSource.Billable);
-            isBillable.Accept(!isBillable.Value);
+            if (isBillableAvailable.Value)
+            {
+                analyticsService.StartViewTapped.Track(StartViewTapSource.Billable);
+                isBillable.Accept(!isBillable.Value);
+            }
+            else
+            {
+                isBillablePremiumTooltipVisibile.Accept(true);
+            }
         }
+
+        private void dismissBillableTooltip()
+        {
+            isBillablePremiumTooltipVisibile.Accept(false);
+        }
+
+        private Task openPlanSettings() => Navigate<YourPlanViewModel>();
 
         private async Task changeTime()
         {

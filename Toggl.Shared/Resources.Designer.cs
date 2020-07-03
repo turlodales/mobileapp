@@ -2655,5 +2655,17 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("OkGotIt", resourceCulture);
             }
         }
+
+        public static string BillableAwareness {
+            get {
+                return ResourceManager.GetString("BillableAwareness", resourceCulture);
+            }
+        }
+
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
     }
 }

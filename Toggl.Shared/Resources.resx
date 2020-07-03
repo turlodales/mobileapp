@@ -1942,4 +1942,13 @@ Time Entry on Toggl mobile app 🎉</value>
         <value>Ok, got it!</value>
         <comment>Button in the final tooltip of onboarding. Displayed below the created time entry</comment>
     </data>
+    <data name="BillableAwareness" xml:space="preserve">
+        <value>Billable Hours is available
+on other plans</value>
+        <comment>Text of the billable hours awareness tooltip</comment>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Details</value>
+        <comment>Text of the billable hours awareness tooltip's call to action</comment>
+    </data>
 </root>
