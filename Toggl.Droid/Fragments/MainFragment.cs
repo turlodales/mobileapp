@@ -35,6 +35,8 @@ using Toggl.Core;
 using Toggl.Core.UI.Collections;
 using Toggl.Core.UI.ViewModels.MainLog.Identity;
 using Toggl.Droid.Views;
+using System.Linq;
+using Android.Util;
 
 namespace Toggl.Droid.Fragments
 {
@@ -233,7 +235,32 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             ViewModel.FinalTooltipCondition.ConditionMet
-                .Subscribe(finalTooltip.Rx().IsVisible())
+                .CombineLatest(ViewModel.MainLogItems, (conditionMet, items) => (TooltipShouldBeVisible: conditionMet, LogItems: items))
+                .Subscribe(tuple =>
+                {
+                    var metrics = new DisplayMetrics();
+                    Activity.WindowManager.DefaultDisplay.GetMetrics(metrics);
+                    var screenHeight = metrics.HeightPixels;
+
+                    var thereAreSuggestions = tuple.LogItems.Count > 1;
+                    if (tuple.TooltipShouldBeVisible && thereAreSuggestions)
+                    {
+                        var numberOfSuggestions = tuple.LogItems.First().Items.Count;
+                        var suggestionHeight = 72.DpToPixels(Context);
+                        var mainLogHeaderSize = suggestionHeight;
+                        var neededPaddingToTopOfFirstTimeEntry = numberOfSuggestions * suggestionHeight + mainLogHeaderSize * 2;
+                        var tooltipHeight = 155.DpToPixels(Context);
+                        var bottomSpace = screenHeight - neededPaddingToTopOfFirstTimeEntry;
+                        var tooltipFitsOnBottom = false;
+                        var marginTop = tooltipFitsOnBottom
+                            ? neededPaddingToTopOfFirstTimeEntry + mainLogHeaderSize
+                            : neededPaddingToTopOfFirstTimeEntry - tooltipHeight;
+
+                        finalTooltip.UpdateMargin(top: marginTop);
+                    }
+
+                    finalTooltip.Visibility = tuple.TooltipShouldBeVisible.ToVisibility();
+                })
                 .DisposedBy(DisposeBag);
 
             hereIsYourTimeEntryTooltip.Rx().Tap()
