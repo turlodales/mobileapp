@@ -413,7 +413,14 @@ namespace Toggl.Core.UI.ViewModels
                 .Take(1)
                 .SelectValue(true)
                 .Merge(SelectTimeEntry.Inputs.SelectValue(false)
-                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.FinalTooltip, TooltipDismissReason.ConditionMet));
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.FinalTooltip, TooltipDismissReason.ConditionMet))
+                .Do(setCompletedOnboardingIfNecessary);
+        }
+
+        private void setCompletedOnboardingIfNecessary(bool shouldSet)
+        {
+            if (shouldSet)
+                OnboardingStorage.SetCompletedOnboarding();
         }
 
         public void Track(ITrackableEvent e)
