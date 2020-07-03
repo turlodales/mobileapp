@@ -502,6 +502,8 @@ namespace Toggl.Core.UI.Navigation
             {
                 return new YourPlanViewModel(
                     dependencyContainer.NavigationService,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory);
             }
 

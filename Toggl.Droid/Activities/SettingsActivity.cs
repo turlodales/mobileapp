@@ -14,6 +14,7 @@ using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
 using Toggl.Core.UI.Views.Settings;
 using static Toggl.Shared.Resources;
+using Toggl.Shared.Models;
 
 namespace Toggl.Droid.Activities
 {
@@ -42,7 +43,14 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
             emailRow.Bind(ViewModel.Email, Email)
                 .DisposedBy(DisposeBag);
+            planRow.Bind(ViewModel.PlanName, YourPlan, ViewModel.OpenYourPlanSettings)
+                .DisposedBy(DisposeBag);
             workspaceRow.Bind(ViewModel.WorkspaceName, Workspace, ViewModel.PickDefaultWorkspace)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.CurrentPlan
+                .Select(plan => plan == Plan.Free)
+                .Subscribe(planRow.ItemView.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
             // date and time section

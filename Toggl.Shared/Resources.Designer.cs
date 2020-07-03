@@ -2511,7 +2511,25 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("Free", resourceCulture);
             }
         }
-        
+
+        public static string Starter {
+            get {
+                return ResourceManager.GetString("Starter", resourceCulture);
+            }
+        }
+
+        public static string Features {
+            get {
+                return ResourceManager.GetString("Features", resourceCulture);
+            }
+        }
+
+        public static string NeverExpires {
+            get {
+                return ResourceManager.GetString("NeverExpires", resourceCulture);
+            }
+        }
+
         public static string TrackingTime {
             get {
                 return ResourceManager.GetString("TrackingTime", resourceCulture);

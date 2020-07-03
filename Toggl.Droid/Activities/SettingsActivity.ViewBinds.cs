@@ -18,6 +18,7 @@ namespace Toggl.Droid.Activities
         private LinearLayout settingsContainer;
         private InfoRowViewView nameRow;
         private InfoRowViewView emailRow;
+        private NavigationRowViewView planRow;
         private NavigationRowViewView workspaceRow;
         private NavigationRowViewView dateFormatRow;
         private ToggleRowViewView use24HoursFormatRow;
@@ -40,7 +41,6 @@ namespace Toggl.Droid.Activities
         private HeaderRowView timerDefaultsHeaderRow;
         private HeaderRowView calendarHeaderRow;
         private HeaderRowView generalHeaderRow;
-
 
         protected override void InitializeViews()
         {
@@ -65,6 +65,7 @@ namespace Toggl.Droid.Activities
             
             nameRow = InfoRowViewView.Create(this);
             emailRow = InfoRowViewView.Create(this);
+            planRow = NavigationRowViewView.Create(this);
             workspaceRow = NavigationRowViewView.Create(this);
             dateFormatRow = NavigationRowViewView.Create(this);
             use24HoursFormatRow = ToggleRowViewView.Create(this);
@@ -86,6 +87,7 @@ namespace Toggl.Droid.Activities
                 profileHeaderRow,
                 nameRow,
                 emailRow,
+                planRow,
                 workspaceRow,
                 DividerRowView.Create(this),
                 dateTimeHeaderRow,

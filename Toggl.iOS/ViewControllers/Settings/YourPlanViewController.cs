@@ -24,20 +24,16 @@ namespace Toggl.iOS.ViewControllers.Settings
 
             View.BackgroundColor = ColorAssets.TableBackground;
 
+            var rawString = Resources.LoginToYourAccountOnTogglToSeeMore;
             var togglDotCom = "toggl.com";
-            var str = new NSMutableAttributedString(Resources.LoginToYourAccountOnTogglToSeeMore);
-            var index = str.Value.ToLower().IndexOf(togglDotCom);
-            if (index >= 0)
+            var str = new NSMutableAttributedString(rawString);
+            var index = rawString.IndexOf(togglDotCom);
+            var length = togglDotCom.Length;
+            str.AddAttributes(new UIStringAttributes
             {
-                var attrs = new UIStringAttributes
-                {
-                    Font = UIFont.BoldSystemFontOfSize(LoginToYourAccountLabel.Font.PointSize)
-                };
-
-                var length = togglDotCom.Length;
-                str.AddAttributes(attrs, new NSRange(index, length));
-            }
-
+                Font = UIFont.BoldSystemFontOfSize(LoginToYourAccountLabel.Font.PointSize)
+            }, new NSRange(index, length));
+            
             LoginToYourAccountLabel.AttributedText = str;
 
             LoginToYourAccountLabel.Rx().Tap()

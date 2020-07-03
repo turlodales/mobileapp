@@ -1845,6 +1845,18 @@ a Project to a Time Entry</value>
         <value>Free</value>
         <comment>Name for the free plan. Displayed in the settings in the Your Plan section</comment>
     </data>
+    <data name="Starter" xml:space="preserve">
+        <value>Starter</value>
+        <comment>Name for the starter plan. Displayed in the settings in the Your Plan section</comment>
+    </data>
+  <data name="Features" xml:space="preserve">
+        <value>Features</value>
+        <comment>Noun. Label shown on the Your Plan view</comment>
+    </data>
+    <data name="NeverExpires" xml:space="preserve">
+        <value>Never Expires</value>
+        <comment>Expiration date for the free plan</comment>
+    </data>
     <data name="TrackingTime" xml:space="preserve">
         <value>Tracking Time</value>
         <comment>Feature name in the Your Plan view in the Settings</comment>
@@ -1910,7 +1922,7 @@ a Project to a Time Entry</value>
         <comment>Feature name in the Your Plan view in the Settings</comment>
     </data>
     <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
-        <value>Login to your account on Toggl.com to see more detailed info about you account and plan.</value>
+        <value>Login to your account on toggl.com to see more detailed info about you account and plan.</value>
         <comment>A message at the bottom of Your Plan view</comment>
     </data>
     <data name="TogglUrl" xml:space="preserve">

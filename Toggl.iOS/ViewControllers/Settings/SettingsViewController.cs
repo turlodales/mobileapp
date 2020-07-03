@@ -18,6 +18,7 @@ using Toggl.iOS.Presentation.Transition;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using UIKit;
 
 namespace Toggl.iOS.ViewControllers
@@ -84,11 +85,11 @@ namespace Toggl.iOS.ViewControllers
         {
             var sections = new List<IObservable<SettingSection>>();
 
-            var yourPlanSection = ViewModel.ShouldShowYourPlanSection.Select(shouldShow =>
-                shouldShow
-                    ? new SettingSection("",new ISettingRow[] { new NavigationRow(
+            var yourPlanSection = ViewModel.CurrentPlan.Select(plan =>
+                plan == Plan.Free
+                    ? new SettingSection("", new ISettingRow[] { new NavigationRow(
                         Resources.YourPlan,
-                        Resources.Free,
+                        plan.Name(),
                         ViewModel.OpenYourPlanSettings) })
                     : null);
             sections.Add(yourPlanSection);
