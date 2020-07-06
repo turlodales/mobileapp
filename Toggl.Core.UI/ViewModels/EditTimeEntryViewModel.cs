@@ -231,6 +231,7 @@ namespace Toggl.Core.UI.ViewModels
             ProjectsTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.EditViewProjectsTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createProjectsTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
         }

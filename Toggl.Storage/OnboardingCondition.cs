@@ -19,9 +19,14 @@ namespace Toggl.Storage
 
         public IObservable<bool> ConditionMet { get; }
 
-        public OnboardingCondition(OnboardingConditionKey key, IOnboardingStorage onboardingStorage, IObservable<bool> predicate)
+        public OnboardingCondition(
+        OnboardingConditionKey key,
+        IOnboardingStorage onboardingStorage,
+        ISchedulerProvider schedulerProvider,
+        IObservable<bool> predicate)
         {
             Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
+            Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
 
             this.onboardingStorage = onboardingStorage;
 
@@ -35,7 +40,8 @@ namespace Toggl.Storage
                     .StartWith(false)
                     .DistinctUntilChanged()
                     .Select(conditionWasNotMetBefore)
-                    .Do(setConditionWasMetBeforeIfNeeded);
+                    .Do(setConditionWasMetBeforeIfNeeded)
+                    .ObserveOn(schedulerProvider.MainScheduler);
         }
 
         private bool conditionWasNotMetBefore(bool shouldShow)
