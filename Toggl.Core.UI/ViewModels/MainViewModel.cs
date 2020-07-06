@@ -310,24 +310,28 @@ namespace Toggl.Core.UI.ViewModels
             RunningTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.RunningTimeEntryTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createRunningTimeEntryTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
 
             StartTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.StartTimeEntryTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createStartTimeEntryTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
 
             TapToStopTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.TapToStopTimeEntryTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createTapToStopTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
 
             FinalTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.FinalTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createFinalTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
         }
@@ -356,7 +360,7 @@ namespace Toggl.Core.UI.ViewModels
 
             var timeEntryIsRunning = CurrentRunningTimeEntry
                 .Select(te => te != null)
-                .Take(1);
+                .Throttle(TimeSpan.FromSeconds(throttlePeriodInSeconds));
 
             var startTimeEntryTapped = StartTimeEntry
                 .Inputs
