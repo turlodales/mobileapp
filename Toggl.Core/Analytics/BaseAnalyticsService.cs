@@ -98,6 +98,7 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent NoWorkspaces { get; }
 
         public IAnalyticsEvent<TimeEntryStartOrigin> TimeEntryStarted { get; }
+        public IAnalyticsEvent OnboardingTimeEntryCreated { get; }
 
         public IAnalyticsEvent<TimeEntryStopOrigin> TimeEntryStopped { get; }
 
@@ -405,6 +406,7 @@ namespace Toggl.Core.Analytics
             SsoFlowOutcome = new AnalyticsEvent<string>(this, nameof(SsoFlowOutcome), "Outcome");
             SsoLinkOutcome = new AnalyticsEvent<string>(this, nameof(SsoLinkOutcome), "Outcome");
             SsoUrlOutcome = new AnalyticsEvent<string>(this, nameof(SsoUrlOutcome), "Outcome");
+            OnboardingTimeEntryCreated = new AnalyticsEvent(this, nameof(OnboardingTimeEntryCreated));
         }
 
         public void TrackAnonymized(Exception exception)
