@@ -60,12 +60,19 @@ namespace Toggl.Core.Interactors
             => Task.Run(async () =>
             {
                 var currentUser = await dataSource.User.Get();
-                var timeEntryPrototype = userFromPrototype(currentUser);    
+                var timeEntryPrototype = userFromPrototype(currentUser);
                 var createdTimeEntry = await dataSource.TimeEntries.Create(timeEntryPrototype);
                 notifyOfNewTimeEntryIfPossible(createdTimeEntry);
                 syncManager.InitiatePushSync();
-                var startTimeEntryEvent = StartTimeEntryEvent.With(origin).Invoke(createdTimeEntry);
-                analyticsService.Track(startTimeEntryEvent);
+                if (origin == TimeEntryStartOrigin.OnboardingTimeEntry)
+                {
+                    analyticsService.OnboardingTimeEntryCreated.Track();
+                }
+                else
+                {
+                    var startTimeEntryEvent = StartTimeEntryEvent.With(origin).Invoke(createdTimeEntry);
+                    analyticsService.Track(startTimeEntryEvent);
+                }
                 return createdTimeEntry;
             });
 
