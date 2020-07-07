@@ -33,7 +33,8 @@ namespace Toggl.Storage
             Key = key;
 
             ConditionMet = onboardingStorage.OnboardingConditionWasMetBefore(Key) ||
-                           onboardingStorage.CompletedOnboarding()
+                           onboardingStorage.CompletedOnboarding() ||
+                           !onboardingStorage.IsRunningTheAppFirstTime()
                 ? Observable.Return(false)
                 : predicate
                     .Merge(dismissSubject.Select(_ => false))
