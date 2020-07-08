@@ -205,7 +205,7 @@
                         <constraint firstItem="Dr2-ax-s3L" firstAttribute="leading" secondItem="Xnc-Zt-xWV" secondAttribute="trailing" id="xmn-we-RDd"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuG-P4-DYA" userLabel="Tooltip: Click to assign a project">
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuG-P4-DYA" userLabel="Tooltip: Click to assign a project">
                     <rect key="frame" x="4" y="538" width="243.5" height="79"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKZ-Z4-sVf" userLabel="Background">
