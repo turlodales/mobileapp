@@ -1423,6 +1423,8 @@
     <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\StartTimeEntryViewDisabledButton.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\StartTimeEntryInactiveButton.colorset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph.png" />
     <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%402x.png" />
@@ -2322,6 +2324,8 @@
     <Folder Include="Resources\Images.xcassets\stopwatch.imageset\" />
     <Folder Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\" />
     <Folder Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\StartTimeEntryViewDisabledButton.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\StartTimeEntryInactiveButton.colorset\" />
     <Folder Include="Resources\Images.xcassets\illustrationBarChart.imageset\" />
   </ItemGroup>
   <ItemGroup>

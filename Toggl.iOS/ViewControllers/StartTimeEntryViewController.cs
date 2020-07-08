@@ -91,6 +91,7 @@ namespace Toggl.iOS.ViewControllers
 
             prepareViews();
             prepareProjectsTooltip();
+            prepareBillableTooltip();
 
             var source = new StartTimeEntryTableViewSource(SuggestionsTableView);
             SuggestionsTableView.Source = source;
@@ -139,10 +140,9 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ProjectsButton.Rx().TintColor())
                 .DisposedBy(DisposeBag);
 
-            //Visibility
             ViewModel.IsBillableAvailable
-                .Select(b => b ? (nfloat)42 : 0)
-                .Subscribe(BillableButtonWidthConstraint.Rx().Constant())
+                .Select(isAvailable => (isAvailable ? ColorAssets.StartTimeEntryInactiveButton : ColorAssets.StartTimeEntryViewDisabledButton))
+                .Subscribe(BillableButton.Rx().TintColor())
                 .DisposedBy(DisposeBag);
 
             // Actions
@@ -236,6 +236,36 @@ namespace Toggl.iOS.ViewControllers
                 fullString.Append(new NSAttributedString(stringParts[1]));
                 return fullString;
             }
+        }
+
+        private void prepareBillableTooltip()
+        {
+            BillableTooltip.Alpha = 0;
+
+            ViewModel.IsBillablePremiumTooltipVisibile
+                .Subscribe(BillableTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(DisposeBag);
+
+            BillableTooltip.Rx()
+                .BindAction(ViewModel.DismissBillableTooltip)
+                .DisposedBy(DisposeBag);
+
+            BillableTooltipDetailsButton.Rx()
+                .BindAction(ViewModel.OpenPlanSettings)
+                .DisposedBy(DisposeBag);
+
+            BillableTooltipArrow.Direction = TriangleView.TriangleDirection.Down;
+            BillableTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            BillableTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;;
+
+            BillableTooltipMessageLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            BillableTooltipMessageLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Center);
+            BillableTooltipDetailsButton.SetTitleColor(ColorAssets.OnboardingTooltipTextColor, UIControlState.Normal);
+
+            BillableTooltip.SetUpTooltipShadow();
+
+            BillableTooltipMessageLabel.Text = Resources.BillableAwareness;
+            BillableTooltipDetailsButton.SetTitle(Resources.Details, UIControlState.Normal);
         }
 
         private void onTextFieldInfo(TextFieldInfo textFieldInfo)
