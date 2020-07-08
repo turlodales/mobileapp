@@ -2506,9 +2506,9 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string YourPlan {
+        public static string YourWorkspacePlan {
             get {
-                return ResourceManager.GetString("YourPlan", resourceCulture);
+                return ResourceManager.GetString("YourWorkspacePlan", resourceCulture);
             }
         }
         
@@ -2667,19 +2667,19 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("AdvancedReportsViaWeb", resourceCulture);
             }
         }
-        
+
         public static string AdvancedReportsFeatures {
             get {
                 return ResourceManager.GetString("AdvancedReportsFeatures", resourceCulture);
             }
         }
-        
+
         public static string AvailableOnOtherPlans {
             get {
                 return ResourceManager.GetString("AvailableOnOtherPlans", resourceCulture);
             }
         }
-        
+
         public static string BillableAwareness {
             get {
                 return ResourceManager.GetString("BillableAwareness", resourceCulture);

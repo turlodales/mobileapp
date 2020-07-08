@@ -1840,8 +1840,8 @@ a Project to a Time Entry</value>
         <comment>Text displayed in the onboarding tooltip that's shown in the start time entry view above the projects button.
                  The $ sign gets replaced with the icon image in runtime</comment>
     </data>
-    <data name="YourPlan" xml:space="preserve">
-        <value>Your Plan</value>
+    <data name="YourWorkspacePlan" xml:space="preserve">
+        <value>Your Workspace Plan</value>
         <comment>One of the sections in the settings. Tapping on this opens details about the current pricing plan</comment>
     </data>
     <data name="Free" xml:space="preserve">

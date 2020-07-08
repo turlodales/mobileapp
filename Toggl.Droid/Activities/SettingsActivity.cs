@@ -43,7 +43,7 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
             emailRow.Bind(ViewModel.Email, Email)
                 .DisposedBy(DisposeBag);
-            planRow.Bind(ViewModel.PlanName, YourPlan, ViewModel.OpenYourPlanSettings)
+            planRow.Bind(ViewModel.PlanName, YourWorkspacePlan, ViewModel.OpenYourPlanSettings)
                 .DisposedBy(DisposeBag);
             workspaceRow.Bind(ViewModel.WorkspaceName, Workspace, ViewModel.PickDefaultWorkspace)
                 .DisposedBy(DisposeBag);
@@ -65,7 +65,7 @@ namespace Toggl.Droid.Activities
             isGroupingTimeEntriesRow.Bind(ViewModel.IsGroupingTimeEntries,GroupTimeEntries, ViewModel.ToggleTimeEntriesGrouping)
                 .DisposedBy(DisposeBag);
 
-            // timer defaults section 
+            // timer defaults section
             isManualModeEnabledRowView.Bind(ViewModel.IsManualModeEnabled,ManualMode, ManualModeDescription, ViewModel.ToggleManualMode)
                 .DisposedBy(DisposeBag);
             swipeActionsRow.Bind(ViewModel.SwipeActionsEnabled, SwipeActions, ViewModel.ToggleSwipeActions)
@@ -75,7 +75,7 @@ namespace Toggl.Droid.Activities
             stoppedTimerRow.Bind(ViewModel.AreStoppedTimerNotificationsEnabled, NotificationsStoppedTimer, ViewModel.ToggleStoppedTimerNotifications)
                 .DisposedBy(DisposeBag);
 
-            // calendar section 
+            // calendar section
             calendarSettingsRow.SetRowData(new NavigationRow(CalendarSettingsTitle, ViewModel.OpenCalendarSettings));
             smartRemindersRow.Bind(ViewModel.CalendarSmartReminders, SmartReminders, ViewModel.OpenCalendarSmartReminders)
                 .DisposedBy(DisposeBag);
@@ -84,10 +84,10 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             // general section
-            submitFeedbackRow.SetRowData(new NavigationRow(SubmitFeedback, ViewModel.SubmitFeedback)); 
-            aboutRow.SetRowData(new NavigationRow(About, ViewModel.Version, ViewModel.OpenAboutView)); 
+            submitFeedbackRow.SetRowData(new NavigationRow(SubmitFeedback, ViewModel.SubmitFeedback));
+            aboutRow.SetRowData(new NavigationRow(About, ViewModel.Version, ViewModel.OpenAboutView));
             helpRow.SetRowData(new NavigationRow(Help, ViewModel.OpenHelpView));
-            
+
             ViewModel.LoggingOut
                 .Subscribe(this.CancelAllNotifications)
                 .DisposedBy(DisposeBag);

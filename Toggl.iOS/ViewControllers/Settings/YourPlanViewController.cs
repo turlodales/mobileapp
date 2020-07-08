@@ -23,7 +23,7 @@ namespace Toggl.iOS.ViewControllers.Settings
             base.ViewDidLoad();
 
             View.BackgroundColor = ColorAssets.TableBackground;
-            Title = Resources.YourPlan;
+            Title = Resources.YourWorkspacePlan;
 
             var rawString = Resources.LoginToYourAccountOnTogglToSeeMore;
             var togglDotCom = "toggl.com";
@@ -34,7 +34,7 @@ namespace Toggl.iOS.ViewControllers.Settings
             {
                 Font = UIFont.BoldSystemFontOfSize(LoginToYourAccountLabel.Font.PointSize)
             }, new NSRange(index, length));
-            
+
             LoginToYourAccountLabel.AttributedText = str;
 
             LoginToYourAccountLabel.Rx().Tap()

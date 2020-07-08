@@ -44,7 +44,7 @@ namespace Toggl.Droid.Activities
             moreInfo = FindViewById<TextView>(Resource.Id.MoreInfoText);
             moreInfo.TextFormatted = formatMoreInfoText();
 
-            SetupToolbar(title: Shared.Resources.YourPlan);
+            SetupToolbar(title: Shared.Resources.YourWorkspacePlan);
         }
 
         private static ICharSequence formatMoreInfoText()

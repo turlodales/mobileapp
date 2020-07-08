@@ -183,7 +183,7 @@ namespace Toggl.iOS.ViewControllers
                 };
 
                 if (plan == Plan.Free)
-                    rows.Add(new NavigationRow(Resources.YourPlan, plan.Name(), ViewModel.OpenYourPlanSettings));
+                    rows.Add(new NavigationRow(Resources.YourWorkspacePlan, plan.Name(), ViewModel.OpenYourPlanSettings));
 
                 return new SettingSection("", rows.ToArray());
             }
