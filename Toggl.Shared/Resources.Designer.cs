@@ -88,6 +88,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string OnboardingMessagePage3Ios {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage3Ios", resourceCulture);
+            }
+        }
+        
         public static string ContinueWithGoogle {
             get {
                 return ResourceManager.GetString("ContinueWithGoogle", resourceCulture);

@@ -151,6 +151,9 @@ the time goes</value>
         <value>Works where you do -
 mobile, desktop or web</value>
     </data>
+    <data name="OnboardingMessagePage3Ios" xml:space="preserve">
+        <value>Works where you do - mobile, desktop, web and Watch</value>
+    </data>
     <data name="ContinueWithGoogle" xml:space="preserve">
         <value>Continue with Google</value>
         <comment>Text of the button that allows to enter your account using Google from the onboarding view</comment>
