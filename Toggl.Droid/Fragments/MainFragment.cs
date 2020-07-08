@@ -235,6 +235,11 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             ViewModel.FinalTooltipCondition.ConditionMet
+                .Do(conditionMet =>
+                {
+                    if (conditionMet)
+                        AndroidDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
+                })
                 .CombineLatest(ViewModel.MainLogItems, (conditionMet, items) => (TooltipShouldBeVisible: conditionMet, LogItems: items))
                 .Subscribe(tuple =>
                 {

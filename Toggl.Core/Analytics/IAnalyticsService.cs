@@ -38,6 +38,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<TimeEntryStartOrigin> TimeEntryStarted { get; }
 
+        IAnalyticsEvent OnboardingTimeEntryCreated { get; }
+
         IAnalyticsEvent<TimeEntryStopOrigin> TimeEntryStopped { get; }
 
         IAnalyticsEvent<ContinueTimeEntryOrigin, int, int, int> TimeEntryContinued { get; }
