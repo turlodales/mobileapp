@@ -2511,25 +2511,25 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("Free", resourceCulture);
             }
         }
-
+        
         public static string Starter {
             get {
                 return ResourceManager.GetString("Starter", resourceCulture);
             }
         }
-
+        
         public static string Features {
             get {
                 return ResourceManager.GetString("Features", resourceCulture);
             }
         }
-
+        
         public static string NeverExpires {
             get {
                 return ResourceManager.GetString("NeverExpires", resourceCulture);
             }
         }
-
+        
         public static string TrackingTime {
             get {
                 return ResourceManager.GetString("TrackingTime", resourceCulture);
@@ -2637,7 +2637,7 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("TogglUrl", resourceCulture);
             }
         }
-
+        
         public static string YouveMadeYourFirstTimeEntry {
             get {
                 return ResourceManager.GetString("YouveMadeYourFirstTimeEntry", resourceCulture);
@@ -2655,13 +2655,31 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("OkGotIt", resourceCulture);
             }
         }
-
+        
+        public static string AdvancedReportsViaWeb {
+            get {
+                return ResourceManager.GetString("AdvancedReportsViaWeb", resourceCulture);
+            }
+        }
+        
+        public static string AdvancedReportsFeatures {
+            get {
+                return ResourceManager.GetString("AdvancedReportsFeatures", resourceCulture);
+            }
+        }
+        
+        public static string AvailableOnOtherPlans {
+            get {
+                return ResourceManager.GetString("AvailableOnOtherPlans", resourceCulture);
+            }
+        }
+        
         public static string BillableAwareness {
             get {
                 return ResourceManager.GetString("BillableAwareness", resourceCulture);
             }
         }
-
+        
         public static string Details {
             get {
                 return ResourceManager.GetString("Details", resourceCulture);

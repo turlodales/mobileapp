@@ -24,6 +24,7 @@ using Toggl.Core.UI.ViewModels.DateRangePicker;
 using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using DateRangeSelectionResult = Toggl.Core.UI.ViewModels.DateRangePicker.DateRangePickerViewModel.DateRangeSelectionResult;
 
 namespace Toggl.Core.UI.ViewModels.Reports
@@ -59,6 +60,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
         public OutputAction<IThreadSafeWorkspace> SelectWorkspace { get; }
         public OutputAction<DateRangeSelectionResult> SelectDateRange { get; }
         public InputAction<DateRangeSelectionResult> SetDateRange { get; }
+        public ViewAction OpenYourPlanView { get; }
 
         public ReportsViewModel(
             ITogglDataSource dataSource,
@@ -95,6 +97,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
             SelectWorkspace = rxActionFactory.FromAsync(selectWorkspace);
             SelectDateRange = rxActionFactory.FromAsync(selectDateRange);
+            OpenYourPlanView = rxActionFactory.FromAsync(openYourPlanView);
             SetDateRange = rxActionFactory.FromAction<DateRangeSelectionResult>(setDateRange);
         }
 
@@ -173,6 +176,18 @@ namespace Toggl.Core.UI.ViewModels.Reports
             if (ws == null) return;
             selectedWorkspaceId = ws.Id;
             workspaceSelectedById.OnNext(ws);
+        }
+
+        private async Task openYourPlanView()
+        {
+            var currentPlan = await interactorFactory.ObserveCurrentWorkspacePlan()
+                .Execute()
+                .FirstAsync();
+
+            currentPlan = Plan.Starter;
+
+            if (currentPlan == Plan.Free)
+                await Navigate<YourPlanViewModel>();
         }
 
         private async Task<IThreadSafeWorkspace> selectWorkspace()
@@ -269,10 +284,16 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 if (summaryData.Segments.None())
                     return elements(new ReportNoDataElement());
 
+                var currentPlan = await interactorFactory
+                    .ObserveCurrentWorkspacePlan()
+                    .Execute()
+                    .FirstAsync();
+
                 return elements(
                     new ReportWorkspaceNameElement(filter.Workspace.Name),
                     new ReportSummaryElement(summaryData, durationFormat),
                     new ReportProjectsBarChartElement(reportsTotal, dateFormat),
+                    new ReportAdvancedReportsViaWebElement(currentPlan),
                     new ReportProjectsDonutChartElement(summaryData, durationFormat));
             }
             catch (Exception ex)

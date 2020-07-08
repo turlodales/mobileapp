@@ -1423,6 +1423,10 @@
     <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph.png" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1522,6 +1526,7 @@
     <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
     <InterfaceDefinition Include="Views\Onboarding\OnboardingPageView.xib" />
+    <InterfaceDefinition Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\YourPlanViewController.xib" />
   </ItemGroup>
   <ItemGroup>
@@ -2164,6 +2169,10 @@
     <Compile Include="Views\Onboarding\VideoView.cs" />
     <Compile Include="Helper\TextHelper.cs" />
     <Compile Include="Views\TriangleView.cs" />
+    <Compile Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.cs" />
+    <Compile Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.designer.cs">
+      <DependentUpon>ReportAdvancedReportsViaWebCollectionViewCell.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewControllers\Settings\YourPlanViewController.cs" />
     <Compile Include="ViewControllers\Settings\YourPlanViewController.designer.cs">
       <DependentUpon>YourPlanViewController.cs</DependentUpon>
@@ -2313,6 +2322,7 @@
     <Folder Include="Resources\Images.xcassets\stopwatch.imageset\" />
     <Folder Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\" />
     <Folder Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\" />
+    <Folder Include="Resources\Images.xcassets\illustrationBarChart.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

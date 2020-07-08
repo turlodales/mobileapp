@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Foundation;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.iOS.Cells.Reports;
@@ -13,6 +15,7 @@ namespace Toggl.iOS.ViewSources
     {
         Summary,
         BarChart,
+        AdvancedReportsViaWeb,
         DonutChart,
         DonutChartLegendItem,
         Error,
@@ -32,10 +35,16 @@ namespace Toggl.iOS.ViewSources
         private const string noDataCellIdentifier = nameof(noDataCellIdentifier);
         private const string errorCellIdentifier = nameof(errorCellIdentifier);
         private const string workspaceCellIdentifier = nameof(workspaceCellIdentifier);
+        private const string advancedReportsViaWebCellIdentifier = nameof(advancedReportsViaWebCellIdentifier);
+
+        private ISubject<ReportsCollectionViewCell> itemTappedSubject = new Subject<ReportsCollectionViewCell>();
+        public IObservable<ReportsCollectionViewCell> ItemTapped { get; }
 
         public ReportsCollectionViewSource(UICollectionView collectionView)
         {
             this.collectionView = collectionView;
+
+            ItemTapped = itemTappedSubject.AsObservable();
 
             collectionView.RegisterNibForCell(ReportsSummaryCollectionViewCell.Nib, summaryCellIdentifier);
             collectionView.RegisterNibForCell(ReportsBarChartCollectionViewCell.Nib, barChartCellIdentifier);
@@ -43,6 +52,7 @@ namespace Toggl.iOS.ViewSources
             collectionView.RegisterNibForCell(ReportsDonutChartLegendCollectionViewCell.Nib, donutChartLegendCellIdentifier);
             collectionView.RegisterNibForCell(ReportsNoDataCollectionViewCell.Nib, noDataCellIdentifier);
             collectionView.RegisterNibForCell(ReportsErrorCollectionViewCell.Nib, errorCellIdentifier);
+            collectionView.RegisterNibForCell(ReportAdvancedReportsViaWebCollectionViewCell.Nib, advancedReportsViaWebCellIdentifier);
         }
 
         public void SetNewElements(IImmutableList<IReportElement> elements)
@@ -50,6 +60,11 @@ namespace Toggl.iOS.ViewSources
             this.elements = elements.Where(e => e.GetType().Name != nameof(ReportWorkspaceNameElement)).ToImmutableList();
             collectionView.ReloadData();
             collectionView.CollectionViewLayout.InvalidateLayout();
+        }
+
+        public override void ItemSelected(UICollectionView collectionView, NSIndexPath indexPath)
+        {
+            itemTappedSubject.OnNext(CellTypeAt(indexPath));
         }
 
         public override UICollectionViewCell GetCell(UICollectionView collectionView, NSIndexPath indexPath)
@@ -79,6 +94,10 @@ namespace Toggl.iOS.ViewSources
                     var errorCell = collectionView.DequeueReusableCell(errorCellIdentifier, indexPath) as ReportsErrorCollectionViewCell;
                     errorCell.setElement(element);
                     return errorCell;
+                case ReportAdvancedReportsViaWebElement element:
+                    var advancedReportsViaWebCell = collectionView.DequeueReusableCell(advancedReportsViaWebCellIdentifier, indexPath) as ReportAdvancedReportsViaWebCollectionViewCell;
+                    advancedReportsViaWebCell.SetElement(element);
+                    return advancedReportsViaWebCell;
                 default:
                     var defaultCell = collectionView.DequeueReusableCell(errorCellIdentifier, indexPath) as ReportsErrorCollectionViewCell;
                     defaultCell.setElement(new ReportErrorElement(new ArgumentException()));
@@ -106,6 +125,8 @@ namespace Toggl.iOS.ViewSources
                     return ReportsCollectionViewCell.DonutChartLegendItem;
                 case ReportNoDataElement _:
                     return ReportsCollectionViewCell.NoData;
+                case ReportAdvancedReportsViaWebElement _:
+                    return ReportsCollectionViewCell.AdvancedReportsViaWeb;
                 default:
                     return ReportsCollectionViewCell.Error;
             }

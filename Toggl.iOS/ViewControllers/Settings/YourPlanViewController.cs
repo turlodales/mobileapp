@@ -23,6 +23,7 @@ namespace Toggl.iOS.ViewControllers.Settings
             base.ViewDidLoad();
 
             View.BackgroundColor = ColorAssets.TableBackground;
+            Title = Resources.YourPlan;
 
             var rawString = Resources.LoginToYourAccountOnTogglToSeeMore;
             var togglDotCom = "toggl.com";

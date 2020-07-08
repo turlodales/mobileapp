@@ -1942,6 +1942,21 @@ Time Entry on Toggl mobile app 🎉</value>
         <value>Ok, got it!</value>
         <comment>Button in the final tooltip of onboarding. Displayed below the created time entry</comment>
     </data>
+    <data name="AdvancedReportsViaWeb" xml:space="preserve">
+        <value>Advanced reports via web</value>
+        <comment>Title for a card that describes advanced reporting features. Said card is shown in the Reports view</comment>
+    </data>
+    <data name="AdvancedReportsFeatures" xml:space="preserve">
+        <value>Create saved reports
+Schedule your reports
+Set billable hours
+Export PDF, CSV &amp; XLS</value>
+        <comment>A list of reporting features that are available in the web. Displayed in the Advanced Reports Via Web card in the reports view</comment>
+    </data>
+    <data name="AvailableOnOtherPlans" xml:space="preserve">
+        <value>Available on other plans</value>
+        <comment>Title of the call to action button in the Advanced Reports Via Web card in the reports view</comment>
+    </data>
     <data name="BillableAwareness" xml:space="preserve">
         <value>Billable Hours is available
 on other plans</value>
