@@ -256,7 +256,7 @@ namespace Toggl.Droid.Fragments
                         var neededPaddingToTopOfFirstTimeEntry = numberOfSuggestions * suggestionHeight + mainLogHeaderSize * 2;
                         var tooltipHeight = 155.DpToPixels(Context);
                         var bottomSpace = screenHeight - neededPaddingToTopOfFirstTimeEntry;
-                        var tooltipFitsOnBottom = false;
+                        var tooltipFitsOnBottom = bottomSpace > tooltipHeight;
                         var marginTop = tooltipFitsOnBottom
                             ? neededPaddingToTopOfFirstTimeEntry + mainLogHeaderSize
                             : neededPaddingToTopOfFirstTimeEntry - tooltipHeight;
