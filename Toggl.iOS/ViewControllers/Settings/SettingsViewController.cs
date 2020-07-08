@@ -85,22 +85,20 @@ namespace Toggl.iOS.ViewControllers
         {
             var sections = new List<IObservable<SettingSection>>();
 
-            var yourPlanSection = ViewModel.CurrentPlan.Select(plan =>
-                plan == Plan.Free
-                    ? new SettingSection("", new ISettingRow[] { new NavigationRow(
-                        Resources.YourPlan,
-                        plan.Name(),
-                        ViewModel.OpenYourPlanSettings) })
-                    : null);
-            sections.Add(yourPlanSection);
+            var workspaceSection = Observable.CombineLatest(
+                ViewModel.WorkspaceName,
+                ViewModel.CurrentPlan,
+                createWorkspaceSection
+            );
 
-            var profileSection = Observable.CombineLatest(ViewModel.Name, ViewModel.Email, ViewModel.WorkspaceName,
-            (name, email, workspace)
+            sections.Add(workspaceSection);
+
+            var profileSection = Observable.CombineLatest(ViewModel.Name, ViewModel.Email,
+            (name, email)
                 => new SettingSection(Resources.YourProfile, new ISettingRow[]
                 {
                     new InfoRow(Resources.Name, name),
-                    new InfoRow(Resources.EmailAddress, email),
-                    new NavigationRow(Resources.Workspace, workspace, ViewModel.PickDefaultWorkspace)
+                    new InfoRow(Resources.EmailAddress, email)
                 }));
 
             sections.Add(profileSection);
@@ -176,6 +174,19 @@ namespace Toggl.iOS.ViewControllers
 
             return sections.CombineLatest().Select(list =>
                 list.Where(CommonFunctions.NotNull).ToImmutableList());
+
+            SettingSection createWorkspaceSection(string workspaceName, Plan plan)
+            {
+                var rows = new List<ISettingRow>
+                {
+                    new NavigationRow(Resources.Workspace, workspaceName, ViewModel.PickDefaultWorkspace)
+                };
+
+                if (plan == Plan.Free)
+                    rows.Add(new NavigationRow(Resources.YourPlan, plan.Name(), ViewModel.OpenYourPlanSettings));
+
+                return new SettingSection("", rows.ToArray());
+            }
         }
 
         public override void ViewDidAppear(bool animated)

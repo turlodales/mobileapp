@@ -65,7 +65,7 @@ namespace Toggl.iOS.ViewSources
                 {
                     var cell = (SettingCell)tableView.DequeueReusableCell(SettingCell.Identifier, indexPath);
                     cell.Item = model;
-                    if (model.Title == Resources.YourPlan)
+                    if (model.Title == Resources.Workspace)
                         cell.InsertSeparator(UIRectEdge.Top);
                     return cell;
                 }
