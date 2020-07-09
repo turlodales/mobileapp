@@ -1,4 +1,4 @@
-﻿using Android.Views;
+using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -30,8 +30,12 @@ namespace Toggl.Droid.Fragments
         private View welcomeBackView;
         private TextView welcomeBackTitle;
         private TextView welcomeBackSubText;
-        private Toolbar toolbar;
         private AppBarLayout appBarLayout;
+        private TooltipLayout hereIsYourTimeEntryTooltip;
+        private TooltipLayout tapHereToStartYourTimeTooltip;
+        private TooltipLayout tapHereToStopYourTimeTooltip;
+        private TooltipLayout finalTooltip;
+        private TextView emptyStateGetReadyToTrackTimeTextView;
 
         protected override void InitializeViews(View fragmentView)
         {
@@ -49,10 +53,19 @@ namespace Toggl.Droid.Fragments
             refreshLayout = fragmentView.FindViewById<SwipeRefreshLayout>(Resource.Id.MainSwipeRefreshLayout);
             emptyStateViewStub = fragmentView.FindViewById<ViewStub>(Resource.Id.EmptyStateViewStub);
             welcomeBackStub = fragmentView.FindViewById<ViewStub>(Resource.Id.WelcomeBackViewStub);
-            toolbar = fragmentView.FindViewById<Toolbar>(Resource.Id.Toolbar);
             appBarLayout = fragmentView.FindViewById<AppBarLayout>(Resource.Id.AppBarLayout);
+            hereIsYourTimeEntryTooltip = fragmentView.FindViewById<TooltipLayout>(Resource.Id.HereIsYourTimeEntryTooltip);
+            tapHereToStartYourTimeTooltip = fragmentView.FindViewById<TooltipLayout>(Resource.Id.TapHereToStartYourTimeTooltip);
+            tapHereToStopYourTimeTooltip = fragmentView.FindViewById<TooltipLayout>(Resource.Id.TapHereToStopYourTimeTooltip);
+            finalTooltip = fragmentView.FindViewById<TooltipLayout>(Resource.Id.FinalTooltip);
 
             timeEntryCardAddDescriptionLabel.Text = Shared.Resources.AddDescription;
+            hereIsYourTimeEntryTooltip.Text = Shared.Resources.HereIsYourRunningTimeEntryTooltip;
+            tapHereToStartYourTimeTooltip.Text = Shared.Resources.TapHereToStartYourNextTimeEntry;
+            tapHereToStopYourTimeTooltip.Text = Shared.Resources.TapHereToStopYourTimeEntry;
+            finalTooltip.Title = Shared.Resources.YouveMadeYourFirstTimeEntry;
+            finalTooltip.Text = Shared.Resources.YouCanAccessTimeEntriesFromAnyTogglApp;
+            finalTooltip.ButtonText = Shared.Resources.OkGotIt;
         }
     }
 }

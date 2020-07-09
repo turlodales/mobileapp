@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Toggl.Core.Suggestions;
 using Toggl.Core.Sync;
+using Toggl.Storage;
 
 namespace Toggl.Core.Analytics
 {
@@ -36,6 +37,8 @@ namespace Toggl.Core.Analytics
         IAnalyticsEvent<Type> CurrentPage { get; }
 
         IAnalyticsEvent<TimeEntryStartOrigin> TimeEntryStarted { get; }
+
+        IAnalyticsEvent OnboardingTimeEntryCreated { get; }
 
         IAnalyticsEvent<TimeEntryStopOrigin> TimeEntryStopped { get; }
 
@@ -258,6 +261,17 @@ namespace Toggl.Core.Analytics
         PerformanceMeasurement StartNewSyncPerformanceMeasurement();
         PerformanceMeasurement StartOldSyncPerformanceMeasurement();
         void StopAndTrack(PerformanceMeasurement measurement);
+      
+        IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
+
+        IAnalyticsEvent LoginWithSso { get; }
+        IAnalyticsEvent SsoFlowStarted { get; }
+        IAnalyticsEvent SsoUrlRequested { get; }
+        IAnalyticsEvent SsoLinkStarted { get; }
+        IAnalyticsEvent SsoLinkCancelled { get; }
+        IAnalyticsEvent<string> SsoUrlOutcome { get; }
+        IAnalyticsEvent<string> SsoFlowOutcome { get; }
+        IAnalyticsEvent<string> SsoLinkOutcome { get; }
 
         void SetUserId(long id);
         void ResetUserId();

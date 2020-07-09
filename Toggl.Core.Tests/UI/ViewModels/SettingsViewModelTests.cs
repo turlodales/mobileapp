@@ -241,7 +241,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.TryLogout.Execute();
 
                 await NavigationService.Received()
-                    .Navigate<OnboardingViewModel>(View);
+                    .Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default, View);
             }
 
             [Fact, LogIfTooSlow]
@@ -305,7 +305,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 InteractorFactory.DidNotReceive().Logout(Arg.Any<LogoutSource>());
                 await NavigationService.DidNotReceive()
-                    .Navigate<OnboardingViewModel>(View);
+                    .Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default, View);
             }
 
             [Fact, LogIfTooSlow]
@@ -323,7 +323,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 await InteractorFactory.Received().Logout(LogoutSource.Settings).Execute();
                 await NavigationService.Received()
-                    .Navigate<OnboardingViewModel>(View);
+                    .Navigate<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default, View);
             }
 
             private void doNotShowConfirmationDialog()

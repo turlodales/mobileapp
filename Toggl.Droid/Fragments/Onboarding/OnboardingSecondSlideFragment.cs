@@ -1,3 +1,4 @@
+using System;
 using Android.Hardware;
 using Android.OS;
 using Android.Views;
@@ -10,8 +11,12 @@ namespace Toggl.Droid.Fragments.Onboarding
     {
         private SensorManager sensorManager;
         private Sensor sensor;
-        private const float baseLeftOffset = 0.66496f;
-        private const float baseTopOffset = 0.1265f;
+        private const int periscopeMdpiWidth = 203;
+        private const int periscopeMdpiHeight = 205;
+        private int baseLeftPosition = 0;
+        private int baseTopPosition = 0;
+        private const float baseLeftOffset = 0.6551724138f;
+        private const float baseTopOffset = 0.1219512195f;
         private const float g = 9.81f;
         private int maxPupilMovement;
 
@@ -20,9 +25,30 @@ namespace Toggl.Droid.Fragments.Onboarding
             var view = inflater.Inflate(Resource.Layout.OnboardingSecondSlideFragment, container, false);
             InitializeViews(view);
 
-            maxPupilMovement = 10.DpToPixels(Context);
+
             sensorManager = (SensorManager) Context.GetSystemService(Android.Content.Context.SensorService);
             sensor = sensorManager.GetDefaultSensor(SensorType.Accelerometer);
+
+            periscopeView.Post(() =>
+            {
+                baseLeftPosition = periscopeView.Left;
+                baseTopPosition = periscopeView.Top;
+                var periscopeFullWidth = periscopeMdpiWidth.DpToPixels(Context);
+                var periscopeFullHeight = periscopeMdpiHeight.DpToPixels(Context);
+
+                var scalingX = (float) periscopeView.Width / periscopeFullWidth;
+                var scalingY = (float) periscopeView.Height / periscopeFullHeight;
+                var scalingFactor = Math.Min(scalingX, scalingY);
+
+                maxPupilMovement = (int) (5.DpToPixels(Context) * scalingFactor);
+                baseLeftPosition -= (int) ( (pupilView.Width - pupilView.Width * scalingFactor) / 2f);
+                baseTopPosition -= (int) ( (pupilView.Height - pupilView.Height * scalingFactor) / 2f);
+
+                pupilView.ScaleX = scalingFactor;
+                pupilView.ScaleY = scalingFactor;
+
+                updateMarginOnPupilView(0, 0);
+            });
 
             return view;
         }
@@ -49,11 +75,16 @@ namespace Toggl.Droid.Fragments.Onboarding
             {
                 float x = sensorEvent.Values[0];
                 float y = sensorEvent.Values[1];
-                float z = sensorEvent.Values[2];
 
-                pupilView.UpdateMargin((int) (periscopeView.Width * baseLeftOffset) + (int) -(maxPupilMovement * x / g),
-                    (int) (periscopeView.Height * baseTopOffset) + (int) (maxPupilMovement * y / g));
+                updateMarginOnPupilView(x, y);
             }
+        }
+
+        private void updateMarginOnPupilView(float x, float y)
+        {
+            pupilView.UpdateMargin(
+                baseLeftPosition + (int) (periscopeView.Width * baseLeftOffset) + (int) -(maxPupilMovement * x / g),
+                baseTopPosition + (int) (periscopeView.Height * baseTopOffset) + (int) (maxPupilMovement * y / g));
         }
     }
 }

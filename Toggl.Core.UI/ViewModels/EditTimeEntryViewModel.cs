@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -15,12 +14,14 @@ using Toggl.Core.Interactors;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;
+using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
+using Toggl.Storage;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels
@@ -90,6 +91,12 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<bool> IsSyncErrorMessageVisible { get; private set; }
 
         public IObservable<IThreadSafePreferences> Preferences { get; private set; }
+
+        public TrackingOnboardingCondition ProjectsTooltipCondition { get; private set; }
+
+        public string ProjectsTooltipText => projectId.HasValue
+            ? Resources.TapHereToChangeOrAddProjects
+            : Resources.AssignYourTimeEntryToAProject;
 
         public ViewAction SelectProject { get; private set; }
         public ViewAction SelectTags { get; private set; }
@@ -220,6 +227,25 @@ namespace Toggl.Core.UI.ViewModels
             DismissSyncErrorMessage = actionFactory.FromAction(dismissSyncErrorMessage);
             Save = actionFactory.FromAsync(save);
             Delete = actionFactory.FromAsync(delete);
+
+            ProjectsTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.EditViewProjectsTooltip,
+                OnboardingStorage,
+                schedulerProvider,
+                createProjectsTooltipPredicate())
+            .TrackingDismissEvents(analyticsService);
+        }
+
+        private IObservable<bool> createProjectsTooltipPredicate()
+        {
+            var selectProjectTapped = SelectProject
+                .Inputs
+                .Select(_ => false)
+                .Track(analyticsService.TooltipDismissed, OnboardingConditionKey.EditViewProjectsTooltip, TooltipDismissReason.ConditionMet);
+
+            return Observable
+                .Return(true)
+                .Merge(selectProjectTapped);
         }
 
         public override async Task Initialize(long[] timeEntryIds)

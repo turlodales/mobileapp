@@ -10,7 +10,6 @@
 
 namespace Toggl.Shared {
     using System;
-    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -218,6 +217,60 @@ namespace Toggl.Shared {
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        public static string LoginWithSso {
+            get {
+                return ResourceManager.GetString("LoginWithSso", resourceCulture);
+            }
+        }
+        
+        public static string LoginToEnableSso {
+            get {
+                return ResourceManager.GetString("LoginToEnableSso", resourceCulture);
+            }
+        }
+        
+        public static string WorkEmail {
+            get {
+                return ResourceManager.GetString("WorkEmail", resourceCulture);
+            }
+        }
+        
+        public static string SingleSignOn {
+            get {
+                return ResourceManager.GetString("SingleSignOn", resourceCulture);
+            }
+        }
+        
+        public static string SsoLinkSuccess {
+            get {
+                return ResourceManager.GetString("SsoLinkSuccess", resourceCulture);
+            }
+        }
+        
+        public static string SsoLinkFailure {
+            get {
+                return ResourceManager.GetString("SsoLinkFailure", resourceCulture);
+            }
+        }
+        
+        public static string AccountWithEmailAlreadyExists {
+            get {
+                return ResourceManager.GetString("AccountWithEmailAlreadyExists", resourceCulture);
+            }
+        }
+        
+        public static string ToEnableLoginWithSsoLoginWithExistingCredentials {
+            get {
+                return ResourceManager.GetString("ToEnableLoginWithSsoLoginWithExistingCredentials", resourceCulture);
+            }
+        }
+        
+        public static string SingleSignOnError {
+            get {
+                return ResourceManager.GetString("SingleSignOnError", resourceCulture);
             }
         }
         
@@ -2396,6 +2449,72 @@ namespace Toggl.Shared {
         public static string Next {
             get {
                 return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        public static string GetReadyToTrackTimeAndBoostYourProductivity {
+            get {
+                return ResourceManager.GetString("GetReadyToTrackTimeAndBoostYourProductivity", resourceCulture);
+            }
+        }
+        
+        public static string GettingStartedWithTogglApp {
+            get {
+                return ResourceManager.GetString("GettingStartedWithTogglApp", resourceCulture);
+            }
+        }
+        
+        public static string HereIsYourRunningTimeEntryTooltip {
+            get {
+                return ResourceManager.GetString("HereIsYourRunningTimeEntryTooltip", resourceCulture);
+            }
+        }
+        
+        public static string AssignYourTimeEntryToAProject {
+            get {
+                return ResourceManager.GetString("AssignYourTimeEntryToAProject", resourceCulture);
+            }
+        }
+        
+        public static string TapHereToChangeOrAddProjects {
+            get {
+                return ResourceManager.GetString("TapHereToChangeOrAddProjects", resourceCulture);
+            }
+        }
+        
+        public static string TapHereToStartYourNextTimeEntry {
+            get {
+                return ResourceManager.GetString("TapHereToStartYourNextTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string TapHereToStopYourTimeEntry {
+            get {
+                return ResourceManager.GetString("TapHereToStopYourTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string ClickOnFolderIconToAssignAProject {
+            get {
+                return ResourceManager.GetString("ClickOnFolderIconToAssignAProject", resourceCulture);
+            }
+        }
+        
+        public static string YouveMadeYourFirstTimeEntry {
+            get {
+                return ResourceManager.GetString("YouveMadeYourFirstTimeEntry", resourceCulture);
+            }
+        }
+        
+        public static string YouCanAccessTimeEntriesFromAnyTogglApp {
+            get {
+                return ResourceManager.GetString("YouCanAccessTimeEntriesFromAnyTogglApp", resourceCulture);
+            }
+        }
+        
+        public static string OkGotIt {
+            get {
+                return ResourceManager.GetString("OkGotIt", resourceCulture);
             }
         }
     }

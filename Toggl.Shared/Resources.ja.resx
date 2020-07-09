@@ -348,6 +348,9 @@
     <data name="GoogleSignUp" xml:space="preserve">
         <value>Googleで登録</value>
     </data>
+    <data name="LoginWithSso" xml:space="preserve">
+        <value>SSOでログイン</value>
+    </data>
     <data name="ThisWeek" xml:space="preserve">
         <value>今週</value>
     </data>

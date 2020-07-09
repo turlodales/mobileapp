@@ -8,11 +8,11 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Android.Text;
 using Toggl.Core.Autocomplete;
-using Toggl.Core.UI.Onboarding.StartTimeEntryView;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Extensions;
 using Toggl.Droid.Extensions.Reactive;
 using Toggl.Droid.Helper;
+using Toggl.Core.UI.Extensions;
 using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
 
@@ -25,9 +25,6 @@ namespace Toggl.Droid.Activities
     public sealed partial class StartTimeEntryActivity : ReactiveActivity<StartTimeEntryViewModel>
     {
         private static readonly TimeSpan typingThrottleDuration = TimeSpan.FromMilliseconds(300);
-
-        private PopupWindow onboardingPopupWindow;
-        private IDisposable onboardingDisposable;
 
         public StartTimeEntryActivity() : base(
             Resource.Layout.StartTimeEntryActivity,
@@ -112,6 +109,14 @@ namespace Toggl.Droid.Activities
                 .Select(text => text.AsImmutableSpans(descriptionField.SelectionStart))
                 .Subscribe(ViewModel.SetTextSpans)
                 .DisposedBy(DisposeBag);
+
+            ViewModel.ProjectsTooltipCondition.ConditionMet
+                .Subscribe(projectTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            projectTooltip.Rx().Tap()
+               .Subscribe(ViewModel.ProjectsTooltipCondition.Dismiss)
+               .DisposedBy(DisposeBag);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -138,52 +143,6 @@ namespace Toggl.Droid.Activities
         {
             base.OnResume();
             descriptionField.RequestFocus();
-            selectProjectToolbarButton.LayoutChange += onSelectProjectToolbarButtonLayoutChanged;
-        }
-
-        private void onSelectProjectToolbarButtonLayoutChanged(object sender, View.LayoutChangeEventArgs changeEventArgs)
-        {
-            if (changeEventArgs.OldBottom != changeEventArgs.Bottom)
-            {
-                selectProjectToolbarButton.Post(setupStartTimeEntryOnboardingStep);
-            }
-        }
-
-        protected override void OnStop()
-        {
-            base.OnStop();
-            selectProjectToolbarButton.LayoutChange -= onSelectProjectToolbarButtonLayoutChanged;
-            onboardingPopupWindow?.Dismiss();
-            onboardingPopupWindow = null;
-        }
-
-        private void setupStartTimeEntryOnboardingStep()
-        {
-            clearPreviousOnboardingSetup();
-
-            onboardingPopupWindow = PopupWindowFactory.PopupWindowWithText(
-                this,
-                Resource.Layout.TooltipWithCenteredBottomArrow,
-                Resource.Id.TooltipText,
-                Shared.Resources.AddProjectBubbleText);
-
-            var storage = ViewModel.OnboardingStorage;
-
-            onboardingDisposable = new AddProjectOrTagOnboardingStep(storage, ViewModel.DataSource)
-                .ManageDismissableTooltip(
-                    Observable.Return(true),
-                    onboardingPopupWindow,
-                    selectProjectToolbarButton,
-                    (popup, anchor) => popup.TopHorizontallyCenteredOffsetsTo(anchor, 8),
-                    storage);
-        }
-
-        private void clearPreviousOnboardingSetup()
-        {
-            onboardingDisposable?.Dispose();
-            onboardingDisposable = null;
-            onboardingPopupWindow?.Dismiss();
-            onboardingPopupWindow = null;
         }
 
         protected override void Dispose(bool disposing)
@@ -193,7 +152,6 @@ namespace Toggl.Droid.Activities
             if (!disposing) return;
 
             DisposeBag?.Dispose();
-            onboardingDisposable?.Dispose();
         }
 
         private void onTextFieldInfo(TextFieldInfo textFieldInfo)

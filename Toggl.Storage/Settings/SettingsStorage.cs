@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
-using Toggl.Storage.Onboarding;
 
 namespace Toggl.Storage.Settings
 {
@@ -37,6 +36,7 @@ namespace Toggl.Storage.Settings
         private const string hasTimeEntryBeenContinuedKey = "HasTimeEntryBeenContinued";
 
         private const string onboardingPrefix = "Onboarding_";
+        private const string onboardingTimeEntryWasCreatedKey = "OnboardingTimeEntryWasCreated";
 
         private const string ratingViewOutcomeKey = "RatingViewOutcome";
         private const string ratingViewOutcomeTimeKey = "RatingViewOutcomeTime";
@@ -60,6 +60,13 @@ namespace Toggl.Storage.Settings
 
         private const string swipeActionsDisabledKey = "swipeActionsDisabled";
 
+        private readonly string[] oldOnboardingDismissedKeys =
+        {
+            "Onboarding_Toggl.Core.UI.Onboarding.MainView.StartTimeEntryOnboardingStep",
+            "Onboarding_Toggl.Core.UI.Onboarding.MainView.StopTimeEntryOnboardingStep",
+            "Onboarding_Toggl.Core.UI.Onboarding.MainView.EditTimeEntryOnboardingStep"
+        };
+
         private readonly Version version;
         private readonly IKeyValueStorage keyValueStorage;
 
@@ -81,6 +88,7 @@ namespace Toggl.Storage.Settings
         private readonly ISubject<bool> calendarNotificationsEnabledSubject;
         private readonly ISubject<TimeSpan> timeSpanBeforeCalendarNotificationsSubject;
         private readonly ISubject<bool> swipeActionsEnabledSubject;
+        private readonly ISubject<OnboardingConditionKey> onboardingConditionMetSubject;
 
         private readonly TimeSpan defaultTimeSpanBeforeCalendarNotificationsSubject = TimeSpan.FromMinutes(10);
 
@@ -109,6 +117,9 @@ namespace Toggl.Storage.Settings
             (hasTimeEntryBeenContinuedSubject, HasTimeEntryBeenContinued) = prepareSubjectAndObservable(hasTimeEntryBeenContinuedKey, keyValueStorage.GetBool);
             (timeSpanBeforeCalendarNotificationsSubject, TimeSpanBeforeCalendarNotifications) = prepareSubjectAndObservable(keyValueStorage.GetTimeSpan(timeSpanBeforeCalendarNotificationsKey) ?? defaultTimeSpanBeforeCalendarNotificationsSubject);
             (swipeActionsEnabledSubject, SwipeActionsEnabled) = prepareSubjectAndObservable(swipeActionsDisabledKey, key => !keyValueStorage.GetBool(key));
+
+            onboardingConditionMetSubject = new Subject<OnboardingConditionKey>();
+            OnboardingConditionMet = onboardingConditionMetSubject.AsObservable().DistinctUntilChanged();
         }
 
         #region IAccessRestrictionStorage
@@ -190,6 +201,8 @@ namespace Toggl.Storage.Settings
         public IObservable<bool> NavigatedAwayFromMainViewAfterTappingStopButton { get; }
 
         public IObservable<bool> HasTimeEntryBeenContinued { get; }
+
+        public IObservable<OnboardingConditionKey> OnboardingConditionMet { get; }
 
         public bool CalendarPermissionWasAskedBefore()
             => keyValueStorage.GetBool(calendarViewWasOpenedBeforeKey);
@@ -311,9 +324,28 @@ namespace Toggl.Storage.Settings
 
         public void SetDidShowSiriClipboardInstruction(bool value) => keyValueStorage.SetBool(didShowSiriClipboardInstructionKey, value);
 
-        public bool WasDismissed(IDismissable dismissable) => keyValueStorage.GetBool(onboardingPrefix + dismissable.Key);
+        public void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey)
+        {
+            keyValueStorage.SetBool(onboardingPrefix + onboardingConditionKey, true);
+            onboardingConditionMetSubject.OnNext(onboardingConditionKey);
+        }
 
-        public void Dismiss(IDismissable dismissable) => keyValueStorage.SetBool(onboardingPrefix + dismissable.Key, true);
+        public bool OnboardingConditionWasMetBefore(OnboardingConditionKey onboardingConditionKey)
+            => keyValueStorage.GetBool(onboardingPrefix + onboardingConditionKey);
+
+        public bool OnboardingTimeEntryWasCreated()
+            => keyValueStorage.GetBool(onboardingTimeEntryWasCreatedKey);
+
+        public void SetOnboardingTimeEntryWasCreated()
+            => keyValueStorage.SetBool(onboardingTimeEntryWasCreatedKey, true);
+
+        public bool IsRunningTheAppFirstTime()
+        {
+            return !keyValueStorage.GetBool(startButtonWasTappedBeforeKey) &&
+                   !keyValueStorage.GetBool(stopButtonWasTappedBeforeKey) &&
+                   !keyValueStorage.GetBool(hasEditedTimeEntryKey) &&
+                   oldOnboardingDismissedKeys.None(key => keyValueStorage.GetBool(key));
+        }
 
         void IOnboardingStorage.Reset()
         {
@@ -346,6 +378,8 @@ namespace Toggl.Storage.Settings
 
             keyValueStorage.Remove(enabledCalendarsKey);
             enabledCalendarsSubject.OnNext(new List<string>());
+
+            keyValueStorage.Remove(onboardingTimeEntryWasCreatedKey);
 
             keyValueStorage.RemoveAllWithPrefix(onboardingPrefix);
         }

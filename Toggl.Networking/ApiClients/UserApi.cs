@@ -141,6 +141,19 @@ namespace Toggl.Networking.ApiClients
                 .ConfigureAwait(false);
         }
 
+        public async Task<string> LinkSso(Email email, string confirmationCode)
+        {
+            var endpoint = endPoints.EnableSso;
+
+            var json = serializer.Serialize(new SsoLinkParameters
+            {
+                ConfirmationCode = confirmationCode
+            }, SerializationReason.Post);
+
+            return await SendRequest(endpoint, AuthHeader, json)
+                .ConfigureAwait(false);
+        }
+
         protected override async Task<Exception> GetExceptionFor(IRequest request, IResponse response,
             IEnumerable<HttpHeader> headers)
         {
@@ -197,6 +210,12 @@ namespace Toggl.Networking.ApiClients
             public int CountryId { get; set; }
 
             public string Timezone { get; set; }
+        }
+
+        [Preserve(AllMembers = true)]
+        private class SsoLinkParameters
+        {
+            public string ConfirmationCode { get; set; }
         }
     }
 }

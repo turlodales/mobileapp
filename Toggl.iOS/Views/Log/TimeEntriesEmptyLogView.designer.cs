@@ -13,13 +13,13 @@ namespace Toggl.iOS.Views
 	partial class TimeEntriesEmptyLogView
 	{
 		[Outlet]
-		UIKit.UIView HeaderContainer { get; set; }
+		UIKit.UILabel GetReadyLabel { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (HeaderContainer != null) {
-				HeaderContainer.Dispose ();
-				HeaderContainer = null;
+			if (GetReadyLabel != null) {
+				GetReadyLabel.Dispose ();
+				GetReadyLabel = null;
 			}
 		}
 	}

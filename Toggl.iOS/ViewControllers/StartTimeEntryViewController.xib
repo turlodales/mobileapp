@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,8 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StartTimeEntryViewController">
             <connections>
-                <outlet property="AddProjectBubbleLabel" destination="12U-DF-xmR" id="VU0-Ua-MBz"/>
-                <outlet property="AddProjectOnboardingBubble" destination="NWE-RS-Prs" id="mkt-uo-yUT"/>
                 <outlet property="BillableButton" destination="Xnc-Zt-xWV" id="name-outlet-Xnc-Zt-xWV"/>
                 <outlet property="BillableButtonWidthConstraint" destination="I25-Y2-oUz" id="name-outlet-I25-Y2-oUz"/>
                 <outlet property="BottomDistanceConstraint" destination="TiG-hf-iuJ" id="ngb-Nk-Hsg"/>
@@ -23,6 +21,11 @@
                 <outlet property="DoneButton" destination="Hya-nl-hcs" id="name-outlet-Hya-nl-hcs"/>
                 <outlet property="Placeholder" destination="jGg-N9-yt7" id="maS-ba-Eh5"/>
                 <outlet property="ProjectsButton" destination="qfx-lJ-emc" id="name-outlet-qfx-lJ-emc"/>
+                <outlet property="ProjectsTooltip" destination="iuG-P4-DYA" id="cuZ-Yd-AD3"/>
+                <outlet property="ProjectsTooltipArrow" destination="Zen-V6-U0O" id="rL8-bS-bzi"/>
+                <outlet property="ProjectsTooltipBackground" destination="GKZ-Z4-sVf" id="K6O-UK-FCh"/>
+                <outlet property="ProjectsTooltipCloseIcon" destination="6eE-l7-GJc" id="ni2-4b-wqi"/>
+                <outlet property="ProjectsTooltipLabel" destination="4u9-yv-jfj" id="WG8-AS-2ef"/>
                 <outlet property="StartDateButton" destination="Dr2-ax-s3L" id="Kia-hj-LHV"/>
                 <outlet property="SuggestionsTableView" destination="04s-S8-twa" id="name-outlet-04s-S8-twa"/>
                 <outlet property="TagsButton" destination="H7M-A1-mmK" id="name-outlet-H7M-A1-mmK"/>
@@ -202,69 +205,76 @@
                         <constraint firstItem="Dr2-ax-s3L" firstAttribute="leading" secondItem="Xnc-Zt-xWV" secondAttribute="trailing" id="xmn-we-RDd"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NWE-RS-Prs" userLabel="Add Project Onboarding Bubble">
-                    <rect key="frame" x="8" y="560" width="274.5" height="50"/>
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuG-P4-DYA" userLabel="Tooltip: Click to assign a project">
+                    <rect key="frame" x="4" y="538" width="243.5" height="79"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eh0-50-ayH" userLabel="Background">
-                            <rect key="frame" x="0.0" y="0.0" width="274.5" height="45"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKZ-Z4-sVf" userLabel="Background">
+                            <rect key="frame" x="0.0" y="0.0" width="243.5" height="71"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a project and tags on the fly" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12U-DF-xmR">
-                                    <rect key="frame" x="32" y="14" width="210.5" height="17"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4u9-yv-jfj">
+                                    <rect key="frame" x="14" y="14" width="207.5" height="43"/>
+                                    <string key="text">Click on the folder icon or use @ 
+to assign a Project to a Time Entry</string>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.023529411760000001" green="0.66666666669999997" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="12U-DF-xmR" secondAttribute="bottom" constant="14" id="PSL-Ai-2dc"/>
-                                <constraint firstItem="12U-DF-xmR" firstAttribute="top" secondItem="eh0-50-ayH" secondAttribute="top" constant="14" id="mxc-h7-bnY"/>
-                                <constraint firstAttribute="trailing" secondItem="12U-DF-xmR" secondAttribute="trailing" constant="32" id="pBt-G5-80h"/>
-                                <constraint firstItem="12U-DF-xmR" firstAttribute="leading" secondItem="eh0-50-ayH" secondAttribute="leading" constant="32" id="x8m-lJ-1Do"/>
+                                <constraint firstItem="4u9-yv-jfj" firstAttribute="leading" secondItem="GKZ-Z4-sVf" secondAttribute="leading" constant="14" id="EjS-rm-AKp"/>
+                                <constraint firstAttribute="bottom" secondItem="4u9-yv-jfj" secondAttribute="bottom" constant="14" id="nLv-9o-E2q"/>
+                                <constraint firstItem="4u9-yv-jfj" firstAttribute="top" secondItem="GKZ-Z4-sVf" secondAttribute="top" constant="14" id="okx-7n-8qh"/>
+                                <constraint firstAttribute="trailing" secondItem="4u9-yv-jfj" secondAttribute="trailing" constant="22" id="xXz-Qv-fHe"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="5"/>
+                                    <integer key="value" value="8"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JMu-BI-JIt" userLabel="Caret">
-                            <rect key="frame" x="52" y="40" width="10" height="10"/>
-                            <color key="backgroundColor" red="0.14117647058823529" green="0.14117647058823529" blue="0.14117647058823529" alpha="1" colorSpace="calibratedRGB"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="x" translatesAutoresizingMaskIntoConstraints="NO" id="6eE-l7-GJc">
+                            <rect key="frame" x="219.5" y="0.0" width="24" height="24"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="10" id="eoe-Z5-stC"/>
-                                <constraint firstAttribute="height" constant="10" id="l3j-eK-B4L"/>
+                                <constraint firstAttribute="width" constant="24" id="3xR-pW-6pn"/>
+                                <constraint firstAttribute="height" constant="24" id="dfe-Xy-fW6"/>
                             </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.transform.rotation.z">
-                                    <real key="value" value="0.78500000000000003"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zen-V6-U0O" userLabel="Arrow" customClass="TriangleView">
+                            <rect key="frame" x="11" y="71" width="16" height="8"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="fks-f2-j5h"/>
+                                <constraint firstAttribute="height" constant="8" id="hxo-eJ-tmN"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="eh0-50-ayH" secondAttribute="trailing" id="5XP-0p-zdm"/>
-                        <constraint firstItem="eh0-50-ayH" firstAttribute="top" secondItem="NWE-RS-Prs" secondAttribute="top" id="IkU-zK-psx"/>
-                        <constraint firstAttribute="bottom" secondItem="JMu-BI-JIt" secondAttribute="bottom" id="UTa-zM-MMJ"/>
-                        <constraint firstItem="JMu-BI-JIt" firstAttribute="top" secondItem="eh0-50-ayH" secondAttribute="bottom" constant="-5" id="ZvD-AP-MFR"/>
-                        <constraint firstItem="eh0-50-ayH" firstAttribute="leading" secondItem="NWE-RS-Prs" secondAttribute="leading" id="ru2-Oz-AQ6"/>
+                        <constraint firstAttribute="trailing" secondItem="GKZ-Z4-sVf" secondAttribute="trailing" id="0nd-aa-ddu"/>
+                        <constraint firstAttribute="height" constant="79" id="9kC-rV-7lv"/>
+                        <constraint firstItem="GKZ-Z4-sVf" firstAttribute="leading" secondItem="iuG-P4-DYA" secondAttribute="leading" id="N4K-Pj-bju"/>
+                        <constraint firstItem="GKZ-Z4-sVf" firstAttribute="bottom" secondItem="Zen-V6-U0O" secondAttribute="top" id="Wdi-be-omZ"/>
+                        <constraint firstAttribute="trailing" secondItem="6eE-l7-GJc" secondAttribute="trailing" id="bSt-hl-Vam"/>
+                        <constraint firstItem="6eE-l7-GJc" firstAttribute="top" secondItem="iuG-P4-DYA" secondAttribute="top" id="fT7-XM-9Hn"/>
+                        <constraint firstAttribute="bottom" secondItem="Zen-V6-U0O" secondAttribute="bottom" id="kLj-jC-flk"/>
+                        <constraint firstItem="GKZ-Z4-sVf" firstAttribute="top" secondItem="iuG-P4-DYA" secondAttribute="top" id="mTh-g5-VLD"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" name="Background"/>
             <constraints>
                 <constraint firstItem="04s-S8-twa" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" id="4RY-Xr-C7o"/>
-                <constraint firstItem="JMu-BI-JIt" firstAttribute="centerX" secondItem="H7M-A1-mmK" secondAttribute="centerX" id="7Q0-fX-Io5"/>
                 <constraint firstItem="fRW-HL-ddX" firstAttribute="centerY" secondItem="MAa-jq-GXB" secondAttribute="centerY" id="8J3-TL-rVu"/>
                 <constraint firstItem="04s-S8-twa" firstAttribute="top" secondItem="jUC-Le-zeo" secondAttribute="bottom" id="8sy-k2-oul"/>
                 <constraint firstItem="Qyl-Yx-Tae" firstAttribute="trailing" secondItem="dU3-s1-ELa" secondAttribute="trailing" id="8yo-dc-reP"/>
+                <constraint firstItem="dU3-s1-ELa" firstAttribute="top" secondItem="iuG-P4-DYA" secondAttribute="bottom" id="C5b-Go-XYl"/>
                 <constraint firstItem="dU3-s1-ELa" firstAttribute="top" secondItem="04s-S8-twa" secondAttribute="bottom" id="Ed3-WO-VAz"/>
                 <constraint firstItem="Qyl-Yx-Tae" firstAttribute="trailing" secondItem="jUC-Le-zeo" secondAttribute="trailing" id="F9e-Xo-Ngd"/>
+                <constraint firstItem="iuG-P4-DYA" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" constant="4" id="Fjz-cG-zmo"/>
                 <constraint firstItem="jUC-Le-zeo" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" id="HMQ-ZK-g2Q"/>
-                <constraint firstItem="NWE-RS-Prs" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" constant="8" id="HVY-kC-Va6"/>
                 <constraint firstItem="fRW-HL-ddX" firstAttribute="centerX" secondItem="Qyl-Yx-Tae" secondAttribute="centerX" id="IaL-VB-bgd"/>
-                <constraint firstItem="dU3-s1-ELa" firstAttribute="top" secondItem="NWE-RS-Prs" secondAttribute="bottom" constant="7" id="Mbw-zb-CwF"/>
+                <constraint firstItem="Zen-V6-U0O" firstAttribute="centerX" secondItem="qfx-lJ-emc" secondAttribute="centerX" id="K2S-kj-gMF"/>
                 <constraint firstItem="MAa-jq-GXB" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" id="SKA-G6-SAk"/>
                 <constraint firstItem="jUC-Le-zeo" firstAttribute="top" secondItem="fRW-HL-ddX" secondAttribute="bottom" constant="10" id="SXU-Bw-6cF"/>
                 <constraint firstAttribute="bottom" secondItem="dU3-s1-ELa" secondAttribute="bottom" id="TiG-hf-iuJ"/>
@@ -286,14 +296,15 @@
         <image name="icDatetime" width="14" height="14"/>
         <image name="icProjects" width="16" height="12"/>
         <image name="icTags" width="14" height="13"/>
+        <image name="x" width="7" height="7"/>
         <namedColor name="Background">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="CustomGray6">
-            <color red="0.070588238537311554" green="0.070588238537311554" blue="0.078431375324726105" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.98039215803146362" green="0.98039215803146362" blue="0.98823529481887817" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Text">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

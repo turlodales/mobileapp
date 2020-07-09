@@ -85,6 +85,11 @@ namespace Toggl.iOS
                 return true;
             }
 
+            if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
+            {
+                return true;
+            }
+
 #if USE_ANALYTICS
             return SignIn.SharedInstance.HandleUrl(url);
 #endif
@@ -109,9 +114,9 @@ namespace Toggl.iOS
             var vc = accessLevel switch
             {
                 AccessLevel.AccessRestricted => loadRootViewController<OutdatedAppViewModel, Unit>(),
-                AccessLevel.NotLoggedIn => loadRootViewController<OnboardingViewModel, Unit>(),
+                AccessLevel.NotLoggedIn => loadRootViewController<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default),
                 AccessLevel.TokenRevoked => loadRootViewController<TokenResetViewModel, Unit>(),
-                AccessLevel.LoggedIn => loadRootViewController<MainTabBarViewModel, Unit>()
+                AccessLevel.LoggedIn => loadRootViewController<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default)
             };
             Window.RootViewController = vc;
         }

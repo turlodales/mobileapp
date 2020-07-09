@@ -239,6 +239,42 @@ mobile, desktop or web</value>
         <value>Email</value>
     <comment>Label for emails in the Login, SignUp, Forgot Password and Settings screens</comment>
     </data>
+    <data name="LoginWithSso" xml:space="preserve">
+        <value>Log in with SSO</value>
+        <comment>Label for button that navigates to login with SSO screen</comment>
+    </data>
+    <data name="LoginToEnableSso" xml:space="preserve">
+        <value>Log in to enable SSO</value>
+        <comment>Label for login screen that handles SSO account linking</comment>
+    </data>
+    <data name="WorkEmail" xml:space="preserve">
+        <value>Work email</value>
+        <comment>Label for emails in the sso login screen</comment>
+    </data>
+    <data name="SingleSignOn" xml:space="preserve">
+        <value>Single Sign On</value>
+        <comment>Label for the SSO login screen</comment>
+    </data>
+    <data name="SsoLinkSuccess" xml:space="preserve">
+        <value>SSO login successfully enabled for your account</value>
+        <comment>Shown in a toast when SSO link succeeded</comment>
+    </data>
+    <data name="SsoLinkFailure" xml:space="preserve">
+        <value>SSO login for this account was not enabled as login emails were different</value>
+        <comment>Shown in a toast when SSO link did not succeed</comment>
+    </data>
+    <data name="AccountWithEmailAlreadyExists" xml:space="preserve">
+        <value>An account with this email already exists</value>
+        <comment>Header displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>
+    </data>
+    <data name="ToEnableLoginWithSsoLoginWithExistingCredentials" xml:space="preserve">
+        <value>To enable login with SSO for this account, please log in with your existing credentials.</value>
+        <comment>Explanation displayed during the SSO link process if there's already an account with the email user tried to use for SSO login</comment>
+    </data>
+    <data name="SingleSignOnError" xml:space="preserve">
+        <value>Single Sign On is not configured for your email address. Please try a different login method or contact your administrator.</value>
+        <comment>Shown to user when the submitted email is not a part of an SSO-enabled domain</comment>
+    </data>
     <data name="SetPassword" xml:space="preserve">
         <value>Set password</value>
         <comment>A placeholder for the password input field when user is signing up</comment>
@@ -1763,5 +1799,55 @@ No worries. Create a new workspace to continue.</value>
     <data name="Next" xml:space="preserve">
         <value>Next</value>
         <comment>The word `Next` in the context of navigation</comment>
+    </data>
+    <data name="GetReadyToTrackTimeAndBoostYourProductivity" xml:space="preserve">
+        <value>Get ready to track time and
+boost your productivity!</value>
+        <comment>A welcome message for users who just signed up</comment>
+    </data>
+    <data name="GettingStartedWithTogglApp" xml:space="preserve">
+        <value>Getting started with Toggl app</value>
+        <comment>Description of the time entry that gets created automatically as a part of user onboarding</comment>
+    </data>
+    <data name="HereIsYourRunningTimeEntryTooltip" xml:space="preserve">
+        <value>Here is your running Time Entry.
+Tap to edit it.</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the very first time entry</comment>
+    </data>
+    <data name="AssignYourTimeEntryToAProject" xml:space="preserve">
+        <value>Assign your time entry to a larger 
+Project to get more useful time reports</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the edit time entry view below the "+ Add project/task" button</comment>
+    </data>
+    <data name="TapHereToChangeOrAddProjects" xml:space="preserve">
+        <value>Tap here to change or add Projects</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the edit time entry view below the selected project</comment>
+    </data>
+    <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
+        <value>Tap here to start your next Time Entry</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the start time entry button</comment>
+    </data>
+    <data name="TapHereToStopYourTimeEntry" xml:space="preserve">
+        <value>Tapping here will stop the timer</value>
+        <comment>Text displayed in the onboarding tooltip that's shown above the stop time entry button</comment>
+    </data>
+    <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>Click on $ or use @ to assign
+a Project to a Time Entry</value>
+        <comment>Text displayed in the onboarding tooltip that's shown in the start time entry view above the projects button.
+                 The $ sign gets replaced with the icon image in runtime</comment>
+    </data>
+    <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
+        <value>You've made your first
+Time Entry on Toggl mobile app 🎉</value>
+        <comment>Title of the final tooltip of onboarding. Displayed below the created time entry</comment>
+    </data>
+    <data name="YouCanAccessTimeEntriesFromAnyTogglApp" xml:space="preserve">
+        <value>You can easily access and edit all your Time Entries from any Toggl app.</value>
+        <comment>Message in the final tooltip of onboarding. Displayed below the created time entry</comment>
+    </data>
+    <data name="OkGotIt" xml:space="preserve">
+        <value>Ok, got it!</value>
+        <comment>Button in the final tooltip of onboarding. Displayed below the created time entry</comment>
     </data>
 </root>

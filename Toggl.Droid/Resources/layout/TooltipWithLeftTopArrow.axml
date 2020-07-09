@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/TooltipText"
             android:gravity="center_vertical"
-            android:textColor="#fff"
+            android:textColor="@color/tooltipText"
             android:paddingEnd="24dp"
             android:paddingTop="16dp"
             android:paddingStart="16dp"
@@ -30,7 +30,7 @@
     </LinearLayout>
     <ImageView
         app:srcCompat="@drawable/ic_close"
-        android:tint="@android:color/white"
+        android:tint="@color/tooltipText"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_gravity="end"

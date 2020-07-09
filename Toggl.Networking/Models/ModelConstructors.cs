@@ -85,6 +85,17 @@ namespace Toggl.Networking.Models
     }
 
     [Preserve(AllMembers = true)]
+    internal sealed partial class SamlConfig
+    {
+        public SamlConfig() { }
+
+        public SamlConfig(ISamlConfig entity)
+        {
+            SsoUrl = entity.SsoUrl;
+        }
+    }
+
+    [Preserve(AllMembers = true)]
     internal sealed partial class Tag
     {
         public Tag() { }

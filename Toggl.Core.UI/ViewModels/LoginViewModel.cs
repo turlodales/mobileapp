@@ -13,6 +13,8 @@ using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
+using Toggl.Core.UI.ViewModels.Extensions;
+using Toggl.Networking;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -45,6 +47,9 @@ namespace Toggl.Core.UI.ViewModels
         private bool credentialsAreValid
              => Email.Value.IsValid && !Password.Value.IsEmpty;
 
+        private bool isForAccountLinking = false;
+        private Email emailForLinking = Shared.Email.Empty;
+        private string confirmationCode;
         public BehaviorRelay<Email> Email { get; } = new BehaviorRelay<Email>(Shared.Email.Empty);
         public BehaviorRelay<Password> Password { get; } = new BehaviorRelay<Password>(Shared.Password.Empty);
 
@@ -121,6 +126,12 @@ namespace Toggl.Core.UI.ViewModels
         {
             Email.Accept(parameter.Email);
             Password.Accept(parameter.Password);
+            isForAccountLinking = parameter.IsForAccountLinking;
+            if (isForAccountLinking)
+            {
+                emailForLinking = parameter.Email;
+                confirmationCode = parameter.ConfirmationCode;
+            }
 
             return base.Initialize(parameter);
         }
@@ -165,12 +176,11 @@ namespace Toggl.Core.UI.ViewModels
             if (isLoadingSubject.Value) return;
 
             isLoadingSubject.OnNext(true);
-
             loginDisposable =
                 userAccessManager
                     .Login(Email.Value, Password.Value)
                     .Track(analyticsService.Login, AuthenticationMethod.EmailAndPassword)
-                    .Subscribe(_ => onAuthenticated(), onError, onCompleted);
+                    .Subscribe(onAuthenticated, onError, onCompleted);
         }
 
         private Task signUp()
@@ -195,19 +205,13 @@ namespace Toggl.Core.UI.ViewModels
         private void togglePasswordVisibility()
             => passwordVisibleSubject.OnNext(!passwordVisibleSubject.Value);
 
-        private async void onAuthenticated()
+        private async void onAuthenticated(ITogglApi api)
         {
-            lastTimeUsageStorage.SetLogin(timeService.CurrentDateTime);
+            await this.onLoggedIn(lastTimeUsageStorage, onboardingStorage, interactorFactory, timeService, analyticsService);
 
-            onboardingStorage.SetIsNewUser(false);
+            await interactorFactory.CreateOnboardingTimeEntryIfNeeded().Execute();
 
-            interactorFactory.GetCurrentUser().Execute()
-                .Select(u => u.Id)
-                .Subscribe(analyticsService.SetUserId);
-
-            await UIDependencyContainer.Instance.SyncManager.ForceFullSync();
-
-            await Navigate<MainTabBarViewModel>();
+            await this.ssoLinkIfNeededAndNavigate(api, analyticsService, isForAccountLinking, emailForLinking, confirmationCode);
         }
 
         private void onError(Exception exception)

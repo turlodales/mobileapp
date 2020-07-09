@@ -4,6 +4,7 @@ using Toggl.Core.Extensions;
 using Toggl.Core.Suggestions;
 using Toggl.Core.Sync;
 using Toggl.Shared;
+using Toggl.Storage;
 
 namespace Toggl.Core.Analytics
 {
@@ -97,6 +98,7 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent NoWorkspaces { get; }
 
         public IAnalyticsEvent<TimeEntryStartOrigin> TimeEntryStarted { get; }
+        public IAnalyticsEvent OnboardingTimeEntryCreated { get; }
 
         public IAnalyticsEvent<TimeEntryStopOrigin> TimeEntryStopped { get; }
 
@@ -258,6 +260,17 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 
+        public IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
+
+        public IAnalyticsEvent LoginWithSso { get; }
+        public IAnalyticsEvent SsoFlowStarted { get; }
+        public IAnalyticsEvent SsoUrlRequested { get; }
+        public IAnalyticsEvent SsoLinkStarted { get; }
+        public IAnalyticsEvent SsoLinkCancelled { get; }
+        public IAnalyticsEvent<string> SsoUrlOutcome { get; }
+        public IAnalyticsEvent<string> SsoFlowOutcome { get; }
+        public IAnalyticsEvent<string> SsoLinkOutcome { get; }
+
         protected BaseAnalyticsService()
         {
             Login = new AnalyticsEvent<AuthenticationMethod>(this, nameof(Login), "AuthenticationMethod");
@@ -384,6 +397,16 @@ namespace Toggl.Core.Analytics
             CalendarTimeEntryCreated = new AnalyticsEvent<CalendarTimeEntryCreatedType, int, string>(this, nameof(CalendarTimeEntryCreated), "Type", "DaysSinceToday", "DayOfTheWeek");
             ContinueWithEmail = new AnalyticsEvent(this, nameof(ContinueWithEmail));
             UnsyncedDataDumped = new AnalyticsEvent<int, int, int, int>(this, nameof(UnsyncedDataDumped), "TimeEntries", "Projects", "Clients", "Tags");
+            TooltipDismissed = new AnalyticsEvent<OnboardingConditionKey, TooltipDismissReason>(this, nameof(TooltipDismissed), "Tooltip", "Reason");
+            LoginWithSso = new AnalyticsEvent(this, nameof(LoginWithSso));
+            SsoFlowStarted = new AnalyticsEvent(this, nameof(SsoFlowStarted));
+            SsoLinkStarted = new AnalyticsEvent(this, nameof(SsoLinkStarted));
+            SsoLinkCancelled = new AnalyticsEvent(this, nameof(SsoLinkCancelled));
+            SsoUrlRequested = new AnalyticsEvent(this, nameof(SsoUrlRequested));
+            SsoFlowOutcome = new AnalyticsEvent<string>(this, nameof(SsoFlowOutcome), "Outcome");
+            SsoLinkOutcome = new AnalyticsEvent<string>(this, nameof(SsoLinkOutcome), "Outcome");
+            SsoUrlOutcome = new AnalyticsEvent<string>(this, nameof(SsoUrlOutcome), "Outcome");
+            OnboardingTimeEntryCreated = new AnalyticsEvent(this, nameof(OnboardingTimeEntryCreated));
         }
 
         public PerformanceMeasurement StartNewSyncPerformanceMeasurement()

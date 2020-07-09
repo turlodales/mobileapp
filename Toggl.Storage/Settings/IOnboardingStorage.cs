@@ -1,5 +1,4 @@
 ﻿using System;
-using Toggl.Storage.Onboarding;
 
 namespace Toggl.Storage.Settings
 {
@@ -36,9 +35,6 @@ namespace Toggl.Storage.Settings
         void EditedTimeEntry();
         void SelectsProject();
 
-        bool WasDismissed(IDismissable dismissable);
-        void Dismiss(IDismissable dismissable);
-
         void SetDidShowRatingView();
         int NumberOfTimesRatingViewWasShown();
         void SetRatingViewOutcome(RatingViewOutcome outcome, DateTimeOffset dateTime);
@@ -52,6 +48,13 @@ namespace Toggl.Storage.Settings
         void SetCalendarPermissionWasAskedBefore();
         bool IsFirstTimeConnectingCalendars();
         void SetIsFirstTimeConnectingCalendars();
+
+        IObservable<OnboardingConditionKey> OnboardingConditionMet { get; }
+        void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey);
+        bool OnboardingConditionWasMetBefore(OnboardingConditionKey onboardingConditionKey);
+        bool OnboardingTimeEntryWasCreated();
+        void SetOnboardingTimeEntryWasCreated();
+        bool IsRunningTheAppFirstTime();
 
         void Reset();
     }

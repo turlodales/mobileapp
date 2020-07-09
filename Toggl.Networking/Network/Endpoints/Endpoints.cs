@@ -9,6 +9,7 @@ namespace Toggl.Networking.Network
         private readonly Uri baseUrl;
         private readonly Uri syncServerBaseUrl;
 
+        public AuthEndpoints Auth => new AuthEndpoints(baseUrl);
         public UserEndpoints User => new UserEndpoints(baseUrl);
         public WorkspaceEndpoints Workspaces => new WorkspaceEndpoints(baseUrl);
         public ClientEndpoints Clients => new ClientEndpoints(baseUrl);

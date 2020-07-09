@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            app:srcCompat="@drawable/shape_diamond"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginBottom="-6dp"
+            android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:background="@drawable/background_tooltip"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/TooltipTitle"
+            android:gravity="center_vertical"
+            android:textColor="@color/tooltipText"
+            android:textStyle="bold"
+            android:paddingEnd="24dp"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp"
+            tools:text="You've made your first\nTime Entry on Toggl mobile app 🎉"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/TooltipText"
+            android:gravity="center_vertical"
+            android:textColor="@color/tooltipText"
+            android:paddingEnd="24dp"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp"
+            tools:text="You can easily access and edit\nall your Time Entries from any Toggl app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/TooltipButton"
+            android:textColor="@color/tooltipText"
+            android:textStyle="bold"
+            android:paddingEnd="24dp"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp"
+            android:layout_gravity="right"
+            tools:text="Ok, got it!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        android:tint="@color/tooltipText"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp" />
+</FrameLayout>

@@ -8,6 +8,7 @@ using AndroidX.AppCompat.App;
 using Toggl.Core;
 using Toggl.Core.UI;
 using Toggl.Core.UI.Navigation;
+using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Droid.Activities;
 using Toggl.Droid.BroadcastReceivers;
@@ -86,7 +87,7 @@ namespace Toggl.Droid
             var viewModel = viewModelLoader.Load<MainTabBarViewModel>();
             viewModelCache.Cache(viewModel);
 
-            viewModel.Initialize();
+            viewModel.Initialize(MainTabBarParameters.Default);
         }
 
         private void registerTimezoneChangedBroadcastReceiver(ITimeService timeService)
@@ -115,7 +116,7 @@ namespace Toggl.Droid
                         .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
 
                 case AccessLevel.NotLoggedIn:
-                    loadAndCacheViewModelWithParams<OnboardingViewModel, Unit>(Unit.Default);
+                    loadAndCacheViewModelWithParams<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default);
                     return new Intent(this, typeof(OnboardingActivity))
                         .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
 

@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/onboardingViewPager"
@@ -23,9 +24,8 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/onboardingTabIndicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginBottom="12dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/continueWithGoogleButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -41,10 +41,123 @@
             android:layout_width="76dp"
             android:layout_height="24dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="32dp"
             android:src="@drawable/ic_toggl_logo_onboarding"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/ssoBackground"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/onboardingFirstSlideBackgroundColor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+                android:id="@+id/ssoTogglLogo"
+                android:layout_width="76dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="72dp"
+                android:src="@drawable/ic_toggl_logo_onboarding"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/ssoLoginMessage"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="32dp"
+                android:lineSpacingExtra="10dp"
+                android:fontFamily="sans-serif-light"
+                android:maxLines="2"
+                android:textColor="@color/onboardingTitleTextColor"
+                android:textSize="36sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ssoTogglLogo"
+                tools:text="Log in to enable SSO" />
+
+        <LinearLayout
+                android:id="@+id/ssoContinueWithGoogleButton"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/contained_button"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/ssoLoginMessage"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/logo_google" />
+
+            <TextView
+                    android:id="@+id/ssoLoginGoogleLoginLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.02"
+                    android:textColor="@color/onboardingContainedButtonTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:textAllCaps="true"
+                    tools:text="Sign in With Google" />
+        </LinearLayout>
+
+        <Button
+                android:id="@+id/ssoContinueWithEmailButton"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/outline_button"
+                android:letterSpacing="0.02"
+                android:textAllCaps="true"
+                android:textColor="@color/onboardingOutlineButtonTextColor"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@+id/ssoContinueWithGoogleButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="Continue with email" />
+
+        <Button
+                android:id="@+id/ssoCancelButton"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="8dp"
+                android:background="@null"
+                android:letterSpacing="0.02"
+                android:textAllCaps="true"
+                android:textColor="@color/onboardingOutlineButtonTextColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="Cancel" />
 
         <LinearLayout
             android:id="@+id/continueWithGoogleButton"
@@ -52,7 +165,7 @@
             android:layout_height="44dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/contained_button"
             android:clickable="true"
             android:elevation="2dp"
@@ -88,22 +201,45 @@
             android:layout_height="44dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/outline_button"
             android:letterSpacing="0.02"
             android:textAllCaps="true"
             android:textColor="@color/onboardingOutlineButtonTextColor"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ssoButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tools:text="Continue with email" />
+
+        <Button
+                android:id="@+id/ssoButton"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="8dp"
+                android:background="@null"
+                android:letterSpacing="0.02"
+                android:textAllCaps="true"
+                android:textColor="@color/onboardingOutlineButtonTextColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="Log in with SSO" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/notLoadingViewsViewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="togglMan,togglLogo,message,continueWithGoogleButton,continueWithEmailButton" />
+            app:constraint_referenced_ids="togglMan,togglLogo,onboardingViewPager,continueWithGoogleButton,continueWithEmailButton,ssoButton" />
+
+        <androidx.constraintlayout.widget.Group
+                android:id="@+id/ssoNotLoadingViewsViewGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="ssoBackground,ssoTogglLogo,ssoLoginMessage,ssoCancelButton,ssoContinueWithGoogleButton,ssoContinueWithEmailButton" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/loadingViewsViewGroup"

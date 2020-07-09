@@ -170,6 +170,65 @@ namespace Toggl.iOS.Extensions
             });
         }
 
+        internal static void ShowToast(this UIViewController viewController, string message)
+        {
+            // based on https://stackoverflow.com/a/50710991
+            var toastContainer = new UIView(new CGRect());
+            toastContainer.BackgroundColor = ColorAssets.Background;
+            toastContainer.Layer.CornerRadius = 25;
+            toastContainer.ClipsToBounds  =  true;
+
+            var toastLabel = new UILabel(frame: new CGRect());
+            toastLabel.TextColor = ColorAssets.Text;
+            toastLabel.TextAlignment = UITextAlignment.Center;
+            toastLabel.Font.WithSize(12.0f);
+            toastLabel.Text = message;
+            toastLabel.ClipsToBounds  =  true;
+            toastLabel.Lines = 0;
+
+            toastContainer.AddSubview(toastLabel);
+            viewController.View.AddSubview(toastContainer);
+
+            toastLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            toastContainer.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var a1 = NSLayoutConstraint.Create(toastLabel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal,
+                toastContainer,
+                NSLayoutAttribute.Leading, 1, 15);
+            var a2 = NSLayoutConstraint.Create(toastLabel, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal,
+                toastContainer, NSLayoutAttribute.Trailing, 1, -15);
+            var a3 = NSLayoutConstraint.Create(toastLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal,
+                toastContainer,
+                NSLayoutAttribute.Bottom, 1, -15);
+            var a4 = NSLayoutConstraint.Create(toastLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal,
+                toastContainer,
+                NSLayoutAttribute.Top, 1, 15);
+            toastContainer.AddConstraints(new [] {a1, a2, a3, a4});
+
+            var c1 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal,
+                viewController.View, NSLayoutAttribute.Bottom, 1, -75);
+            var c2 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Width,
+                NSLayoutRelation.LessThanOrEqual, 1, 450);
+            var c3 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal,
+                viewController.View, NSLayoutAttribute.CenterX, 1, 0);
+            var c4 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Width,
+                NSLayoutRelation.GreaterThanOrEqual, viewController.View, NSLayoutAttribute.Width, (nfloat)0.3, (nfloat)1.0);
+            var c5 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Leading, NSLayoutRelation.GreaterThanOrEqual,
+                viewController.View, NSLayoutAttribute.Leading, 1, 50);
+            var c6 = NSLayoutConstraint.Create(toastContainer, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal,
+                viewController.View, NSLayoutAttribute.Trailing, 1, -50);
+
+            viewController.View.AddConstraints(new [] {c1, c2, c3, c4, c5, c6});
+
+            UIView.Animate(2.5, 0.0, UIViewAnimationOptions.CurveEaseIn, () => { toastContainer.Alpha = 1.0f; },
+                () =>
+                {
+                    UIView.Animate(1.0, 3.0, UIViewAnimationOptions.CurveEaseOut,
+                        () => { toastContainer.Alpha = 0.0f; },
+                        () =>  { toastContainer.RemoveFromSuperview(); });
+                });
+        }
+
         private static (string Title, string ConfirmButtonText, string CancelButtonText) selectTextByType(ActionType type)
         {
             switch (type)

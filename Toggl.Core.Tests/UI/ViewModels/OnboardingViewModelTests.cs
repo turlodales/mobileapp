@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using NSubstitute;
@@ -14,7 +15,7 @@ using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.Views;
-using Toggl.Networking.Exceptions;
+using Toggl.Networking;
 using Toggl.Shared;
 using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
@@ -22,7 +23,7 @@ using Xunit;
 
 namespace Toggl.Core.Tests.UI.ViewModels
 {
-    public class OnboardingViewModelTest : BaseViewModelTests<OnboardingViewModel>
+    public class OnboardingViewModelTest : BaseViewModelWithInputTests<OnboardingViewModel, OnboardingParameters>
     {
         protected ILastTimeUsageStorage LastTimeUsageStorage { get; } = Substitute.For<ILastTimeUsageStorage>();
 
@@ -89,6 +90,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
         public abstract class ContinueWithThirdPartyProvider : OnboardingViewModelTest
         {
             private ThirdPartyLoginProvider provider;
+            private ITogglApi api = Substitute.For<ITogglApi>();
+
+            public ContinueWithThirdPartyProvider()
+            {
+                UserAccessManager.UserLoggedIn.Returns(Observable.Return(api));
+            }
 
             public ContinueWithThirdPartyProvider(ThirdPartyLoginProvider provider)
             {
@@ -103,6 +110,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 NavigationService
                     .Navigate<TermsAndCountryViewModel, ICountry?>(Arg.Any<IView>())
                     .Returns(country);
+            }
+
+            [Fact]
+            public void ExecutesTheCreateOnboardingTimeEntryIfNeededInteractor()
+            {
+                ViewModel.ContinueWithGoogle.Execute();
+
+                InteractorFactory.CreateOnboardingTimeEntryIfNeeded().Received().Execute();
             }
 
             [Fact, LogIfTooSlow]
@@ -123,16 +138,17 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void LogsInWithGoogleAndNavigatesToMainVM()
             {
+                ViewModel.Initialize(OnboardingParameters.Default).Wait();
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Return(Unit.Default));
+                    .Returns(Observable.Return(api));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
                 TestScheduler.Start();
                 NavigationService
                     .Received()
-                    .Navigate<MainTabBarViewModel>(ViewModel.View)
+                    .Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default, ViewModel.View)
                     .Wait();
             }
 
@@ -141,7 +157,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
+                    .Returns(Observable.Throw<ITogglApi>(new ThirdPartyLoginException(provider, false)));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -157,7 +173,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
+                    .Returns(Observable.Throw<ITogglApi>(new ThirdPartyLoginException(provider, false)));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -176,7 +192,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new UnauthorizedAccessException()));
+                    .Returns(Observable.Throw<ITogglApi>(new UnauthorizedAccessException()));
 
                 ViewModel.ContinueWithGoogle.Execute();
 
@@ -197,7 +213,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, userCancelled)));
+                    .Returns(Observable.Throw<ITogglApi>(new ThirdPartyLoginException(provider, userCancelled)));
 
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
@@ -217,7 +233,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new UnauthorizedAccessException()));
+                    .Returns(Observable.Throw<ITogglApi>(new UnauthorizedAccessException()));
 
                 var observer = TestScheduler.CreateObserver<bool>();
                 ViewModel.IsLoading.Subscribe(observer);
@@ -234,9 +250,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void SignsUpWithGoogleAndNavigatesToMainVM()
             {
+                ViewModel.Initialize(OnboardingParameters.Default).Wait();
+
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new Exception()));
+                    .Returns(Observable.Throw<ITogglApi>(new Exception()));
 
                 UserAccessManager
                     .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -247,7 +265,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 NavigationService
                     .Received()
-                    .Navigate<MainTabBarViewModel>(ViewModel.View)
+                    .Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default,
+                        ViewModel.View)
                     .Wait();
             }
 
@@ -256,7 +275,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
+                    .Returns(Observable.Throw<ITogglApi>(new ThirdPartyLoginException(provider, false)));
 
                 UserAccessManager
                     .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -276,7 +295,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new Exception()));
+                    .Returns(Observable.Throw<ITogglApi>(new Exception()));
 
                 UserAccessManager
                     .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -299,7 +318,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new ThirdPartyLoginException(provider, false)));
+                    .Returns(Observable.Throw<ITogglApi>(new ThirdPartyLoginException(provider, false)));
 
                 UserAccessManager
                     .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
@@ -325,7 +344,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Return(Unit.Default));
+                    .Returns(Observable.Return(api));
 
                 var viewModel = CreateViewModel();
                 viewModel.AttachView(View);
@@ -345,7 +364,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 UserAccessManager
                     .ThirdPartyLogin(provider, Arg.Any<ThirdPartyLoginInfo>())
-                    .Returns(Observable.Throw<Unit>(new Exception()));
+                    .Returns(Observable.Throw<ITogglApi>(new Exception()));
                 UserAccessManager
                     .ThirdPartySignUp(provider, Arg.Any<ThirdPartyLoginInfo>(), Arg.Any<bool>(), Arg.Any<int>(), Arg.Any<string>())
                     .Returns(Observable.Return(Unit.Default));
@@ -405,6 +424,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             [Fact, LogIfTooSlow]
             public void GoesToLogInWhenAPreviousLoginHasBeenDetected()
             {
+                ViewModel.Initialize(OnboardingParameters.Default).Wait();
                 LastTimeUsageStorage.LastLogin.Returns(DateTimeOffset.Now);
 
                 ViewModel.ContinueWithEmail.Execute();
@@ -412,11 +432,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 NavigationService
                     .Received()
-                    .Navigate<LoginViewModel, CredentialsParameter>(
-                        Arg.Is<CredentialsParameter>(parameter
-                            => parameter == CredentialsParameter.Empty
-                        ), ViewModel.View
-                    ).Wait();
+                    .Navigate<LoginViewModel, CredentialsParameter>(CredentialsParameter.Empty, ViewModel.View)
+                    .Wait();
             }
 
             [Fact, LogIfTooSlow]

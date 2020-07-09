@@ -28,7 +28,4 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.4.0-beta.1.build3958" />
     <PackageReference Include="Microsoft.Reactive.Testing" Version="4.2.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Onboarding\" />
-  </ItemGroup>
 </Project>

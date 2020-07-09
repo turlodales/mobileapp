@@ -216,7 +216,9 @@ namespace Toggl.Core.UI.ViewModels
 
             isLoadingSubject.OnNext(false);
 
-            await Navigate<MainTabBarViewModel>();
+            await interactorFactory.CreateOnboardingTimeEntryIfNeeded().Execute();
+
+            await Navigate<MainTabBarViewModel, MainTabBarParameters>(MainTabBarParameters.Default);
         }
 
         private void onError(Exception exception)

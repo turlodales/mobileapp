@@ -31,8 +31,7 @@ namespace Toggl.Core.Tests.Interactors.UserAccess
                 PrivateSharedStorageService,
                 UserAccessManager,
                 InteractorFactory,
-                LogoutSource.Settings,
-                OnboardingStorage);
+                LogoutSource.Settings);
         }
 
         [Fact, LogIfTooSlow]
@@ -157,14 +156,6 @@ namespace Toggl.Core.Tests.Interactors.UserAccess
 
             PushNotificationsTokenService.Received().InvalidateCurrentToken();
             PushNotificationsTokenStorage.Received().Clear();
-        }
-
-        [Fact, LogIfTooSlow]
-        public async Task ClearsOnboardingStorage()
-        {
-            await interactor.Execute();
-
-            OnboardingStorage.Received().Reset();
         }
     }
 }

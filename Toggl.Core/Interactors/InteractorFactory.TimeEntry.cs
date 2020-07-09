@@ -86,5 +86,8 @@ namespace Toggl.Core.Interactors
 
         public IInteractor<IObservable<TimeSpan>> ObserveTimeTrackedToday()
             => new ObserveTimeTrackedTodayInteractor(timeService, dataSource.TimeEntries);
+
+        public IInteractor<Task<IThreadSafeTimeEntry>> CreateOnboardingTimeEntryIfNeeded()
+        => new CreateOnboardingTimeEntryIfNeededInteractor(timeService, onboardingStorage, this);
     }
 }

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Reactive.Subjects;
+using System.Threading.Tasks;
+using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.Shared;
+using Toggl.Shared.Extensions;
 
 namespace Toggl.Core.UI.ViewModels
 {
     [Preserve(AllMembers = true)]
-    public sealed class MainTabBarViewModel : ViewModel
+    public sealed class MainTabBarViewModel : ViewModelWithInput<MainTabBarParameters>
     {
         public Lazy<ViewModel> MainViewModel { get; }
         public Lazy<ViewModel> ReportsViewModel { get; }
@@ -16,9 +20,15 @@ namespace Toggl.Core.UI.ViewModels
 
         public IImmutableList<Lazy<ViewModel>> Tabs { get; }
 
+        public IObservable<MainTabBarParameters.SsoLinkResult> SsoLinkResult;
+        private BehaviorSubject<MainTabBarParameters.SsoLinkResult> ssoLinkResultSubject = new BehaviorSubject<MainTabBarParameters.SsoLinkResult>(MainTabBarParameters.SsoLinkResult.NONE);
+
         public MainTabBarViewModel(UIDependencyContainer container)
             : base(container.NavigationService)
         {
+            Ensure.Argument.IsNotNull(container, nameof(container));
+            Ensure.Argument.IsNotNull(container.SchedulerProvider, nameof(container.SchedulerProvider));
+
             MainViewModel = new Lazy<ViewModel>(() => new MainViewModel(
                 container.DataSource,
                 container.SyncManager,
@@ -64,6 +74,15 @@ namespace Toggl.Core.UI.ViewModels
                 container.NavigationService));
 
             Tabs = getViewModels().ToImmutableList();
+
+            SsoLinkResult = ssoLinkResultSubject
+                .AsDriver(MainTabBarParameters.SsoLinkResult.NONE, container.SchedulerProvider);
+        }
+
+        public override Task Initialize(MainTabBarParameters payload)
+        {
+            ssoLinkResultSubject.OnNext(payload.LinkResult);
+            return base.Initialize(payload);
         }
 
         private IEnumerable<Lazy<ViewModel>> getViewModels()
