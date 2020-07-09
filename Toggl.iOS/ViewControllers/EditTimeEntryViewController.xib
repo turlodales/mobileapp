@@ -617,7 +617,7 @@
                         <constraint firstItem="1PY-gD-iJQ" firstAttribute="top" secondItem="QAv-qu-O8B" secondAttribute="top" id="zPO-Ld-BA9"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQc-83-aeG" userLabel="Projects Tooltip">
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQc-83-aeG" userLabel="Projects Tooltip">
                     <rect key="frame" x="10" y="299.66666666666669" width="270.66666666666669" height="67.333333333333314"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qC1-It-zQs" userLabel="Arrow" customClass="TriangleView">

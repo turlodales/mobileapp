@@ -23,6 +23,19 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Test email field with invalid email
 - [ ] Test email field with mixed character sets (including various languages)
 - [ ] Test password field for old/changed password
+### Testing SSO
+Keep in mind:
+- your email must be added to OKTA app https://dev-400633.okta.com and to Toggl SSO Test workspace (id 4434656)
+- on Android, when you want to use a different email for subsequent logins, you first need to logout from the OKTA session via Chrome (or the default browser), or clear app storage
+- in order to test account linking with Google login, you might have to clear app storage so that you're not automatically logged with a previously used email
+- it's best to remove adhoc/debug versions of the app before testing SSO.
+
+
+- [ ] Test a domain that isn't SSO-enabled (just an email with a random domain should work), validate an error shows up
+- [ ] Test an SSO-enabled email, but cancel the OKTA auth process - validate there's a 'Something went wrong' error.
+- [ ] Test the linking flow - use an email that is a part of the SSO workspace and is added to OKTA, but has not logged in with SSO yet. After authenticating in OKTA, you should see the linking view and after logging in, you should see a message that linking was succesful. Test that flow with a regular login, google login and apple login, if possible.
+- [ ] Do the same as above, but when logging in after the linking view, use a different email to the one you used in the SSO login view. The message should now say that the account has not been linked to SSO.
+- [ ] Test the happy flow (linked and SSO-enabled account) - after authenticating in OKTA you should be taken straight to TE list
 
 ## Testing timer page
 - [ ] Start timer
@@ -87,6 +100,9 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Edit a TE group
 - [ ] Delete a TE group from an Edit View
 - [ ] Check whether the group summary time on both main log and in Edit view is the same and correct
+
+## Test the rating prompt
+- [ ] Meet the criteria of showing the rating view - validate it appears and is working as intended. Criteria can be found here: https://console.firebase.google.com/u/0/project/toggl-mobile/config.
 
 ## Testing report screen
 - [ ] Custom range
