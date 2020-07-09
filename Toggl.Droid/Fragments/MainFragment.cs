@@ -233,6 +233,11 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             ViewModel.FinalTooltipCondition.ConditionMet
+                .Do(conditionMet =>
+                {
+                    if (conditionMet)
+                        AndroidDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
+                })
                 .Subscribe(finalTooltip.Rx().IsVisible())
                 .DisposedBy(DisposeBag);
 
