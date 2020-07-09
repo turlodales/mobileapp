@@ -838,9 +838,9 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string SearchObject {
+        public static string SearchOrAddObject {
             get {
-                return ResourceManager.GetString("SearchObject", resourceCulture);
+                return ResourceManager.GetString("SearchOrAddObject", resourceCulture);
             }
         }
         
