@@ -184,10 +184,10 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 .Execute()
                 .FirstAsync();
 
-            currentPlan = Plan.Starter;
-
             if (currentPlan == Plan.Free)
+            {
                 await Navigate<YourPlanViewModel>();
+            }
         }
 
         private async Task<IThreadSafeWorkspace> selectWorkspace()

@@ -676,6 +676,7 @@
     <Compile Include="ViewHolders\CalendarWeekSectionViewHolder.cs" />
     <Compile Include="ViewHolders\DateRangePicker\DateRangePickerShortcutViewHolder.cs" />
     <Compile Include="ViewHolders\LicenseViewHolder.cs" />
+    <Compile Include="ViewHolders\Reports\ReportAdvancedCardOnWebViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportDonutChartLegendItemViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportDonutChartDonutViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportElementViewHolder.cs" />
@@ -1108,6 +1109,7 @@
     <AndroidResource Include="Resources\layout\SuggestionsWidgetItem.axml" />
     <AndroidResource Include="Resources\layout\TimeEntryWidgetSmall.axml" />
     <AndroidResource Include="Resources\layout\WidgetNotLoggedIn.axml" />
+    <AndroidResource Include="Resources\layout\ReportAdvancedOnWebCard.axml" />
     <AndroidResource Include="Resources\menu\SettingsMenu.xml" />
     <AndroidResource Include="Resources\menu\DoneOrClearMenu.xml" />
     <AndroidResource Include="Resources\menu\OneButtonMenu.xml" />
@@ -1169,6 +1171,11 @@
     <AndroidResource Include="Resources\layout\TokenResetActivity.axml" />
     <AndroidResource Include="Resources\layout\EditTimeEntryTagCell.axml" />
     <AndroidResource Include="Resources\drawable\shape_edit_text_cursor.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_graph.png" />
     <AndroidResource Include="Resources\drawable-hdpi\illustration_bike.png" />
     <AndroidResource Include="Resources\drawable-mdpi\illustration_bike.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\illustration_bike.png" />
