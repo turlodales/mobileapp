@@ -9,6 +9,7 @@
 
     <toggl.droid.views.TooltipLayout
         android:id="@+id/ProjectTooltip"
+        android:visibility="gone"
         app:arrowDirection="bottomLeft"
         android:layout_gravity="bottom"
         android:layout_marginLeft="86dp"
