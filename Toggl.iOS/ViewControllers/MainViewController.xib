@@ -101,7 +101,7 @@ time entries will appear here.</string>
                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="834" id="Jw8-mK-mKg"/>
                             </constraints>
                         </tableView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u59-eB-urM" userLabel="Tooltip: You've Made Your First Time Entry">
+                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u59-eB-urM" userLabel="Tooltip: You've Made Your First Time Entry">
                             <rect key="frame" x="47.5" y="236" width="280" height="146"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jvk-6W-AS7" userLabel="Background">
@@ -453,7 +453,7 @@ Tap to edit it.</string>
                         <constraint firstItem="5b1-Hh-Pp9" firstAttribute="leading" secondItem="bcc-wP-og6" secondAttribute="leading" id="xre-Te-w7b"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65C-4h-51c" userLabel="Tooltip: Tap Here To Stop The Timer">
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65C-4h-51c" userLabel="Tooltip: Tap Here To Stop The Timer">
                     <rect key="frame" x="169" y="500" width="198" height="62"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IGl-zX-WY5" userLabel="Background">
