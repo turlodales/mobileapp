@@ -86,6 +86,7 @@
     <toggl.droid.views.TooltipLayout
         android:id="@+id/ProjectTooltip"
         app:arrowDirection="bottomLeft"
+        android:visibility="gone"
         android:layout_gravity="bottom"
         android:layout_marginLeft="86dp"
         android:layout_marginBottom="64dp"
@@ -95,6 +96,7 @@
     <toggl.droid.views.TooltipLayout
         android:id="@+id/BillableTooltip"
         app:arrowDirection="bottomCenter"
+        android:visibility="gone"
         android:layout_gravity="bottom"
         android:layout_marginLeft="86dp"
         android:layout_marginBottom="64dp"

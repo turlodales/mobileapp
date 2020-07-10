@@ -327,6 +327,8 @@ namespace Toggl.iOS.ViewControllers
                     if (!conditionMet)
                         return;
 
+                    IosDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
+
                     finalTooltipCellSubscription = tableViewSource
                         .WillDisplayCell
                         .FirstAsync()

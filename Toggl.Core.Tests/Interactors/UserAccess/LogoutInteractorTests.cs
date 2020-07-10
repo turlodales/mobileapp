@@ -31,8 +31,7 @@ namespace Toggl.Core.Tests.Interactors.UserAccess
                 PrivateSharedStorageService,
                 UserAccessManager,
                 InteractorFactory,
-                LogoutSource.Settings,
-                OnboardingStorage);
+                LogoutSource.Settings);
         }
 
         [Fact, LogIfTooSlow]

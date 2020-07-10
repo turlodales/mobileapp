@@ -18,7 +18,6 @@ namespace Toggl.Core.Interactors
                 privateSharedStorageService,
                 userAccessManager,
                 this,
-                source,
-                onboardingStorage);
+                source);
     }
 }
