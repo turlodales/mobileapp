@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using Toggl.Storage.Models;
+using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Storage
 {
@@ -15,6 +16,8 @@ namespace Toggl.Storage
         IRepository<IDatabaseTimeEntry> TimeEntries { get; }
         IRepository<IDatabaseWorkspace> Workspaces { get; }
         IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
+        IRepository<IDatabaseSyncedCalendar> SyncedCalendars { get; }
+        IRepository<IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
         IIdProvider IdProvider { get; }
         ISinceParameterRepository SinceParameters { get; }
         IObservable<Unit> Clear();

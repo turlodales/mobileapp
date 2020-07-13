@@ -8,7 +8,7 @@ namespace Toggl.Storage.Realm
         public RealmConfiguration Configuration { get; }
             = new RealmConfiguration
             {
-                SchemaVersion = 8,
+                SchemaVersion = 9,
                 MigrationCallback = (migration, oldSchemaVersion) =>
                 {
                     if (oldSchemaVersion < 3)
@@ -43,6 +43,12 @@ namespace Toggl.Storage.Realm
                     {
                         // RealmUser: Added new property Timezone
                         // A migration is not required because it's acceptable for the timezone to be unspecified (null)
+                    }
+
+                    if (oldSchemaVersion < 9)
+                    {
+                        // RealmSyncedCalendar: New entity for the Calendar Integration
+                        // RealmSyncedCalendarEvent: New entity for the Calendar Integration
                     }
                 }
             };

@@ -5,7 +5,9 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Toggl.Shared;
 using Toggl.Storage.Models;
+using Toggl.Storage.Models.Calendar;
 using Toggl.Storage.Realm.Models;
+using Toggl.Storage.Realm.Models.Calendar;
 
 namespace Toggl.Storage.Realm
 {
@@ -34,6 +36,9 @@ namespace Toggl.Storage.Realm
                 id => x => x.WorkspaceId == id,
                 ids => x => ids.Contains(x.WorkspaceId),
                 features => features.WorkspaceId);
+
+            SyncedCalendars = Repository<IDatabaseSyncedCalendar>.For(getRealmInstance, (syncedCalendar, realm) => new RealmSyncedCalendar(syncedCalendar, realm));
+            SyncedCalendarEvents = Repository<IDatabaseSyncedCalendarEvent>.For(getRealmInstance, (syncedCalendar, realm) => new RealmSyncedCalendarEvent(syncedCalendar, realm));
         }
 
         public IIdProvider IdProvider { get; }
@@ -47,6 +52,9 @@ namespace Toggl.Storage.Realm
         public IRepository<IDatabaseTimeEntry> TimeEntries { get; }
         public IRepository<IDatabaseWorkspace> Workspaces { get; }
         public IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
+
+        public IRepository<IDatabaseSyncedCalendar> SyncedCalendars { get; }
+        public IRepository<IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
 
         public IObservable<Unit> Clear() =>
             Observable.Start(() =>

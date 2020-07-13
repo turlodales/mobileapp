@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Reactive.Linq;
 using Toggl.Core.Analytics;
+using Toggl.Core.DataSources.Calendar;
 using Toggl.Core.DataSources.Interfaces;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
 using Toggl.Storage;
 using Toggl.Storage.Models;
+using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Core.DataSources
 {
@@ -36,6 +39,8 @@ namespace Toggl.Core.DataSources
             Preferences = new PreferencesDataSource(database.Preferences);
             WorkspaceFeatures = new WorkspaceFeaturesDataSource(database.WorkspaceFeatures);
             TimeEntries = new TimeEntriesDataSource(database.TimeEntries, timeService, analyticsService, schedulerProvider);
+            SyncedCalendars = new SyncedCalendarsDataSource(database.SyncedCalendars);
+            SyncedCalendarEvents = new SyncedCalendarEventsDataSource(database.SyncedCalendarEvents);
         }
 
         public ITimeEntriesSource TimeEntries { get; }
@@ -55,6 +60,10 @@ namespace Toggl.Core.DataSources
         public IObservableDataSource<IThreadSafeWorkspace, IDatabaseWorkspace> Workspaces { get; }
 
         public IDataSource<IThreadSafeWorkspaceFeatureCollection, IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
+
+        public IDataSource<IThreadSafeSyncedCalendar, IDatabaseSyncedCalendar> SyncedCalendars { get; }
+
+        public IDataSource<IThreadSafeSyncedCalendarEvent, IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
 
         public IObservable<bool> HasUnsyncedData()
             => Observable.Merge(

@@ -1,7 +1,9 @@
 ﻿using System;
 using Toggl.Core.DataSources.Interfaces;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Storage.Models;
+using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Core.DataSources
 {
@@ -16,6 +18,9 @@ namespace Toggl.Core.DataSources
         IDataSource<IThreadSafeProject, IDatabaseProject> Projects { get; }
         IObservableDataSource<IThreadSafeWorkspace, IDatabaseWorkspace> Workspaces { get; }
         IDataSource<IThreadSafeWorkspaceFeatureCollection, IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
+
+        IDataSource<IThreadSafeSyncedCalendar, IDatabaseSyncedCalendar> SyncedCalendars { get; }
+        IDataSource<IThreadSafeSyncedCalendarEvent, IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
 
         IObservable<bool> HasUnsyncedData();
     }
