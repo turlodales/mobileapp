@@ -355,7 +355,7 @@ namespace Toggl.Core.UI.ViewModels
         private IObservable<bool> createStartTimeEntryTooltipPredicate()
         {
             var timeEntriesExist = TimeEntriesViewModel.TimeEntries
-                .Select(entries => entries.Any())
+                .Select(entries => entries != null && entries.Any())
                 .Take(1);
 
             var timeEntryIsRunning = CurrentRunningTimeEntry
