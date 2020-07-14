@@ -10,7 +10,7 @@ namespace Toggl.Core.Tests
     {
         [Theory, LogIfTooSlow]
         [InlineData("TermsOfServiceDialogMessage", new[] { 0, 1 })]
-        [InlineData("SearchObject", new[] { 0 })]
+        [InlineData("SearchOrAddObject", new[] { 0 })]
         public void TheStringWithPlaceholdersContainsTheRightNumberOfPlaceholdersRegardlessOfLocalization(string stringResourceName, int[] placeholdersToCheck)
         {
             var resourceManager = new ResourceManager(

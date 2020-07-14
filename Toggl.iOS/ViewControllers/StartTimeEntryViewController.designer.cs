@@ -21,6 +21,21 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint BillableButtonWidthConstraint { get; set; }
 
 		[Outlet]
+		UIKit.UIView BillableTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView BillableTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView BillableTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIButton BillableTooltipDetailsButton { get; set; }
+
+		[Outlet]
+		UIKit.UILabel BillableTooltipMessageLabel { get; set; }
+
+		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UIKit.NSLayoutConstraint BottomDistanceConstraint { get; set; }
 
@@ -99,6 +114,31 @@ namespace Toggl.iOS.ViewControllers
 			if (BillableButtonWidthConstraint != null) {
 				BillableButtonWidthConstraint.Dispose ();
 				BillableButtonWidthConstraint = null;
+			}
+
+			if (BillableTooltip != null) {
+				BillableTooltip.Dispose ();
+				BillableTooltip = null;
+			}
+
+			if (BillableTooltipArrow != null) {
+				BillableTooltipArrow.Dispose ();
+				BillableTooltipArrow = null;
+			}
+
+			if (BillableTooltipBackground != null) {
+				BillableTooltipBackground.Dispose ();
+				BillableTooltipBackground = null;
+			}
+
+			if (BillableTooltipDetailsButton != null) {
+				BillableTooltipDetailsButton.Dispose ();
+				BillableTooltipDetailsButton = null;
+			}
+
+			if (BillableTooltipMessageLabel != null) {
+				BillableTooltipMessageLabel.Dispose ();
+				BillableTooltipMessageLabel = null;
 			}
 
 			if (BottomDistanceConstraint != null) {

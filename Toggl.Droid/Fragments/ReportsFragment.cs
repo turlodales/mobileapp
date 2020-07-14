@@ -12,7 +12,7 @@ namespace Toggl.Droid.Fragments
 {
     public sealed partial class ReportsFragment : ReactiveTabFragment<ReportsViewModel>, IScrollableToStart
     {
-        private ReportsAdapter adapter = new ReportsAdapter();
+        private ReportsAdapter adapter;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -53,6 +53,7 @@ namespace Toggl.Droid.Fragments
 
         private void setupRecyclerView()
         {
+            adapter = new ReportsAdapter(ViewModel.OpenYourPlanView);
             reportsRecyclerView.AttachMaterialScrollBehaviour(appBarLayout);
             reportsRecyclerView.SetLayoutManager(new UnpredictiveLinearLayoutManager(Context));
             reportsRecyclerView.SetAdapter(adapter);

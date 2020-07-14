@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive;
 using Toggl.Core.Interactors.Generic;
 using Toggl.Core.Models.Interfaces;
+using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 
 namespace Toggl.Core.Interactors
@@ -45,5 +46,8 @@ namespace Toggl.Core.Interactors
 
         public IInteractor<IObservable<long>> ObserveDefaultWorkspaceId()
             => new ObserveDefaultWorkspaceIdInteractor(dataSource);
+
+        public IInteractor<IObservable<Plan>> ObserveCurrentWorkspacePlan()
+            => new ObserveCurrentPlanInteractor(dataSource, this);
     }
 }

@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     android:importantForAutofill="noExcludeDescendants">
 
-    <toggl.droid.views.TooltipLayout
-        android:id="@+id/ProjectTooltip"
-        android:visibility="gone"
-        app:arrowDirection="bottomLeft"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="86dp"
-        android:layout_marginBottom="64dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/SuggestionsRecyclerView"
         android:scrollbars="vertical"
@@ -92,6 +82,26 @@
             app:layout_constraintTop_toTopOf="@+id/DurationText"
             app:layout_constraintBottom_toBottomOf="@+id/DurationText"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <toggl.droid.views.TooltipLayout
+        android:id="@+id/ProjectTooltip"
+        app:arrowDirection="bottomLeft"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="86dp"
+        android:layout_marginBottom="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <toggl.droid.views.TooltipLayout
+        android:id="@+id/BillableTooltip"
+        app:arrowDirection="bottomCenter"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="86dp"
+        android:layout_marginBottom="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:layout_width="match_parent"

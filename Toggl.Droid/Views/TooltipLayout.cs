@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Android.Content;
 using Android.Runtime;
+using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using Toggl.Droid.Extensions;
 
 namespace Toggl.Droid.Views
 {
@@ -70,6 +72,21 @@ namespace Toggl.Droid.Views
                     return;
 
                 button.Text = value;
+                button.Visibility = (!string.IsNullOrEmpty(value)).ToVisibility();
+            }
+        }
+
+        public ICharSequence ButtonTextFormatted
+        {
+            get => button?.TextFormatted;
+            set
+            {
+                if (button == null)
+                    return;
+
+                button.TextFormatted = value;
+                button.Visibility = (!string.IsNullOrEmpty(value.ToString())).ToVisibility();
+                button.MovementMethod = LinkMovementMethod.Instance;
             }
         }
 
