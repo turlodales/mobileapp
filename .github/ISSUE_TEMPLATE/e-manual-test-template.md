@@ -55,6 +55,12 @@ Keep in mind:
 - [ ] Start a new entry, discard new entry.
 - [ ] Continue an entry
 - [ ] Delete an entry
+- [ ] The billable button in the Start Time Entry view for free workspaces
+  - [ ] Is the billable button grayed out
+  - [ ] Does tapping the button show the "Billable Hours is available on other plans" tooltip
+  - [ ] Deos tapping "Details" in said tooltip show the Your Workspace Plan view?
+  - [ ] Can the tooltip be dismissed by tapping on it?
+- [ ] Does the billble button work as it should for paid workspaces?
 
 ## Right to left language at random (Arabic, Aramaic, Azeri, Dhivehi/Maldivian, Hebrew, Kurdish (Sorani), Persian/Farsi, Urdu) Though not strictly RTL this could also apply to Chinese, Korean, Japanese and some other languages.
 
@@ -122,10 +128,19 @@ Keep in mind:
 - [ ] Custom range 1 day
 - [ ] Ensure correct year is selected on all options
 - [ ] Change workspaces
+- [ ] Is the Advanced Reports Via Web card shown
+  - [ ] Is it positioned correctly on iPhone
+  - [ ] Is it positioned correctly on ipad
+  - [ ] Does it have an "Available on other plans" button for users whose current default workspace is free?
+  - [ ] Does tapping that button open the Your Workspace Plan view for users whose current default workspace is in a free plan?
+  - [ ] Does tapping the card do nothing for users whose current default workspace is a paid one?
 
 ## Testing settings page
 - [ ] Sign out normal email
 - [ ] Sign out google sign in
+- [ ] Does the Your Workspace Plan row shows when the default workspace is in a free plan?
+- [ ] Is the Your Workspace Plan row hidden when the default workspace is in a not in a free plan?
+- [ ] Tap on the Your Workspace Plan row
 - [ ] Change workspace
 - [ ] Date format MM/DD/YYYY
 - [ ] Date format DD-MM-YYYY
@@ -232,13 +247,22 @@ Keep in mind:
 
 ## Testing onboarding (have a fresh install to test this)
 
-- [ ] Does the "Tap to start timer" onboarding step shows up after login?
-- [ ] Does the "Tap to stop timer" onboarding step shows up after starting a time entry?
-- [ ] Does the "Tap to edit time entry" onboarding step shows up after stopping a time entry?
-- [ ] Does the "Categorize your time with projects" onboarding step shows up after opening the edit view for the first time?
+- [ ] Testing Sign Up onboarding
+  - [ ] Is the onboarding time entry created automatically. The description should be "Getting started with Toggl app"?
+  - [ ] Does the "Here is your running Time Entry" tooltip appear after 2 seconds?
+  - [ ] Does the project tooltip appear in the Edit Time Entry view?
+  - [ ] Does the "Tap here to stop the Timer" tooltip appears after closing the Edit Time Entry view?
+  - [ ] Does the final tooltip appear after stopping the running time entry?
+- [ ] Testing Log In onboarding
+  - [ ] If the account has no existing time entries, is the onboarding time entry created?
+  - [ ] If the account has a running time entry, does the "Here is your running Time Entry" tooltip appear after 2 seconds?
+  - [ ] If the account has time entries, but none of them are running, does the "Tap here to start your next Time Entry" tooltip appear?
+  - [ ] Do the project tooltips appear in the Edit Time Entry and Start Time Entry views?
+  - [ ] Does the final tooltip appear after stopping a running time entry?
 
-- [ ] Can onboarding steps be dismissed by tapping on them?
-- [ ] Can onboarding steps be dismissed by taking the offered action?
+- [ ] Log out and back in after completing the onboarding, the you should not see repeated onboarding
+- [ ] Can onboarding tooltips  be dismissed by tapping on them?
+- [ ] Can onboarding tooltips be dismissed by taking the offered action?
 
 ## Testing Handoff
 - [ ] Test Handoff to web from the timer page
