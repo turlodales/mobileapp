@@ -512,6 +512,7 @@
 
           <toggl.droid.views.TooltipLayout
               android:id="@+id/ProjectTooltip"
+              android:visibility="gone"
               app:arrowDirection="topLeft"
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/ProjectTaskClient"
