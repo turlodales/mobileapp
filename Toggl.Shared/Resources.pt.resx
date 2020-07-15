@@ -450,6 +450,10 @@ Abra o app para marcar o tempo offline.</value>
   <data name="TapToStopTimer" xml:space="preserve">
     <value>Aperte para parar de marcar</value>
   </data>
+  <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>Click on $ or use @ to assign
+a Project to a Time Entry</value>
+  </data>
   <data name="TapToStartTimer" xml:space="preserve">
     <value>Aperte para começar a marcar</value>
   </data>

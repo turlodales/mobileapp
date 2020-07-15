@@ -738,6 +738,10 @@
     <data name="TapToStopTimer" xml:space="preserve">
         <value>タップしてタイマーを停止</value>
     </data>
+    <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>Click on $ or use @ to assign
+a Project to a Time Entry</value>
+    </data>
     <data name="DoneWithExclamationMark" xml:space="preserve">
         <value>できました!</value>
     </data>
