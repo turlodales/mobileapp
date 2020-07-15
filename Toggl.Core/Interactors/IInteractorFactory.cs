@@ -14,6 +14,7 @@ using Toggl.Core.Search;
 using Toggl.Core.Suggestions;
 using Toggl.Networking.Sync.Push;
 using Toggl.Shared;
+using Toggl.Shared.Models;
 using Toggl.Shared.Models.Reports;
 using Task = System.Threading.Tasks.Task;
 
@@ -54,6 +55,8 @@ namespace Toggl.Core.Interactors
         IInteractor<IObservable<Unit>> ObserveTimeEntriesChanges();
 
         IInteractor<IObservable<TimeSpan>> ObserveTimeTrackedToday();
+
+        IInteractor<IObservable<Plan>> ObserveCurrentWorkspacePlan();
 
         IInteractor<Task<IThreadSafeTimeEntry>> CreateOnboardingTimeEntryIfNeeded();
 

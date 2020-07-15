@@ -24,6 +24,7 @@ using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using Toggl.Storage.Settings;
 using Xamarin.Essentials;
 using static Toggl.Shared.Extensions.CommonFunctions;
@@ -73,7 +74,10 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<bool> IsCalendarSmartRemindersVisible { get; }
         public IObservable<string> CalendarSmartReminders { get; }
         public IObservable<bool> SwipeActionsEnabled { get; }
+        public IObservable<Plan> CurrentPlan { get; }
+        public IObservable<string> PlanName { get; }
 
+        public ViewAction OpenYourPlanSettings { get; }
         public ViewAction OpenCalendarSettings { get; }
         public ViewAction OpenCalendarSmartReminders { get; }
         public ViewAction OpenNotificationSettings { get; }
@@ -242,6 +246,14 @@ namespace Toggl.Core.UI.ViewModels
             SwipeActionsEnabled = userPreferences.SwipeActionsEnabled
                 .AsDriver(schedulerProvider);
 
+            var planObservable = interactorFactory.ObserveCurrentWorkspacePlan().Execute();
+
+            CurrentPlan = planObservable.AsDriver(schedulerProvider);
+            PlanName = planObservable
+                .Select(plan => plan.Name())
+                .AsDriver(schedulerProvider);
+
+            OpenYourPlanSettings = rxActionFactory.FromAsync(openYourPlanSettings);
             OpenCalendarSettings = rxActionFactory.FromAsync(openCalendarSettings);
             OpenCalendarSmartReminders = rxActionFactory.FromAsync(openCalendarSmartReminders);
             OpenNotificationSettings = rxActionFactory.FromAsync(openNotificationSettings);
@@ -504,5 +516,8 @@ namespace Toggl.Core.UI.ViewModels
         {
             userPreferences.SetSwipeActionsEnabled(!userPreferences.AreSwipeActionsEnabled);
         }
+
+        private Task openYourPlanSettings()
+            => Navigate<YourPlanViewModel>();
     }
 }
