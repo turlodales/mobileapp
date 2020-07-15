@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Toggl.Core.DataSources.Interfaces;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Storage.Models;

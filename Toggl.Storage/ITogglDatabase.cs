@@ -17,6 +17,7 @@ namespace Toggl.Storage
         IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
         IIdProvider IdProvider { get; }
         ISinceParameterRepository SinceParameters { get; }
+        IPushRequestIdentifierRepository PushRequestIdentifier { get; }
         IObservable<Unit> Clear();
     }
 }

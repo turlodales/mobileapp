@@ -34,6 +34,7 @@ namespace Toggl.Core.Interactors
                 durationFormat: dto.DurationFormat,
                 timeOfDayFormat: dto.TimeOfDayFormat,
                 collapseTimeEntries: dto.CollapseTimeEntries,
+                useNewSync: dto.UseNewSync,
                 syncStatus: SyncStatus.SyncNeeded
             );
     }

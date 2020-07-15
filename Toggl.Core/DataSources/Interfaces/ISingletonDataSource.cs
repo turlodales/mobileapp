@@ -12,5 +12,6 @@ namespace Toggl.Core.DataSources.Interfaces
         IObservable<T> Get();
 
         IObservable<IConflictResolutionResult<T>> UpdateWithConflictResolution(T entity);
+        void ReportChange();
     }
 }

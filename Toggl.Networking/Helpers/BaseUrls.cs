@@ -14,20 +14,34 @@ namespace Toggl.Networking.Helpers
 
         private const string reportsPrefix = "/reports/api/v3/";
 
+        private const string syncApiPrefix = "/";
+
         public static Uri ForApi(ApiEnvironment environment)
             => forEnvironment(environment, apiPrefix);
 
         public static Uri ForReports(ApiEnvironment environment)
             => forEnvironment(environment, reportsPrefix);
 
+        public static Uri ForSyncServer(ApiEnvironment environment)
+            => selectByEnvironment(
+                environment,
+                staging: new Uri("https://sync.toggl.space"),
+                production: new Uri("https://sync.toggl.com"));
+
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
+            => selectByEnvironment(
+                environment,
+                staging: new Uri(stagingBaseUrl, prefix),
+                production: new Uri(productionBaseUrl, prefix));
+
+        private static Uri selectByEnvironment(ApiEnvironment environment, Uri staging, Uri production)
         {
             switch (environment)
             {
                 case ApiEnvironment.Staging:
-                    return new Uri(stagingBaseUrl, prefix);
+                    return staging;
                 case ApiEnvironment.Production:
-                    return new Uri(productionBaseUrl, prefix);
+                    return production;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(environment), environment, "Unknown api environment.");
             }

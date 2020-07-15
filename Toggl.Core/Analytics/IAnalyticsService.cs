@@ -16,9 +16,9 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<SignUpErrorSource> SignUpError { get; }
 
-        IAnalyticsEvent ContinueWithGoogle { get;  }
+        IAnalyticsEvent ContinueWithGoogle { get; }
 
-        IAnalyticsEvent ContinueWithApple { get;  }
+        IAnalyticsEvent ContinueWithApple { get; }
 
         IAnalyticsEvent<LoginSignupAuthenticationMethod> UserIsMissingApiToken { get; }
 
@@ -256,9 +256,13 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent ContinueWithEmail { get; }
 
-        IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
+        IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
 
-        public IAnalyticsEvent<int, int, int, int> UnsyncedDataDumped { get; }
+        PerformanceMeasurement StartNewSyncPerformanceMeasurement();
+        PerformanceMeasurement StartOldSyncPerformanceMeasurement();
+        void StopAndTrack(PerformanceMeasurement measurement);
+      
+        IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
         IAnalyticsEvent LoginWithSso { get; }
         IAnalyticsEvent SsoFlowStarted { get; }

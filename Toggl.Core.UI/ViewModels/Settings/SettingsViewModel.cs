@@ -53,7 +53,7 @@ namespace Toggl.Core.UI.ViewModels
         private IThreadSafePreferences currentPreferences;
 
         public string Title { get; private set; } = Resources.Settings;
-        public string Version => $"{platformInfo.Version} ({platformInfo.BuildNumber})";
+        public string Version => $"{platformInfo.Version} ({platformInfo.BuildNumber}/{syncManager.Version})";
 
         public IObservable<string> Name { get; }
         public IObservable<string> Email { get; }

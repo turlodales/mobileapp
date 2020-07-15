@@ -31,6 +31,7 @@ namespace Toggl.Networking
             Preferences = new PreferencesApi(endpoints, apiClient, serializer, credentials);
             ProjectsSummary = new ProjectsSummaryApi(endpoints, apiClient, serializer, credentials);
             PushServices = new PushServicesApi(endpoints, apiClient, serializer, credentials);
+            SyncApi = new SyncApi(endpoints, apiClient, serializer, credentials);
             TimeEntries = new TimeEntriesApi(endpoints, apiClient, serializer, credentials, userAgent);
             TimeEntriesReports = new TimeEntriesReportsApi(endpoints, apiClient, serializer, credentials);
             WorkspaceFeatures = new WorkspaceFeaturesApi(endpoints, apiClient, serializer, credentials);
@@ -47,6 +48,7 @@ namespace Toggl.Networking
         public IProjectsApi Projects { get; }
         public ICountriesApi Countries { get; }
         public IWorkspacesApi Workspaces { get; }
+        public ISyncApi SyncApi { get; }
         public ITimeEntriesApi TimeEntries { get; }
         public ITimeEntriesReportsApi TimeEntriesReports { get; }
         public IPreferencesApi Preferences { get; }

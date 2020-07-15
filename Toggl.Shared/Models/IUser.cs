@@ -1,6 +1,6 @@
 ﻿namespace Toggl.Shared.Models
 {
-    public interface IUser : IIdentifiable, ILastChangedDatable
+    public partial interface IUser : IIdentifiable, ILastChangedDatable
     {
         string ApiToken { get; }
 

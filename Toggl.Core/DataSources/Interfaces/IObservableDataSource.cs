@@ -11,5 +11,6 @@ namespace Toggl.Core.DataSources.Interfaces
         where TThreadsafe : IThreadSafeModel, TDatabase
     {
         IObservable<Unit> ItemsChanged { get; }
+        void ReportChange();
     }
 }
