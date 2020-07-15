@@ -705,6 +705,10 @@ Mettez en marche le chronomètre et vos enregistrements les plus utilisés s'aff
     <data name="TapToStopTimer" xml:space="preserve">
         <value>Appuez pour arrêter le chronomètre</value>
     </data>
+    <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>Click on $ or use @ to assign
+a Project to a Time Entry</value>
+    </data>
     <data name="DoneWithExclamationMark" xml:space="preserve">
         <value>Terminé!</value>
     </data>
