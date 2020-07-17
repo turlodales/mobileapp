@@ -388,7 +388,7 @@ namespace Toggl.Droid.Views.Calendar
             duration = matchingGap.Duration == default ? duration : matchingGap.Duration;
             startTime = matchingGap.StartTime == default ? startTime : matchingGap.StartTime;
             
-            var newCalendarItem = new CalendarItem("", CalendarItemSource.TimeEntry, startTime, duration, Shared.Resources.NewTimeEntry, CalendarIconKind.None);
+            var newCalendarItem = new CalendarItem(string.Empty, string.Empty, CalendarItemSource.TimeEntry, startTime, duration, Shared.Resources.NewTimeEntry, CalendarIconKind.None);
             calendarItemTappedSubject.OnNext(newCalendarItem);
         }
 

@@ -40,7 +40,7 @@ namespace Toggl.Core.Tests
                 var startTime = new DateTimeOffset(2018, 8, 22, 12, 0, 0, TimeSpan.Zero);
                 var duration = TimeSpan.FromMinutes(30);
 
-                var calendarItem = new CalendarItem("id", CalendarItemSource.Calendar, startTime, duration, description, CalendarIconKind.None);
+                var calendarItem = new CalendarItem("id", "id", CalendarItemSource.Calendar, startTime, duration, description, CalendarIconKind.None);
                 calendarItem.Description.Should().Be(Resources.NoDescription);
             }
         }

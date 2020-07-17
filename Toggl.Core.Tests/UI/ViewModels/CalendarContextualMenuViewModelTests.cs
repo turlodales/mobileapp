@@ -39,7 +39,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
             protected CalendarItem CreateDummyTimeEntryCalendarItem(bool isRunning = false, long timeEntryId = 1, DateTimeOffset? startTime = null, TimeSpan? duration = null)
             {
                 TimeSpan? nullTimespan = null;
-                return new CalendarItem("1",
+                return new CalendarItem(
+                    "1",
+                    "1",
                     CalendarItemSource.TimeEntry,
                     startTime ?? DateTimeOffset.Now,
                     isRunning ? nullTimespan : (duration ?? TimeSpan.FromMinutes(30)),
@@ -52,7 +54,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 string description = "",
                 DateTimeOffset? startTime = null,
                 TimeSpan? duration = null)
-                => new CalendarItem("Id",
+                => new CalendarItem(
+                    "Id",
+                    "Id",
                     CalendarItemSource.Calendar,
                     startTime ?? DateTimeOffset.Now,
                     duration,
@@ -395,6 +399,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var expectedDescription = "whatever";
                 var newCalendarItem = new CalendarItem(
                     string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     expectedStartTime,
                     expectedDuration,
@@ -424,6 +429,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var expectedStartTime = new DateTimeOffset(2019, 10, 10, 10, 10, 10, TimeSpan.Zero);
                 var expectedDuration = TimeSpan.FromMinutes(30);
                 var newCalendarItem = new CalendarItem(
+                    string.Empty,
                     string.Empty,
                     CalendarItemSource.TimeEntry,
                     expectedStartTime,
@@ -460,6 +466,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var expectedDuration = TimeSpan.FromMinutes(30);
                 var expectedDescription = "whatever";
                 var newCalendarItem = new CalendarItem(
+                    string.Empty,
                     string.Empty,
                     CalendarItemSource.TimeEntry,
                     expectedStartTime,
@@ -778,7 +785,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var observer = TestScheduler.CreateObserver<CalendarItem?>();
                 var now = DateTimeOffset.Now;
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -814,6 +822,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
                     "1",
+                    "1",
                     CalendarItemSource.TimeEntry,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -829,6 +838,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem);
                 TestScheduler.Start();
                 var newCalendarItem = new CalendarItem(
+                    "2",
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
@@ -862,6 +872,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
                     "1",
+                    "1",
                     CalendarItemSource.Calendar,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -874,6 +885,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem);
                 TestScheduler.Start();
                 var newCalendarItem = new CalendarItem(
+                    "2",
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
@@ -908,6 +920,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
                     "1",
+                    "1",
                     CalendarItemSource.TimeEntry,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -925,6 +938,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem.WithDuration(TimeSpan.FromMinutes(15)));
                 TestScheduler.Start();
                 var newCalendarItem = new CalendarItem(
+                    "2",
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
@@ -953,6 +967,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 view.ConfirmDestructiveAction(Arg.Any<ActionType>()).Returns(Observable.Return(true));
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
+                    "1",
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
@@ -988,6 +1003,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
                     "1",
+                    "1",
                     CalendarItemSource.TimeEntry,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -1005,6 +1021,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem.WithDuration(TimeSpan.FromMinutes(15)));
                 TestScheduler.Start();
                 var newCalendarItem = new CalendarItem(
+                    "2",
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
@@ -1033,6 +1050,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 view.ConfirmDestructiveAction(Arg.Any<ActionType>()).Returns(Observable.Return(false));
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
+                    "1",
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
@@ -1067,6 +1085,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
                     "1",
+                    "1",
                     CalendarItemSource.TimeEntry,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -1099,6 +1118,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.AttachView(view);
                 var startingCalendarItem = new CalendarItem(
                     "1",
+                    "1",
                     CalendarItemSource.Calendar,
                     now,
                     TimeSpan.FromMinutes(30), 
@@ -1127,7 +1147,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = TestScheduler.CreateObserver<TimeEntryDisplayInfo>();
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     DateTimeOffset.Now,
                     TimeSpan.FromMinutes(30),
@@ -1158,7 +1179,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = TestScheduler.CreateObserver<TimeEntryDisplayInfo>();
                 var startingCalendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     DateTimeOffset.Now,
                     TimeSpan.FromMinutes(30),
@@ -1170,7 +1192,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     client: "Old Client");
 
                 var updatedCalendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     DateTimeOffset.Now,
                     TimeSpan.FromMinutes(30),
@@ -1212,7 +1235,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 var observer = TestScheduler.CreateObserver<TimeEntryDisplayInfo>();
                 var startingCalendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     DateTimeOffset.Now,
                     TimeSpan.FromMinutes(30),
@@ -1224,7 +1248,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     client: "client");
 
                 var updatedCalendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     DateTimeOffset.Now.AddHours(1),
                     TimeSpan.FromMinutes(25),
@@ -1257,8 +1282,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
             public void DoesNotEmitAnotherContextualMenuWhenTheItemIsUpdated()
             {
                 var observer = TestScheduler.CreateObserver<CalendarContextualMenu>();
-                var startingCalendarItem = new CalendarItem("", CalendarItemSource.TimeEntry, DateTimeOffset.Now, TimeSpan.FromMinutes(30), "Old description", CalendarIconKind.None, "#c2c2c2", project: "Old Project", task: "Old Task", client: "Old Client");
-                var updatedCalendarItem = new CalendarItem("", CalendarItemSource.TimeEntry, DateTimeOffset.Now, TimeSpan.FromMinutes(30), "New description", CalendarIconKind.None, "#f2f2f2", project: "New Project", task: "New Task", client: "New Client");
+                var startingCalendarItem = new CalendarItem(string.Empty, string.Empty, CalendarItemSource.TimeEntry, DateTimeOffset.Now, TimeSpan.FromMinutes(30), "Old description", CalendarIconKind.None, "#c2c2c2", project: "Old Project", task: "Old Task", client: "Old Client");
+                var updatedCalendarItem = new CalendarItem(string.Empty, string.Empty, CalendarItemSource.TimeEntry, DateTimeOffset.Now, TimeSpan.FromMinutes(30), "New description", CalendarIconKind.None, "#f2f2f2", project: "New Project", task: "New Task", client: "New Client");
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem);
                 TestScheduler.Start();
                 ViewModel.CurrentMenu.Subscribe(observer);
@@ -1288,7 +1313,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var startTime = new DateTimeOffset(2019, 10, 10, 10, 10, 0, TimeSpan.Zero);
                 var duration = TimeSpan.FromMinutes(30);
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     startTime,
                     duration,
@@ -1317,7 +1343,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var startTime = new DateTimeOffset(2019, 10, 10, 10, 10, 0, TimeSpan.Zero);
                 var duration = TimeSpan.FromMinutes(30);
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     startTime,
                     duration,
@@ -1349,7 +1376,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var startTime = new DateTimeOffset(2019, 10, 10, 10, 10, 0, TimeSpan.Zero);
                 var duration = TimeSpan.FromMinutes(30);
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     startTime,
                     duration,
@@ -1381,7 +1409,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var startTime = new DateTimeOffset(2019, 10, 10, 10, 10, 0, TimeSpan.Zero);
                 var duration = TimeSpan.FromMinutes(30);
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     startTime,
                     duration,
@@ -1392,7 +1421,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     task: "Such Task",
                     client: "Such Client");
                 var newCalendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     startTime,
                     duration,
@@ -1423,7 +1453,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var startTime = new DateTimeOffset(2019, 10, 10, 10, 10, 0, TimeSpan.Zero);
                 var duration = TimeSpan.FromMinutes(30);
                 var calendarItem = new CalendarItem(
-                    "",
+                    string.Empty,
+                    string.Empty,
                     CalendarItemSource.TimeEntry,
                     startTime,
                     duration,

@@ -82,7 +82,7 @@ namespace Toggl.iOS
             => new FetchRemoteConfigServiceIos();
 
         protected override ICalendarService CreateCalendarService()
-            => new CalendarServiceIos(PermissionsChecker);
+            => new CalendarServiceIos(PermissionsChecker, DataSource);
 
         protected override ITogglDatabase CreateDatabase()
             => new Database(realmConfigurator.Value);

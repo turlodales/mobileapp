@@ -1,4 +1,6 @@
 ﻿using System;
+using Toggl.Core.Extensions;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
 using Toggl.Storage;
@@ -8,7 +10,11 @@ namespace Toggl.Core.Calendar
 {
     public struct CalendarItem
     {
+        public static string SyncedEventIdPrefix = "SyncedEvent-";
+
         public string Id { get; }
+
+        public string SyncId { get; }
 
         public CalendarItemSource Source { get; }
 
@@ -36,6 +42,7 @@ namespace Toggl.Core.Calendar
 
         public CalendarItem(
             string id,
+            string syncId,
             CalendarItemSource source,
             DateTimeOffset startTime,
             TimeSpan? duration,
@@ -49,6 +56,7 @@ namespace Toggl.Core.Calendar
             string client = "")
         {
             Id = id;
+            SyncId = syncId;
             Source = source;
             StartTime = startTime;
             Duration = duration;
@@ -65,6 +73,7 @@ namespace Toggl.Core.Calendar
         private CalendarItem(IThreadSafeTimeEntry timeEntry)
             : this(
                 timeEntry.Id.ToString(),
+                null,
                 CalendarItemSource.TimeEntry,
                 timeEntry.Start,
                 timeEntry.Duration.HasValue ? TimeSpan.FromSeconds(timeEntry.Duration.Value) : null as TimeSpan?,
@@ -89,12 +98,29 @@ namespace Toggl.Core.Calendar
             }
         }
 
+        private CalendarItem(IThreadSafeSyncedCalendarEvent calendarEvent)
+            : this(
+                  $"{SyncedEventIdPrefix}{calendarEvent.Id}",
+                  calendarEvent.SyncId,
+                  CalendarItemSource.Calendar,
+                  calendarEvent.StartTime,
+                  calendarEvent.Duration(),
+                  calendarEvent.Title,
+                  CalendarIconKind.Event,
+                  calendarEvent.BackgroundColor)
+        {
+        }
+
         public static CalendarItem From(IThreadSafeTimeEntry timeEntry)
             => new CalendarItem(timeEntry);
+
+        public static CalendarItem From(IThreadSafeSyncedCalendarEvent calendarEvent)
+            => new CalendarItem(calendarEvent);
 
         public CalendarItem WithStartTime(DateTimeOffset startTime)
             => new CalendarItem(
                 this.Id,
+                this.SyncId,
                 this.Source,
                 startTime,
                 this.Duration,
@@ -110,6 +136,7 @@ namespace Toggl.Core.Calendar
         public CalendarItem WithDuration(TimeSpan? duration)
             => new CalendarItem(
                 this.Id,
+                this.SyncId,
                 this.Source,
                 this.StartTime,
                 duration,

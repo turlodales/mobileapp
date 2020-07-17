@@ -28,5 +28,17 @@ namespace Toggl.Core.UI.Extensions
 
                 return implementation();
             });
+
+        public static IObservable<T> DeferAndReturnDefaultIfPermissionNotGranted<T>(this IObservable<bool> permissionGrantedObservable, Func<IObservable<T>> implementation, Func<IObservable<T>> orDefault)
+            => Observable.DeferAsync(async cancellationToken =>
+            {
+                var isAuthorized = await permissionGrantedObservable;
+                if (!isAuthorized)
+                {
+                    return orDefault();
+                }
+
+                return implementation();
+            });
     }
 }

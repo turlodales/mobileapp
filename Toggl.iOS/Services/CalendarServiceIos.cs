@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using Toggl.Core.Calendar;
+using Toggl.Core.DataSources;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.UI.Services;
 using Toggl.iOS.Extensions;
 using Toggl.Shared;
+using Toggl.Shared.Extensions;
 
 namespace Toggl.iOS.Services
 {
@@ -14,8 +17,8 @@ namespace Toggl.iOS.Services
     {
         private EKEventStore eventStore = new EKEventStore();
 
-        public CalendarServiceIos(IPermissionsChecker permissionsChecker)
-            : base(permissionsChecker)
+        public CalendarServiceIos(IPermissionsChecker permissionsChecker, ITogglDataSource dataSource)
+            : base(permissionsChecker, dataSource)
         {
         }
 
@@ -50,6 +53,11 @@ namespace Toggl.iOS.Services
             return calendarItem;
         }
 
+        protected override IEnumerable<IThreadSafeSyncedCalendarEvent> ResolveDuplicates(
+            IEnumerable<CalendarItem> nativeEvents,
+            IEnumerable<IThreadSafeSyncedCalendarEvent> syncedEvents)
+            => syncedEvents.Where((syncedEvent) => nativeEvents.None((nativeEvent) => syncedEvent.ICalId == nativeEvent.SyncId));
+
         private UserCalendar userCalendarFromEKCalendar(EKCalendar calendar)
             => new UserCalendar(
                 calendar.CalendarIdentifier,
@@ -64,6 +72,7 @@ namespace Toggl.iOS.Services
 
             return new CalendarItem(
                 ev.EventIdentifier,
+                ev.CalendarItemExternalIdentifier,
                 CalendarItemSource.Calendar,
                 startDate,
                 duration,

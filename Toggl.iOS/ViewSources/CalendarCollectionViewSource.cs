@@ -240,7 +240,7 @@ namespace Toggl.iOS.ViewSources
             if (!IsEditing)
                 throw new InvalidOperationException("Set IsEditing before calling insert/update/remove");
 
-            var item = new CalendarItem(newItemId, CalendarItemSource.TimeEntry, startTime, duration, FoundationResources.NewTimeEntry, CalendarIconKind.None);
+            var item = new CalendarItem(newItemId, newItemId, CalendarItemSource.TimeEntry, startTime, duration, FoundationResources.NewTimeEntry, CalendarIconKind.None);
             selectedItemId = newItemId;
 
             itemTappedSubject.OnNext(item);
