@@ -72,8 +72,11 @@ namespace Toggl.Storage.Realm.Sync
             where T : IEquatable<T>
         {
             var original = propertyStatus == InSync ? local : backup;
-            var resolvedValue = Merge<T>(original, local, server);
-            var resolvedStatus = server.Equals(resolvedValue) ? InSync : SyncNeeded;
+            var resolvedValue = Merge(original, local, server);
+            bool isClean = server is null
+                ? resolvedValue is null
+                : server.Equals(resolvedValue);
+            var resolvedStatus = isClean ? InSync : SyncNeeded;
             return (resolvedStatus, resolvedValue);
         }
     }
