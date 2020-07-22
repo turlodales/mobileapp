@@ -14,11 +14,16 @@ namespace Toggl.Networking.Helpers
 
         private const string reportsPrefix = "/reports/api/v3/";
 
+        private const string integrationsPrefix = "/integrations/api/v1/";
+
         public static Uri ForApi(ApiEnvironment environment)
             => forEnvironment(environment, apiPrefix);
 
         public static Uri ForReports(ApiEnvironment environment)
             => forEnvironment(environment, reportsPrefix);
+
+        public static Uri ForIntegrations(ApiEnvironment environment)
+            => forEnvironment(environment, integrationsPrefix);
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
         {

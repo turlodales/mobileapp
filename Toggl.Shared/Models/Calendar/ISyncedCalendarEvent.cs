@@ -1,13 +1,12 @@
 ﻿using System;
 namespace Toggl.Shared.Models.Calendar
 {
-    public interface ISyncedCalendarEvent : IIdentifiable
+    public interface ISyncedCalendarEvent
     {
         string SyncId { get; }
         string ICalId { get; }
         string Title { get; }
-        long CalendarId { get; }
-
+        
         DateTimeOffset StartTime { get; }
         DateTimeOffset EndTime { get; }
         DateTimeOffset Updated { get; }

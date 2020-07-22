@@ -46,10 +46,10 @@ namespace Toggl.Core.Calendar
             }
 
             return permissionsChecker
-                           .CalendarPermissionGranted
-                           .DeferAndThrowIfPermissionNotGranted(
-                               () => Observable.Return(NativeGetCalendarItemWithId(id))
-                           );
+               .CalendarPermissionGranted
+               .DeferAndThrowIfPermissionNotGranted(
+                   () => Observable.Return(NativeGetCalendarItemWithId(id))
+               );
         }
 
         public IObservable<IEnumerable<CalendarItem>> GetEventsInRange(DateTimeOffset start, DateTimeOffset end)
