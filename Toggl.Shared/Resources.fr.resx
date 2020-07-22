@@ -541,7 +541,7 @@ Mettez en marche le chronomètre et vos enregistrements les plus utilisés s'aff
         <value>La nouvelle entrée</value>
     </data>
     <data name="EventReminder" xml:space="preserve">
-        <value>Rappel d´événemnt</value>
+        <value>Rappel d´événement</value>
     </data>
     <data name="Oops" xml:space="preserve">
         <value>Oops</value>
