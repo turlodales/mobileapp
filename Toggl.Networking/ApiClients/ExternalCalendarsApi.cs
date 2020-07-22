@@ -9,11 +9,11 @@ using Toggl.Shared.Models.Calendar;
 
 namespace Toggl.Networking.ApiClients
 {
-    internal class SyncedCalendarsApi : BaseApi, ISyncedCalendarsApi
+    internal class ExternalCalendarsApi : BaseApi, IExternalCalendarsApi
     {
         private readonly CalendarEndpoints endpoints;
 
-        public SyncedCalendarsApi(Endpoints endpoints, IApiClient apiClient, IJsonSerializer serializer, Credentials credidentials)
+        public ExternalCalendarsApi(Endpoints endpoints, IApiClient apiClient, IJsonSerializer serializer, Credentials credidentials)
             : base(apiClient, serializer, credidentials, endpoints.LoggedIn)
         {
             this.endpoints = endpoints.IntegrationsEndpoints.Calendars;
@@ -22,19 +22,19 @@ namespace Toggl.Networking.ApiClients
         public Task<List<ICalendarIntegration>> GetIntegrations()
             => SendRequest<CalendarIntegration, ICalendarIntegration>(endpoints.GetIntegrations, AuthHeader);
 
-        public Task<List<ISyncedCalendar>> GetSyncedCalendars(
+        public Task<List<IExternalCalendar>> GetCalendars(
             long integrationId,
             string nextPageToken = null,
             long? limit = null)
-            => SendRequest<SyncedCalendar, ISyncedCalendar>(endpoints.GetAllCalendars(integrationId, nextPageToken, limit), AuthHeader);
+            => SendRequest<ExternalCalendar, IExternalCalendar>(endpoints.GetAllCalendars(integrationId, nextPageToken, limit), AuthHeader);
 
-        public Task<List<ISyncedCalendarEvent>> GetSyncedCalendarEvents(
+        public Task<List<IExternalCalendarEvent>> GetCalendarEvents(
             long integrationId,
             string calendarId,
             DateTimeOffset startDate,
             DateTimeOffset endDate,
             string nextPageToken = null,
             long? limit = null)
-            => SendRequest<SyncedCalendarEvent, ISyncedCalendarEvent>(endpoints.GetAllCalendarEvents(integrationId, calendarId, startDate, endDate, nextPageToken, limit), AuthHeader);
+            => SendRequest<ExternalCalendarEvent, IExternalCalendarEvent>(endpoints.GetAllCalendarEvents(integrationId, calendarId, startDate, endDate, nextPageToken, limit), AuthHeader);
     }
 }

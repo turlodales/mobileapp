@@ -5,16 +5,16 @@ using Toggl.Shared.Models.Calendar;
 
 namespace Toggl.Networking.ApiClients.Interfaces
 {
-    public interface ISyncedCalendarsApi
+    public interface IExternalCalendarsApi
     {
         Task<List<ICalendarIntegration>> GetIntegrations();
 
-        Task<List<ISyncedCalendar>> GetSyncedCalendars(
+        Task<List<IExternalCalendar>> GetCalendars(
             long integrationId,
             string nextPageToken = null,
             long? limit = null);
 
-        Task<List<ISyncedCalendarEvent>> GetSyncedCalendarEvents(
+        Task<List<IExternalCalendarEvent>> GetCalendarEvents(
             long integrationId,
             string calendarId,
             DateTimeOffset startDate,

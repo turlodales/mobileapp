@@ -37,8 +37,8 @@ namespace Toggl.Storage.Realm
                 ids => x => ids.Contains(x.WorkspaceId),
                 features => features.WorkspaceId);
 
-            SyncedCalendars = Repository<IDatabaseSyncedCalendar>.For(getRealmInstance, (syncedCalendar, realm) => new RealmSyncedCalendar(syncedCalendar, realm));
-            SyncedCalendarEvents = Repository<IDatabaseSyncedCalendarEvent>.For(getRealmInstance, (syncedCalendar, realm) => new RealmSyncedCalendarEvent(syncedCalendar, realm));
+            ExternalCalendars = Repository<IDatabaseExternalCalendar>.For(getRealmInstance, (externalCalendar, realm) => new RealmExternalCalendar(externalCalendar, realm));
+            ExternalCalendarEvents = Repository<IDatabaseExternalCalendarEvent>.For(getRealmInstance, (externalCalendarEvent, realm) => new RealmExternalCalendarEvent(externalCalendarEvent, realm));
         }
 
         public IIdProvider IdProvider { get; }
@@ -53,8 +53,8 @@ namespace Toggl.Storage.Realm
         public IRepository<IDatabaseWorkspace> Workspaces { get; }
         public IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
 
-        public IRepository<IDatabaseSyncedCalendar> SyncedCalendars { get; }
-        public IRepository<IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
+        public IRepository<IDatabaseExternalCalendar> ExternalCalendars { get; }
+        public IRepository<IDatabaseExternalCalendarEvent> ExternalCalendarEvents { get; }
 
         public IObservable<Unit> Clear() =>
             Observable.Start(() =>

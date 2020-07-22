@@ -5,11 +5,11 @@ using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Storage.Realm.Models.Calendar
 {
-    public class RealmSyncedCalendarEvent : RealmObject, IDatabaseSyncedCalendarEvent, IUpdatesFrom<IDatabaseSyncedCalendarEvent>, IModifiableId
+    public class RealmExternalCalendarEvent : RealmObject, IDatabaseExternalCalendarEvent, IUpdatesFrom<IDatabaseExternalCalendarEvent>, IModifiableId
     {
-        public RealmSyncedCalendarEvent() { }
+        public RealmExternalCalendarEvent() { }
 
-        public RealmSyncedCalendarEvent(IDatabaseSyncedCalendarEvent entity, Realms.Realm realm)
+        public RealmExternalCalendarEvent(IDatabaseExternalCalendarEvent entity, Realms.Realm realm)
         {
             Id = entity.Id;
             SetPropertiesFrom(entity, realm);
@@ -37,11 +37,11 @@ namespace Toggl.Storage.Realm.Models.Calendar
 
         public long CalendarId => Calendar.Id;
 
-        public IDatabaseSyncedCalendar Calendar => RealmCalendar;
+        public IDatabaseExternalCalendar Calendar => RealmCalendar;
 
-        public RealmSyncedCalendar RealmCalendar { get; set; }
+        public RealmExternalCalendar RealmCalendar { get; set; }
 
-        public void SetPropertiesFrom(IDatabaseSyncedCalendarEvent entity, Realms.Realm realm)
+        public void SetPropertiesFrom(IDatabaseExternalCalendarEvent entity, Realms.Realm realm)
         {
             SyncId = entity.SyncId;
             ICalId = entity.ICalId;
@@ -52,7 +52,7 @@ namespace Toggl.Storage.Realm.Models.Calendar
             BackgroundColor = entity.BackgroundColor;
             ForegroundColor = entity.ForegroundColor;
             var skipCalendarFetch = entity?.CalendarId == null;
-            RealmCalendar = skipCalendarFetch ? null : realm.All<RealmSyncedCalendar>().Single(x => x.Id == entity.CalendarId);
+            RealmCalendar = skipCalendarFetch ? null : realm.All<RealmExternalCalendar>().Single(x => x.Id == entity.CalendarId);
         }
 
         public void ChangeId(long id)

@@ -42,10 +42,10 @@ namespace Toggl.Core.Tests.UI.Services
             protected override IEnumerable<UserCalendar> NativeGetUserCalendars()
                 => NativeCalendars;
 
-            protected override IEnumerable<IThreadSafeSyncedCalendarEvent> ResolveDuplicates(
+            protected override IEnumerable<IThreadSafeExternalCalendarEvent> ResolveDuplicates(
                 IEnumerable<CalendarItem> nativeEvents,
-                IEnumerable<IThreadSafeSyncedCalendarEvent> syncedEvents)
-                => syncedEvents.Where((syncedEvent) => nativeEvents.None((nativeEvent) => syncedEvent.SyncId == nativeEvent.SyncId));
+                IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents)
+                => externalEvents.Where((externalEvent) => nativeEvents.None((nativeEvent) => externalEvent.SyncId == nativeEvent.SyncId));
         }
 
         public sealed class MergingCalendarItemsFromMultipleSources
@@ -53,8 +53,8 @@ namespace Toggl.Core.Tests.UI.Services
             private IEnumerable<UserCalendar> nativeCalendars;
             private IEnumerable<CalendarItem> nativeCalendarEvents;
 
-            private IThreadSafeSyncedCalendar syncedCalendar;
-            private IEnumerable<IThreadSafeSyncedCalendarEvent> syncedCalendarEvents;
+            private IThreadSafeExternalCalendar externalCalendar;
+            private IEnumerable<IThreadSafeExternalCalendarEvent> externalCalendarEvents;
 
             public MergingCalendarItemsFromMultipleSources()
             {
@@ -82,11 +82,11 @@ namespace Toggl.Core.Tests.UI.Services
                     ),
                 };
 
-                syncedCalendar = new SyncedCalendar(0, "0", "Calendar");
+                externalCalendar = new ExternalCalendar(0, "0", "Calendar");
 
-                syncedCalendarEvents = new List<IThreadSafeSyncedCalendarEvent>
+                externalCalendarEvents = new List<IThreadSafeExternalCalendarEvent>
                 {
-                    new SyncedCalendarEvent(
+                    new ExternalCalendarEvent(
                         42,
                         "SyncId-1",
                         "ICalId-1",
@@ -97,9 +97,9 @@ namespace Toggl.Core.Tests.UI.Services
                         "",
                         "",
                         0,
-                        syncedCalendar
+                        externalCalendar
                     ),
-                    new SyncedCalendarEvent(
+                    new ExternalCalendarEvent(
                         1337,
                         "SyncId-2",
                         "ICalId-2",
@@ -110,7 +110,7 @@ namespace Toggl.Core.Tests.UI.Services
                         "",
                         "",
                         0,
-                        syncedCalendar
+                        externalCalendar
                     )
                 };
             }
@@ -122,7 +122,7 @@ namespace Toggl.Core.Tests.UI.Services
                 permissionsChecker.CalendarPermissionGranted.Returns(Observable.Return(true));
 
                 var dataSource = Substitute.For<ITogglDataSource>();
-                dataSource.SyncedCalendarEvents.GetAll(Arg.Any<Func<IDatabaseSyncedCalendarEvent, bool>>()).Returns(Observable.Return(syncedCalendarEvents));
+                dataSource.ExternalCalendarEvents.GetAll(Arg.Any<Func<IDatabaseExternalCalendarEvent, bool>>()).Returns(Observable.Return(externalCalendarEvents));
 
                 var start = new DateTimeOffset(2020, 7, 14, 0, 0, 0, TimeSpan.Zero);
                 var end = new DateTimeOffset(2020, 7, 15, 0, 0, 0, TimeSpan.Zero);
@@ -135,7 +135,7 @@ namespace Toggl.Core.Tests.UI.Services
                 calendarItems[0].SyncId.Should().Be("SyncId-0");
                 calendarItems[1].Id.Should().Be("1");
                 calendarItems[1].SyncId.Should().Be("SyncId-1");
-                calendarItems[2].Id.Should().Be("SyncedEvent-1337");
+                calendarItems[2].Id.Should().Be("ExternalEvent-1337");
                 calendarItems[2].SyncId.Should().Be("SyncId-2");
             }
 
@@ -146,7 +146,7 @@ namespace Toggl.Core.Tests.UI.Services
                 permissionsChecker.CalendarPermissionGranted.Returns(Observable.Return(true));
 
                 var dataSource = Substitute.For<ITogglDataSource>();
-                dataSource.SyncedCalendarEvents.GetAll(Arg.Any<Func<IDatabaseSyncedCalendarEvent, bool>>()).Returns(Observable.Return(syncedCalendarEvents.Skip(1)));
+                dataSource.ExternalCalendarEvents.GetAll(Arg.Any<Func<IDatabaseExternalCalendarEvent, bool>>()).Returns(Observable.Return(externalCalendarEvents.Skip(1)));
 
                 var calendarService = new TestCalendarService(permissionsChecker, dataSource, nativeCalendars, nativeCalendarEvents);
 
@@ -154,9 +154,9 @@ namespace Toggl.Core.Tests.UI.Services
                 nativeCalendarItem.Id.Should().Be("0");
                 nativeCalendarItem.SyncId.Should().Be("SyncId-0");
 
-                var syncedCalendarItem = await calendarService.GetEventWithId("SyncedEvent-1337");
-                syncedCalendarItem.Id.Should().Be("SyncedEvent-1337");
-                syncedCalendarItem.SyncId.Should().Be("SyncId-2");
+                var externalCalendarItem = await calendarService.GetEventWithId("ExternalEvent-1337");
+                externalCalendarItem.Id.Should().Be("ExternalEvent-1337");
+                externalCalendarItem.SyncId.Should().Be("SyncId-2");
             }
         }
     }

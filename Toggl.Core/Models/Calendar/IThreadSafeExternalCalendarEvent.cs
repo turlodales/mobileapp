@@ -3,7 +3,7 @@ using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Core.Models.Calendar
 {
-    public interface IThreadSafeSyncedCalendarEvent : IThreadSafeModel, IDatabaseSyncedCalendarEvent
+    public interface IThreadSafeExternalCalendarEvent : IThreadSafeModel, IDatabaseExternalCalendarEvent
     {
     }
 }

@@ -19,8 +19,8 @@ namespace Toggl.Core.DataSources
         IObservableDataSource<IThreadSafeWorkspace, IDatabaseWorkspace> Workspaces { get; }
         IDataSource<IThreadSafeWorkspaceFeatureCollection, IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
 
-        IDataSource<IThreadSafeSyncedCalendar, IDatabaseSyncedCalendar> SyncedCalendars { get; }
-        IDataSource<IThreadSafeSyncedCalendarEvent, IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
+        IDataSource<IThreadSafeExternalCalendar, IDatabaseExternalCalendar> ExternalCalendars { get; }
+        IDataSource<IThreadSafeExternalCalendarEvent, IDatabaseExternalCalendarEvent> ExternalCalendarEvents { get; }
 
         IObservable<bool> HasUnsyncedData();
     }

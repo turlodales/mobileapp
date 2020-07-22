@@ -123,14 +123,14 @@ namespace Toggl.Droid.Services
             cursor.MoveToNext();
             var calendarItem = calendarItemFromCursor(cursor);
             cursor.Close();
-            
+
             return calendarItem;
         }
 
-        protected override IEnumerable<IThreadSafeSyncedCalendarEvent> ResolveDuplicates(
+        protected override IEnumerable<IThreadSafeExternalCalendarEvent> ResolveDuplicates(
             IEnumerable<CalendarItem> nativeEvents,
-            IEnumerable<IThreadSafeSyncedCalendarEvent> syncedEvents)
-            => syncedEvents.Where((syncedEvent) => nativeEvents.None((nativeEvent) => syncedEvent.SyncId == nativeEvent.SyncId));
+            IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents)
+            => externalEvents.Where((externalEvent) => nativeEvents.None((nativeEvent) => externalEvent.SyncId == nativeEvent.SyncId));
 
         private static CalendarItem calendarItemFromCursor(ICursor cursor)
         {

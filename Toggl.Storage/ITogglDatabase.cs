@@ -16,8 +16,8 @@ namespace Toggl.Storage
         IRepository<IDatabaseTimeEntry> TimeEntries { get; }
         IRepository<IDatabaseWorkspace> Workspaces { get; }
         IRepository<IDatabaseWorkspaceFeatureCollection> WorkspaceFeatures { get; }
-        IRepository<IDatabaseSyncedCalendar> SyncedCalendars { get; }
-        IRepository<IDatabaseSyncedCalendarEvent> SyncedCalendarEvents { get; }
+        IRepository<IDatabaseExternalCalendar> ExternalCalendars { get; }
+        IRepository<IDatabaseExternalCalendarEvent> ExternalCalendarEvents { get; }
         IIdProvider IdProvider { get; }
         ISinceParameterRepository SinceParameters { get; }
         IObservable<Unit> Clear();

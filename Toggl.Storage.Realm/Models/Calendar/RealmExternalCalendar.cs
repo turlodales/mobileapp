@@ -3,11 +3,11 @@ using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Storage.Realm.Models.Calendar
 {
-    public class RealmSyncedCalendar : RealmObject, IDatabaseSyncedCalendar, IUpdatesFrom<IDatabaseSyncedCalendar>, IModifiableId
+    public class RealmExternalCalendar : RealmObject, IDatabaseExternalCalendar, IUpdatesFrom<IDatabaseExternalCalendar>, IModifiableId
     {
-        public RealmSyncedCalendar() { }
+        public RealmExternalCalendar() { }
 
-        public RealmSyncedCalendar(IDatabaseSyncedCalendar entity, Realms.Realm realm)
+        public RealmExternalCalendar(IDatabaseExternalCalendar entity, Realms.Realm realm)
         {
             Id = entity.Id;
             SetPropertiesFrom(entity, realm);
@@ -21,7 +21,7 @@ namespace Toggl.Storage.Realm.Models.Calendar
 
         public string Name { get; set; }
         
-        public void SetPropertiesFrom(IDatabaseSyncedCalendar entity, Realms.Realm realm)
+        public void SetPropertiesFrom(IDatabaseExternalCalendar entity, Realms.Realm realm)
         {
             SyncId = entity.SyncId;
             Name = entity.Name;

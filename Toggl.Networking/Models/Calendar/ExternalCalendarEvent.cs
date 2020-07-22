@@ -6,7 +6,7 @@ using Toggl.Shared.Models.Calendar;
 namespace Toggl.Networking.Models.Calendar
 {
     [Preserve(AllMembers = true)]
-    internal sealed class SyncedCalendarEvent : ISyncedCalendarEvent
+    internal sealed class ExternalCalendarEvent : IExternalCalendarEvent
     {
         [JsonProperty("id")]
         public string SyncId { get; set; }
@@ -26,9 +26,9 @@ namespace Toggl.Networking.Models.Calendar
 
         public string ForegroundColor { get; set; }
 
-        public SyncedCalendarEvent() { }
+        public ExternalCalendarEvent() { }
 
-        public SyncedCalendarEvent(ISyncedCalendarEvent entity)
+        public ExternalCalendarEvent(IExternalCalendarEvent entity)
         {
             SyncId = entity.SyncId;
             ICalId = entity.ICalId;

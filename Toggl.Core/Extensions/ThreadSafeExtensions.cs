@@ -50,7 +50,7 @@ namespace Toggl.Core.Extensions
         public static bool IsPlaceholder(this IThreadSafeTask task)
             => task?.SyncStatus == SyncStatus.RefetchingNeeded;
 
-        public static TimeSpan Duration(this IThreadSafeSyncedCalendarEvent calendarEvent)
+        public static TimeSpan Duration(this IThreadSafeExternalCalendarEvent calendarEvent)
             => calendarEvent.EndTime - calendarEvent.StartTime;
     }
 }

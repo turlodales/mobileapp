@@ -10,7 +10,7 @@ namespace Toggl.Core.Calendar
 {
     public struct CalendarItem
     {
-        public static string SyncedEventIdPrefix = "SyncedEvent-";
+        public static string ExternalEventIdPrefix = "ExternalEvent-";
 
         public string Id { get; }
 
@@ -25,11 +25,11 @@ namespace Toggl.Core.Calendar
         public DateTimeOffset? EndTime => StartTime + Duration;
 
         public string Description { get; }
-        
+
         public string Project { get; }
-        
+
         public string Task { get; }
-        
+
         public string Client { get; }
 
         public string Color { get; }
@@ -98,9 +98,9 @@ namespace Toggl.Core.Calendar
             }
         }
 
-        private CalendarItem(IThreadSafeSyncedCalendarEvent calendarEvent)
+        private CalendarItem(IThreadSafeExternalCalendarEvent calendarEvent)
             : this(
-                  $"{SyncedEventIdPrefix}{calendarEvent.Id}",
+                  $"{ExternalEventIdPrefix}{calendarEvent.Id}",
                   calendarEvent.SyncId,
                   CalendarItemSource.Calendar,
                   calendarEvent.StartTime,
@@ -114,7 +114,7 @@ namespace Toggl.Core.Calendar
         public static CalendarItem From(IThreadSafeTimeEntry timeEntry)
             => new CalendarItem(timeEntry);
 
-        public static CalendarItem From(IThreadSafeSyncedCalendarEvent calendarEvent)
+        public static CalendarItem From(IThreadSafeExternalCalendarEvent calendarEvent)
             => new CalendarItem(calendarEvent);
 
         public CalendarItem WithStartTime(DateTimeOffset startTime)

@@ -2,9 +2,9 @@
 
 namespace Toggl.Shared.Models.Calendar
 {
-    public interface ISyncedCalendarEventsPage
+    public interface IExternalCalendarEventsPage
     {
-        List<ISyncedCalendarEvent> events { get; }
+        List<IExternalCalendarEvent> events { get; }
         string nextPageToken { get; }
     }
 }

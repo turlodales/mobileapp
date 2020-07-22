@@ -7,10 +7,10 @@ using Toggl.Shared.Models.Calendar;
 namespace Toggl.Networking.Models.Calendar
 {
     [Preserve(AllMembers = true)]
-    internal sealed class SyncedCalendarEventsPage : ISyncedCalendarEventsPage
+    internal sealed class ExternalCalendarEventsPage : IExternalCalendarEventsPage
     {
-        [JsonConverter(typeof(ConcreteListTypeConverter<SyncedCalendarEvent, ISyncedCalendarEvent>))]
-        public List<ISyncedCalendarEvent> events { get; set; }
+        [JsonConverter(typeof(ConcreteListTypeConverter<ExternalCalendarEvent, IExternalCalendarEvent>))]
+        public List<IExternalCalendarEvent> events { get; set; }
 
         public string nextPageToken { get; set; }
     }

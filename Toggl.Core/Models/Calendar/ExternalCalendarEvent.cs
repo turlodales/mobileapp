@@ -3,7 +3,7 @@ using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Core.Models.Calendar
 {
-    public sealed class SyncedCalendarEvent : IThreadSafeSyncedCalendarEvent
+    public sealed class ExternalCalendarEvent : IThreadSafeExternalCalendarEvent
     {
         public long Id { get; }
 
@@ -25,11 +25,11 @@ namespace Toggl.Core.Models.Calendar
 
         public long CalendarId { get; }
 
-        public IThreadSafeSyncedCalendar Calendar { get; }
+        public IThreadSafeExternalCalendar Calendar { get; }
 
-        IDatabaseSyncedCalendar IDatabaseSyncedCalendarEvent.Calendar => Calendar;
+        IDatabaseExternalCalendar IDatabaseExternalCalendarEvent.Calendar => Calendar;
 
-        public SyncedCalendarEvent(
+        public ExternalCalendarEvent(
             long id,
             string syncId,
             string iCalId,
@@ -40,7 +40,7 @@ namespace Toggl.Core.Models.Calendar
             string backgroundColor,
             string foregroundColor,
             long calendarId,
-            IThreadSafeSyncedCalendar calendar)
+            IThreadSafeExternalCalendar calendar)
         {
             Id = id;
             SyncId = syncId;
@@ -55,7 +55,7 @@ namespace Toggl.Core.Models.Calendar
             Calendar = calendar;
         }
 
-        public SyncedCalendarEvent(IDatabaseSyncedCalendarEvent entity)
+        public ExternalCalendarEvent(IDatabaseExternalCalendarEvent entity)
             : this(entity.Id,
                   entity.SyncId,
                   entity.ICalId,
@@ -66,11 +66,11 @@ namespace Toggl.Core.Models.Calendar
                   entity.BackgroundColor,
                   entity.ForegroundColor,
                   entity.CalendarId,
-                  SyncedCalendar.From(entity.Calendar))
+                  ExternalCalendar.From(entity.Calendar))
         {
         }
 
-        public static SyncedCalendarEvent From(IDatabaseSyncedCalendarEvent entity)
-            => new SyncedCalendarEvent(entity);
+        public static ExternalCalendarEvent From(IDatabaseExternalCalendarEvent entity)
+            => new ExternalCalendarEvent(entity);
     }
 }

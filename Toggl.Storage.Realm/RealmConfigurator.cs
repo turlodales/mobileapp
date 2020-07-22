@@ -47,8 +47,8 @@ namespace Toggl.Storage.Realm
 
                     if (oldSchemaVersion < 9)
                     {
-                        // RealmSyncedCalendar: New entity for the Calendar Integration
-                        // RealmSyncedCalendarEvent: New entity for the Calendar Integration
+                        // RealmExternalCalendar: New entity for the Calendar Integration
+                        // RealmExternalCalendarEvent: New entity for the Calendar Integration
                     }
                 }
             };

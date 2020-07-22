@@ -4,7 +4,7 @@ using Toggl.Shared.Models.Calendar;
 
 namespace Toggl.Storage.Models.Calendar
 {
-    public interface IDatabaseSyncedCalendar : ISyncedCalendar, IIdentifiable, IDatabaseModel
+    public interface IDatabaseExternalCalendar : IExternalCalendar, IIdentifiable, IDatabaseModel
     {
     }
 }

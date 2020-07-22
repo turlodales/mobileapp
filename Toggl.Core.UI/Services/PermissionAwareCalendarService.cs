@@ -36,11 +36,11 @@ namespace Toggl.Core.Calendar
 
         public IObservable<CalendarItem> GetEventWithId(string id)
         {
-            if (id.StartsWith(CalendarItem.SyncedEventIdPrefix))
+            if (id.StartsWith(CalendarItem.ExternalEventIdPrefix))
             {
-                var syncId = id.Substring(CalendarItem.SyncedEventIdPrefix.Length);
-                return dataSource.SyncedCalendarEvents
-                    .GetAll((syncedEvent) => syncedEvent.SyncId == syncId)
+                var syncId = id.Substring(CalendarItem.ExternalEventIdPrefix.Length);
+                return dataSource.ExternalCalendarEvents
+                    .GetAll((externalEvent) => externalEvent.SyncId == syncId)
                     .Select((events) => events.First())
                     .Select(CalendarItem.From);
             }
@@ -59,9 +59,9 @@ namespace Toggl.Core.Calendar
                                () => Observable.Return(NativeGetEventsInRange(start, end)),
                                () => Observable.Return(Enumerable.Empty<CalendarItem>()));
 
-            var syncedEvents = getSyncedCalendarEventsInRange(start, end);
+            var externalEvents = getExternalCalendarEventsInRange(start, end);
 
-            return Observable.CombineLatest(nativeEvents, syncedEvents, mergingNativeAndSyncedEvents);
+            return Observable.CombineLatest(nativeEvents, externalEvents, mergingNativeAndExternalEvents);
         }
 
         public IObservable<IEnumerable<UserCalendar>> GetUserCalendars()
@@ -77,16 +77,16 @@ namespace Toggl.Core.Calendar
 
         protected abstract IEnumerable<CalendarItem> NativeGetEventsInRange(DateTimeOffset start, DateTimeOffset end);
 
-        protected abstract IEnumerable<IThreadSafeSyncedCalendarEvent> ResolveDuplicates(IEnumerable<CalendarItem> nativeEvents, IEnumerable<IThreadSafeSyncedCalendarEvent> syncedEvents);
+        protected abstract IEnumerable<IThreadSafeExternalCalendarEvent> ResolveDuplicates(IEnumerable<CalendarItem> nativeEvents, IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents);
 
-        private IObservable<IEnumerable<IThreadSafeSyncedCalendarEvent>> getSyncedCalendarEventsInRange(DateTimeOffset start, DateTimeOffset end)
+        private IObservable<IEnumerable<IThreadSafeExternalCalendarEvent>> getExternalCalendarEventsInRange(DateTimeOffset start, DateTimeOffset end)
             => dataSource
-                .SyncedCalendarEvents.GetAll((calendarEvent) => calendarEvent.StartTime >= start && calendarEvent.EndTime <= end);
+                .ExternalCalendarEvents.GetAll((calendarEvent) => calendarEvent.StartTime >= start && calendarEvent.EndTime <= end);
 
-        private IEnumerable<CalendarItem> mergingNativeAndSyncedEvents(IEnumerable<CalendarItem> nativeEvents, IEnumerable<IThreadSafeSyncedCalendarEvent> syncedEvents)
+        private IEnumerable<CalendarItem> mergingNativeAndExternalEvents(IEnumerable<CalendarItem> nativeEvents, IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents)
         {
-            var conflictFreeSyncedEvents = ResolveDuplicates(nativeEvents, syncedEvents).Select(CalendarItem.From);
-            return nativeEvents.Concat(conflictFreeSyncedEvents);
+            var conflictFreeExternalEvents = ResolveDuplicates(nativeEvents, externalEvents).Select(CalendarItem.From);
+            return nativeEvents.Concat(conflictFreeExternalEvents);
         }
     }
 }
