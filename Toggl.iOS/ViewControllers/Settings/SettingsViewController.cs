@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Reactive.Linq;
 using CoreGraphics;
 using Foundation;
@@ -17,6 +18,7 @@ using Toggl.iOS.Presentation.Transition;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using UIKit;
 
 namespace Toggl.iOS.ViewControllers
@@ -83,14 +85,21 @@ namespace Toggl.iOS.ViewControllers
         {
             var sections = new List<IObservable<SettingSection>>();
 
-            var profileSection = Observable.CombineLatest(ViewModel.Name, ViewModel.Email, ViewModel.WorkspaceName,
-                (name, email, workspace)
-                    => new SettingSection(Resources.YourProfile, new ISettingRow[]
-                    {
-                        new InfoRow(Resources.Name, name),
-                        new InfoRow(Resources.EmailAddress, email),
-                        new NavigationRow(Resources.Workspace, workspace, ViewModel.PickDefaultWorkspace)
-                    }));
+            var workspaceSection = Observable.CombineLatest(
+                ViewModel.WorkspaceName,
+                ViewModel.CurrentPlan,
+                createWorkspaceSection
+            );
+
+            sections.Add(workspaceSection);
+
+            var profileSection = Observable.CombineLatest(ViewModel.Name, ViewModel.Email,
+            (name, email)
+                => new SettingSection(Resources.YourProfile, new ISettingRow[]
+                {
+                    new InfoRow(Resources.Name, name),
+                    new InfoRow(Resources.EmailAddress, email)
+                }));
 
             sections.Add(profileSection);
 
@@ -163,7 +172,21 @@ namespace Toggl.iOS.ViewControllers
 
             sections.Add(footerSection);
 
-            return sections.CombineLatest().Select(list => list.ToImmutableList());
+            return sections.CombineLatest().Select(list =>
+                list.Where(CommonFunctions.NotNull).ToImmutableList());
+
+            SettingSection createWorkspaceSection(string workspaceName, Plan plan)
+            {
+                var rows = new List<ISettingRow>
+                {
+                    new NavigationRow(Resources.Workspace, workspaceName, ViewModel.PickDefaultWorkspace)
+                };
+
+                if (plan == Plan.Free)
+                    rows.Add(new NavigationRow(Resources.YourWorkspacePlan, plan.Name(), ViewModel.OpenYourPlanSettings));
+
+                return new SettingSection("", rows.ToArray());
+            }
         }
 
         public override void ViewDidAppear(bool animated)

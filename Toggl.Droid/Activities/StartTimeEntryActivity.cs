@@ -15,6 +15,7 @@ using Toggl.Droid.Helper;
 using Toggl.Core.UI.Extensions;
 using Toggl.Droid.Presentation;
 using Toggl.Shared.Extensions;
+using Android.Graphics;
 
 namespace Toggl.Droid.Activities
 {
@@ -79,17 +80,26 @@ namespace Toggl.Droid.Activities
                 .DisposedBy(DisposeBag);
 
             // Billable toolbar button
-            selectBillableToolbarButton.Rx()
-                .BindAction(ViewModel.ToggleBillable)
-                .DisposedBy(DisposeBag);
-
             ViewModel.IsBillable
                 .Select(isSuggesting => isSuggesting ? Resource.Drawable.ic_billable_active : Resource.Drawable.ic_billable)
                 .Subscribe(selectBillableToolbarButton.SetImageResource)
                 .DisposedBy(DisposeBag);
 
             ViewModel.IsBillableAvailable
-                .Subscribe(selectBillableToolbarButton.Rx().IsVisible())
+                .Select(isAvailable => Color.ParseColor(isAvailable ? "#757575" : "#A5A5A5").ToArgb())
+                .Subscribe(selectBillableToolbarButton.Drawable.SetTint)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsBillablePremiumTooltipVisibile
+                .Subscribe(billableTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            selectBillableToolbarButton.Rx()
+                .BindAction(ViewModel.BillableTapped)
+                .DisposedBy(DisposeBag);
+
+            billableTooltip.Rx()
+                .BindAction(ViewModel.DismissBillableTooltip)
                 .DisposedBy(DisposeBag);
 
             // Description text field

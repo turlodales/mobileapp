@@ -134,6 +134,9 @@
       <HintPath>..\packages\Microsoft.AppCenter.2.6.1\lib\Xamarin.iOS10\Microsoft.AppCenter.iOS.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.7.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing.Common.dll" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -187,9 +190,6 @@
     </Reference>
     <Reference Include="Firebase.RemoteConfig">
       <HintPath>..\packages\Xamarin.Firebase.iOS.RemoteConfig.4.2.1\lib\xamarinios10\Firebase.RemoteConfig.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\packages\System.Collections.Immutable.1.6.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="Firebase.PerformanceMonitoring">
       <HintPath>..\packages\Xamarin.Firebase.iOS.PerformanceMonitoring.2.1.2\lib\Xamarin.iOS10\Firebase.PerformanceMonitoring.dll</HintPath>
@@ -1423,6 +1423,12 @@
     <ImageAsset Include="Resources\Images.xcassets\stopwatch.imageset\Stopwatch%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\StartTimeEntryViewDisabledButton.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\StartTimeEntryInactiveButton.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph.png" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1522,6 +1528,8 @@
     <InterfaceDefinition Include="ViewControllers\OnboardingViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\LoginViewController.xib" />
     <InterfaceDefinition Include="Views\Onboarding\OnboardingPageView.xib" />
+    <InterfaceDefinition Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\Settings\YourPlanViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -2163,6 +2171,14 @@
     <Compile Include="Views\Onboarding\VideoView.cs" />
     <Compile Include="Helper\TextHelper.cs" />
     <Compile Include="Views\TriangleView.cs" />
+    <Compile Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.cs" />
+    <Compile Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.designer.cs">
+      <DependentUpon>ReportAdvancedReportsViaWebCollectionViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\Settings\YourPlanViewController.cs" />
+    <Compile Include="ViewControllers\Settings\YourPlanViewController.designer.cs">
+      <DependentUpon>YourPlanViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">
@@ -2308,6 +2324,9 @@
     <Folder Include="Resources\Images.xcassets\stopwatch.imageset\" />
     <Folder Include="Resources\Colors.xcassets\OnboardingTooltipBackground.colorset\" />
     <Folder Include="Resources\Colors.xcassets\OnboardingTooltipTextColor.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\StartTimeEntryViewDisabledButton.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\StartTimeEntryInactiveButton.colorset\" />
+    <Folder Include="Resources\Images.xcassets\illustrationBarChart.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

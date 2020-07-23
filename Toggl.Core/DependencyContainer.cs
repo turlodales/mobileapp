@@ -12,6 +12,7 @@ using Toggl.Core.Login;
 using Toggl.Core.Services;
 using Toggl.Core.Shortcuts;
 using Toggl.Core.Sync;
+using Toggl.Core.Sync.V2;
 using Toggl.Networking;
 using Toggl.Networking.Network;
 using Toggl.Shared;
@@ -232,7 +233,7 @@ namespace Toggl.Core
 
         protected virtual ISyncManager CreateSyncManager()
         {
-            var syncManager = TogglSyncManager.CreateSyncManager(
+            Func<ISyncManager> oldSyncManagerCreator = () => TogglSyncManager.CreateSyncManager(
                 Database,
                 api.Value,
                 DataSource,
@@ -243,12 +244,27 @@ namespace Toggl.Core
                 AutomaticSyncingService,
                 this
             );
+
+            Func<ISyncManager> newSyncManagerCreator = () => new SyncManagerV2(
+                AnalyticsService,
+                InteractorFactory,
+                SchedulerProvider,
+                DataSource);
+
+            var syncManager = SyncManagerSelector.Select(
+                interactorFactory.Value,
+                queryFactory.Value,
+                api.Value.Preferences,
+                oldSyncManagerCreator,
+                newSyncManagerCreator);
+
             SyncErrorHandlingService.HandleErrorsOf(syncManager);
 
             return syncManager;
         }
 
         protected virtual IInteractorFactory CreateInteractorFactory() => new InteractorFactory(
+            userAgent,
             api.Value,
             UserAccessManager,
             database.Select(database => database.IdProvider),
@@ -267,8 +283,8 @@ namespace Toggl.Core
             privateSharedStorageService,
             keyValueStorage,
             pushNotificationsTokenService,
-            pushNotificationsTokenStorage
-        );
+            pushNotificationsTokenStorage,
+            queryFactory);
 
         protected virtual void RecreateLazyDependenciesForLogin(ITogglApi api)
         {

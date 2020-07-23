@@ -187,7 +187,7 @@ namespace Toggl.iOS.ViewSources
 
             if (!hideIndicator) return;
 
-            await hideSyncBar();
+            await hideSyncBar(withDelay: true);
         }
 
         private void didScroll(CGPoint offset)
@@ -236,7 +236,7 @@ namespace Toggl.iOS.ViewSources
         {
             if (!needsRefresh)
             {
-                hideSyncBar(false);
+                hideSyncBar(withDelay: false);
                 return;
             }
 
@@ -277,6 +277,14 @@ namespace Toggl.iOS.ViewSources
             if (withDelay)
                 await Task.Delay(Animation.Timings.HideSyncStateViewDelay);
 
+            // Do not hide the sync bar if the app is currently syncing.
+            // It could easily happen that while we were waiting for the
+            // `HideSyncStateViewDelay` delay to pass, the app started syncing
+            // again. Don't hide the sync status bar in that case, it is jittery
+            // and ugly.
+            if (isSyncing)
+                return;
+
             heightConstraint.Constant = 0;
             UIView.Animate(Animation.Timings.EnterTiming, () =>
             {
@@ -303,7 +311,7 @@ namespace Toggl.iOS.ViewSources
 
         private void onDismissSyncBarButtonTap(object sender, EventArgs e)
         {
-            hideSyncBar(false);
+            hideSyncBar(withDelay: false);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Toggl.Storage
         IRepository<IDatabaseExternalCalendarEvent> ExternalCalendarEvents { get; }
         IIdProvider IdProvider { get; }
         ISinceParameterRepository SinceParameters { get; }
+        IPushRequestIdentifierRepository PushRequestIdentifier { get; }
         IObservable<Unit> Clear();
     }
 }

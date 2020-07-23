@@ -14,6 +14,8 @@ using Toggl.Droid.Activities;
 using Toggl.Droid.BroadcastReceivers;
 using Toggl.Droid.Presentation;
 using static Android.Content.Intent;
+using Toggl.Core.Sync.V2;
+using Android.Util;
 
 namespace Toggl.Droid
 {
@@ -112,7 +114,7 @@ namespace Toggl.Droid
                     loadAndCacheViewModelWithParams<OutdatedAppViewModel, Unit>(Unit.Default);
                     return new Intent(this, typeof(OutdatedAppActivity))
                         .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                
+
                 case AccessLevel.NotLoggedIn:
                     loadAndCacheViewModelWithParams<OnboardingViewModel, OnboardingParameters>(OnboardingParameters.Default);
                     return new Intent(this, typeof(OnboardingActivity))
@@ -122,7 +124,7 @@ namespace Toggl.Droid
                     loadAndCacheViewModelWithParams<TokenResetViewModel, Unit>(Unit.Default);
                     return new Intent(this, typeof(TokenResetActivity))
                         .AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                
+
                 default:
                     throw new ArgumentException("Invalid not logged in access level");
             }

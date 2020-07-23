@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Toggl.Shared
 {
-    public struct TimeFormat
+    public struct TimeFormat : IEquatable<TimeFormat>
     {
         private const string twelveHoursFormat = "h:mm A";
         private const string twentyFourHoursFormat = "H:mm";
@@ -43,5 +43,8 @@ namespace Toggl.Shared
 
             return new TimeFormat(timePattern, formatConversion[timePattern]);
         }
+
+        public bool Equals(TimeFormat other)
+            => other.IsTwentyFourHoursFormat == IsTwentyFourHoursFormat;
     }
 }

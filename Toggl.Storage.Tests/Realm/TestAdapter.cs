@@ -85,6 +85,8 @@ namespace Toggl.Storage.Tests.Realm
         {
             throw new NotImplementedException();
         }
+
+        public T FirstOrDefault(long id) => throw new NotImplementedException();
     }
 
     public sealed class TestAdapter : GenericTestAdapter<TestModel>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Toggl.Networking.Serialization;
 using Toggl.Shared.Models;
 

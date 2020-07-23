@@ -5,6 +5,7 @@
         InSync = 0,
         SyncNeeded = 1,
         SyncFailed = 2,
-        RefetchingNeeded = 3
+        RefetchingNeeded = 3,
+        Syncing = 4,
     }
 }

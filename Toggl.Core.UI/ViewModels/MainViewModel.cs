@@ -43,6 +43,7 @@ namespace Toggl.Core.UI.ViewModels
     {
         private const int ratingViewTimeout = 5;
         private const double throttlePeriodInSeconds = 0.1;
+        private static readonly TimeSpan minTimeBetweenProgressChanges = TimeSpan.FromMilliseconds(20);
 
         private bool noWorkspaceViewPresented;
         private bool hasStopButtonEverBeenUsed;
@@ -198,6 +199,7 @@ namespace Toggl.Core.UI.ViewModels
             widgetsService.Start();
 
             SyncProgressState = syncManager.ProgressObservable
+                .Throttle(minTimeBetweenProgressChanges)
                 .AsDriver(schedulerProvider);
 
             var isWelcome = OnboardingStorage.IsNewUser;
@@ -355,7 +357,7 @@ namespace Toggl.Core.UI.ViewModels
         private IObservable<bool> createStartTimeEntryTooltipPredicate()
         {
             var timeEntriesExist = TimeEntriesViewModel.TimeEntries
-                .Select(entries => entries.Any())
+                .Select(entries => entries != null && entries.Any())
                 .Take(1);
 
             var timeEntryIsRunning = CurrentRunningTimeEntry
