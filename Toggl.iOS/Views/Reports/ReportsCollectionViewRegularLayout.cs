@@ -32,11 +32,19 @@ namespace Toggl.iOS.Views.Reports
                 var height = CollectionView.Bounds.Height;
                 if (source.HasDataToDisplay())
                 {
-                    height = verticalCellInset
-                        + ReportsDonutChartCollectionViewCell.Height
-                        + verticalCellInset * 2
-                        + ReportsDonutChartLegendCollectionViewCell.Height * source.NumberOfDonutChartLegendItems()
-                        + verticalCellInset;
+                    var leftRowHeight = verticalCellInset
+                                        + ReportsSummaryCollectionViewCell.Height
+                                        + verticalCellInset * 2
+                                        + ReportsBarChartCollectionViewCell.Height
+                                        + verticalCellInset * 2
+                                        + ReportAdvancedReportsViaWebCollectionViewCell.Height
+                                        + verticalCellInset;
+                    var rightRowHeight = verticalCellInset
+                                        + ReportsDonutChartCollectionViewCell.Height
+                                        + verticalCellInset * 2
+                                        + ReportsDonutChartLegendCollectionViewCell.Height * source.NumberOfDonutChartLegendItems()
+                                        + verticalCellInset;
+                    height = Math.Max(leftRowHeight, rightRowHeight);
                 }
                 return new CGSize(width, height);
             }
@@ -67,6 +75,16 @@ namespace Toggl.iOS.Views.Reports
                             verticalCellInset * 3 + ReportsSummaryCollectionViewCell.Height,
                             columnWidth,
                             ReportsBarChartCollectionViewCell.Height);
+                        break;
+                    case ReportsCollectionViewCell.AdvancedReportsViaWeb:
+                        attributes.Frame = new CGRect(
+                            horizontalStartPoint + horizontalCellInset,
+                            verticalCellInset * 3
+                                + ReportsSummaryCollectionViewCell.Height
+                                + verticalCellInset * 2
+                                + ReportsBarChartCollectionViewCell.Height,
+                            columnWidth,
+                            ReportAdvancedReportsViaWebCollectionViewCell.Height);
                         break;
                     case ReportsCollectionViewCell.DonutChart:
                         attributes.Frame = new CGRect(

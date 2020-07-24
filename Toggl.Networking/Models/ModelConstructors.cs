@@ -54,6 +54,7 @@ namespace Toggl.Networking.Models
             DateFormat = entity.DateFormat;
             DurationFormat = entity.DurationFormat;
             CollapseTimeEntries = entity.CollapseTimeEntries;
+            UseNewSync = entity.UseNewSync;
         }
     }
 
@@ -125,6 +126,7 @@ namespace Toggl.Networking.Models
             Active = entity.Active;
             TrackedSeconds = entity.TrackedSeconds;
             At = entity.At;
+            ServerDeletedAt = entity.ServerDeletedAt;
         }
     }
 

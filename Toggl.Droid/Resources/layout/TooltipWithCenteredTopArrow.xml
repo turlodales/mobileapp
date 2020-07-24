@@ -8,12 +8,6 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <ImageView
-            app:srcCompat="@drawable/shape_diamond"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginBottom="-6dp"
-            android:layout_gravity="center_horizontal" />
         <LinearLayout
             android:background="@drawable/background_tooltip"
             android:orientation="vertical"

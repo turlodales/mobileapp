@@ -98,7 +98,7 @@ namespace Toggl.Droid
             => new PlatformInfoAndroid();
 
         protected override IQueryFactory CreateQueryFactory()
-            => new RealmQueryFactory(() => Realm.GetInstance(realmConfigurator.Value.Configuration));
+            => new RealmQueryFactory(() => Realm.GetInstance(realmConfigurator.Value.Configuration), () => TimeService.CurrentDateTime);
 
         protected override IPrivateSharedStorageService CreatePrivateSharedStorageService()
             => new PrivateSharedStorageServiceAndroid(KeyValueStorage);

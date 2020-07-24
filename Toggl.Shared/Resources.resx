@@ -151,6 +151,9 @@ the time goes</value>
         <value>Works where you do -
 mobile, desktop or web</value>
     </data>
+    <data name="OnboardingMessagePage3Ios" xml:space="preserve">
+        <value>Works where you do - mobile, desktop, web and Watch</value>
+    </data>
     <data name="ContinueWithGoogle" xml:space="preserve">
         <value>Continue with Google</value>
         <comment>Text of the button that allows to enter your account using Google from the onboarding view</comment>
@@ -663,8 +666,8 @@ Start the timer and your most used time entries will appear here.</value>
         <value>What have you done?</value>
         <comment>Placeholder shown when the user is creating a time entry that has already been stopped</comment>
     </data>
-    <data name="SearchObject" xml:space="preserve">
-        <value>Search {0}</value>
+    <data name="SearchOrAddObject" xml:space="preserve">
+        <value>Search or add {0}</value>
         <comment>This is shown when starting a new time entry. {0} is a placeholder for where the words "Tags" or "Projects" will be.</comment>
     </data>
     <data name="NoTagsInfoMessage" xml:space="preserve">
@@ -1837,6 +1840,98 @@ a Project to a Time Entry</value>
         <comment>Text displayed in the onboarding tooltip that's shown in the start time entry view above the projects button.
                  The $ sign gets replaced with the icon image in runtime</comment>
     </data>
+    <data name="YourWorkspacePlan" xml:space="preserve">
+        <value>Your Workspace Plan</value>
+        <comment>One of the sections in the settings. Tapping on this opens details about the current pricing plan</comment>
+    </data>
+    <data name="Free" xml:space="preserve">
+        <value>Free</value>
+        <comment>Name for the free plan. Displayed in the settings in the Your Plan section</comment>
+    </data>
+    <data name="Starter" xml:space="preserve">
+        <value>Starter</value>
+        <comment>Name for the starter plan. Displayed in the settings in the Your Plan section</comment>
+    </data>
+  <data name="Features" xml:space="preserve">
+        <value>Features</value>
+        <comment>Noun. Label shown on the Your Plan view</comment>
+    </data>
+    <data name="NeverExpires" xml:space="preserve">
+        <value>Never Expires</value>
+        <comment>Expiration date for the free plan</comment>
+    </data>
+    <data name="TrackingTime" xml:space="preserve">
+        <value>Tracking Time</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="UserGroups" xml:space="preserve">
+        <value>User Groups</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="SummaryAndWeeklyReports" xml:space="preserve">
+        <value>Summary and Weekly Reports</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="BillableHours" xml:space="preserve">
+        <value>Billable Hours</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Exporting" xml:space="preserve">
+        <value>Exporting (PDF, CSV, XLS)</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Rounding" xml:space="preserve">
+        <value>Rounding</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="SavedReports" xml:space="preserve">
+        <value>Saved Reports</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="WorkspaceLogo" xml:space="preserve">
+        <value>Workspace Logo</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Estimates" xml:space="preserve">
+        <value>Estimates</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Alerts" xml:space="preserve">
+        <value>Alerts</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="Tasks" xml:space="preserve">
+        <value>Tasks</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="ProjectDashboard" xml:space="preserve">
+        <value>Project Dashboard</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="IcalFeed" xml:space="preserve">
+        <value>iCal Feed</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="CustomProjectColor" xml:space="preserve">
+        <value>Custom Project Color</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="ProjectTemplate" xml:space="preserve">
+        <value>Project Template</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="MobileAppDesktopAppWebAppTogglButton" xml:space="preserve">
+        <value>Mobile App, Desktop App, Web App &amp; Toggl Button</value>
+        <comment>Feature name in the Your Plan view in the Settings</comment>
+    </data>
+    <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
+        <value>Login to your account on toggl.com to see more detailed info about you account and plan.</value>
+        <comment>A message at the bottom of Your Plan view</comment>
+    </data>
+    <data name="TogglUrl" xml:space="preserve">
+        <value>https://toggl.com</value>
+        <comment>Url to the Toggl landing page</comment>
+    </data>
     <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
         <value>You've made your first
 Time Entry on Toggl mobile app 🎉</value>
@@ -1849,5 +1944,29 @@ Time Entry on Toggl mobile app 🎉</value>
     <data name="OkGotIt" xml:space="preserve">
         <value>Ok, got it!</value>
         <comment>Button in the final tooltip of onboarding. Displayed below the created time entry</comment>
+    </data>
+    <data name="AdvancedReportsViaWeb" xml:space="preserve">
+        <value>Advanced reports via web</value>
+        <comment>Title for a card that describes advanced reporting features. Said card is shown in the Reports view</comment>
+    </data>
+    <data name="AdvancedReportsFeatures" xml:space="preserve">
+        <value>Create saved reports
+Schedule your reports
+Set billable hours
+Export PDF, CSV &amp; XLS</value>
+        <comment>A list of reporting features that are available in the web. Displayed in the Advanced Reports Via Web card in the reports view</comment>
+    </data>
+    <data name="AvailableOnOtherPlans" xml:space="preserve">
+        <value>Available on other plans</value>
+        <comment>Title of the call to action button in the Advanced Reports Via Web card in the reports view</comment>
+    </data>
+    <data name="BillableAwareness" xml:space="preserve">
+        <value>Billable Hours is available
+on other plans</value>
+        <comment>Text of the billable hours awareness tooltip</comment>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Details</value>
+        <comment>Text of the billable hours awareness tooltip's call to action</comment>
     </data>
 </root>

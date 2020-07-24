@@ -22,6 +22,7 @@ namespace Toggl.Storage.Realm
             realmConfiguration = realmConfigurator.Configuration;
             IdProvider = new IdProvider(getRealmInstance);
             SinceParameters = createSinceParameterRepository();
+            PushRequestIdentifier = createPushRequestIdentifierRepository();
             Tags = Repository<IDatabaseTag>.For(getRealmInstance, (tag, realm) => new RealmTag(tag, realm));
             Tasks = Repository<IDatabaseTask>.For(getRealmInstance, (task, realm) => new RealmTask(task, realm));
             User = SingleObjectStorage<IDatabaseUser>.For(getRealmInstance, (user, realm) => new RealmUser(user, realm));
@@ -43,6 +44,7 @@ namespace Toggl.Storage.Realm
 
         public IIdProvider IdProvider { get; }
         public ISinceParameterRepository SinceParameters { get; }
+        public IPushRequestIdentifierRepository PushRequestIdentifier { get; }
         public IRepository<IDatabaseTag> Tags { get; }
         public IRepository<IDatabaseTask> Tasks { get; }
         public IRepository<IDatabaseClient> Clients { get; }
@@ -82,6 +84,18 @@ namespace Toggl.Storage.Realm
                     parameter => parameter.Id);
 
             return new SinceParameterStorage(sinceParametersRealmAdapter);
+        }
+
+        private IPushRequestIdentifierRepository createPushRequestIdentifierRepository()
+        {
+            var pushRequestIdentifierRealmAdapter = new RealmAdapter<RealmPushRequestIdentifier, IDatabasePushRequestIdentifier>(
+                getRealmInstance,
+                (pushRequestIdentifier, realm) => new RealmPushRequestIdentifier(pushRequestIdentifier),
+                id => entity => entity.Id == id,
+                ids => entity => ids.Contains(entity.Id),
+                pushRequestIdentifier => pushRequestIdentifier.Id);
+
+            return new PushRequestIdentifierStorage(pushRequestIdentifierRealmAdapter);
         }
     }
 }

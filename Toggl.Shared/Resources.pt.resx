@@ -1276,4 +1276,130 @@ celulares, computares e no navegador</value>
   <data name="ForgotPasswordSendEmail" xml:space="preserve">
     <value>Enviar email</value>
   </data>
+  <data name="GetReadyToTrackTimeAndBoostYourProductivity" xml:space="preserve">
+    <value>Get ready to track time and
+  boost your productivity!</value>
+  </data>
+  <data name="GettingStartedWithTogglApp" xml:space="preserve">
+    <value>Getting started with Toggl app</value>
+  </data>
+  <data name="HereIsYourRunningTimeEntryTooltip" xml:space="preserve">
+    <value>Here is your running Time Entry.
+  Tap to edit it.</value>
+  </data>
+  <data name="AssignYourTimeEntryToAProject" xml:space="preserve">
+    <value>Assign your time entry to a larger 
+  Project to get more useful time reports</value>
+  </data>
+  <data name="TapHereToChangeOrAddProjects" xml:space="preserve">
+    <value>Tap here to change or add Projects</value>
+  </data>
+  <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
+    <value>Tap here to start your next Time Entry</value>
+  </data>
+  <data name="TapHereToStopYourTimeEntry" xml:space="preserve">
+    <value>Tapping here will stop the timer</value>
+  </data>
+  <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+    <value>Click on $ or use @ to assign
+  a Project to a Time Entry</value>
+  </data>
+  <data name="YourWorkspacePlan" xml:space="preserve">
+    <value>Your Workspace Plan</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>Free</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>Starter</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="NeverExpires" xml:space="preserve">
+    <value>Never Expires</value>
+  </data>
+  <data name="TrackingTime" xml:space="preserve">
+    <value>Tracking Time</value>
+  </data>
+  <data name="UserGroups" xml:space="preserve">
+    <value>User Groups</value>
+  </data>
+  <data name="SummaryAndWeeklyReports" xml:space="preserve">
+    <value>Summary and Weekly Reports</value>
+  </data>
+  <data name="BillableHours" xml:space="preserve">
+    <value>Billable Hours</value>
+  </data>
+  <data name="Exporting" xml:space="preserve">
+    <value>Exporting (PDF, CSV, XLS)</value>
+  </data>
+  <data name="Rounding" xml:space="preserve">
+    <value>Rounding</value>
+  </data>
+  <data name="SavedReports" xml:space="preserve">
+    <value>Saved Reports</value>
+  </data>
+  <data name="WorkspaceLogo" xml:space="preserve">
+    <value>Workspace Logo</value>
+  </data>
+  <data name="Estimates" xml:space="preserve">
+    <value>Estimates</value>
+  </data>
+  <data name="Alerts" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="ProjectDashboard" xml:space="preserve">
+    <value>Project Dashboard</value>
+  </data>
+  <data name="IcalFeed" xml:space="preserve">
+    <value>iCal Feed</value>
+  </data>
+  <data name="CustomProjectColor" xml:space="preserve">
+    <value>Custom Project Color</value>
+  </data>
+  <data name="ProjectTemplate" xml:space="preserve">
+    <value>Project Template</value>
+  </data>
+  <data name="MobileAppDesktopAppWebAppTogglButton" xml:space="preserve">
+    <value>Mobile App, Desktop App, Web App &amp; Toggl Button</value>
+  </data>
+  <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
+    <value>Login to your account on toggl.com to see more detailed info about you account and plan.</value>
+  </data>
+  <data name="TogglUrl" xml:space="preserve">
+    <value>https://toggl.com</value>
+  </data>
+  <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
+    <value>You've made your first
+  Time Entry on Toggl mobile app 🎉</value>
+  </data>
+  <data name="YouCanAccessTimeEntriesFromAnyTogglApp" xml:space="preserve">
+    <value>You can easily access and edit all your Time Entries from any Toggl app.</value>
+  </data>
+  <data name="OkGotIt" xml:space="preserve">
+    <value>Ok, got it!</value>
+  </data>
+  <data name="AdvancedReportsViaWeb" xml:space="preserve">
+    <value>Advanced reports via web</value>
+  </data>
+  <data name="AdvancedReportsFeatures" xml:space="preserve">
+    <value>Create saved reports
+  Schedule your reports
+  Set billable hours
+  Export PDF, CSV &amp; XLS</value>
+  </data>
+  <data name="AvailableOnOtherPlans" xml:space="preserve">
+    <value>Available on other plans</value>
+  </data>
+  <data name="BillableAwareness" xml:space="preserve">
+    <value>Billable Hours is available
+  on other plans</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
 </root>

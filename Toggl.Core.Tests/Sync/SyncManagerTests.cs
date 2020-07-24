@@ -82,17 +82,6 @@ namespace Toggl.Core.Tests.Sync
             }
         }
 
-        public sealed class TheStateProperty : SyncManagerTestBase
-        {
-            [Property]
-            public void ShouldReturnStateFromOrchestrator(int stateValue)
-            {
-                Orchestrator.State.Returns((SyncState)stateValue);
-
-                SyncManager.State.Should().Be((SyncState)stateValue);
-            }
-        }
-
         public abstract class ThreadSafeQueingMethodTests : SyncManagerTestBase
         {
             protected abstract void CallMethod();

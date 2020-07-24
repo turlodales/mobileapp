@@ -138,6 +138,7 @@ namespace Toggl.Core.Models
             SyncStatus = syncStatus;
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
+            ServerDeletedAt = entity.ServerDeletedAt;
         }
 
         public static Task Clean(ITask entity)
@@ -194,6 +195,26 @@ namespace Toggl.Core.Models
             SyncStatus = syncStatus;
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
+
+            IsDeletedSyncStatus = entity.IsDeletedSyncStatus;
+            BillableSyncStatus = entity.BillableSyncStatus;
+            DescriptionSyncStatus = entity.DescriptionSyncStatus;
+            DurationSyncStatus = entity.DurationSyncStatus;
+            WorkspaceIdSyncStatus = entity.WorkspaceIdSyncStatus;
+            ProjectIdSyncStatus = entity.ProjectIdSyncStatus;
+            StartSyncStatus = entity.StartSyncStatus;
+            TaskIdSyncStatus = entity.TaskIdSyncStatus;
+            TagIdsSyncStatus = entity.TagIdsSyncStatus;
+
+            IsDeletedBackup = entity.IsDeletedBackup;
+            BillableBackup = entity.BillableBackup;
+            DescriptionBackup = entity.DescriptionBackup;
+            DurationBackup = entity.DurationBackup;
+            WorkspaceIdBackup = entity.WorkspaceIdBackup;
+            ProjectIdBackup = entity.ProjectIdBackup;
+            StartBackup = entity.StartBackup;
+            TaskIdBackup = entity.TaskIdBackup;
+            TagIdsBackup = entity.TagIdsBackup?.ToList();
         }
 
         public static TimeEntry Clean(ITimeEntry entity)
@@ -243,6 +264,12 @@ namespace Toggl.Core.Models
             LastSyncErrorMessage = lastSyncErrorMessage;
             IsDeleted = isDeleted;
             Timezone = entity.Timezone;
+
+            DefaultWorkspaceIdSyncStatus = entity.DefaultWorkspaceIdSyncStatus;
+            BeginningOfWeekSyncStatus = entity.BeginningOfWeekSyncStatus;
+
+            DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
+            BeginningOfWeekBackup = entity.BeginningOfWeekBackup;
         }
 
         public static User Clean(IUser entity)

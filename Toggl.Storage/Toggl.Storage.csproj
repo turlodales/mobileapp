@@ -12,6 +12,8 @@
     <OutputPath>..\bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Toggl.Networking\Toggl.Networking.csproj" />
     <ProjectReference Include="..\Toggl.Shared\Toggl.Shared.csproj" />
+    <ProjectReference Include="..\Toggl.Networking\Toggl.Networking.csproj" />
   </ItemGroup>
 </Project>

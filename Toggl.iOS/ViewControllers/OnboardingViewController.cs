@@ -197,7 +197,7 @@ namespace Toggl.iOS.ViewControllers
             page3 = OnboardingPageView.Create();
             page3.BackgroundColor = ColorAssets.OnboardingPage3BackgroundColor;
             page3.SetImageView(UIImage.FromBundle("ic_hand"));
-            page3.Message = Resources.OnboardingMessagePage3;
+            page3.Message = Resources.OnboardingMessagePage3Ios;
 
             containerView.InsertSubview(page3, 0);
             containerView.InsertSubview(page2, 1);

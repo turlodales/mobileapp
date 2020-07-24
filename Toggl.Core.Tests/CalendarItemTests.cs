@@ -20,6 +20,7 @@ namespace Toggl.Core.Tests
             [InlineData(SyncStatus.RefetchingNeeded, CalendarIconKind.None)]
             [InlineData(SyncStatus.SyncFailed, CalendarIconKind.Unsyncable)]
             [InlineData(SyncStatus.SyncNeeded, CalendarIconKind.Unsynced)]
+            [InlineData(SyncStatus.Syncing, CalendarIconKind.Unsynced)]
             public void SetsTheAppropriateCalendarIconKind(SyncStatus syncStatus, CalendarIconKind expectedCalendarIcon)
             {
                 var timeEntry = new MockTimeEntry { SyncStatus = syncStatus };

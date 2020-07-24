@@ -103,7 +103,7 @@ namespace Toggl.iOS
             => new PlatformInfoIos();
 
         protected override IQueryFactory CreateQueryFactory()
-            => new RealmQueryFactory(() => Realms.Realm.GetInstance(realmConfigurator.Value.Configuration));
+            => new RealmQueryFactory(() => Realms.Realm.GetInstance(realmConfigurator.Value.Configuration), () => TimeService.CurrentDateTime);
 
         protected override IPrivateSharedStorageService CreatePrivateSharedStorageService()
             => new PrivateSharedStorageServiceIos();

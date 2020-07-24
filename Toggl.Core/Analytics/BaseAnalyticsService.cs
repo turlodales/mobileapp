@@ -409,6 +409,25 @@ namespace Toggl.Core.Analytics
             OnboardingTimeEntryCreated = new AnalyticsEvent(this, nameof(OnboardingTimeEntryCreated));
         }
 
+        public PerformanceMeasurement StartNewSyncPerformanceMeasurement()
+            => startPerformanceMeasurement("SyncPerformanceNew");
+
+        public PerformanceMeasurement StartOldSyncPerformanceMeasurement()
+            => startPerformanceMeasurement("SyncPerformanceOld");
+
+        private PerformanceMeasurement startPerformanceMeasurement(string name)
+            => new PerformanceMeasurement(name);
+
+        public void StopAndTrack(PerformanceMeasurement measurement)
+        {
+            const string duration = "duration";
+            var result = measurement.Complete();
+
+            Track(
+                measurement.Name,
+                new Dictionary<string, string> { [duration] = result.ToString() });
+        }
+
         public void TrackAnonymized(Exception exception)
         {
             if (exception.IsAnonymized())

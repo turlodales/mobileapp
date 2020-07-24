@@ -25,6 +25,11 @@ namespace Toggl.Storage.Realm
                 [typeof(IWorkspace)] = 5
             };
 
+        public static long? IdFor<T>()
+            => typesToIdsMapping.TryGetValue(typeof(T), out var typeId)
+            ? typeId
+            : (long?)null;
+
         public SinceParameterStorage(IRealmAdapter<IDatabaseSinceParameter> realmAdapter)
         {
             Ensure.Argument.IsNotNull(realmAdapter, nameof(realmAdapter));
