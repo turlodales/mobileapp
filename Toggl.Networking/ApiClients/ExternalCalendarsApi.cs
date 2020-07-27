@@ -22,19 +22,19 @@ namespace Toggl.Networking.ApiClients
         public Task<List<ICalendarIntegration>> GetIntegrations()
             => SendRequest<CalendarIntegration, ICalendarIntegration>(endpoints.GetIntegrations, AuthHeader);
 
-        public Task<List<IExternalCalendar>> GetCalendars(
+        public Task<IExternalCalendarsPage> GetCalendars(
             long integrationId,
             string nextPageToken = null,
             long? limit = null)
-            => SendRequest<ExternalCalendar, IExternalCalendar>(endpoints.GetAllCalendars(integrationId, nextPageToken, limit), AuthHeader);
+            => SendRequest<IExternalCalendarsPage>(endpoints.GetAllCalendars(integrationId, nextPageToken, limit), AuthHeader);
 
-        public Task<List<IExternalCalendarEvent>> GetCalendarEvents(
+        public Task<IExternalCalendarEventsPage> GetCalendarEvents(
             long integrationId,
             string calendarId,
             DateTimeOffset startDate,
             DateTimeOffset endDate,
             string nextPageToken = null,
             long? limit = null)
-            => SendRequest<ExternalCalendarEvent, IExternalCalendarEvent>(endpoints.GetAllCalendarEvents(integrationId, calendarId, startDate, endDate, nextPageToken, limit), AuthHeader);
+            => SendRequest<IExternalCalendarEventsPage>(endpoints.GetAllCalendarEvents(integrationId, calendarId, startDate, endDate, nextPageToken, limit), AuthHeader);
     }
 }

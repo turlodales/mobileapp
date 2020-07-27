@@ -4,7 +4,7 @@ namespace Toggl.Shared.Models.Calendar
 {
     public interface IExternalCalendarsPage
     {
-        List<IExternalCalendar> calendars { get; }
-        string nextPageToken { get; }
+        List<IExternalCalendar> Calendars { get; }
+        string NextPageToken { get; }
     }
 }

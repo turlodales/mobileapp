@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Realms;
+using Toggl.Shared.Models.Calendar;
 using Toggl.Storage.Models.Calendar;
 
 namespace Toggl.Storage.Realm.Models.Calendar
@@ -12,6 +13,12 @@ namespace Toggl.Storage.Realm.Models.Calendar
         public RealmExternalCalendarEvent(IDatabaseExternalCalendarEvent entity, Realms.Realm realm)
         {
             Id = entity.Id;
+            SetPropertiesFrom(entity, realm);
+        }
+
+        public RealmExternalCalendarEvent(long id, IExternalCalendarEvent entity, Realms.Realm realm)
+        {
+            Id = id;
             SetPropertiesFrom(entity, realm);
         }
 
@@ -53,6 +60,18 @@ namespace Toggl.Storage.Realm.Models.Calendar
             ForegroundColor = entity.ForegroundColor;
             var skipCalendarFetch = entity?.CalendarId == null;
             RealmCalendar = skipCalendarFetch ? null : realm.All<RealmExternalCalendar>().Single(x => x.Id == entity.CalendarId);
+        }
+
+        public void SetPropertiesFrom(IExternalCalendarEvent entity, Realms.Realm realm)
+        {
+            SyncId = entity.SyncId;
+            ICalId = entity.ICalId;
+            Title = entity.Title;
+            StartTime = entity.StartTime;
+            EndTime = entity.EndTime;
+            Updated = entity.Updated;
+            BackgroundColor = entity.BackgroundColor;
+            ForegroundColor = entity.ForegroundColor;
         }
 
         public void ChangeId(long id)

@@ -9,12 +9,12 @@ namespace Toggl.Networking.ApiClients.Interfaces
     {
         Task<List<ICalendarIntegration>> GetIntegrations();
 
-        Task<List<IExternalCalendar>> GetCalendars(
+        Task<IExternalCalendarsPage> GetCalendars(
             long integrationId,
             string nextPageToken = null,
             long? limit = null);
 
-        Task<List<IExternalCalendarEvent>> GetCalendarEvents(
+        Task<IExternalCalendarEventsPage> GetCalendarEvents(
             long integrationId,
             string calendarId,
             DateTimeOffset startDate,

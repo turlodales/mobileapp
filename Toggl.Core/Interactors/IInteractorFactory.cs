@@ -15,6 +15,7 @@ using Toggl.Core.Suggestions;
 using Toggl.Networking.Sync.Push;
 using Toggl.Shared;
 using Toggl.Shared.Models;
+using Toggl.Shared.Models.Calendar;
 using Toggl.Shared.Models.Reports;
 using Task = System.Threading.Tasks.Task;
 
@@ -259,6 +260,20 @@ namespace Toggl.Core.Interactors
         IInteractor<IObservable<Unit>> UnsubscribeFromPushNotifications();
 
         IInteractor<IObservable<Unit>> SubscribeToPushNotifications();
+
+        #endregion
+
+        #region MyRegion
+
+        IInteractor<Task<SyncOutcome>> SyncExternalCalendars();
+
+        IInteractor<Task<List<ICalendarIntegration>>> PullCalendarIntegrations();
+
+        IInteractor<Task<IEnumerable<IExternalCalendar>>> PullExternalCalendars(ICalendarIntegration integration);
+
+        IInteractor<Task<IEnumerable<IExternalCalendarEvent>>> PullExternalCalendarEvents(ICalendarIntegration integration, IExternalCalendar calendar);
+
+        IInteractor<Unit> PersistExternalCalendarsData(Dictionary<IExternalCalendar, IEnumerable<IExternalCalendarEvent>> calendarData);
 
         #endregion
 

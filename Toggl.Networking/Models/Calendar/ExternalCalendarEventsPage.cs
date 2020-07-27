@@ -10,8 +10,8 @@ namespace Toggl.Networking.Models.Calendar
     internal sealed class ExternalCalendarEventsPage : IExternalCalendarEventsPage
     {
         [JsonConverter(typeof(ConcreteListTypeConverter<ExternalCalendarEvent, IExternalCalendarEvent>))]
-        public List<IExternalCalendarEvent> events { get; set; }
+        public List<IExternalCalendarEvent> Events { get; set; }
 
-        public string nextPageToken { get; set; }
+        public string NextPageToken { get; set; }
     }
 }

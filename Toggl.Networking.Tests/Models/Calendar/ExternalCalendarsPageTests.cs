@@ -15,7 +15,7 @@ namespace Toggl.Networking.Tests.Models.Calendar
 
             private ExternalCalendarsPage validPage => new ExternalCalendarsPage
             {
-                calendars = new List<IExternalCalendar>
+                Calendars = new List<IExternalCalendar>
                 {
                     new ExternalCalendar
                     {
@@ -28,7 +28,7 @@ namespace Toggl.Networking.Tests.Models.Calendar
                         Name = "Work",
                     },
                 },
-                nextPageToken = "next_page",
+                NextPageToken = "next_page",
             };
 
             [Fact, LogIfTooSlow]

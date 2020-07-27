@@ -15,7 +15,7 @@ namespace Toggl.Networking.Tests.Models.Calendar
 
             private ExternalCalendarEventsPage validPage => new ExternalCalendarEventsPage
             {
-                events = new List<IExternalCalendarEvent>
+                Events = new List<IExternalCalendarEvent>
                 {
                     new ExternalCalendarEvent
                     {
@@ -40,7 +40,7 @@ namespace Toggl.Networking.Tests.Models.Calendar
                         ForegroundColor = "#ffffff",
                     },
                 },
-                nextPageToken = "next_page",
+                NextPageToken = "next_page",
             };
 
             [Fact, LogIfTooSlow]
