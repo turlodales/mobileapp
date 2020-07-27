@@ -187,8 +187,14 @@ namespace Toggl.Networking.Tests.Integration
             [InlineData(" \t\n ")]
             [InlineData("xyz")]
             [InlineData("12345")]
+            [InlineData("1234567890")]
+            [InlineData("abcdefghij")]
             [InlineData("1@bX_")]
-            public void FailsWhenThePasswordIsTooShort(string empty)
+            [InlineData("  \t   ")]
+            [InlineData("  \t\n  ")]
+            [InlineData("\n\n\n\n\n\n")]
+            [InlineData("            ")]
+            public void FailsWhenThePasswordIsTooWeak(string empty)
             {
                 Action signingUp = () => unauthenticatedTogglApi
                     .User
@@ -198,23 +204,6 @@ namespace Toggl.Networking.Tests.Integration
                 signingUp.Should().Throw<BadRequestException>();
             }
 
-            [Theory, LogTestInfo]
-            [InlineData("  \t   ")]
-            [InlineData("  \t\n  ")]
-            [InlineData("\n\n\n\n\n\n")]
-            [InlineData("            ")]
-            public async Task SucceedsForAPasswordConsistingOfOnlyWhiteCharactersWhenItIsLongEnough(string seeminglyEmpty)
-            {
-                var email = RandomEmail.GenerateValid();
-
-                var user = await unauthenticatedTogglApi
-                    .User
-                    .SignUp(email, seeminglyEmpty.ToPassword(), true, 237, "Europe/Tallinn");
-
-                user.Id.Should().BeGreaterThan(0);
-                user.Email.Should().Be(email);
-            }
-
             [Fact, LogTestInfo]
             public async Task CreatesANewUserAccount()
             {
@@ -222,7 +211,7 @@ namespace Toggl.Networking.Tests.Integration
 
                 var user = await unauthenticatedTogglApi
                     .User
-                    .SignUp(emailAddress, "somePassword".ToPassword(), true, 237, "Europe/Tallinn");
+                    .SignUp(emailAddress, "somePassword123".ToPassword(), true, 237, "Europe/Tallinn");
 
                 user.Email.Should().Be(emailAddress);
             }
@@ -231,11 +220,11 @@ namespace Toggl.Networking.Tests.Integration
             public async Task FailsWhenTheEmailIsAlreadyTaken()
             {
                 var email = RandomEmail.GenerateValid();
-                await unauthenticatedTogglApi.User.SignUp(email, "somePassword".ToPassword(), true, 237, "Europe/Tallinn");
+                await unauthenticatedTogglApi.User.SignUp(email, "somePassword123".ToPassword(), true, 237, "Europe/Tallinn");
 
                 Action secondSigningUp = () => unauthenticatedTogglApi
                     .User
-                    .SignUp(email, "thePasswordIsNotImportant".ToPassword(), true, 237, "Europe/Tallinn")
+                    .SignUp(email, "thePasswordIsNotImportant123".ToPassword(), true, 237, "Europe/Tallinn")
                     .Wait();
 
                 secondSigningUp.Should().Throw<EmailIsAlreadyUsedException>();
@@ -245,7 +234,7 @@ namespace Toggl.Networking.Tests.Integration
             public async Task FailsWhenSigningUpWithTheSameEmailAndPasswordForTheSecondTime()
             {
                 var email = RandomEmail.GenerateValid();
-                var password = "somePassword".ToPassword();
+                var password = "somePassword123".ToPassword();
                 await unauthenticatedTogglApi.User.SignUp(email, password, true, 237, null);
 
                 Action secondSigningUp = () => unauthenticatedTogglApi.User.SignUp(email, password, true, 237, null).Wait();
@@ -257,7 +246,7 @@ namespace Toggl.Networking.Tests.Integration
             public async Task EnablesLoginForTheNewlyCreatedUserAccount()
             {
                 var emailAddress = RandomEmail.GenerateValid();
-                var password = Guid.NewGuid().ToString().ToPassword();
+                var password = $"{Guid.NewGuid().ToString()}-Abc123".ToPassword();
 
                 var signedUpUser = await unauthenticatedTogglApi.User.SignUp(emailAddress, password, true, 237, null);
                 var credentials = Credentials.WithPassword(emailAddress, password);
@@ -274,7 +263,7 @@ namespace Toggl.Networking.Tests.Integration
             public async Task CreatesADefaultWorkspaceWithCorrectName(string emailPrefix, string expectedWorkspaceName)
             {
                 var email = Email.From($"{emailPrefix}@{Guid.NewGuid().ToString()}.com");
-                var password = Guid.NewGuid().ToString().ToPassword();
+                var password = $"{Guid.NewGuid().ToString()}-Abc123".ToPassword();
 
                 var user = await unauthenticatedTogglApi.User.SignUp(email, password, true, 237, null);
                 var credentials = Credentials.WithPassword(email, password);
@@ -289,7 +278,7 @@ namespace Toggl.Networking.Tests.Integration
             public void FailsIfUserDidNotAcceptTermsAndConditions()
             {
                 var email = RandomEmail.GenerateValid();
-                var password = "s3cr3tzzz".ToPassword();
+                var password = "s3cr3tzZZ".ToPassword();
                 var termsAccepted = false;
                 var countryId = 237;
 
@@ -309,7 +298,7 @@ namespace Toggl.Networking.Tests.Integration
             public async Task SucceedsForValidCountryId(int countryId)
             {
                 var email = RandomEmail.GenerateValid();
-                var password = "s3cr3tzzz".ToPassword();
+                var password = "s3cr3tzZZ".ToPassword();
                 var termsNotAccepted = true;
 
                 var user = await unauthenticatedTogglApi
@@ -328,7 +317,7 @@ namespace Toggl.Networking.Tests.Integration
             public void FailsIfCountryIdIsNotValid(int countryId)
             {
                 var email = RandomEmail.GenerateValid();
-                var password = "s3cr3tzzz".ToPassword();
+                var password = "s3cr3tzZZ".ToPassword();
 
                 Action signingUp = () => unauthenticatedTogglApi
                     .User
@@ -342,7 +331,7 @@ namespace Toggl.Networking.Tests.Integration
             public async Task SucceedsForSupportedTimezone()
             {
                 var email = RandomEmail.GenerateValid();
-                var password = "s3cr3tzzz".ToPassword();
+                var password = "s3cr3tzZZ".ToPassword();
 
                 var timezones = await unauthenticatedTogglApi.Timezones.GetAll();
                 var aRandomSupportTimezone = timezones.OrderBy(s => Guid.NewGuid()).First();
@@ -359,7 +348,7 @@ namespace Toggl.Networking.Tests.Integration
             public async Task FailsForNonSupportedTimezone()
             {
                 var email = RandomEmail.GenerateValid();
-                var password = "s3cr3tzzz".ToPassword();
+                var password = "s3cr3tzZZ".ToPassword();
 
                 Action signingUp = () => unauthenticatedTogglApi
                     .User
