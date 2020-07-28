@@ -9,7 +9,7 @@ namespace Toggl.Core.Interactors
     public partial class InteractorFactory
     {
         public IInteractor<Task<SyncOutcome>> SyncExternalCalendars()
-            => new SyncExternalCalendarsInteractor(this);
+            => new SyncExternalCalendarsInteractor(this, timeService, lastTimeUsageStorage);
 
         public IInteractor<Task<List<ICalendarIntegration>>> PullCalendarIntegrations()
             => new PullCalendarIntegrationsInteractor(api);
