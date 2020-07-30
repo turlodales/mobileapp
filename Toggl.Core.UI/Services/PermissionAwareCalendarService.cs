@@ -79,9 +79,12 @@ namespace Toggl.Core.Calendar
 
         protected abstract IEnumerable<IThreadSafeExternalCalendarEvent> ResolveDuplicates(IEnumerable<CalendarItem> nativeEvents, IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents);
 
-        private IObservable<IEnumerable<IThreadSafeExternalCalendarEvent>> getExternalCalendarEventsInRange(DateTimeOffset start, DateTimeOffset end)
+        private IObservable<IEnumerable<IThreadSafeExternalCalendarEvent>> getExternalCalendarEventsInRange(
+            DateTimeOffset start, DateTimeOffset end)
             => dataSource
-                .ExternalCalendarEvents.GetAll((calendarEvent) => calendarEvent.StartTime >= start && calendarEvent.EndTime <= end);
+                .ExternalCalendarEvents.GetAll((calendarEvent) =>
+                    calendarEvent.StartTime >= start && calendarEvent.EndTime <= end)
+                .Select(events => events.ToList());
 
         private IEnumerable<CalendarItem> mergingNativeAndExternalEvents(IEnumerable<CalendarItem> nativeEvents, IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents)
         {

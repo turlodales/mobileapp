@@ -259,7 +259,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Theory, LogIfTooSlow]
             [MemberData(nameof(BeginningOfWeekTestData))]
-            public void AlwaysContains14ViewableDays(BeginningOfWeek beginningOfWeek)
+            public void AlwaysContains8ViewableWeeks(BeginningOfWeek beginningOfWeek)
             {
                 SetupBeginningOfWeek(beginningOfWeek);
                 var observer = TestScheduler.CreateObserver<IImmutableList<CalendarWeeklyViewDayViewModel>>();
@@ -269,7 +269,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
 
                 observer.Values().Should().HaveCount(1);
-                observer.Values().First().Where(day => day.Enabled).Should().HaveCount(14);
+                observer.Values().First().Where(day => day.Enabled).Should().HaveCount(7 * 8);
             }
 
             [Theory, LogIfTooSlow]
@@ -404,8 +404,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                var twoWeeksAgo = now.Date.AddDays(-14);
-                var daysBeforeTwoWeeks = observer.Values().Single().Where(day => day.Date < twoWeeksAgo);
+                var weeksAgo = now.Date.AddDays(-7 * 8);
+                var daysBeforeTwoWeeks = observer.Values().Single().Where(day => day.Date < weeksAgo);
                 if (daysBeforeTwoWeeks.None()) return;
                 daysBeforeTwoWeeks.Should().OnlyContain(day => !day.Enabled);
             }

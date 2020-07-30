@@ -27,7 +27,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
     [Preserve(AllMembers = true)]
     public sealed class CalendarViewModel : ViewModel
     {
-        private const int availableDayCount = 14;
+        private const int availableWeeksCount = 8;
+        private const int availableDayCount = 7 * availableWeeksCount;
         private const string dateFormat = "dddd, MMM d";
 
         private readonly CompositeDisposable disposeBag = new CompositeDisposable();
