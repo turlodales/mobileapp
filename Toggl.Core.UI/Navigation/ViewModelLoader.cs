@@ -339,6 +339,7 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.OnboardingStorage,
                     dependencyContainer.PermissionsChecker,
+                    dependencyContainer.SyncManager,
                     dependencyContainer.NavigationService);
             }
 

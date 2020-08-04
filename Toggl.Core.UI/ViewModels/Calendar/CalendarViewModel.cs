@@ -5,18 +5,20 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
 using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Services;
+using Toggl.Core.Sync;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
+using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.Services;
 using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels.Settings;
-using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
@@ -43,6 +45,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         private readonly IOnboardingStorage onboardingStorage;
         private readonly IPermissionsChecker permissionsChecker;
         private readonly IRxActionFactory rxActionFactory;
+        private readonly ISyncManager syncManager;
 
         private readonly ISubject<Unit> realoadWeekView = new Subject<Unit>();
 
@@ -58,6 +61,13 @@ namespace Toggl.Core.UI.ViewModels.Calendar
 
         public InputAction<CalendarWeeklyViewDayViewModel> SelectDayFromWeekView { get; }
 
+        public IObservable<bool> IsTimeEntryRunning { get; private set; }
+        public IObservable<bool> IsInManualMode { get; private set; }
+
+        public InputAction<bool> StartTimeEntry { get; private set; }
+
+        public ViewAction StopTimeEntry { get; private set; }
+
         public CalendarViewModel(
             ITogglDataSource dataSource,
             ITimeService timeService,
@@ -69,6 +79,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             ISchedulerProvider schedulerProvider,
             IOnboardingStorage onboardingStorage,
             IPermissionsChecker permissionsChecker,
+            ISyncManager syncManager,
             INavigationService navigationService)
             : base(navigationService)
         {
@@ -82,6 +93,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
             Ensure.Argument.IsNotNull(permissionsChecker, nameof(permissionsChecker));
+            Ensure.Argument.IsNotNull(syncManager, nameof(syncManager));
 
             this.dataSource = dataSource;
             this.timeService = timeService;
@@ -93,6 +105,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             this.schedulerProvider = schedulerProvider;
             this.onboardingStorage = onboardingStorage;
             this.permissionsChecker = permissionsChecker;
+            this.syncManager = syncManager;
 
             OpenSettings = rxActionFactory.FromAsync(openSettings);
             SelectDayFromWeekView = rxActionFactory.FromAction<CalendarWeeklyViewDayViewModel>(selectDayFromWeekView);
@@ -117,6 +130,24 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .DistinctUntilChanged()
                 .Select(date => DateTimeToFormattedString.Convert(date, dateFormat))
                 .AsDriver(schedulerProvider);
+        }
+
+        public override async Task Initialize()
+        {
+            await base.Initialize();
+
+            IsTimeEntryRunning = dataSource.TimeEntries
+                .CurrentlyRunningTimeEntry
+                .Select(te => te != null)
+                .DistinctUntilChanged()
+                .AsDriver(schedulerProvider);
+
+            IsInManualMode = userPreferences
+                .IsManualModeEnabledObservable
+                .AsDriver(schedulerProvider);
+
+            StartTimeEntry = rxActionFactory.FromAsync<bool>(startTimeEntry, IsTimeEntryRunning.Invert());
+            StopTimeEntry = rxActionFactory.FromObservable(stopTimeEntry, IsTimeEntryRunning);
         }
 
         public override void ViewAppeared()
@@ -219,6 +250,28 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             var daysSinceToday = (timeService.CurrentDateTime.ToLocalTime().Date - day.Date).Days;
             var dayOfWeek = day.Date.DayOfWeek.ToString();
             analyticsService.CalendarWeeklyDatePickerSelectionChanged.Track(daysSinceToday, dayOfWeek);
+        }
+
+        private Task startTimeEntry(bool useDefaultMode)
+        {
+            var initializeInManualMode = useDefaultMode == userPreferences.IsManualModeEnabled;
+
+            var requestCameFromLongPress = !useDefaultMode;
+            var parameter = initializeInManualMode
+                ? StartTimeEntryParameters.ForManualMode(timeService.CurrentDateTime, requestCameFromLongPress)
+                : StartTimeEntryParameters.ForTimerMode(timeService.CurrentDateTime, requestCameFromLongPress);
+
+            return Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(parameter);
+        }
+
+        private IObservable<Unit> stopTimeEntry()
+        {
+            return interactorFactory
+                .StopTimeEntry(timeService.CurrentDateTime, TimeEntryStopOrigin.Manual)
+                .Execute()
+                .ToObservable()
+                .Do(syncManager.InitiatePushSync)
+                .SelectUnit();
         }
     }
 }

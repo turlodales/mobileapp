@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
+using System.Threading.Tasks;
 using CoreAnimation;
 using Toggl.Core.Analytics;
 using Toggl.Core.Models.Interfaces;
@@ -496,6 +497,7 @@ namespace Toggl.iOS.ViewControllers
                 new UIKit.UIBarButtonItem(syncFailuresButton)
             };
 #endif
+            animateStartButtonAppearing(StartTimeEntryButton);
         }
 
         public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
@@ -827,6 +829,30 @@ namespace Toggl.iOS.ViewControllers
             emptyStateView.HeightAnchor.ConstraintEqualTo(TimeEntriesLogTableView.HeightAnchor).Active = true;
             emptyStateView.CenterYAnchor.ConstraintEqualTo(TimeEntriesLogTableView.CenterYAnchor).Active = true;
             emptyStateView.TopAnchor.ConstraintEqualTo(TimeEntriesLogTableView.TopAnchor).Active = true;
+        }
+
+        private async Task animateStartButtonAppearing(UIImageView button)
+        {
+            var isTimeEntryRunning = await ViewModel.IsTimeEntryRunning.FirstAsync();
+            if (isTimeEntryRunning)
+                return;
+
+            var bounceAnimationDuration = 0.3f;
+            var cts = new CancellationTokenSource();
+
+            button.Transform = CGAffineTransform.Scale(button.Transform, (nfloat)0.5, (nfloat)0.5);
+            button.Alpha = 0;
+
+            AnimationExtensions.Animate(
+                bounceAnimationDuration,
+                0,
+                Animation.Curves.Bounce,
+                () =>
+                {
+                    button.Transform = CGAffineTransform.MakeIdentity();
+                    button.Alpha = 1;
+                },
+                cancellationToken: cts.Token);
         }
     }
 }

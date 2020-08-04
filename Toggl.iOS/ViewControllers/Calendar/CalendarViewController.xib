@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,6 +17,8 @@
                 <outlet property="SelectedDateLabel" destination="wEf-qU-HdQ" id="OJ6-3U-X4H"/>
                 <outlet property="SettingsButton" destination="Yda-xM-gg0" id="mDD-BA-oS7"/>
                 <outlet property="SettingsButtonTrailingConstraint" destination="7km-uO-em2" id="aAf-f9-F2C"/>
+                <outlet property="StartTimeEntryButton" destination="tiD-sK-LZc" id="PDh-9k-ow9"/>
+                <outlet property="StopTimeEntryButton" destination="Wm1-Fp-cWJ" id="GLc-V9-jJO"/>
                 <outlet property="WeekViewCollectionView" destination="bZp-QY-WMc" id="SHu-pU-VJE"/>
                 <outlet property="WeekViewContainer" destination="1ni-Vd-ktT" id="WEV-v4-IvA"/>
                 <outlet property="WeekViewContainerWidthConstraint" destination="Y2s-6t-qem" id="RrJ-Cc-jq6"/>
@@ -94,6 +96,22 @@
                         <constraint firstAttribute="height" constant="1" id="ZQ0-hd-gY8"/>
                     </constraints>
                 </view>
+                <imageView opaque="NO" contentMode="center" image="stopIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Wm1-Fp-cWJ">
+                    <rect key="frame" x="334" y="782" width="80" height="80"/>
+                    <accessibility key="accessibilityConfiguration" identifier="MainStartTimeEntry"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="KM4-8c-f2B"/>
+                        <constraint firstAttribute="width" constant="80" id="b7R-9w-KNj"/>
+                    </constraints>
+                </imageView>
+                <imageView opaque="NO" contentMode="center" image="playIcon" translatesAutoresizingMaskIntoConstraints="NO" id="tiD-sK-LZc">
+                    <rect key="frame" x="334" y="782" width="80" height="80"/>
+                    <accessibility key="accessibilityConfiguration" identifier="MainStartTimeEntry"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="LS4-hJ-VE0"/>
+                        <constraint firstAttribute="width" constant="80" id="P1w-Ib-Ap8"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" name="Background"/>
             <constraints>
@@ -104,11 +122,15 @@
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="bottom" secondItem="sTR-Lt-CVR" secondAttribute="top" id="KnD-dd-q2K"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="2ri-oj-8tD" secondAttribute="trailing" id="LCl-YB-dn2"/>
                 <constraint firstItem="2ri-oj-8tD" firstAttribute="leading" secondItem="9QM-qy-tJ0" secondAttribute="leading" id="Sab-tG-lv0"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="tiD-sK-LZc" secondAttribute="trailing" id="X1V-uz-Lbe"/>
                 <constraint firstItem="2ri-oj-8tD" firstAttribute="top" secondItem="1ni-Vd-ktT" secondAttribute="bottom" id="Zfe-9B-ryx"/>
                 <constraint firstAttribute="trailing" secondItem="1ni-Vd-ktT" secondAttribute="trailing" priority="750" id="cEL-UC-oeX"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="leading" secondItem="2" secondAttribute="leading" priority="750" id="dZ4-am-wSo"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="Wm1-Fp-cWJ" secondAttribute="bottom" id="mA9-SN-k1X"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="centerX" secondItem="9QM-qy-tJ0" secondAttribute="centerX" id="n2n-Wk-QdP"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="Wm1-Fp-cWJ" secondAttribute="trailing" id="olU-g8-Sry"/>
                 <constraint firstItem="wEf-qU-HdQ" firstAttribute="centerY" secondItem="le5-oK-3MI" secondAttribute="centerY" id="ooB-48-jYG"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="tiD-sK-LZc" secondAttribute="bottom" id="opV-UD-6fN"/>
                 <constraint firstItem="Yda-xM-gg0" firstAttribute="centerY" secondItem="wEf-qU-HdQ" secondAttribute="centerY" constant="-2.5" id="ovN-uw-JFU">
                     <variation key="widthClass=regular" constant="0.5"/>
                 </constraint>
@@ -123,6 +145,8 @@
     </objects>
     <resources>
         <image name="icSettings" width="16" height="16"/>
+        <image name="playIcon" width="56" height="56"/>
+        <image name="stopIcon" width="34" height="34"/>
         <namedColor name="Background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

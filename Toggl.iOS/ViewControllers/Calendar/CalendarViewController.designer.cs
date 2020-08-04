@@ -31,6 +31,12 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint SettingsButtonTrailingConstraint { get; set; }
 
 		[Outlet]
+		UIKit.UIImageView StartTimeEntryButton { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView StopTimeEntryButton { get; set; }
+
+		[Outlet]
 		UIKit.UICollectionView WeekViewCollectionView { get; set; }
 
 		[Outlet]
@@ -92,6 +98,16 @@ namespace Toggl.iOS.ViewControllers
 			if (WeekViewDayHeaderContainer != null) {
 				WeekViewDayHeaderContainer.Dispose ();
 				WeekViewDayHeaderContainer = null;
+			}
+
+			if (StartTimeEntryButton != null) {
+				StartTimeEntryButton.Dispose ();
+				StartTimeEntryButton = null;
+			}
+
+			if (StopTimeEntryButton != null) {
+				StopTimeEntryButton.Dispose ();
+				StopTimeEntryButton = null;
 			}
 		}
 	}

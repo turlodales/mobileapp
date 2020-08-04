@@ -71,6 +71,7 @@ namespace Toggl.Core.UI.ViewModels
                 container.SchedulerProvider,
                 container.OnboardingStorage,
                 container.PermissionsChecker,
+                container.SyncManager,
                 container.NavigationService));
 
             Tabs = getViewModels().ToImmutableList();

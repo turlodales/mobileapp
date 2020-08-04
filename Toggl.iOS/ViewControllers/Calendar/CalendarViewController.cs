@@ -5,6 +5,7 @@ using Toggl.Core.Analytics;
 using CoreGraphics;
 using System.Collections.Immutable;
 using System.Reactive.Linq;
+using System.Threading;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.iOS.Extensions;
@@ -115,6 +116,36 @@ namespace Toggl.iOS.ViewControllers
             timeTrackedOnDay
                 .Subscribe(DailyTrackedTimeLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
+
+            var trackModeImage = UIImage.FromBundle("playIcon");
+            var manualModeImage = UIImage.FromBundle("manualIcon");
+            ViewModel.IsInManualMode
+                .Select(isInManualMode => isInManualMode ? manualModeImage : trackModeImage)
+                .Subscribe(image => StartTimeEntryButton.Image = image)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsTimeEntryRunning
+                .Subscribe(setStartStopVisibility)
+                .DisposedBy(DisposeBag);
+
+            StartTimeEntryButton.Rx()
+                .BindAction(ViewModel.StartTimeEntry, _ => true)
+                .DisposedBy(DisposeBag);
+
+            StartTimeEntryButton.Rx()
+                .BindAction(ViewModel.StartTimeEntry, _ => false, ButtonEventType.LongPress, useFeedback: true)
+                .DisposedBy(DisposeBag);
+
+            StopTimeEntryButton.Rx()
+                .BindAction(ViewModel.StopTimeEntry)
+                .DisposedBy(DisposeBag);
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            animateStartOrStopButtonAppearing(StartTimeEntryButton);
+            animateStartOrStopButtonAppearing(StopTimeEntryButton);
         }
 
         private void toggleTabBar(bool hidden)
@@ -140,6 +171,8 @@ namespace Toggl.iOS.ViewControllers
             WeekViewCollectionView.ShowsHorizontalScrollIndicator = false;
             WeekViewCollectionView.CollectionViewLayout = weekViewCollectionViewLayout;
             WeekViewCollectionView.DecelerationRate = UIScrollView.DecelerationRateFast;
+
+            prepareStartButtonLongPressAnimation();
         }
 
         private void setPageViewControllerEnabled(bool enabled)
@@ -298,5 +331,99 @@ namespace Toggl.iOS.ViewControllers
                 ? dayOfWeek.FullName()
                 : dayOfWeek.Initial();
 
+        private void prepareStartButtonLongPressAnimation()
+        {
+            const double longPressMinimumPressDuration = 0.5; // default OS long press duration is 0.5s
+            const double startAnimatingAfter = 0.1;
+            const double bounceAnimationDuration = 0.1f;
+            const double shrinkingAnimationDuration = longPressMinimumPressDuration - startAnimatingAfter - bounceAnimationDuration;
+            nfloat noDelay = 0.0f;
+
+            var shrunk = CGAffineTransform.MakeScale(0.9f, 0.9f);
+            var bigger = CGAffineTransform.MakeScale(1.05f, 1.05f);
+            var normalScale = CGAffineTransform.MakeScale(1f, 1f);
+
+            var cts = new CancellationTokenSource();
+            var press = new UILongPressGestureRecognizer(startButtonAnimation);
+            press.MinimumPressDuration = startAnimatingAfter;
+            press.ShouldRecognizeSimultaneously = (_, __) => true;
+
+            StartTimeEntryButton.AddGestureRecognizer(press);
+
+            void startButtonAnimation(UIGestureRecognizer recognizer)
+            {
+                switch (recognizer.State)
+                {
+                    case UIGestureRecognizerState.Began:
+                        startShrinkingAnimation();
+                        break;
+
+                    case UIGestureRecognizerState.Cancelled:
+                    case UIGestureRecognizerState.Failed:
+                        cts?.Cancel();
+                        cts = new CancellationTokenSource();
+                        backToNormal();
+                        break;
+                }
+            }
+
+            void startShrinkingAnimation()
+            {
+                AnimationExtensions.Animate(
+                    shrinkingAnimationDuration,
+                    noDelay,
+                    Animation.Curves.Bounce,
+                    () => StartTimeEntryButton.Transform = shrunk,
+                    expand,
+                    cts.Token);
+            }
+
+            void expand()
+            {
+                AnimationExtensions.Animate(
+                    bounceAnimationDuration / 2,
+                    noDelay,
+                    Animation.Curves.Bounce,
+                    () => StartTimeEntryButton.Transform = bigger,
+                    backToNormal,
+                    cts.Token);
+            }
+
+            void backToNormal()
+            {
+                AnimationExtensions.Animate(
+                    bounceAnimationDuration / 2,
+                    noDelay,
+                    Animation.Curves.Bounce,
+                    () => StartTimeEntryButton.Transform = normalScale,
+                    cancellationToken: cts.Token);
+            }
+        }
+
+        private void animateStartOrStopButtonAppearing(UIImageView button)
+        {
+            var bounceAnimationDuration = 0.3f;
+            var cts = new CancellationTokenSource();
+
+            button.Transform = CGAffineTransform.Scale(button.Transform, (nfloat)0.5, (nfloat)0.5);
+            button.Alpha = 0;
+
+            AnimationExtensions.Animate(
+                bounceAnimationDuration,
+                0,
+                Animation.Curves.Bounce,
+                () =>
+                {
+                    button.Transform = CGAffineTransform.MakeIdentity();
+                    button.Alpha = 1;
+                },
+                cancellationToken: cts.Token);
+        }
+
+        private void setStartStopVisibility(bool isTimeEntryRunning)
+        {
+            StartTimeEntryButton.Hidden = isTimeEntryRunning;
+            StopTimeEntryButton.Hidden = !isTimeEntryRunning;
+        }
     }
 }
