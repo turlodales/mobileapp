@@ -46,20 +46,22 @@ namespace Toggl.iOS.ViewControllers
         public float ScrollOffset => (float)CalendarCollectionView.ContentOffset.Y;
 
         private readonly BehaviorRelay<bool> contextualMenuVisible;
+        private readonly BehaviorRelay<nfloat> runningTimeEntryCardHeight;
         private readonly BehaviorRelay<string> timeTrackedOnDay;
         private readonly BehaviorRelay<int> currentPageRelay;
 
-        public CalendarDayViewController(
-            CalendarDayViewModel viewModel,
+        public CalendarDayViewController(CalendarDayViewModel viewModel,
             BehaviorRelay<int> currentPageRelay,
             BehaviorRelay<string> timeTrackedOnDay,
-            BehaviorRelay<bool> contextualMenuVisible)
+            BehaviorRelay<bool> contextualMenuVisible,
+            BehaviorRelay<nfloat> runningTimeEntryCardHeight)
             : base(viewModel, nameof(CalendarDayViewController))
         {
             Ensure.Argument.IsNotNull(ViewModel, nameof(ViewModel));
             Ensure.Argument.IsNotNull(currentPageRelay, nameof(currentPageRelay));
             Ensure.Argument.IsNotNull(timeTrackedOnDay, nameof(timeTrackedOnDay));
             Ensure.Argument.IsNotNull(contextualMenuVisible, nameof(contextualMenuVisible));
+            Ensure.Argument.IsNotNull(runningTimeEntryCardHeight, nameof(runningTimeEntryCardHeight));
 
             timeService = IosDependencyContainer.Instance.TimeService;
             rxActionFactory = IosDependencyContainer.Instance.RxActionFactory;
@@ -67,6 +69,7 @@ namespace Toggl.iOS.ViewControllers
             this.currentPageRelay = currentPageRelay;
             this.timeTrackedOnDay = timeTrackedOnDay;
             this.contextualMenuVisible = contextualMenuVisible;
+            this.runningTimeEntryCardHeight = runningTimeEntryCardHeight;
         }
 
         public void SetScrollOffset(float scrollOffset)
@@ -182,6 +185,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(notifyTotalDurationIfCurrentPage)
                 .DisposedBy(DisposeBag);
 
+            runningTimeEntryCardHeight
+                .Subscribe(_ => updateContentInset())
+                .DisposedBy(DisposeBag);
+
             CalendarCollectionView.LayoutIfNeeded();
         }
 
@@ -285,6 +292,8 @@ namespace Toggl.iOS.ViewControllers
             var bottomInset = contextualMenuVisible.Value
                 ? collectionViewDefaultInset * 2 + ContextualMenu.Frame.Height
                 : collectionViewDefaultInset * 2;
+
+            bottomInset += runningTimeEntryCardHeight.Value;
 
             if (animate)
             {

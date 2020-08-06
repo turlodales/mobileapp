@@ -11,9 +11,11 @@ using Toggl.Core.Analytics;
 using Toggl.Core.DataSources;
 using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;
 using Toggl.Core.UI.Extensions;
+using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.Services;
@@ -61,12 +63,16 @@ namespace Toggl.Core.UI.ViewModels.Calendar
 
         public InputAction<CalendarWeeklyViewDayViewModel> SelectDayFromWeekView { get; }
 
+        public IObservable<IThreadSafeTimeEntry> CurrentRunningTimeEntry { get; private set; }
+        public IObservable<string> ElapsedTime { get; private set; }
         public IObservable<bool> IsTimeEntryRunning { get; private set; }
         public IObservable<bool> IsInManualMode { get; private set; }
 
         public InputAction<bool> StartTimeEntry { get; private set; }
 
         public ViewAction StopTimeEntry { get; private set; }
+
+        public InputAction<EditTimeEntryInfo> SelectTimeEntry { get; private set; }
 
         public CalendarViewModel(
             ITogglDataSource dataSource,
@@ -136,6 +142,21 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         {
             await base.Initialize();
 
+            CurrentRunningTimeEntry = dataSource.TimeEntries
+                .CurrentlyRunningTimeEntry
+                .AsDriver(schedulerProvider);
+
+            var durationObservable = dataSource
+                .Preferences
+                .Current
+                .Select(preferences => preferences.DurationFormat);
+
+            ElapsedTime = timeService
+                .CurrentDateTimeObservable
+                .CombineLatest(CurrentRunningTimeEntry, (now, te) => (now - te?.Start) ?? TimeSpan.Zero)
+                .CombineLatest(durationObservable, (duration, format) => duration.ToFormattedString(format))
+                .AsDriver(schedulerProvider);
+
             IsTimeEntryRunning = dataSource.TimeEntries
                 .CurrentlyRunningTimeEntry
                 .Select(te => te != null)
@@ -148,6 +169,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
 
             StartTimeEntry = rxActionFactory.FromAsync<bool>(startTimeEntry, IsTimeEntryRunning.Invert());
             StopTimeEntry = rxActionFactory.FromObservable(stopTimeEntry, IsTimeEntryRunning);
+            SelectTimeEntry = rxActionFactory.FromAsync<EditTimeEntryInfo>(timeEntrySelected);
         }
 
         public override void ViewAppeared()
@@ -272,6 +294,12 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .ToObservable()
                 .Do(syncManager.InitiatePushSync)
                 .SelectUnit();
+        }
+
+        private async Task timeEntrySelected(EditTimeEntryInfo editTimeEntryInfo)
+        {
+            analyticsService.EditViewOpened.Track(editTimeEntryInfo.Origin);
+            await Navigate<EditTimeEntryViewModel, long[]>(editTimeEntryInfo.Ids);
         }
     }
 }

@@ -13,6 +13,18 @@ namespace Toggl.iOS.ViewControllers
 	partial class CalendarViewController
 	{
 		[Outlet]
+		Toggl.iOS.Views.AccessibilityAwareView CurrentTimeEntryCard { get; set; }
+
+		[Outlet]
+		UIKit.UILabel CurrentTimeEntryDescriptionLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel CurrentTimeEntryElapsedTimeLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel CurrentTimeEntryProjectTaskClientLabel { get; set; }
+
+		[Outlet]
 		UIKit.UILabel DailyTrackedTimeLabel { get; set; }
 
 		[Outlet]
@@ -20,6 +32,9 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.UIView DayViewContainer { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.FadeView RunningEntryDescriptionFadeView { get; set; }
 
 		[Outlet]
 		UIKit.UILabel SelectedDateLabel { get; set; }
@@ -34,7 +49,7 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.UIImageView StartTimeEntryButton { get; set; }
 
 		[Outlet]
-		UIKit.UIImageView StopTimeEntryButton { get; set; }
+		UIKit.UIButton StopTimeEntryButton { get; set; }
 
 		[Outlet]
 		UIKit.UICollectionView WeekViewCollectionView { get; set; }
@@ -80,6 +95,41 @@ namespace Toggl.iOS.ViewControllers
 				SettingsButtonTrailingConstraint = null;
 			}
 
+			if (CurrentTimeEntryCard != null) {
+				CurrentTimeEntryCard.Dispose ();
+				CurrentTimeEntryCard = null;
+			}
+
+			if (CurrentTimeEntryDescriptionLabel != null) {
+				CurrentTimeEntryDescriptionLabel.Dispose ();
+				CurrentTimeEntryDescriptionLabel = null;
+			}
+
+			if (CurrentTimeEntryElapsedTimeLabel != null) {
+				CurrentTimeEntryElapsedTimeLabel.Dispose ();
+				CurrentTimeEntryElapsedTimeLabel = null;
+			}
+
+			if (CurrentTimeEntryProjectTaskClientLabel != null) {
+				CurrentTimeEntryProjectTaskClientLabel.Dispose ();
+				CurrentTimeEntryProjectTaskClientLabel = null;
+			}
+
+			if (RunningEntryDescriptionFadeView != null) {
+				RunningEntryDescriptionFadeView.Dispose ();
+				RunningEntryDescriptionFadeView = null;
+			}
+
+			if (StartTimeEntryButton != null) {
+				StartTimeEntryButton.Dispose ();
+				StartTimeEntryButton = null;
+			}
+
+			if (StopTimeEntryButton != null) {
+				StopTimeEntryButton.Dispose ();
+				StopTimeEntryButton = null;
+			}
+
 			if (WeekViewCollectionView != null) {
 				WeekViewCollectionView.Dispose ();
 				WeekViewCollectionView = null;
@@ -98,16 +148,6 @@ namespace Toggl.iOS.ViewControllers
 			if (WeekViewDayHeaderContainer != null) {
 				WeekViewDayHeaderContainer.Dispose ();
 				WeekViewDayHeaderContainer = null;
-			}
-
-			if (StartTimeEntryButton != null) {
-				StartTimeEntryButton.Dispose ();
-				StartTimeEntryButton = null;
-			}
-
-			if (StopTimeEntryButton != null) {
-				StopTimeEntryButton.Dispose ();
-				StopTimeEntryButton = null;
 			}
 		}
 	}
