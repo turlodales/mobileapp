@@ -8,5 +8,6 @@ namespace Toggl.Storage.Queries
         IQuery<Unit> ProcessPushResult(Networking.Sync.Push.IResponse response);
         IQuery<Unit> MarkEntitiesAsSyncing(Networking.Sync.Push.Request request);
         IQuery<Unit> MigrateBackToOldSyncing();
+        IQuery<Unit> ResetLocalState(Networking.Sync.Pull.IResponse response);
     }
 }
