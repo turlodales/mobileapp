@@ -125,9 +125,9 @@ namespace Toggl.Networking.Tests.Integration
                 var (togglApi, user) = await SetupTestUser();
                 var project = await createProject(togglApi, user.DefaultWorkspaceId.Value);
 
-                Action creatingTask = () => createTask(togglApi, project, user.Id).Wait();
+                Func<System.Threading.Tasks.Task> creatingTask = () => createTask(togglApi, project, user.Id);
 
-                creatingTask.Should().Throw<ForbiddenException>();
+                creatingTask.Should().Throw<PaymentRequiredException>();
             }
 
             [Theory, LogTestInfo]
