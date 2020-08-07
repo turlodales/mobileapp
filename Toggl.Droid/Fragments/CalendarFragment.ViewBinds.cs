@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using AndroidX.ConstraintLayout.Widget;
-using AndroidX.ViewPager.Widget;
-using Google.Android.Material.AppBar;
 using Toggl.Droid.Extensions;
+using Toggl.Droid.Views;
+using AppBarLayout = Google.Android.Material.AppBar.AppBarLayout;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
 namespace Toggl.Droid.Fragments
@@ -20,6 +21,8 @@ namespace Toggl.Droid.Fragments
         private TextView[] calendarWeekStripeHeaders;
         private AppBarLayout appBarLayout;
         private Toolbar toolbar;
+        private AnimatedFloatingActionButton playButton;
+        private AnimatedFloatingActionButton stopButton;
 
         protected override void InitializeViews(View view)
         {
@@ -30,12 +33,15 @@ namespace Toggl.Droid.Fragments
             calendarWeekStripePager = view.FindViewById<LockableViewPager>(Resource.Id.WeekStripePager);
             calendarWeekStripeLabelsContainer = view.FindViewById<ConstraintLayout>(Resource.Id.CalendarWeekStripeLabels);
             calendarWeekStripeHeaders = calendarWeekStripeLabelsContainer.GetChildren().Cast<TextView>().ToArray();
-                
+
             if (calendarWeekStripeHeaders.Length != NumberOfDaysInTheWeek) {
                 throw new ArgumentOutOfRangeException($"Week headers should contain exactly {NumberOfDaysInTheWeek} text views");
             }
-            
+
             toolbar = view.FindViewById<Toolbar>(Resource.Id.Toolbar);
+
+            playButton = view.FindViewById<AnimatedFloatingActionButton>(Resource.Id.CalendarPlayButton);
+            stopButton = view.FindViewById<AnimatedFloatingActionButton>(Resource.Id.CalendarStopButton);
         }
     }
 }

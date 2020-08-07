@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Accord;
 using Android.Runtime;
 using Android.Support.Constraints;
 using AndroidX.Fragment.App;
@@ -84,7 +85,7 @@ namespace Toggl.Droid.Fragments
             {
                 if (calendarDayAdapter.MenuVisibilityRelay.Value)
                     return;
-                
+
                 isChangingPageFromUserInteraction = false;
                 ViewModel.SelectDayFromWeekView.Inputs.OnNext(day);
             }
@@ -97,11 +98,11 @@ namespace Toggl.Droid.Fragments
             calendarWeekStripeAdapter = new CalendarWeekStripeAdapter(clickOnTopWeekDatePicker, swipeOnTopWeekDatePicker, ViewModel.CurrentlyShownDate);
             calendarWeekStripePager.AddOnPageChangeListener(calendarWeekStripeAdapter);
             calendarWeekStripePager.Adapter = calendarWeekStripeAdapter;
-            
+
             ViewModel.WeekViewHeaders
                 .Subscribe(updateWeekViewHeaders)
                 .DisposedBy(DisposeBag);
-            
+
             ViewModel.WeekViewDays
                 .Subscribe(weekDays =>
                 {
@@ -110,11 +111,11 @@ namespace Toggl.Droid.Fragments
                     calendarWeekStripePager.SetCurrentItem(updatedCurrentPage, false);
                 })
                 .DisposedBy(DisposeBag);
-            
+
             ViewModel.CurrentlyShownDate
                 .Subscribe(calendarWeekStripeAdapter.UpdateSelectedDay)
                 .DisposedBy(DisposeBag);
-            
+
             calendarDayAdapter.MenuVisibilityRelay
                 .Select(CommonFunctions.Invert)
                 .Subscribe(hideBottomBar)
@@ -128,12 +129,12 @@ namespace Toggl.Droid.Fragments
 
             var startingPageForCalendarWeekPager = calendarWeekStripeAdapter.GetPageFor(ViewModel.CurrentlyShownDate.Value);
             calendarWeekStripePager.SetCurrentItem(startingPageForCalendarWeekPager, false);
-            
+
             ViewModel.CurrentlyShownDate
                 .Select(calendarWeekStripeAdapter.GetPageFor)
                 .Subscribe(page => calendarWeekStripePager.SetCurrentItem(page, true))
                 .DisposedBy(DisposeBag);
-            
+
             calendarDayAdapter.CurrentPageRelay
                 .DistinctUntilChanged()
                 .Select(calculateDayForCalendarDayPage)
@@ -149,9 +150,25 @@ namespace Toggl.Droid.Fragments
                 .Select(eventArgs => eventArgs.Event)
                 .Subscribe(touch => calendarWeekStripePager.OnTouchEvent(touch))
                 .DisposedBy(DisposeBag);
-            
+
             calendarDayAdapter.PageChanged
                 .Subscribe(recordPageSwipeEvent)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsTimeEntryRunning
+                .Subscribe(setStartStopVisibility)
+                .DisposedBy(DisposeBag);
+
+            playButton.Rx()
+                .BindAction(ViewModel.StartTimeEntry, _ => true)
+                .DisposedBy(DisposeBag);
+
+            playButton.Rx()
+                .BindAction(ViewModel.StartTimeEntry, _ => false, ButtonEventType.LongPress)
+                .DisposedBy(DisposeBag);
+
+            stopButton.Rx()
+                .BindAction(ViewModel.StopTimeEntry)
                 .DisposedBy(DisposeBag);
         }
 
@@ -198,7 +215,7 @@ namespace Toggl.Droid.Fragments
         {
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
             {
-                calendarDayAdapter?.OnBackPressed();   
+                calendarDayAdapter?.OnBackPressed();
                 return true;
             }
 
@@ -216,10 +233,10 @@ namespace Toggl.Droid.Fragments
         {
             if (calendarDayAdapter == null || calendarViewPager == null)
                 return;
-            
+
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
                 return;
-            
+
             scrollToStartSignaler.OnNext(true);
             calendarViewPager.SetCurrentItem(calendarPagesCount - 1, true);
         }
@@ -227,13 +244,13 @@ namespace Toggl.Droid.Fragments
         public override void OnResume()
         {
             base.OnResume();
-            if (hasResumedOnce) 
+            if (hasResumedOnce)
                 return;
             hasResumedOnce = true;
-            
+
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
                 return;
-            
+
             scrollToStartSignaler.OnNext(false);
         }
 
@@ -253,11 +270,11 @@ namespace Toggl.Droid.Fragments
         {
             if (MarshmallowApis.AreNotAvailable)
                 return;
-            
+
             var targetElevation = isAtTop ? 0f : defaultToolbarElevationInDPs;
             appBarLayout.Elevation = targetElevation;
         }
-        
+
         private class VerticalOffsetPageTransformer : Java.Lang.Object, ViewPager.IPageTransformer
         {
             private BehaviorRelay<int> verticalOffsetProvider { get; }
@@ -299,14 +316,14 @@ namespace Toggl.Droid.Fragments
             private readonly ISubject<Unit> backPressSubject = new Subject<Unit>();
             private readonly ISubject<PageChangedEvent> pageChanged = new Subject<PageChangedEvent>();
             private readonly ISubject<int> ScrollingPage = new Subject<int>();
-            
+
             public BehaviorRelay<int> OffsetRelay { get; } = new BehaviorRelay<int>(0);
             public BehaviorRelay<int> HourHeightRelay { get; }
             public BehaviorRelay<int> CurrentPageRelay { get; } = new BehaviorRelay<int>(-1);
             public BehaviorRelay<bool> MenuVisibilityRelay { get; } = new BehaviorRelay<bool>(false);
             public BehaviorRelay<string> TimeTrackedOnDay { get; } = new BehaviorRelay<string>(string.Empty);
             public IObservable<PageChangedEvent> PageChanged => pageChanged.AsObservable();
-            
+
             public CalendarDayFragmentAdapter(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
             {
             }
@@ -368,7 +385,7 @@ namespace Toggl.Droid.Fragments
                 ScrollingPage.OnNext(position);
             }
         }
-        
+
         private class CalendarWeekStripeAdapter : PagerAdapter, ViewPager.IOnPageChangeListener
         {
             private readonly Action<CalendarWeeklyViewDayViewModel> dayInputAction;
@@ -390,11 +407,11 @@ namespace Toggl.Droid.Fragments
                 var weekStripe = (ConstraintLayout)LayoutInflater.From(container.Context).Inflate(Resource.Layout.CalendarWeekStripeDaysView, container, false);
                 var weekSectionViewHolder = new CalendarWeekSectionViewHolder(weekStripe, dayInputAction);
                 var weekSection = weekSections[position];
-                
+
                 weekSectionViewHolder.InitDaysAndSelectedDate(weekSection, currentlySelectedDate);
 
                 pages[position] = weekSectionViewHolder;
-                
+
                 weekStripe.Tag = position;
                 container.AddView(weekStripe);
                 return weekStripe;
@@ -414,14 +431,14 @@ namespace Toggl.Droid.Fragments
                 var tag = ((View) @object).Tag;
                 if (tag == null)
                     return PositionNone;
-                
+
                 var positionFromTag = (int)tag;
                 return positionFromTag == Count
                     ? PositionNone
                     : positionFromTag;
             }
 
-            public override bool IsViewFromObject(View view, Java.Lang.Object @object) 
+            public override bool IsViewFromObject(View view, Java.Lang.Object @object)
                 => view == @object;
 
             public override int Count => weekSections.Count;
@@ -475,7 +492,7 @@ namespace Toggl.Droid.Fragments
                 currentlySelectedDate = newSelectedDate;
                 applyToAllPages((pageIndex, page) => page.UpdateCurrentlySelectedDate(newSelectedDate));
             }
-            
+
             private void applyToAllPages(Action<int, CalendarWeekSectionViewHolder> apply)
             {
                 for (var pageIndex = 0; pageIndex < weekSections.Count; pageIndex++)
@@ -513,6 +530,12 @@ namespace Toggl.Droid.Fragments
 
                 return weeklySections.ToImmutableList();
             }
+        }
+
+        private void setStartStopVisibility(bool isTimeEntryRunning)
+        {
+            playButton.Visibility = (!isTimeEntryRunning).ToVisibility();
+            stopButton.Visibility = isTimeEntryRunning.ToVisibility();
         }
     }
 }
