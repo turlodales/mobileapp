@@ -89,8 +89,8 @@ namespace Toggl.Core.UI.ViewModels
         private IEnumerable<Lazy<ViewModel>> getViewModels()
         {
             yield return MainViewModel;
-            yield return ReportsViewModel;
             yield return CalendarViewModel;
+            yield return ReportsViewModel;
         }
     }
 }

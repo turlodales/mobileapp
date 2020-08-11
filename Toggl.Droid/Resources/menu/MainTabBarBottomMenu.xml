@@ -9,14 +9,15 @@
         android:title=""/>
 
     <item
+        android:id="@+id/MainTabCalendarItem"
+        tools:title="Calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title=""/>
+    
+    <item
         android:id="@+id/MainTabReportsItem"
         tools:title="Reports"
         android:icon="@drawable/ic_reports" 
         android:title=""/>
 
-    <item
-        android:id="@+id/MainTabCalendarItem"
-        tools:title="Calendar"
-        android:icon="@drawable/ic_calendar"
-        android:title=""/>
 </menu>

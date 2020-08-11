@@ -21,8 +21,8 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(continueLastTimeEntryKeyCommand);
             AddKeyCommand(openSettingsKeyCommand);
             AddKeyCommand(ShowMainLogKeyCommand);
-            AddKeyCommand(ShowReportsKeyCommand);
             AddKeyCommand(ShowCalendarKeyCommand);
+            AddKeyCommand(ShowReportsKeyCommand);
         }
 
         private readonly UIKeyCommand forceSyncKeyCommand = KeyCommandFactory.Create(
