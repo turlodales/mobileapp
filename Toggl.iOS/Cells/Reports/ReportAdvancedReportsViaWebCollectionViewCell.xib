@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="cZE-iV-UFb" customClass="ReportAdvancedReportsViaWebCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="288" height="178"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="288" height="178"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ADVANCED REPORTS VIA WEB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xlg-UB-dwr">
+                        <rect key="frame" x="16" y="16" width="179.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                        <color key="textColor" name="CustomGray"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="illustrationBarChart" translatesAutoresizingMaskIntoConstraints="NO" id="4r7-lg-sb2">
+                        <rect key="frame" x="178" y="48.5" width="94" height="74"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tur-gU-SQW">
+                        <rect key="frame" x="16" y="45.5" width="151" height="79.5"/>
+                        <string key="text">Create saved reports
+Schedule your reports
+Set billable hours
+Export PDF, CSV &amp; XLS</string>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" name="Text"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available on other plans" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gUA-v2-e8N">
+                        <rect key="frame" x="16" y="143" width="162.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" name="Billable"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icArrowRight" translatesAutoresizingMaskIntoConstraints="NO" id="hEF-w2-goL">
+                        <rect key="frame" x="182.5" y="144" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="aDB-v3-FUj"/>
+                            <constraint firstAttribute="width" constant="16" id="qwp-dj-kmH"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+            </view>
+            <color key="backgroundColor" name="CellBackground"/>
+            <constraints>
+                <constraint firstItem="Xlg-UB-dwr" firstAttribute="leading" secondItem="cZE-iV-UFb" secondAttribute="leading" constant="16" id="LOj-B0-E05"/>
+                <constraint firstItem="hEF-w2-goL" firstAttribute="centerY" secondItem="gUA-v2-e8N" secondAttribute="centerY" id="PFG-tw-aVY"/>
+                <constraint firstItem="hEF-w2-goL" firstAttribute="leading" secondItem="gUA-v2-e8N" secondAttribute="trailing" constant="4" id="UPE-kb-MSN"/>
+                <constraint firstItem="gUA-v2-e8N" firstAttribute="top" secondItem="Tur-gU-SQW" secondAttribute="bottom" constant="18" id="VwJ-5I-XfF"/>
+                <constraint firstItem="Tur-gU-SQW" firstAttribute="top" secondItem="Xlg-UB-dwr" secondAttribute="bottom" constant="15" id="e2W-Xe-Oek"/>
+                <constraint firstAttribute="trailing" secondItem="4r7-lg-sb2" secondAttribute="trailing" constant="16" id="fyt-g2-nmY"/>
+                <constraint firstItem="Tur-gU-SQW" firstAttribute="leading" secondItem="cZE-iV-UFb" secondAttribute="leading" constant="16" id="iFK-O8-rgR"/>
+                <constraint firstAttribute="bottom" secondItem="gUA-v2-e8N" secondAttribute="bottom" constant="17" id="lNQ-4D-wge"/>
+                <constraint firstItem="Xlg-UB-dwr" firstAttribute="top" secondItem="cZE-iV-UFb" secondAttribute="top" constant="16" id="qaC-6Q-hTB"/>
+                <constraint firstItem="gUA-v2-e8N" firstAttribute="leading" secondItem="cZE-iV-UFb" secondAttribute="leading" constant="16" id="yfU-ad-duQ"/>
+                <constraint firstItem="4r7-lg-sb2" firstAttribute="top" secondItem="Xlg-UB-dwr" secondAttribute="bottom" constant="18" id="zK7-zW-24g"/>
+            </constraints>
+            <connections>
+                <outlet property="ArrowImageView" destination="hEF-w2-goL" id="mbc-Xh-QdF"/>
+                <outlet property="ButtonLabel" destination="gUA-v2-e8N" id="1Cn-pm-hCa"/>
+                <outlet property="MessageLabel" destination="Tur-gU-SQW" id="Bv9-Es-T9H"/>
+                <outlet property="TitleLabel" destination="Xlg-UB-dwr" id="ETE-9H-bZ6"/>
+            </connections>
+            <point key="canvasLocation" x="33.333333333333336" y="53.571428571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="icArrowRight" width="7" height="12"/>
+        <image name="illustrationBarChart" width="94" height="74"/>
+        <namedColor name="Billable">
+            <color red="0.89803922176361084" green="0.48627451062202454" blue="0.84705883264541626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="CellBackground">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="CustomGray">
+            <color red="0.55686277151107788" green="0.55686277151107788" blue="0.57647061347961426" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Text">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

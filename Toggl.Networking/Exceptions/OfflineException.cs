@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Toggl.Networking.Exceptions
 {
@@ -15,5 +17,9 @@ namespace Toggl.Networking.Exceptions
             : base(defaultMessage, innerException)
         {
         }
+
+        public bool HasTimeouted
+            => InnerException is HttpRequestException httpEx && httpEx.InnerException is TaskCanceledException;
+
     }
 }

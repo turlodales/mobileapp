@@ -7,6 +7,7 @@ using Toggl.Core.Analytics;
 using AppCenterAnalytics = Microsoft.AppCenter.Analytics.Analytics;
 using AppCenter = Microsoft.AppCenter.AppCenter;
 using FirebaseAnalytics = Firebase.Analytics.Analytics;
+using Toggl.Core;
 
 namespace Toggl.iOS.Services
 {

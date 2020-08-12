@@ -1213,4 +1213,157 @@
     <data name="Next" xml:space="preserve">
         <value>次</value>
     </data>
+    <data name="GetReadyToTrackTimeAndBoostYourProductivity" xml:space="preserve">
+        <value>時間を記録する準備をし、
+生産力を高めましょう！</value>
+    </data>
+    <data name="GettingStartedWithTogglApp" xml:space="preserve">
+        <value>Togglアプリを使い始めている</value>
+    </data>
+    <data name="HereIsYourRunningTimeEntryTooltip" xml:space="preserve">
+        <value>これはあなたの現在計測中記録です。
+タップをすると編集する</value>
+    </data>
+    <data name="AssignYourTimeEntryToAProject" xml:space="preserve">
+        <value>時間記録にもっと大きなプロジェクトを設定して、
+もっと便利なレポートを受けられる</value>
+    </data>
+    <data name="TapHereToChangeOrAddProjects" xml:space="preserve">
+        <value>ここにタップするとプロジェクトを設定したり変えたりすることができます</value>
+    </data>
+    <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
+        <value>ここにタップすると次の時間記録を始める</value>
+    </data>
+    <data name="TapHereToStopYourTimeEntry" xml:space="preserve">
+        <value>ここにタップしたら、タイマーを中止する</value>
+    </data>
+    <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
+        <value>$をタップか@を利用して、時間記録にプロジェクトを
+設定することができます</value>
+    </data>
+    <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
+        <value>Togglモバイルアプリで、
+あなたの最初の時間記録が作られました 🎉</value>
+    </data>
+    <data name="YouCanAccessTimeEntriesFromAnyTogglApp" xml:space="preserve">
+        <value>どっちのTogglアプリでも、時間記録が全部簡単に見たり編集したりすることができます。</value>
+    </data>
+    <data name="OkGotIt" xml:space="preserve">
+        <value>よし、分かった！</value>
+    </data>
+    <data name="OnboardingMessagePage3Ios" xml:space="preserve">
+        <value>あなたが働くところで使えられる・モバイル、デスクトップ、ウェブ、そして Watch</value>
+    </data>
+    <data name="YourWorkspacePlan" xml:space="preserve">
+        <value>あなたのワークスペースのプラン</value>
+    </data>
+    <data name="Free" xml:space="preserve">
+        <value>無料</value>
+    </data>
+    <data name="Starter" xml:space="preserve">
+        <value>スターター</value>
+    </data>
+    <data name="Features" xml:space="preserve">
+        <value>特徴</value>
+    </data>
+    <data name="NeverExpires" xml:space="preserve">
+        <value>決して切れません</value>
+    </data>
+    <data name="TrackingTime" xml:space="preserve">
+        <value>時間を記録する</value>
+    </data>
+    <data name="UserGroups" xml:space="preserve">
+        <value>ユーザーグループズ</value>
+    </data>
+    <data name="SummaryAndWeeklyReports" xml:space="preserve">
+        <value>要約と週間レポート</value>
+    </data>
+    <data name="BillableHours" xml:space="preserve">
+        <value>請求可能時間</value>
+    </data>
+    <data name="Exporting" xml:space="preserve">
+        <value>書き出すことができる「PDF、CSV、XLS」</value>
+    </data>
+    <data name="Rounding" xml:space="preserve">
+        <value>四捨五入</value>
+    </data>
+    <data name="SavedReports" xml:space="preserve">
+        <value>保存したレポート</value>
+    </data>
+    <data name="WorkspaceLogo" xml:space="preserve">
+        <value>ワークスペースのロゴ</value>
+    </data>
+    <data name="Estimates" xml:space="preserve">
+        <value>見積</value>
+    </data>
+    <data name="Alerts" xml:space="preserve">
+        <value>警報</value>
+    </data>
+    <data name="Tasks" xml:space="preserve">
+        <value>タスク</value>
+    </data>
+    <data name="ProjectDashboard" xml:space="preserve">
+        <value>プロジェクト・ダッシュボード</value>
+    </data>
+    <data name="IcalFeed" xml:space="preserve">
+        <value>iCalフィード</value>
+    </data>
+    <data name="CustomProjectColor" xml:space="preserve">
+        <value>カスタムなプロジェクト色</value>
+    </data>
+    <data name="ProjectTemplate" xml:space="preserve">
+        <value>プロジェクト型板</value>
+    </data>
+    <data name="MobileAppDesktopAppWebAppTogglButton" xml:space="preserve">
+        <value>モバイルアプリ、デスクトップアプリ、ウェブアプリ &amp; Togglボタン</value>
+    </data>
+    <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
+        <value>toggl.comでログインしてあなたのアカウントとプランの情報をもっと細く見られる。</value>
+    </data>
+    <data name="TogglUrl" xml:space="preserve">
+        <value>https://toggl.com</value>
+    </data>
+    <data name="AdvancedReportsViaWeb" xml:space="preserve">
+        <value>ウェブで高度なレポート</value>
+    </data>
+    <data name="AdvancedReportsFeatures" xml:space="preserve">
+        <value>保存したレポートを作る
+レポートを予定する
+請求可能時間を設定する
+PDF、CSV &amp; XLSを書き出す</value>
+    </data>
+    <data name="AvailableOnOtherPlans" xml:space="preserve">
+        <value>他のプランで利用可能</value>
+    </data>
+    <data name="BillableAwareness" xml:space="preserve">
+        <value>請求可能時間は
+他のプランで利用可能</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>細部を見る</value>
+    </data>
+    <data name="SearchOrAddObject" xml:space="preserve">
+        <value>{0}を検索・追加する</value>
+    </data>
+    <data name="PreLaunchAnnouncementTitle" xml:space="preserve">
+        <value>We're Getting a New Name!</value>
+    </data>
+    <data name="PreLaunchAnnouncementMessage" xml:space="preserve">
+        <value>Toggl is becoming Toggl Track! We'll still be the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family 🤗</value>
+    </data>
+    <data name="RebrandingAnnouncementTitle" xml:space="preserve">
+        <value>Toggl is now Toggl Track!</value>
+    </data>
+    <data name="RebrandingAnnouncementMessage" xml:space="preserve">
+        <value>We're still the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family 🤗</value>
+    </data>
+    <data name="CheckUsOut" xml:space="preserve">
+        <value>Check us out!</value>
+    </data>
+    <data name="LearnMore" xml:space="preserve">
+        <value>Learn more</value>
+    </data>
+    <data name="Dismiss" xml:space="preserve">
+        <value>Dismiss</value>
+    </data>
 </root>

@@ -54,7 +54,11 @@ namespace Toggl.Storage.Settings
         bool OnboardingConditionWasMetBefore(OnboardingConditionKey onboardingConditionKey);
         bool OnboardingTimeEntryWasCreated();
         void SetOnboardingTimeEntryWasCreated();
+        bool IsRunningTheAppFirstTime();
 
         void Reset();
+
+        bool CheckIfAnnouncementWasShown(string announcementId);
+        void MarkAnnouncementAsShown(string id);
     }
 }

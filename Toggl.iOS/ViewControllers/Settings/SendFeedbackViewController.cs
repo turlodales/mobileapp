@@ -107,13 +107,13 @@ namespace Toggl.iOS.ViewControllers.Settings
         private void prepareViews()
         {
             ErrorView.Hidden = true;
-            FeedbackTextView.TintColor = Colors.Feedback.Cursor.ToNativeColor();
-            FeedbackPlaceholderTextView.TintColor = Colors.Feedback.Cursor.ToNativeColor();
+            FeedbackTextView.TintColor = ColorAssets.Accent;
+            FeedbackPlaceholderTextView.TintColor = ColorAssets.Accent;
         }
 
         private void prepareIndicatorView()
         {
-            IndicatorView.IndicatorColor = Colors.Feedback.ActivityIndicator.ToNativeColor();
+            IndicatorView.IndicatorColor = ColorAssets.Accent;
             IndicatorView.Hidden = true;
         }
     }

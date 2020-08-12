@@ -35,7 +35,8 @@ namespace Toggl.Core.UI.Extensions
                 timeEntry.Project?.Client?.Name,
                 timeEntry.Task?.Name,
                 timeEntry.TagIds.Any(),
-                timeEntry.SyncStatus == SyncStatus.SyncNeeded,
+                timeEntry.SyncStatus == SyncStatus.SyncNeeded
+                    || timeEntry.SyncStatus == SyncStatus.Syncing,
                 timeEntry.SyncStatus != SyncStatus.SyncFailed,
                 timeEntry.IsInaccessible,
                 indexInLog,

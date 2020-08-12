@@ -54,5 +54,9 @@ namespace Toggl.iOS.Extensions
         public static readonly UIColor OnboardingTooltipTextColor = UIColor.White;
 
         public static readonly UIColor IconTint = UIColor.FromName("IconTint");
+
+        public static readonly UIColor StartTimeEntryViewDisabledButton = UIColor.FromName("StartTimeEntryViewDisabledButton");
+        public static readonly UIColor StartTimeEntryInactiveButton = UIColor.FromName("StartTimeEntryInactiveButton");
+        public static readonly UIColor StopButton = UIColor.FromName("StopButton");
     }
 }

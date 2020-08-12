@@ -77,6 +77,12 @@ namespace Toggl.iOS.ViewControllers
             else
                 CollectionView.SetCollectionViewLayout(compactLayout, false);
 
+            source.ItemTapped
+                .Where(item => item == ReportsCollectionViewCell.AdvancedReportsViaWeb)
+                .SelectUnit()
+                .Subscribe(ViewModel.OpenYourPlanView.Inputs)
+                .DisposedBy(DisposeBag);
+
             ViewModel.Elements
                 .Subscribe(source.SetNewElements)
                 .DisposedBy(DisposeBag);

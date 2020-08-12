@@ -1,6 +1,6 @@
 ﻿namespace Toggl.Shared.Models
 {
-    public interface ITask : IIdentifiable, ILastChangedDatable
+    public interface ITask : IIdentifiable, IDeletable, ILastChangedDatable
     {
         string Name { get; }
 

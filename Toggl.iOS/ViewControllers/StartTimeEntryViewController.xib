@@ -13,6 +13,11 @@
             <connections>
                 <outlet property="BillableButton" destination="Xnc-Zt-xWV" id="name-outlet-Xnc-Zt-xWV"/>
                 <outlet property="BillableButtonWidthConstraint" destination="I25-Y2-oUz" id="name-outlet-I25-Y2-oUz"/>
+                <outlet property="BillableTooltip" destination="2lb-km-coA" id="Gxb-MZ-Wvc"/>
+                <outlet property="BillableTooltipArrow" destination="xmC-m3-hkS" id="EbE-OT-LGe"/>
+                <outlet property="BillableTooltipBackground" destination="hxp-s2-VvI" id="eZo-Bj-8B2"/>
+                <outlet property="BillableTooltipDetailsButton" destination="72A-5m-9vR" id="KBs-to-4pw"/>
+                <outlet property="BillableTooltipMessageLabel" destination="s2c-eR-2mC" id="t0e-gk-Oaa"/>
                 <outlet property="BottomDistanceConstraint" destination="TiG-hf-iuJ" id="ngb-Nk-Hsg"/>
                 <outlet property="BottomOptionsSheet" destination="dU3-s1-ELa" id="name-outlet-dU3-s1-ELa"/>
                 <outlet property="CloseButton" destination="MAa-jq-GXB" id="name-outlet-MAa-jq-GXB"/>
@@ -214,7 +219,7 @@
                         <constraint firstItem="Dr2-ax-s3L" firstAttribute="leading" secondItem="Xnc-Zt-xWV" secondAttribute="trailing" id="xmn-we-RDd"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuG-P4-DYA" userLabel="Tooltip: Click to assign a project">
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuG-P4-DYA" userLabel="Tooltip: Click to assign a project">
                     <rect key="frame" x="4" y="538" width="243.5" height="79"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKZ-Z4-sVf" userLabel="Background">
@@ -270,10 +275,73 @@ to assign a Project to a Time Entry</string>
                         <constraint firstItem="GKZ-Z4-sVf" firstAttribute="top" secondItem="iuG-P4-DYA" secondAttribute="top" id="mTh-g5-VLD"/>
                     </constraints>
                 </view>
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2lb-km-coA" userLabel="Tooltip: Billable Hours is available on other plans">
+                    <rect key="frame" x="14" y="526" width="185" height="86"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hxp-s2-VvI" userLabel="Background">
+                            <rect key="frame" x="0.0" y="0.0" width="185" height="78"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2c-eR-2mC">
+                                    <rect key="frame" x="10" y="10" width="153" height="31.5"/>
+                                    <string key="text">Billable Hours is available
+ on other plans</string>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="72A-5m-9vR">
+                                    <rect key="frame" x="71.5" y="41.5" width="42" height="28"/>
+                                    <state key="normal">
+                                        <attributedString key="attributedTitle">
+                                            <fragment content="Details">
+                                                <attributes>
+                                                    <color key="NSColor" name="InverseText"/>
+                                                    <font key="NSFont" metaFont="system"/>
+                                                    <integer key="NSUnderline" value="1"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" red="0.023529411760000001" green="0.66666666669999997" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="s2c-eR-2mC" firstAttribute="leading" secondItem="hxp-s2-VvI" secondAttribute="leading" constant="10" id="5iS-Mg-FZV"/>
+                                <constraint firstAttribute="bottom" secondItem="72A-5m-9vR" secondAttribute="bottom" constant="8.5" id="LhD-mU-tJM"/>
+                                <constraint firstAttribute="trailing" secondItem="s2c-eR-2mC" secondAttribute="trailing" constant="22" id="XoG-51-cSE"/>
+                                <constraint firstItem="s2c-eR-2mC" firstAttribute="top" secondItem="hxp-s2-VvI" secondAttribute="top" constant="10" id="bhG-tZ-F9T"/>
+                                <constraint firstItem="72A-5m-9vR" firstAttribute="top" secondItem="s2c-eR-2mC" secondAttribute="bottom" id="lxK-1r-9iZ"/>
+                                <constraint firstItem="72A-5m-9vR" firstAttribute="centerX" secondItem="hxp-s2-VvI" secondAttribute="centerX" id="wG3-Fu-gba"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmC-m3-hkS" userLabel="Arrow" customClass="TriangleView">
+                            <rect key="frame" x="85" y="78" width="16" height="8"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="EcX-5a-btd"/>
+                                <constraint firstAttribute="width" constant="16" id="qE1-Nv-plH"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="xmC-m3-hkS" secondAttribute="bottom" id="6n3-Dw-0sD"/>
+                        <constraint firstItem="hxp-s2-VvI" firstAttribute="top" secondItem="2lb-km-coA" secondAttribute="top" id="HlD-Jk-ePB"/>
+                        <constraint firstItem="hxp-s2-VvI" firstAttribute="leading" secondItem="2lb-km-coA" secondAttribute="leading" id="MH7-GT-FvK"/>
+                        <constraint firstAttribute="trailing" secondItem="hxp-s2-VvI" secondAttribute="trailing" id="R0Y-Xx-PUw"/>
+                        <constraint firstItem="hxp-s2-VvI" firstAttribute="bottom" secondItem="xmC-m3-hkS" secondAttribute="top" id="Vlj-ot-Z8O"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" name="Background"/>
             <constraints>
                 <constraint firstItem="04s-S8-twa" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" id="4RY-Xr-C7o"/>
+                <constraint firstItem="xmC-m3-hkS" firstAttribute="centerX" secondItem="Xnc-Zt-xWV" secondAttribute="centerX" id="6Ya-hb-5tZ"/>
                 <constraint firstItem="fRW-HL-ddX" firstAttribute="centerY" secondItem="MAa-jq-GXB" secondAttribute="centerY" id="8J3-TL-rVu"/>
                 <constraint firstItem="04s-S8-twa" firstAttribute="top" secondItem="jUC-Le-zeo" secondAttribute="bottom" id="8sy-k2-oul"/>
                 <constraint firstItem="Qyl-Yx-Tae" firstAttribute="trailing" secondItem="dU3-s1-ELa" secondAttribute="trailing" id="8yo-dc-reP"/>
@@ -286,11 +354,13 @@ to assign a Project to a Time Entry</string>
                 <constraint firstItem="Zen-V6-U0O" firstAttribute="centerX" secondItem="qfx-lJ-emc" secondAttribute="centerX" id="K2S-kj-gMF"/>
                 <constraint firstItem="MAa-jq-GXB" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" id="SKA-G6-SAk"/>
                 <constraint firstItem="jUC-Le-zeo" firstAttribute="top" secondItem="fRW-HL-ddX" secondAttribute="bottom" constant="10" id="SXU-Bw-6cF"/>
+                <constraint firstItem="2lb-km-coA" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" constant="14" id="Sjh-iJ-s7w"/>
                 <constraint firstAttribute="bottom" secondItem="dU3-s1-ELa" secondAttribute="bottom" id="TiG-hf-iuJ"/>
                 <constraint firstItem="dU3-s1-ELa" firstAttribute="leading" secondItem="Qyl-Yx-Tae" secondAttribute="leading" id="UXV-rQ-vsd"/>
                 <constraint firstItem="MAa-jq-GXB" firstAttribute="top" secondItem="2" secondAttribute="top" id="bZl-x7-d8h"/>
                 <constraint firstItem="fRW-HL-ddX" firstAttribute="top" secondItem="2" secondAttribute="top" constant="6" id="cTD-RE-7b9"/>
                 <constraint firstItem="Qyl-Yx-Tae" firstAttribute="trailing" secondItem="04s-S8-twa" secondAttribute="trailing" id="nQ2-A6-IBf"/>
+                <constraint firstItem="dU3-s1-ELa" firstAttribute="top" secondItem="2lb-km-coA" secondAttribute="bottom" constant="5" id="reA-8N-j4m"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Qyl-Yx-Tae"/>
             <point key="canvasLocation" x="66.400000000000006" y="54.422788605697157"/>
@@ -314,6 +384,9 @@ to assign a Project to a Time Entry</string>
         </namedColor>
         <namedColor name="DarkAccent">
             <color red="0.12549020349979401" green="0.050980392843484879" blue="0.15294118225574493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="InverseText">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Text">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

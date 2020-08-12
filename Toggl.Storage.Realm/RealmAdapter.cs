@@ -15,6 +15,8 @@ namespace Toggl.Storage.Realm
 
         TModel Get(long id);
 
+        TModel FirstOrDefault(long id);
+
         IEnumerable<TModel> Get(long[] ids);
 
         TModel ChangeId(long currentId, long newId);
@@ -66,6 +68,9 @@ namespace Toggl.Storage.Realm
 
         public IQueryable<TModel> GetAll()
             => getRealmInstance().All<TRealmEntity>();
+
+        public TModel FirstOrDefault(long id)
+            => getRealmInstance().All<TRealmEntity>().FirstOrDefault(matchEntity(id));
 
         public TModel Get(long id)
             => getRealmInstance().All<TRealmEntity>().Single(matchEntity(id));

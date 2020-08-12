@@ -43,6 +43,7 @@ namespace Toggl.Core.UI.ViewModels
     {
         private const int ratingViewTimeout = 5;
         private const double throttlePeriodInSeconds = 0.1;
+        private static readonly TimeSpan minTimeBetweenProgressChanges = TimeSpan.FromMilliseconds(20);
 
         private bool noWorkspaceViewPresented;
         private bool hasStopButtonEverBeenUsed;
@@ -198,6 +199,7 @@ namespace Toggl.Core.UI.ViewModels
             widgetsService.Start();
 
             SyncProgressState = syncManager.ProgressObservable
+                .Throttle(minTimeBetweenProgressChanges)
                 .AsDriver(schedulerProvider);
 
             var isWelcome = OnboardingStorage.IsNewUser;
@@ -310,24 +312,28 @@ namespace Toggl.Core.UI.ViewModels
             RunningTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.RunningTimeEntryTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createRunningTimeEntryTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
 
             StartTimeEntryTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.StartTimeEntryTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createStartTimeEntryTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
 
             TapToStopTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.TapToStopTimeEntryTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createTapToStopTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
 
             FinalTooltipCondition = new OnboardingCondition(
                 OnboardingConditionKey.FinalTooltip,
                 OnboardingStorage,
+                schedulerProvider,
                 createFinalTooltipPredicate())
             .TrackingDismissEvents(analyticsService);
         }
@@ -351,12 +357,12 @@ namespace Toggl.Core.UI.ViewModels
         private IObservable<bool> createStartTimeEntryTooltipPredicate()
         {
             var timeEntriesExist = TimeEntriesViewModel.TimeEntries
-                .Select(entries => entries.Any())
+                .Select(entries => entries != null && entries.Any())
                 .Take(1);
 
             var timeEntryIsRunning = CurrentRunningTimeEntry
                 .Select(te => te != null)
-                .Take(1);
+                .Throttle(TimeSpan.FromSeconds(throttlePeriodInSeconds));
 
             var startTimeEntryTapped = StartTimeEntry
                 .Inputs
@@ -489,6 +495,12 @@ namespace Toggl.Core.UI.ViewModels
 
             await handleNoWorkspaceState();
             handleNoDefaultWorkspaceState();
+
+            var announcement = interactorFactory.FetchAnnouncement().Execute();
+            if (announcement != null)
+            {
+                await navigate<AnnouncementViewModel, Announcement>(announcement.Value);
+            }
         }
 
         private async Task viewDisappearedAsync()

@@ -20,6 +20,7 @@ namespace Toggl.Storage.Realm
 
         public RealmWorkspace RealmWorkspaceInternal { get; set; }
 
+        [PrimaryKey]
         public long WorkspaceId { get; set; }
 
         public IDatabaseWorkspace Workspace => RealmWorkspace;

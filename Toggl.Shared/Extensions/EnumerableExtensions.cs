@@ -108,5 +108,33 @@ namespace Toggl.Shared.Extensions
 
         public static IEnumerable<T> PrependIf<T>(this IEnumerable<T> collection, bool condition, Func<T> getElement)
             => condition ? collection.Prepend(getElement()) : collection;
+
+        public static void AddTo<T>(this IEnumerable<T> collection, IList<T> destination)
+        {
+            if (destination is List<T> destinationList)
+            {
+                destinationList.AddRange(collection);
+                return;
+            }
+
+            foreach (var item in collection)
+                destination.Add(item);
+        }
+
+        public delegate void GroupAction<TKey, TItem>(IGrouping<TKey, TItem> group);
+
+        public static void DistributedExecute<TKey, TItem>(
+            this IEnumerable<TItem> collection,
+            Func<TItem, TKey> distributeBy,
+            params (TKey value, GroupAction<TKey, TItem> action)[] actions)
+        {
+            Dictionary<TKey, GroupAction<TKey, TItem>> actionsMap =
+                actions.ToDictionary(item => item.value, item => item.action);
+
+            foreach (var group in collection.GroupBy(distributeBy))
+            {
+                actionsMap[group.Key](group);
+            }
+        }
     }
 }

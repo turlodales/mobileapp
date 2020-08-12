@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Toggl.Shared.Models;
 
 namespace Toggl.Networking.Models
@@ -22,5 +23,7 @@ namespace Toggl.Networking.Models
         public DateTimeOffset At { get; set; }
 
         public long TrackedSeconds { get; set; }
+
+        public DateTimeOffset? ServerDeletedAt { get; set; }
     }
 }

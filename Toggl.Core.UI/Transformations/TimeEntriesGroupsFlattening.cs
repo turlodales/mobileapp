@@ -154,7 +154,9 @@ namespace Toggl.Core.UI.Transformations
                 clientName: sample.Project?.Client?.Name,
                 taskName: sample.Task?.Name,
                 hasTags: sample.Tags.Any(),
-                needsSync: group.Any(timeEntry => timeEntry.SyncStatus == SyncStatus.SyncNeeded),
+                needsSync: group.Any(timeEntry =>
+                    timeEntry.SyncStatus == SyncStatus.SyncNeeded
+                    || timeEntry.SyncStatus == SyncStatus.Syncing),
                 canSync: group.All(timeEntry => timeEntry.SyncStatus != SyncStatus.SyncFailed),
                 isInaccessible: sample.IsInaccessible,
                 indexInLog: indexInLog,

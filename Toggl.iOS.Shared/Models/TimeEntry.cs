@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Toggl.Shared;
 using Toggl.Shared.Models;
 
 namespace Toggl.iOS.Shared.Models
@@ -18,6 +19,26 @@ namespace Toggl.iOS.Shared.Models
         public long Id { get; }
         public DateTimeOffset? ServerDeletedAt { get; }
         public DateTimeOffset At { get; }
+
+        public bool IsDeletedBackup { get; set; }
+        public long? WorkspaceIdBackup { get; set; }
+        public long? ProjectIdBackup { get; set; }
+        public long? TaskIdBackup { get; set; }
+        public bool BillableBackup { get; set; }
+        public DateTimeOffset StartBackup { get; set; }
+        public long? DurationBackup { get; set; }
+        public string DescriptionBackup { get; set; }
+        public IList<long> TagIdsBackup => throw new NotImplementedException();
+
+        public PropertySyncStatus IsDeletedSyncStatus { get; set; }
+        public PropertySyncStatus WorkspaceIdSyncStatus { get; set; }
+        public PropertySyncStatus ProjectIdSyncStatus { get; set; }
+        public PropertySyncStatus TaskIdSyncStatus { get; set; }
+        public PropertySyncStatus BillableSyncStatus { get; set; }
+        public PropertySyncStatus StartSyncStatus { get; set; }
+        public PropertySyncStatus DurationSyncStatus { get; set; }
+        public PropertySyncStatus DescriptionSyncStatus { get; set; }
+        public PropertySyncStatus TagIdsSyncStatus { get; set; }
 
         public TimeEntry(long workspaceId, long? projectId, long? taskId, bool billable, DateTimeOffset start, long? duration,
                          string description, IEnumerable<long> tagIds, long userId, long id, DateTimeOffset? serverDeletedAt, DateTimeOffset at)

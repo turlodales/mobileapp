@@ -15,6 +15,7 @@ namespace Toggl.Networking
         ICountriesApi Countries { get; }
         IWorkspacesApi Workspaces { get; }
         IPreferencesApi Preferences { get; }
+        ISyncApi SyncApi { get; }
         ITimeEntriesApi TimeEntries { get; }
         ITimeEntriesReportsApi TimeEntriesReports { get; }
         IProjectsSummaryApi ProjectsSummary { get; }

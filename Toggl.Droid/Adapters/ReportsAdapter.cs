@@ -5,6 +5,7 @@ using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.Droid.Adapters;
 using Toggl.Droid.ViewHolders;
 using Toggl.Droid.ViewHolders.Reports;
+using Toggl.Shared.Extensions;
 using static Toggl.Droid.Fragments.ReportsAdapter.ViewType;
 
 namespace Toggl.Droid.Fragments
@@ -19,11 +20,15 @@ namespace Toggl.Droid.Fragments
             Donut,
             DonutLegendItem,
             NoData,
-            Error
+            Error,
+            AdvancedReportsOnWeb
         }
 
-        public ReportsAdapter()
+        private readonly ViewAction openYourPlanAction;
+
+        public ReportsAdapter(ViewAction openYourPlanAction)
         {
+            this.openYourPlanAction = openYourPlanAction;
         }
 
         public ReportsAdapter(IntPtr javaReference, JniHandleOwnership transfer)
@@ -42,6 +47,7 @@ namespace Toggl.Droid.Fragments
                 ReportDonutChartLegendItemElement _ => DonutLegendItem,
                 ReportNoDataElement _ => NoData,
                 ReportErrorElement _ => Error,
+                ReportAdvancedReportsViaWebElement _ => AdvancedReportsOnWeb,
                 _ => throw new InvalidOperationException($"Invalid Report Segment View Type for position {position}."),
             };
 
@@ -79,6 +85,10 @@ namespace Toggl.Droid.Fragments
                 case Error:
                     var errorCell = inflater.Inflate(Resource.Layout.ReportErrorElement, parent, false);
                     return new ReportErrorElementViewHolder(errorCell);
+
+                case AdvancedReportsOnWeb:
+                    var advancedReportsCell = inflater.Inflate(Resource.Layout.ReportAdvancedOnWebCard, parent, false);
+                    return new ReportAdvancedCardOnWebViewHolder(advancedReportsCell, openYourPlanAction);
 
                 default:
                     throw new InvalidOperationException("Can't create a viewholder for the given ViewType.");

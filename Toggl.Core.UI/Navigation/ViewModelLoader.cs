@@ -498,6 +498,23 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.AnalyticsService);
             }
 
+            if (viewModelType == typeof(YourPlanViewModel))
+            {
+                return new YourPlanViewModel(
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.InteractorFactory,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.RxActionFactory);
+            }
+
+            if (viewModelType == typeof(AnnouncementViewModel))
+            {
+                return new AnnouncementViewModel(
+                    dependencyContainer.OnboardingStorage,
+                    dependencyContainer.SchedulerProvider,
+                    dependencyContainer.NavigationService);
+            }
+
             throw new InvalidOperationException($"Trying to locate ViewModel {viewModelType.Name} failed.");
         }
     }
