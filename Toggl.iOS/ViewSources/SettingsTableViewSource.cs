@@ -6,6 +6,7 @@ using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Views.Settings;
 using Toggl.iOS.Cells.Settings;
 using Toggl.iOS.Extensions;
+using Toggl.Shared;
 using UIKit;
 
 namespace Toggl.iOS.ViewSources
@@ -64,6 +65,8 @@ namespace Toggl.iOS.ViewSources
                 {
                     var cell = (SettingCell)tableView.DequeueReusableCell(SettingCell.Identifier, indexPath);
                     cell.Item = model;
+                    if (model.Title == Resources.Workspace)
+                        cell.InsertSeparator(UIRectEdge.Top);
                     return cell;
                 }
             }

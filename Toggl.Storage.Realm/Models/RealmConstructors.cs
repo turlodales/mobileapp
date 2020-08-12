@@ -1,6 +1,7 @@
 ﻿using Realms;
 using System.Linq;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Models;
 using Toggl.Storage.Models;
 using Toggl.Storage.Realm.Models;
 
@@ -8,12 +9,14 @@ namespace Toggl.Storage.Realm
 {
     internal partial class RealmClient : IUpdatesFrom<IDatabaseClient>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -55,6 +58,7 @@ namespace Toggl.Storage.Realm
     {
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -82,17 +86,30 @@ namespace Toggl.Storage.Realm
             DateFormat = entity.DateFormat;
             DurationFormat = entity.DurationFormat;
             CollapseTimeEntries = entity.CollapseTimeEntries;
+            UseNewSync = entity.UseNewSync;
+
+            TimeOfDayFormatSyncStatus = entity.TimeOfDayFormatSyncStatus;
+            DurationFormatSyncStatus = entity.DurationFormatSyncStatus;
+            DateFormatSyncStatus = entity.DateFormatSyncStatus;
+            CollapseTimeEntriesSyncStatus = entity.CollapseTimeEntriesSyncStatus;
+
+            CollapseTimeEntriesBackup = entity.CollapseTimeEntriesBackup;
+            DateFormatBackup = entity.DateFormatBackup;
+            DurationFormatBackup = entity.DurationFormatBackup;
+            TimeOfDayFormatBackup = entity.TimeOfDayFormatBackup;
         }
     }
 
     internal partial class RealmProject : IUpdatesFrom<IDatabaseProject>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -144,12 +161,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTag : IUpdatesFrom<IDatabaseTag>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -189,12 +208,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTask : IUpdatesFrom<IDatabaseTask>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -240,12 +261,14 @@ namespace Toggl.Storage.Realm
 
     internal partial class RealmTimeEntry : IUpdatesFrom<IDatabaseTimeEntry>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -295,17 +318,45 @@ namespace Toggl.Storage.Realm
 
             var skipUserFetch = entity?.UserId == null || entity.UserId == 0;
             RealmUser = skipUserFetch ? null : realm.All<RealmUser>().Single(x => x.Id == entity.UserId || x.OriginalId == entity.UserId);
+
+            IsDeletedSyncStatus = entity.IsDeletedSyncStatus;
+            BillableSyncStatus = entity.BillableSyncStatus;
+            DescriptionSyncStatus = entity.DescriptionSyncStatus;
+            DurationSyncStatus = entity.DurationSyncStatus;
+            WorkspaceIdSyncStatus = entity.WorkspaceIdSyncStatus;
+            ProjectIdSyncStatus = entity.ProjectIdSyncStatus;
+            StartSyncStatus = entity.StartSyncStatus;
+            TaskIdSyncStatus = entity.TaskIdSyncStatus;
+            TagIdsSyncStatus = entity.TagIdsSyncStatus;
+
+            IsDeletedBackup = entity.IsDeletedBackup;
+            BillableBackup = entity.BillableBackup;
+            DescriptionBackup = entity.DescriptionBackup;
+            DurationBackup = entity.DurationBackup;
+            WorkspaceIdBackup = entity.WorkspaceIdBackup;
+            ProjectIdBackup = entity.ProjectIdBackup;
+            StartBackup = entity.StartBackup;
+            TaskIdBackup = entity.TaskIdBackup;
+            TagIdsBackup.Clear();
+
+            if (entity.TagIdsBackup != null)
+            {
+                foreach (var tagId in entity.TagIdsBackup)
+                    TagIdsBackup.Add(tagId);
+            }
         }
     }
 
     internal partial class RealmUser : IUpdatesFrom<IDatabaseUser>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -344,17 +395,25 @@ namespace Toggl.Storage.Realm
             Language = entity.Language;
             ImageUrl = entity.ImageUrl;
             Timezone = entity.Timezone;
+
+            DefaultWorkspaceIdSyncStatus = entity.DefaultWorkspaceIdSyncStatus;
+            BeginningOfWeekSyncStatus = entity.BeginningOfWeekSyncStatus;
+
+            DefaultWorkspaceIdBackup = entity.DefaultWorkspaceIdBackup;
+            BeginningOfWeekBackup = entity.BeginningOfWeekBackup;
         }
     }
 
     internal partial class RealmWorkspace : IUpdatesFrom<IDatabaseWorkspace>, IModifiableId
     {
+        [Indexed]
         public long Id { get; set; }
 
         public long? OriginalId { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        [Indexed]
         public int SyncStatusInt { get; set; }
 
         [Ignored]
@@ -428,6 +487,9 @@ namespace Toggl.Storage.Realm
         }
 
         public void SetPropertiesFrom(IDatabaseWorkspaceFeatureCollection entity, Realms.Realm realm)
+            => SetPropertiesFrom((IWorkspaceFeatureCollection)entity, realm);
+
+        public void SetPropertiesFrom(IWorkspaceFeatureCollection entity, Realms.Realm realm)
         {
             var skipWorkspaceFetch = entity?.WorkspaceId == null || entity.WorkspaceId == 0;
             RealmWorkspace = skipWorkspaceFetch ? null : realm.All<RealmWorkspace>().Single(x => x.Id == entity.WorkspaceId || x.OriginalId == entity.WorkspaceId);

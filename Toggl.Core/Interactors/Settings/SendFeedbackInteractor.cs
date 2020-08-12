@@ -98,7 +98,9 @@ namespace Toggl.Core.Interactors.Settings
 
         private IObservable<int> unsyncedTimeEntriesCount
             => timeEntriesDataSource
-                .GetAll(te => te.SyncStatus == SyncStatus.SyncNeeded)
+                .GetAll(te =>
+                    te.SyncStatus == SyncStatus.SyncNeeded
+                    || te.SyncStatus == SyncStatus.Syncing)
                 .Select(list => list.Count());
 
         private IObservable<int> unsyncabeTimeEntriesCount

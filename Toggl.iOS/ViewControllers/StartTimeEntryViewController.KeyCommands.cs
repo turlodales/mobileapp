@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using Foundation;
 using ObjCRuntime;
 using Toggl.iOS.Helper;
@@ -72,7 +71,7 @@ namespace Toggl.iOS.ViewControllers
         [Export(nameof(toggleBillable))]
         private void toggleBillable()
         {
-            ViewModel.ToggleBillable.Execute();
+            ViewModel.BillableTapped.Execute();
         }
     }
 }

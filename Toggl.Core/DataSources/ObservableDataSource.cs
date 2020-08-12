@@ -49,7 +49,7 @@ namespace Toggl.Core.DataSources
         public override IObservable<IEnumerable<IConflictResolutionResult<TThreadsafe>>> DeleteAll(IEnumerable<TThreadsafe> entities)
             => base.DeleteAll(entities).Do(ReportChange);
 
-        protected void ReportChange()
+        public void ReportChange()
         {
             itemsChangedSubject.OnNext(Unit.Default);
         }

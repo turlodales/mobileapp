@@ -1,4 +1,5 @@
-﻿using Toggl.Core.Models.Interfaces;
+﻿using Newtonsoft.Json;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
 using Toggl.Storage;
 
@@ -21,5 +22,31 @@ namespace Toggl.Core.Tests.Mocks
         public bool IsDeleted { get; set; }
 
         public long Id { get; set; }
+
+        public bool UseNewSync { get; set; }
+
+        [JsonIgnore]
+        public PropertySyncStatus TimeOfDayFormatSyncStatus { get; set; }
+
+        [JsonIgnore]
+        public PropertySyncStatus DateFormatSyncStatus { get; set; }
+
+        [JsonIgnore]
+        public PropertySyncStatus DurationFormatSyncStatus { get; set; }
+
+        [JsonIgnore]
+        public PropertySyncStatus CollapseTimeEntriesSyncStatus { get; set; }
+
+        [JsonIgnore]
+        public TimeFormat TimeOfDayFormatBackup { get; set; }
+
+        [JsonIgnore]
+        public DateFormat DateFormatBackup { get; set; }
+
+        [JsonIgnore]
+        public DurationFormat DurationFormatBackup { get; set; }
+
+        [JsonIgnore]
+        public bool CollapseTimeEntriesBackup { get; set; }
     }
 }

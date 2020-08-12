@@ -19,7 +19,7 @@ namespace Toggl.Core.DataSources
     internal sealed class TimeEntriesDataSource : ObservableDataSource<IThreadSafeTimeEntry, IDatabaseTimeEntry>, ITimeEntriesSource
     {
         private readonly IAnalyticsService analyticsService;
-        private readonly IRepository<IDatabaseTimeEntry> repository;
+        private readonly IRepository<IDatabaseTimeEntry> timeEntriesRepository;
 
         private readonly Func<IDatabaseTimeEntry, IDatabaseTimeEntry, ConflictResolutionMode> alwaysCreate
             = (a, b) => ConflictResolutionMode.Create;
@@ -36,21 +36,26 @@ namespace Toggl.Core.DataSources
 
         public IObservable<bool> IsEmpty { get; }
 
+        private ISchedulerProvider schedulerProvider;
+
         public IObservable<IThreadSafeTimeEntry> CurrentlyRunningTimeEntry { get; }
 
         protected override IRivalsResolver<IDatabaseTimeEntry> RivalsResolver { get; }
 
-        public TimeEntriesDataSource(IRepository<IDatabaseTimeEntry> repository,
+        public TimeEntriesDataSource(
+            IRepository<IDatabaseTimeEntry> timeEntriesRepository,
             ITimeService timeService,
-            IAnalyticsService analyticsService, 
+            IAnalyticsService analyticsService,
             ISchedulerProvider schedulerProvider)
-            : base(repository, schedulerProvider)
+            : base(timeEntriesRepository, schedulerProvider)
         {
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
-            Ensure.Argument.IsNotNull(repository, nameof(repository));
+            Ensure.Argument.IsNotNull(timeEntriesRepository, nameof(timeEntriesRepository));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
 
-            this.repository = repository;
+            this.schedulerProvider = schedulerProvider;
+
+            this.timeEntriesRepository = timeEntriesRepository;
             this.analyticsService = analyticsService;
 
             RivalsResolver = new TimeEntryRivalsResolver(timeService);
@@ -76,7 +81,7 @@ namespace Toggl.Core.DataSources
         }
 
         public override IObservable<IThreadSafeTimeEntry> Create(IThreadSafeTimeEntry entity)
-            => repository.UpdateWithConflictResolution(entity.Id, entity, alwaysCreate, RivalsResolver)
+            => timeEntriesRepository.UpdateWithConflictResolution(entity.Id, entity, alwaysCreate, RivalsResolver)
                 .ToThreadSafeResult(Convert)
                 .Flatten()
                 .OfType<CreateResult<IThreadSafeTimeEntry>>()
@@ -87,6 +92,98 @@ namespace Toggl.Core.DataSources
         public void OnTimeEntryStopped(IThreadSafeTimeEntry timeEntry)
         {
             timeEntryStoppedSubject.OnNext(timeEntry);
+        }
+
+        public override IObservable<IThreadSafeTimeEntry> Update(IThreadSafeTimeEntry timeEntry)
+            => timeEntriesRepository.GetById(timeEntry.Id)
+                .Do(timeEntryDb => backupTimeEntry(timeEntryDb, timeEntry))
+                .SelectMany(_ => base.Update(timeEntry));
+
+        public override IObservable<IEnumerable<IConflictResolutionResult<IThreadSafeTimeEntry>>> BatchUpdate(IEnumerable<IThreadSafeTimeEntry> entities)
+        {
+            var timeEntries = entities.ToList();
+            return backupLocal(timeEntries)
+                .SingleAsync()
+                .SelectMany(_ => base.BatchUpdate(timeEntries))
+                .SingleAsync();
+        }
+
+        private IObservable<Unit> backupLocal(IEnumerable<IThreadSafeTimeEntry> timeEntries)
+        {
+            var ids = timeEntries.Select(te => te.Id).ToArray();
+            return timeEntriesRepository.GetByIds(ids)
+                .SingleAsync()
+                .SelectMany(CommonFunctions.Identity)
+                .Select(Convert)
+                .ToDictionary(te => te.Id)
+                .Do(localTimeEntries =>
+                {
+                    foreach (var remote in timeEntries)
+                    {
+                        if (localTimeEntries.TryGetValue(remote.Id, out var local))
+                            backupTimeEntry(local, remote);
+                    }
+                })
+                .SelectUnit();
+        }
+
+        private void backupTimeEntry(IDatabaseTimeEntry timeEntryDb, IThreadSafeTimeEntry timeEntry)
+        {
+            if (timeEntryDb.IsDeletedSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.IsDeletedSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.IsDeletedBackup = timeEntryDb.IsDeleted;
+            }
+
+            if (timeEntryDb.BillableSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.BillableSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.BillableBackup = timeEntryDb.Billable;
+            }
+
+            if (timeEntryDb.DescriptionSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.DescriptionSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.DescriptionBackup = timeEntryDb.Description;
+            }
+
+            if (timeEntryDb.DurationSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.DurationSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.DurationBackup = timeEntryDb.Duration;
+            }
+
+            if (timeEntryDb.WorkspaceIdSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.WorkspaceIdSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.WorkspaceIdBackup = timeEntryDb.WorkspaceId;
+            }
+
+            if (timeEntryDb.ProjectIdSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.ProjectIdSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.ProjectIdBackup = timeEntryDb.ProjectId;
+            }
+
+            if (timeEntryDb.StartSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.StartSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.StartBackup = timeEntryDb.Start;
+            }
+
+            if (timeEntryDb.TaskIdSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.TaskIdSyncStatus = PropertySyncStatus.SyncNeeded;
+                timeEntry.TaskIdBackup = timeEntryDb.TaskId;
+            }
+
+            if (timeEntryDb.TagIdsSyncStatus == PropertySyncStatus.InSync)
+            {
+                timeEntry.TagIdsSyncStatus = PropertySyncStatus.SyncNeeded;
+
+                timeEntry.TagIdsBackup.Clear();
+                timeEntryDb.TagIds.AddTo(timeEntry.TagIdsBackup);
+            }
         }
 
         public void OnTimeEntryStarted(IThreadSafeTimeEntry timeEntry, TimeEntryStartOrigin origin)

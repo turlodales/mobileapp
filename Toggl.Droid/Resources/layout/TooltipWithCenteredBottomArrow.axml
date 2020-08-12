@@ -8,18 +8,35 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/TooltipText"
-            android:gravity="center_vertical"
-            android:textColor="@color/tooltipText"
-            android:paddingEnd="24dp"
-            android:paddingTop="16dp"
-            android:paddingStart="16dp"
-            android:paddingBottom="16dp"
+        <LinearLayout
             android:background="@drawable/background_tooltip"
-            tools:text="Add a project and tags on the fly"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/TooltipText"
+                android:gravity="center"
+                android:textColor="@color/tooltipText"
+                android:paddingEnd="24dp"
+                android:paddingStart="16dp"
+                tools:text="Add a project and tags on the fly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/TooltipButton"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textColor="@color/tooltipText"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingEnd="24dp"
+                android:paddingStart="16dp"
+                tools:text="Click here"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
         <ImageView
             app:srcCompat="@drawable/shape_diamond"
             android:layout_width="12dp"

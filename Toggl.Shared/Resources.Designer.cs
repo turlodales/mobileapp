@@ -89,6 +89,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string OnboardingMessagePage3Ios {
+            get {
+                return ResourceManager.GetString("OnboardingMessagePage3Ios", resourceCulture);
+            }
+        }
+        
         public static string ContinueWithGoogle {
             get {
                 return ResourceManager.GetString("ContinueWithGoogle", resourceCulture);
@@ -443,6 +449,24 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string Dismiss {
+            get {
+                return ResourceManager.GetString("Dismiss", resourceCulture);
+            }
+        }
+        
+        public static string CheckUsOut {
+            get {
+                return ResourceManager.GetString("CheckUsOut", resourceCulture);
+            }
+        }
+        
+        public static string LearnMore {
+            get {
+                return ResourceManager.GetString("LearnMore", resourceCulture);
+            }
+        }
+
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
@@ -833,9 +857,9 @@ namespace Toggl.Shared {
             }
         }
         
-        public static string SearchObject {
+        public static string SearchOrAddObject {
             get {
-                return ResourceManager.GetString("SearchObject", resourceCulture);
+                return ResourceManager.GetString("SearchOrAddObject", resourceCulture);
             }
         }
         
@@ -872,6 +896,30 @@ namespace Toggl.Shared {
         public static string InaccessibleTimeEntryErrorMessage {
             get {
                 return ResourceManager.GetString("InaccessibleTimeEntryErrorMessage", resourceCulture);
+            }
+        }
+        
+        public static string PreLaunchAnnouncementTitle {
+            get {
+                return ResourceManager.GetString("PreLaunchAnnouncementTitle", resourceCulture);
+            }
+        }
+        
+        public static string PreLaunchAnnouncementMessage {
+            get {
+                return ResourceManager.GetString("PreLaunchAnnouncementMessage", resourceCulture);
+            }
+        }
+        
+        public static string RebrandingAnnouncementTitle {
+            get {
+                return ResourceManager.GetString("RebrandingAnnouncementTitle", resourceCulture);
+            }
+        }
+        
+        public static string RebrandingAnnouncementMessage {
+            get {
+                return ResourceManager.GetString("RebrandingAnnouncementMessage", resourceCulture);
             }
         }
         
@@ -2501,6 +2549,144 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string YourWorkspacePlan {
+            get {
+                return ResourceManager.GetString("YourWorkspacePlan", resourceCulture);
+            }
+        }
+        
+        public static string Free {
+            get {
+                return ResourceManager.GetString("Free", resourceCulture);
+            }
+        }
+        
+        public static string Starter {
+            get {
+                return ResourceManager.GetString("Starter", resourceCulture);
+            }
+        }
+        
+        public static string Features {
+            get {
+                return ResourceManager.GetString("Features", resourceCulture);
+            }
+        }
+        
+        public static string NeverExpires {
+            get {
+                return ResourceManager.GetString("NeverExpires", resourceCulture);
+            }
+        }
+        
+        public static string TrackingTime {
+            get {
+                return ResourceManager.GetString("TrackingTime", resourceCulture);
+            }
+        }
+        
+        public static string UserGroups {
+            get {
+                return ResourceManager.GetString("UserGroups", resourceCulture);
+            }
+        }
+        
+        public static string SummaryAndWeeklyReports {
+            get {
+                return ResourceManager.GetString("SummaryAndWeeklyReports", resourceCulture);
+            }
+        }
+        
+        public static string BillableHours {
+            get {
+                return ResourceManager.GetString("BillableHours", resourceCulture);
+            }
+        }
+        
+        public static string Exporting {
+            get {
+                return ResourceManager.GetString("Exporting", resourceCulture);
+            }
+        }
+        
+        public static string Rounding {
+            get {
+                return ResourceManager.GetString("Rounding", resourceCulture);
+            }
+        }
+        
+        public static string SavedReports {
+            get {
+                return ResourceManager.GetString("SavedReports", resourceCulture);
+            }
+        }
+        
+        public static string WorkspaceLogo {
+            get {
+                return ResourceManager.GetString("WorkspaceLogo", resourceCulture);
+            }
+        }
+        
+        public static string Estimates {
+            get {
+                return ResourceManager.GetString("Estimates", resourceCulture);
+            }
+        }
+        
+        public static string Alerts {
+            get {
+                return ResourceManager.GetString("Alerts", resourceCulture);
+            }
+        }
+        
+        public static string Tasks {
+            get {
+                return ResourceManager.GetString("Tasks", resourceCulture);
+            }
+        }
+        
+        public static string ProjectDashboard {
+            get {
+                return ResourceManager.GetString("ProjectDashboard", resourceCulture);
+            }
+        }
+        
+        public static string IcalFeed {
+            get {
+                return ResourceManager.GetString("IcalFeed", resourceCulture);
+            }
+        }
+        
+        public static string CustomProjectColor {
+            get {
+                return ResourceManager.GetString("CustomProjectColor", resourceCulture);
+            }
+        }
+        
+        public static string ProjectTemplate {
+            get {
+                return ResourceManager.GetString("ProjectTemplate", resourceCulture);
+            }
+        }
+        
+        public static string MobileAppDesktopAppWebAppTogglButton {
+            get {
+                return ResourceManager.GetString("MobileAppDesktopAppWebAppTogglButton", resourceCulture);
+            }
+        }
+        
+        public static string LoginToYourAccountOnTogglToSeeMore {
+            get {
+                return ResourceManager.GetString("LoginToYourAccountOnTogglToSeeMore", resourceCulture);
+            }
+        }
+        
+        public static string TogglUrl {
+            get {
+                return ResourceManager.GetString("TogglUrl", resourceCulture);
+            }
+        }
+        
         public static string YouveMadeYourFirstTimeEntry {
             get {
                 return ResourceManager.GetString("YouveMadeYourFirstTimeEntry", resourceCulture);
@@ -2516,6 +2702,36 @@ namespace Toggl.Shared {
         public static string OkGotIt {
             get {
                 return ResourceManager.GetString("OkGotIt", resourceCulture);
+            }
+        }
+        
+        public static string AdvancedReportsViaWeb {
+            get {
+                return ResourceManager.GetString("AdvancedReportsViaWeb", resourceCulture);
+            }
+        }
+
+        public static string AdvancedReportsFeatures {
+            get {
+                return ResourceManager.GetString("AdvancedReportsFeatures", resourceCulture);
+            }
+        }
+
+        public static string AvailableOnOtherPlans {
+            get {
+                return ResourceManager.GetString("AvailableOnOtherPlans", resourceCulture);
+            }
+        }
+
+        public static string BillableAwareness {
+            get {
+                return ResourceManager.GetString("BillableAwareness", resourceCulture);
+            }
+        }
+        
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
             }
         }
     }

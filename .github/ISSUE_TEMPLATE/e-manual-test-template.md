@@ -23,6 +23,19 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Test email field with invalid email
 - [ ] Test email field with mixed character sets (including various languages)
 - [ ] Test password field for old/changed password
+### Testing SSO
+Keep in mind:
+- your email must be added to OKTA app https://dev-400633.okta.com and to Toggl SSO Test workspace (id 4434656)
+- on Android, when you want to use a different email for subsequent logins, you first need to logout from the OKTA session via Chrome (or the default browser), or clear app storage
+- in order to test account linking with Google login, you might have to clear app storage so that you're not automatically logged with a previously used email
+- it's best to remove adhoc/debug versions of the app before testing SSO.
+
+
+- [ ] Test a domain that isn't SSO-enabled (just an email with a random domain should work), validate an error shows up
+- [ ] Test an SSO-enabled email, but cancel the OKTA auth process - validate there's a 'Something went wrong' error.
+- [ ] Test the linking flow - use an email that is a part of the SSO workspace and is added to OKTA, but has not logged in with SSO yet. After authenticating in OKTA, you should see the linking view and after logging in, you should see a message that linking was succesful. Test that flow with a regular login, google login and apple login, if possible.
+- [ ] Do the same as above, but when logging in after the linking view, use a different email to the one you used in the SSO login view. The message should now say that the account has not been linked to SSO.
+- [ ] Test the happy flow (linked and SSO-enabled account) - after authenticating in OKTA you should be taken straight to TE list
 
 ## Testing timer page
 - [ ] Start timer
@@ -42,6 +55,12 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Start a new entry, discard new entry.
 - [ ] Continue an entry
 - [ ] Delete an entry
+- [ ] The billable button in the Start Time Entry view for free workspaces
+  - [ ] Is the billable button grayed out
+  - [ ] Does tapping the button show the "Billable Hours is available on other plans" tooltip
+  - [ ] Deos tapping "Details" in said tooltip show the Your Workspace Plan view?
+  - [ ] Can the tooltip be dismissed by tapping on it?
+- [ ] Does the billble button work as it should for paid workspaces?
 
 ## Right to left language at random (Arabic, Aramaic, Azeri, Dhivehi/Maldivian, Hebrew, Kurdish (Sorani), Persian/Farsi, Urdu) Though not strictly RTL this could also apply to Chinese, Korean, Japanese and some other languages.
 
@@ -88,6 +107,9 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Delete a TE group from an Edit View
 - [ ] Check whether the group summary time on both main log and in Edit view is the same and correct
 
+## Test the rating prompt
+- [ ] Meet the criteria of showing the rating view - validate it appears and is working as intended. Criteria can be found here: https://console.firebase.google.com/u/0/project/toggl-mobile/config.
+
 ## Testing report screen
 - [ ] Custom range
 - [ ] Is correct data displayed
@@ -106,10 +128,19 @@ about: A manual testing checklist that can be assigned to a release to track the
 - [ ] Custom range 1 day
 - [ ] Ensure correct year is selected on all options
 - [ ] Change workspaces
+- [ ] Is the Advanced Reports Via Web card shown
+  - [ ] Is it positioned correctly on iPhone
+  - [ ] Is it positioned correctly on ipad
+  - [ ] Does it have an "Available on other plans" button for users whose current default workspace is free?
+  - [ ] Does tapping that button open the Your Workspace Plan view for users whose current default workspace is in a free plan?
+  - [ ] Does tapping the card do nothing for users whose current default workspace is a paid one?
 
 ## Testing settings page
 - [ ] Sign out normal email
 - [ ] Sign out google sign in
+- [ ] Does the Your Workspace Plan row shows when the default workspace is in a free plan?
+- [ ] Is the Your Workspace Plan row hidden when the default workspace is in a not in a free plan?
+- [ ] Tap on the Your Workspace Plan row
 - [ ] Change workspace
 - [ ] Date format MM/DD/YYYY
 - [ ] Date format DD-MM-YYYY
@@ -216,13 +247,22 @@ about: A manual testing checklist that can be assigned to a release to track the
 
 ## Testing onboarding (have a fresh install to test this)
 
-- [ ] Does the "Tap to start timer" onboarding step shows up after login?
-- [ ] Does the "Tap to stop timer" onboarding step shows up after starting a time entry?
-- [ ] Does the "Tap to edit time entry" onboarding step shows up after stopping a time entry?
-- [ ] Does the "Categorize your time with projects" onboarding step shows up after opening the edit view for the first time?
+- [ ] Testing Sign Up onboarding
+  - [ ] Is the onboarding time entry created automatically. The description should be "Getting started with Toggl app"?
+  - [ ] Does the "Here is your running Time Entry" tooltip appear after 2 seconds?
+  - [ ] Does the project tooltip appear in the Edit Time Entry view?
+  - [ ] Does the "Tap here to stop the Timer" tooltip appears after closing the Edit Time Entry view?
+  - [ ] Does the final tooltip appear after stopping the running time entry?
+- [ ] Testing Log In onboarding
+  - [ ] If the account has no existing time entries, is the onboarding time entry created?
+  - [ ] If the account has a running time entry, does the "Here is your running Time Entry" tooltip appear after 2 seconds?
+  - [ ] If the account has time entries, but none of them are running, does the "Tap here to start your next Time Entry" tooltip appear?
+  - [ ] Do the project tooltips appear in the Edit Time Entry and Start Time Entry views?
+  - [ ] Does the final tooltip appear after stopping a running time entry?
 
-- [ ] Can onboarding steps be dismissed by tapping on them?
-- [ ] Can onboarding steps be dismissed by taking the offered action?
+- [ ] Log out and back in after completing the onboarding, the you should not see repeated onboarding
+- [ ] Can onboarding tooltips  be dismissed by tapping on them?
+- [ ] Can onboarding tooltips be dismissed by taking the offered action?
 
 ## Testing Handoff
 - [ ] Test Handoff to web from the timer page

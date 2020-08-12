@@ -79,6 +79,7 @@ namespace Toggl.Core.Calendar
             switch (timeEntry.SyncStatus)
             {
                 case SyncStatus.SyncNeeded:
+                case SyncStatus.Syncing:
                     IconKind = CalendarIconKind.Unsynced;
                     break;
                 case SyncStatus.SyncFailed:

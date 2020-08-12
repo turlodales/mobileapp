@@ -16,6 +16,9 @@ namespace Toggl.Storage.Realm
         public IObservable<TModel> GetById(long id)
             => CreateObservable(() => Adapter.Get(id));
 
+        public IObservable<TModel> FirstOrDefaultWithId(long id)
+            => CreateObservable(() => Adapter.FirstOrDefault(id));
+
         public IObservable<IEnumerable<TModel>> GetByIds(long[] ids)
             => CreateObservable(() => Adapter.Get(ids));
 

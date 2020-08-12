@@ -139,6 +139,9 @@
       <HintPath>..\packages\Square.OkIO.1.17.4\lib\monoandroid44\Square.OkIO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.7.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
       <Private>True</Private>
@@ -356,9 +359,6 @@
     </Reference>
     <Reference Include="Realm.Sync">
       <HintPath>..\packages\Realm.3.0.0\lib\netstandard1.4\Realm.Sync.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\packages\System.Collections.Immutable.1.6.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="Xamarin.Firebase.Config">
@@ -592,6 +592,10 @@
     <Compile Include="Activities\TermsAndCountryFullActivity.cs" />
     <Compile Include="Activities\TermsAndCountryModalActivity.cs" />
     <Compile Include="Activities\WebAuthenticationCallbackActivity.cs" />
+    <Compile Include="Activities\YourPlanActivity.cs" />
+    <Compile Include="Activities\YourPlanActivity.ViewBinds.cs">
+      <DependentUpon>YourPlanActivity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Adapters\DiffingStrategies\EquatableDiffingStrategy.cs" />
     <Compile Include="Adapters\DiffingStrategies\IdentifierEqualityDiffingStrategy.cs" />
     <Compile Include="Adapters\DiffingStrategies\IDiffingStrategy.cs" />
@@ -608,6 +612,7 @@
     <Compile Include="Extensions\Reactive\ToolbarExtensions.cs" />
     <Compile Include="Extensions\SnackbarExtensions.cs" />
     <Compile Include="Extensions\SpannableExtensions.cs" />
+    <Compile Include="Fragments\AnnouncementFragment.cs" />
     <Compile Include="Fragments\Calendar\CalendarDayViewPageFragment.cs" />
     <Compile Include="Fragments\Calendar\CalendarDayViewPageFragment.DialogProvider.cs">
       <DependentUpon>CalendarDayViewPageFragment.cs</DependentUpon>
@@ -672,6 +677,7 @@
     <Compile Include="ViewHolders\CalendarWeekSectionViewHolder.cs" />
     <Compile Include="ViewHolders\DateRangePicker\DateRangePickerShortcutViewHolder.cs" />
     <Compile Include="ViewHolders\LicenseViewHolder.cs" />
+    <Compile Include="ViewHolders\Reports\ReportAdvancedCardOnWebViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportDonutChartLegendItemViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportDonutChartDonutViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportElementViewHolder.cs" />
@@ -1081,6 +1087,8 @@
     <AndroidResource Include="Resources\layout\SettingsToggleRowWithDescription.axml" />
     <AndroidResource Include="Resources\layout\SsoLinkActivity.axml" />
     <AndroidResource Include="Resources\layout\SsoLoginActivity.axml" />
+    <AndroidResource Include="Resources\layout\YourPlanActivity.axml" />
+    <AndroidResource Include="Resources\layout\YourPlanActivityItem.axml" />
     <AndroidResource Include="Resources\layout\TermsAndCountryActivity.axml" />
     <AndroidResource Include="Resources\layout\TermsAndCountryModalActivity.axml" />
     <AndroidResource Include="Resources\layout\WidgetLoading.axml" />
@@ -1102,6 +1110,7 @@
     <AndroidResource Include="Resources\layout\SuggestionsWidgetItem.axml" />
     <AndroidResource Include="Resources\layout\TimeEntryWidgetSmall.axml" />
     <AndroidResource Include="Resources\layout\WidgetNotLoggedIn.axml" />
+    <AndroidResource Include="Resources\layout\ReportAdvancedOnWebCard.axml" />
     <AndroidResource Include="Resources\menu\SettingsMenu.xml" />
     <AndroidResource Include="Resources\menu\DoneOrClearMenu.xml" />
     <AndroidResource Include="Resources\menu\OneButtonMenu.xml" />
@@ -1124,6 +1133,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\illustration_reports_total_chart.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\illustration_reports_total_chart.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_reports_total_chart.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_toggl_track_logotype_stacked_pink_rgb.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_toggl_track_logotype_stacked_pink_rgb.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_toggl_track_logotype_stacked_pink_rgb.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_toggl_track_logotype_stacked_pink_rgb.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_toggl_track_logotype_stacked_pink_rgb.png" />
     <AndroidResource Include="Resources\mipmap-anydpi-v26\ic_launcher.xml" />
     <AndroidResource Include="Resources\layout\MainFragment.axml" />
     <AndroidResource Include="Resources\layout\LoginActivity.axml" />
@@ -1163,6 +1177,11 @@
     <AndroidResource Include="Resources\layout\TokenResetActivity.axml" />
     <AndroidResource Include="Resources\layout\EditTimeEntryTagCell.axml" />
     <AndroidResource Include="Resources\drawable\shape_edit_text_cursor.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\illustration_graph.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_graph.png" />
     <AndroidResource Include="Resources\drawable-hdpi\illustration_bike.png" />
     <AndroidResource Include="Resources\drawable-mdpi\illustration_bike.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\illustration_bike.png" />
@@ -1226,7 +1245,6 @@
     <AndroidResource Include="Resources\drawable\ic_thumbs_up.xml" />
     <AndroidResource Include="Resources\layout\MainUserFeedbackCard.axml" />
     <AndroidResource Include="Resources\xml\RemoteConfigDefaults.xml" />
-    <AndroidResource Include="Resources\xml\network_security_config.xml" />
     <AndroidResource Include="Resources\layout\MainLogEmptyView.axml" />
     <AndroidResource Include="Resources\drawable\background_tags.xml" />
     <AndroidResource Include="Resources\drawable\background_empty_view.xml" />
@@ -1326,6 +1344,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\TooltipWithCenteredTopArrow.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AnnouncementFragment.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

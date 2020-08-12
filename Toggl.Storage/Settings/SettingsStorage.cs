@@ -60,6 +60,13 @@ namespace Toggl.Storage.Settings
 
         private const string swipeActionsDisabledKey = "swipeActionsDisabled";
 
+        private readonly string[] oldOnboardingDismissedKeys =
+        {
+            "Onboarding_Toggl.Core.UI.Onboarding.MainView.StartTimeEntryOnboardingStep",
+            "Onboarding_Toggl.Core.UI.Onboarding.MainView.StopTimeEntryOnboardingStep",
+            "Onboarding_Toggl.Core.UI.Onboarding.MainView.EditTimeEntryOnboardingStep"
+        };
+
         private readonly Version version;
         private readonly IKeyValueStorage keyValueStorage;
 
@@ -332,6 +339,14 @@ namespace Toggl.Storage.Settings
         public void SetOnboardingTimeEntryWasCreated()
             => keyValueStorage.SetBool(onboardingTimeEntryWasCreatedKey, true);
 
+        public bool IsRunningTheAppFirstTime()
+        {
+            return !keyValueStorage.GetBool(startButtonWasTappedBeforeKey) &&
+                   !keyValueStorage.GetBool(stopButtonWasTappedBeforeKey) &&
+                   !keyValueStorage.GetBool(hasEditedTimeEntryKey) &&
+                   oldOnboardingDismissedKeys.None(key => keyValueStorage.GetBool(key));
+        }
+
         void IOnboardingStorage.Reset()
         {
             keyValueStorage.SetBool(startButtonWasTappedBeforeKey, false);
@@ -537,6 +552,14 @@ namespace Toggl.Storage.Settings
             var observable = subject.AsObservable().DistinctUntilChanged();
 
             return (subject, observable);
+        }
+
+        public bool CheckIfAnnouncementWasShown(string announcementId)
+            => keyValueStorage.GetBool(announcementId);
+
+        public void MarkAnnouncementAsShown(string id)
+        {
+            keyValueStorage.SetBool(id, true);
         }
     }
 }

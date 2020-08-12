@@ -36,6 +36,7 @@ namespace Toggl.iOS.Cells
                     syncStatusLabel.TextColor = UIColor.Red;
                     break;
                 case SyncNeeded:
+                case Syncing:
                     syncStatusLabel.TextColor = UIColor.DarkGray;
                     break;
             }
