@@ -75,6 +75,7 @@ namespace Toggl.iOS.ViewControllers.Settings
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };
+            imageView.TintColor = enabled ? ColorAssets.Accent : ColorAssets.Text2;
             container.AddSubview(imageView);
             var label = new UILabel
             {
