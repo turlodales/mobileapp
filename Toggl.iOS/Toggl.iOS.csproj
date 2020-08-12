@@ -1429,6 +1429,12 @@
     <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph.png" />
     <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\illustrationBarChart.imageset\Graph%403x.png" />
+    <ImageAsset Include="Resources\Colors.xcassets\RebrandingText.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\RebrandingBackground.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%403.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%402.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1530,6 +1536,7 @@
     <InterfaceDefinition Include="Views\Onboarding\OnboardingPageView.xib" />
     <InterfaceDefinition Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\YourPlanViewController.xib" />
+    <InterfaceDefinition Include="ViewControllers\AnnouncementViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -2178,6 +2185,10 @@
     <Compile Include="ViewControllers\Settings\YourPlanViewController.cs" />
     <Compile Include="ViewControllers\Settings\YourPlanViewController.designer.cs">
       <DependentUpon>YourPlanViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\AnnouncementViewController.cs" />
+    <Compile Include="ViewControllers\AnnouncementViewController.designer.cs">
+      <DependentUpon>AnnouncementViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
