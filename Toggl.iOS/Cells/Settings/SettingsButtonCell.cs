@@ -24,7 +24,7 @@ namespace Toggl.iOS.Cells.Settings
 
         public override void AwakeFromNib()
         {
-            TitleLabel.TextColor = UIColor.Red;
+            TitleLabel.TextColor = ColorAssets.StopButton;
             ContentView.InsertSeparator();
         }
 
