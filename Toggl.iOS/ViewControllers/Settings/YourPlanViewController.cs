@@ -25,6 +25,10 @@ namespace Toggl.iOS.ViewControllers.Settings
             View.BackgroundColor = ColorAssets.TableBackground;
             Title = Resources.YourWorkspacePlan;
 
+            //For now this view is only shown to free users, so no need to complicate things yet
+            PlanNameLabel.Text = Resources.Free;
+            PlanExpirationDateLabel.Text = Resources.NeverExpires;
+
             var rawString = Resources.LoginToYourAccountOnTogglToSeeMore;
             var togglDotCom = "toggl.com";
             var str = new NSMutableAttributedString(rawString);
@@ -71,6 +75,7 @@ namespace Toggl.iOS.ViewControllers.Settings
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };
+            imageView.TintColor = enabled ? ColorAssets.Accent : ColorAssets.Text2;
             container.AddSubview(imageView);
             var label = new UILabel
             {
