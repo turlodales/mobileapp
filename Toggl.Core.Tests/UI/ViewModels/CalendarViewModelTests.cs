@@ -265,21 +265,6 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Theory, LogIfTooSlow]
             [MemberData(nameof(BeginningOfWeekTestData))]
-            public void AlwaysContains8ViewableWeeks(BeginningOfWeek beginningOfWeek)
-            {
-                SetupBeginningOfWeek(beginningOfWeek);
-                var observer = TestScheduler.CreateObserver<IImmutableList<CalendarWeeklyViewDayViewModel>>();
-                var viewModel = CreateViewModel();
-                viewModel.WeekViewDays.Subscribe(observer);
-
-                TestScheduler.Start();
-
-                observer.Values().Should().HaveCount(1);
-                observer.Values().First().Where(day => day.Enabled).Should().HaveCount(7 * 8);
-            }
-
-            [Theory, LogIfTooSlow]
-            [MemberData(nameof(BeginningOfWeekTestData))]
             public void StartsWithTheSelectedBeginningOfWeek(BeginningOfWeek beginningOfWeek)
             {
                 SetupBeginningOfWeek(beginningOfWeek);
@@ -385,7 +370,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Theory, LogIfTooSlow]
             [MemberData(nameof(BeginningOfWeekTestData))]
-            public void AllDaysAfterTodayAreMarkedAsUnviewable(BeginningOfWeek beginningOfWeek)
+            public void AllDaysAfterTheLastViewableDayAreMarkedAsUnviewable(BeginningOfWeek beginningOfWeek)
             {
                 SetupBeginningOfWeek(beginningOfWeek);
                 var observer = TestScheduler.CreateObserver<IImmutableList<CalendarWeeklyViewDayViewModel>>();
@@ -394,9 +379,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                var daysAfterToday = observer.Values().Single().Where(day => day.Date > now.Date);
-                if (daysAfterToday.None()) return;
-                daysAfterToday.Should().OnlyContain(day => !day.Enabled);
+                var daysAfterLastViewableDate = observer.Values().Single().Where(day => day.Date > now.Date.BeginningOfWeek(beginningOfWeek).AddDays(7 * 8).Date);
+                if (daysAfterLastViewableDate.None()) return;
+                daysAfterLastViewableDate.Should().OnlyContain(day => !day.Enabled);
             }
 
             [Theory, LogIfTooSlow]

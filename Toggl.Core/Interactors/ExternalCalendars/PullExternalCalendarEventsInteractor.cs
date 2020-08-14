@@ -10,8 +10,8 @@ namespace Toggl.Core.Interactors
 {
     public sealed class PullExternalCalendarEventsInteractor : IInteractor<Task<IEnumerable<IExternalCalendarEvent>>>
     {
-        private const int daysInThePast = 67;
-        private const int daysInTheFuture = 7;
+        private const int daysInThePast = 60;
+        private const int daysInTheFuture = 60;
         private const int pageSizeLimit = 5000;
 
         private readonly ITogglApi api;

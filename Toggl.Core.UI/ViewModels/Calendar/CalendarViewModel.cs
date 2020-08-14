@@ -31,8 +31,10 @@ namespace Toggl.Core.UI.ViewModels.Calendar
     [Preserve(AllMembers = true)]
     public sealed class CalendarViewModel : ViewModel
     {
-        private const int availableWeeksCount = 8;
-        private const int availableDayCount = 7 * availableWeeksCount;
+        private const int availablePastWeeksCount = 8;
+        private const int availablePastDaysCount = 7 * availablePastWeeksCount;
+        private const int availableFutureWeeksCount = 8;
+        private const int availableFutureDaysCount = 7 * availableFutureWeeksCount;
         private const string dateFormat = "dddd, MMM d";
 
         private readonly CompositeDisposable disposeBag = new CompositeDisposable();
@@ -226,14 +228,15 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         {
             var now = timeService.CurrentDateTime.ToLocalTime();
             var today = now.Date;
-            var firstAvailableDate = now.AddDays(-availableDayCount + 1).Date;
+            var firstAvailableDate = now.AddDays(-availablePastDaysCount + 1).Date;
+            var lastAvailableDate = now.AddDays(availableFutureDaysCount).Date;
             var firstShownDate = firstAvailableDate.BeginningOfWeek(beginningOfWeek).Date;
-            var lastShownDate = now.BeginningOfWeek(beginningOfWeek).AddDays(7).Date;
+            var lastShownDate = lastAvailableDate.BeginningOfWeek(beginningOfWeek).Date;
 
             var currentDate = firstShownDate;
             while (currentDate != lastShownDate)
             {
-                var dateIsViewable = currentDate <= today && currentDate >= firstAvailableDate;
+                var dateIsViewable = currentDate <= lastAvailableDate && currentDate >= firstAvailableDate;
                 yield return new CalendarWeeklyViewDayViewModel(currentDate, currentDate == today, dateIsViewable);
                 currentDate = currentDate.AddDays(1);
             }

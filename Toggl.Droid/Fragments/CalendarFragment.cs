@@ -39,7 +39,9 @@ namespace Toggl.Droid.Fragments
     public partial class CalendarFragment : ReactiveTabFragment<CalendarViewModel>, IScrollableToStart, IBackPressHandler
     {
         public static int NumberOfDaysInTheWeek = 7;
-        private const int calendarPagesCount = 14;
+        private const int pastCalendarPagesCount = 7 * 8;
+        private const int futureCalendarPagesCount = 7 * 8;
+        private const int calendarPagesCount = pastCalendarPagesCount + futureCalendarPagesCount;
         private readonly Subject<bool> scrollToStartSignaler = new Subject<bool>();
         private CalendarDayFragmentAdapter calendarDayAdapter;
         private CalendarWeekStripeAdapter calendarWeekStripeAdapter;
@@ -131,7 +133,7 @@ namespace Toggl.Droid.Fragments
                 .Subscribe(hideBottomBar)
                 .DisposedBy(DisposeBag);
 
-            calendarViewPager.SetCurrentItem(calendarPagesCount - 1, false);
+            calendarViewPager.SetCurrentItem(pastCalendarPagesCount - 1, false);
             ViewModel.CurrentlyShownDate
                 .Select(calculateDayViewPage)
                 .Subscribe(page => calendarViewPager.SetCurrentItem(page, true))
@@ -264,7 +266,7 @@ namespace Toggl.Droid.Fragments
             var swipeDirection = previousPageIndex > newPageIndex
                 ? CalendarSwipeDirection.Left
                 : CalendarSwipeDirection.Rignt;
-            var daysSinceToday = newPageIndex - calendarPagesCount + 1;
+            var daysSinceToday = newPageIndex - pastCalendarPagesCount + 1;
             var dayOfWeek = ViewModel.IndexToDate(daysSinceToday).DayOfWeek.ToString();
             AndroidDependencyContainer.Instance.AnalyticsService.CalendarSingleSwipe.Track(swipeDirection, daysSinceToday, dayOfWeek);
         }
@@ -272,14 +274,14 @@ namespace Toggl.Droid.Fragments
         private DateTime calculateDayForCalendarDayPage(int currentPage)
         {
             var today = AndroidDependencyContainer.Instance.TimeService.CurrentDateTime.ToLocalTime().Date;
-            return today.AddDays(-(calendarPagesCount - currentPage - 1));
+            return today.AddDays(-(pastCalendarPagesCount - currentPage - 1));
         }
 
         private int calculateDayViewPage(DateTime newDate)
         {
             var today = AndroidDependencyContainer.Instance.TimeService.CurrentDateTime.ToLocalTime().Date;
             var distanceFromToday = (today - newDate).Days;
-            return calendarPagesCount - distanceFromToday - 1;
+            return pastCalendarPagesCount - distanceFromToday - 1;
         }
 
         private void updateWeekViewHeaders(IImmutableList<DayOfWeek> days)
@@ -363,7 +365,7 @@ namespace Toggl.Droid.Fragments
                 return;
 
             scrollToStartSignaler.OnNext(true);
-            calendarViewPager.SetCurrentItem(calendarPagesCount - 1, true);
+            calendarViewPager.SetCurrentItem(pastCalendarPagesCount - 1, true);
         }
 
         public override void OnResume()
@@ -388,7 +390,7 @@ namespace Toggl.Droid.Fragments
         private DateTimeOffset getDateAtAdapterPosition(int position)
         {
             var currentDate = timeService.CurrentDateTime.ToLocalTime().Date;
-            return currentDate.AddDays(-(calendarDayAdapter.Count - 1 - position));
+            return currentDate.AddDays(-(calendarDayAdapter.Count - pastCalendarPagesCount - 1 - position));
         }
 
         private void updateAppbarElevation(bool isAtTop)
@@ -471,7 +473,7 @@ namespace Toggl.Droid.Fragments
             public override Fragment GetItem(int position)
                 => new CalendarDayViewPageFragment
                 {
-                    ViewModel = calendarViewModel.DayViewModelAt(-(Count - 1 - position)),
+                    ViewModel = calendarViewModel.DayViewModelAt(-(pastCalendarPagesCount - 1 - position)),
                     ScrollOffsetRelay = OffsetRelay,
                     HourHeightRelay = HourHeightRelay,
                     CurrentPageRelay = CurrentPageRelay,
