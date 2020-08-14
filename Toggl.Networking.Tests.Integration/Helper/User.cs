@@ -37,7 +37,7 @@ namespace Toggl.Networking.Tests.Integration
         }
 
         private static (Email email, Password password) generateEmailPassword()
-            => (RandomEmail.GenerateValid(), "123456".ToPassword());
+            => (RandomEmail.GenerateValid(), "123@StRoNg#456".ToPassword());
 
         private static async Task<IUser> createUser(Email email, Password password)
         {

@@ -706,8 +706,7 @@ Mettez en marche le chronomètre et vos enregistrements les plus utilisés s'aff
         <value>Appuez pour arrêter le chronomètre</value>
     </data>
     <data name="ClickOnFolderIconToAssignAProject" xml:space="preserve">
-        <value>Click on $ or use @ to assign
-a Project to a Time Entry</value>
+        <value>Cliquez sur $ ou utilisez @ pour attribuer un Projet à une Entrée</value>
     </data>
     <data name="DoneWithExclamationMark" xml:space="preserve">
         <value>Terminé!</value>
@@ -1283,125 +1282,147 @@ Quelques préparatifs avant que
 vous puissiez suivre votre temps</value>
     </data>
     <data name="GetReadyToTrackTimeAndBoostYourProductivity" xml:space="preserve">
-        <value>Get ready to track time and
-boost your productivity!</value>
+        <value>Préparez-vous à suivre votre temps et à augmenter votre productivité</value>
     </data>
     <data name="GettingStartedWithTogglApp" xml:space="preserve">
-        <value>Getting started with Toggl app</value>
+        <value>Débuter avec Toggl app</value>
     </data>
     <data name="HereIsYourRunningTimeEntryTooltip" xml:space="preserve">
-        <value>Here is your running Time Entry.
-Tap to edit it.</value>
+        <value>Voici votre première entrée en cours d´exécution. Appuyez dessus pour l'editer.</value>
     </data>
     <data name="AssignYourTimeEntryToAProject" xml:space="preserve">
-        <value>Assign your time entry to a larger 
-Project to get more useful time reports</value>
+        <value>Attribuez votre entrée à un Projet pour obtenir des rapports plus utiles</value>
     </data>
     <data name="TapHereToChangeOrAddProjects" xml:space="preserve">
-        <value>Tap here to change or add Projects</value>
+        <value>Appuyez ici port editer ou ajouter des Projets</value>
     </data>
     <data name="TapHereToStartYourNextTimeEntry" xml:space="preserve">
-        <value>Tap here to start your next Time Entry</value>
+       <value>Appuyez ici pour démarrer votre prochaine Entrée</value>>
     </data>
     <data name="TapHereToStopYourTimeEntry" xml:space="preserve">
-        <value>Tapping here will stop the timer</value>
+        <value>Appuyez ici, pour arrêter le chronomètre</value>
     </data>
     <data name="YourWorkspacePlan" xml:space="preserve">
-        <value>Your Workspace Plan</value>
+        <value>Votre abonnement pour votre espace de travail</value>
     </data>
     <data name="Free" xml:space="preserve">
-        <value>Free</value>
+        <value>Gratuit</value>
     </data>
     <data name="Starter" xml:space="preserve">
         <value>Starter</value>
     </data>
   <data name="Features" xml:space="preserve">
-        <value>Features</value>
+        <value>Fonctionnalités</value>
     </data>
     <data name="NeverExpires" xml:space="preserve">
-        <value>Never Expires</value>
+        <value>N'expire jamais</value>
     </data>
     <data name="TrackingTime" xml:space="preserve">
-        <value>Tracking Time</value>
+        <value>Suivi du temps</value>
     </data>
     <data name="UserGroups" xml:space="preserve">
-        <value>User Groups</value>
+        <value>Groupes d'utilisateurs</value>
     </data>
     <data name="SummaryAndWeeklyReports" xml:space="preserve">
-        <value>Summary and Weekly Reports</value>
+        <value>Résumé et rapports hebdomadaires</value>
     </data>
     <data name="BillableHours" xml:space="preserve">
-        <value>Billable Hours</value>
+        <value>Heures facturables</value>
     </data>
     <data name="Exporting" xml:space="preserve">
-        <value>Exporting (PDF, CSV, XLS)</value>
+        <value>Export (PDF, CSV, XLS)</value>
     </data>
     <data name="Rounding" xml:space="preserve">
-        <value>Rounding</value>
+        <value>Arrondi</value>
     </data>
     <data name="SavedReports" xml:space="preserve">
-        <value>Saved Reports</value>
+        <value>SaRapports enregistrés</value>
     </data>
     <data name="WorkspaceLogo" xml:space="preserve">
-        <value>Workspace Logo</value>
+        <value>Logo pour votre espace de travail</value>
     </data>
     <data name="Estimates" xml:space="preserve">
-        <value>Estimates</value>
+        <value>Estimations</value>
     </data>
     <data name="Alerts" xml:space="preserve">
-        <value>Alerts</value>
+        <value>Alertes</value>
     </data>
     <data name="Tasks" xml:space="preserve">
-        <value>Tasks</value>
+        <value>Tâches</value>
     </data>
     <data name="ProjectDashboard" xml:space="preserve">
-        <value>Project Dashboard</value>
+        <value>Tableau de bord du projet</value>
     </data>
     <data name="IcalFeed" xml:space="preserve">
-        <value>iCal Feed</value>
+        <value>Flux iCal</value>
     </data>
     <data name="CustomProjectColor" xml:space="preserve">
-        <value>Custom Project Color</value>
+        <value>Couleur de projet personnalisée</value>
     </data>
     <data name="ProjectTemplate" xml:space="preserve">
-        <value>Project Template</value>
+        <value>Modèle de projet</value>
     </data>
     <data name="MobileAppDesktopAppWebAppTogglButton" xml:space="preserve">
-        <value>Mobile App, Desktop App, Web App &amp; Toggl Button</value>
+        <value>Application mobile, desktop, web et le bouton Toggl</value>
     </data>
     <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
-        <value>Login to your account on toggl.com to see more detailed info about you account and plan.</value>
+        <value>Connectez-vous à votre compte sur toggl.com pour accéder à des informations détaillées sur votre compte et votre abonnement.</value>
     </data>
     <data name="TogglUrl" xml:space="preserve">
         <value>https://toggl.com</value>
     </data>
     <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
-        <value>You've made your first
-Time Entry on Toggl mobile app 🎉</value>
+        <value>Vous avez créée votre première entrée sur l'appli Toggl 🎉</value>
     </data>
     <data name="YouCanAccessTimeEntriesFromAnyTogglApp" xml:space="preserve">
-        <value>You can easily access and edit all your Time Entries from any Toggl app.</value>
+        <value>Vous pouvez facilement accéder et modifier toutes vos entrées avec l'enssemble des outils Toggl</value>
     </data>
     <data name="OkGotIt" xml:space="preserve">
-        <value>Ok, got it!</value>
+        <value>Ok, compris!</value>
     </data>
     <data name="AdvancedReportsViaWeb" xml:space="preserve">
-        <value>Advanced reports via web</value>
+        <value>Rapports avancés via l'interface web</value>
     </data>
     <data name="AdvancedReportsFeatures" xml:space="preserve">
-        <value>Create saved reports
-Schedule your reports
-Set billable hours
-Export PDF, CSV &amp; XLS</value>
+        <value>Créer des rapports enregistrés
+Planifiez vos rapports
+Définissez des heures facturables
+Exports PDF, CSV et XLS</value>
     </data>
     <data name="AvailableOnOtherPlans" xml:space="preserve">
-        <value>Available on other plans</value>
+        <value>Disponible avec d'autres plans</value>
     </data>
     <data name="BillableAwareness" xml:space="preserve">
-        <value>Billable Hours is available
-on other plans</value>
+        <value>Les heures facturables sont disponnibles avec d'autres abonnements</value>
     </data>
     <data name="Details" xml:space="preserve">
-        <value>Details</value>
+        <value>Détails</value>
+    </data>
+    <data name="OnboardingMessagePage3Ios" xml:space="preserve">
+        <value>Fonctionne comme vous - mobile, desktop, web et Watch</value>
+    </data>
+    <data name="SearchOrAddObject" xml:space="preserve">
+        <value>Rechercher ou ajouter {0}</value>
+    </data>
+    <data name="PreLaunchAnnouncementTitle" xml:space="preserve">
+        <value>We're Getting a New Name!</value>
+    </data>
+    <data name="PreLaunchAnnouncementMessage" xml:space="preserve">
+        <value>Toggl is becoming Toggl Track! We'll still be the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family 🤗</value>
+    </data>
+    <data name="RebrandingAnnouncementTitle" xml:space="preserve">
+        <value>Toggl is now Toggl Track!</value>
+    </data>
+    <data name="RebrandingAnnouncementMessage" xml:space="preserve">
+        <value>We're still the Toggl you know and love on mobile, desktop, and web - but we've welcomed Toggl Plan and Toggl Hire into the family 🤗</value>
+    </data>
+    <data name="CheckUsOut" xml:space="preserve">
+        <value>Check us out!</value>
+    </data>
+    <data name="LearnMore" xml:space="preserve">
+        <value>Learn more</value>
+    </data>
+    <data name="Dismiss" xml:space="preserve">
+        <value>Dismiss</value>
     </data>
 </root>

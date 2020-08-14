@@ -2,12 +2,10 @@ using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Toggl.Core.DataSources;
 using Toggl.Core.Exceptions;
 using Toggl.Networking;
 using Toggl.Networking.Exceptions;
 using Toggl.Shared;
-using Toggl.Shared.Extensions;
 using Toggl.Shared.Models;
 using Toggl.Storage;
 using Toggl.Storage.Queries;
@@ -40,14 +38,39 @@ namespace Toggl.Core.Interactors
 
         public async Task Execute()
         {
-            var since = sinceRepository.Get<ITimeEntry>();
+            long? serverTime = null;
 
-            var response = await api.SyncApi.Pull(since);
-            queryFactory.ProcessPullResult(response).Execute();
+            try
+            {
+                serverTime = await pull();
+            }
+            catch (BadRequestException e)
+            {
+                serverTime = await pullAndResetLocalState();
+            }
 
             await handlePotentialNoWorkspaceScenario();
 
-            sinceRepository.Set<ITimeEntry>(DateTimeOffset.FromUnixTimeSeconds(response.ServerTime));
+            if (serverTime.HasValue)
+            {
+                var nextSince = DateTimeOffset.FromUnixTimeSeconds(serverTime.Value);
+                sinceRepository.Set<ITimeEntry>(nextSince);
+            }
+        }
+
+        private async Task<long> pull()
+        {
+            var since = sinceRepository.Get<ITimeEntry>();
+            var response = await api.SyncApi.Pull(since);
+            queryFactory.ProcessPullResult(response).Execute();
+            return response.ServerTime;
+        }
+
+        private async Task<long> pullAndResetLocalState()
+        {
+            var response = await api.SyncApi.Pull(null);
+            queryFactory.ResetLocalState(response).Execute();
+            return response.ServerTime;
         }
 
         private async Task handlePotentialNoWorkspaceScenario()

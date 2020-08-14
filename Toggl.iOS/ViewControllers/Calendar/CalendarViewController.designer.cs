@@ -46,7 +46,7 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint SettingsButtonTrailingConstraint { get; set; }
 
 		[Outlet]
-		UIKit.UIImageView StartTimeEntryButton { get; set; }
+		UIKit.UIButton StartTimeEntryButton { get; set; }
 
 		[Outlet]
 		UIKit.UIButton StopTimeEntryButton { get; set; }
@@ -65,36 +65,6 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (DailyTrackedTimeLabel != null) {
-				DailyTrackedTimeLabel.Dispose ();
-				DailyTrackedTimeLabel = null;
-			}
-
-			if (DailyTrackedTimeLeadingConstraint != null) {
-				DailyTrackedTimeLeadingConstraint.Dispose ();
-				DailyTrackedTimeLeadingConstraint = null;
-			}
-
-			if (DayViewContainer != null) {
-				DayViewContainer.Dispose ();
-				DayViewContainer = null;
-			}
-
-			if (SelectedDateLabel != null) {
-				SelectedDateLabel.Dispose ();
-				SelectedDateLabel = null;
-			}
-
-			if (SettingsButton != null) {
-				SettingsButton.Dispose ();
-				SettingsButton = null;
-			}
-
-			if (SettingsButtonTrailingConstraint != null) {
-				SettingsButtonTrailingConstraint.Dispose ();
-				SettingsButtonTrailingConstraint = null;
-			}
-
 			if (CurrentTimeEntryCard != null) {
 				CurrentTimeEntryCard.Dispose ();
 				CurrentTimeEntryCard = null;
@@ -115,9 +85,39 @@ namespace Toggl.iOS.ViewControllers
 				CurrentTimeEntryProjectTaskClientLabel = null;
 			}
 
+			if (DailyTrackedTimeLabel != null) {
+				DailyTrackedTimeLabel.Dispose ();
+				DailyTrackedTimeLabel = null;
+			}
+
+			if (DailyTrackedTimeLeadingConstraint != null) {
+				DailyTrackedTimeLeadingConstraint.Dispose ();
+				DailyTrackedTimeLeadingConstraint = null;
+			}
+
+			if (DayViewContainer != null) {
+				DayViewContainer.Dispose ();
+				DayViewContainer = null;
+			}
+
 			if (RunningEntryDescriptionFadeView != null) {
 				RunningEntryDescriptionFadeView.Dispose ();
 				RunningEntryDescriptionFadeView = null;
+			}
+
+			if (SelectedDateLabel != null) {
+				SelectedDateLabel.Dispose ();
+				SelectedDateLabel = null;
+			}
+
+			if (SettingsButton != null) {
+				SettingsButton.Dispose ();
+				SettingsButton = null;
+			}
+
+			if (SettingsButtonTrailingConstraint != null) {
+				SettingsButtonTrailingConstraint.Dispose ();
+				SettingsButtonTrailingConstraint = null;
 			}
 
 			if (StartTimeEntryButton != null) {
