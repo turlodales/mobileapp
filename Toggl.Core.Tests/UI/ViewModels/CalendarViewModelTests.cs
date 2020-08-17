@@ -379,7 +379,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                var daysAfterLastViewableDate = observer.Values().Single().Where(day => day.Date > now.Date.BeginningOfWeek(beginningOfWeek).AddDays(7 * 8).Date);
+                var daysAfterLastViewableDate = observer.Values().Single().Where(day => day.Date > now.Date.BeginningOfWeek(beginningOfWeek).AddDays(CalendarMaxPastDays).Date);
                 if (daysAfterLastViewableDate.None()) return;
                 daysAfterLastViewableDate.Should().OnlyContain(day => !day.Enabled);
             }
@@ -395,7 +395,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                var weeksAgo = now.Date.AddDays(-7 * 8);
+                var weeksAgo = now.Date.AddDays(-CalendarMaxPastDays);
                 var daysBeforeTwoWeeks = observer.Values().Single().Where(day => day.Date < weeksAgo);
                 if (daysBeforeTwoWeeks.None()) return;
                 daysBeforeTwoWeeks.Should().OnlyContain(day => !day.Enabled);

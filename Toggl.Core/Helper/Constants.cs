@@ -15,6 +15,9 @@ namespace Toggl.Core.Helper
         public const int FetchTimeEntriesForMonths = 2;
         public const int TimeEntriesEndDateInclusiveExtraDaysCount = 2;
 
+        public const int CalendarMaxPastDays = 7 * 8;
+        public const int CalendarMaxFutureDays = 7 * 8;
+
         public const string DefaultLanguageCode = "en";
         public static readonly string[] SupportedTwoLettersLanguageCodes = { "en", "ja", "pt", "fr" };
 

@@ -19,14 +19,15 @@ using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
 using UIKit;
 using static Toggl.Core.UI.Helper.Animation;
+using static Toggl.Core.Helper.Constants;
 
 namespace Toggl.iOS.ViewControllers
 {
     public sealed partial class CalendarViewController : ReactiveViewController<CalendarViewModel>, IUIPageViewControllerDataSource, IUIPageViewControllerDelegate
     {
         private const int weekViewHeight = 44;
-        private const int maxAllowedPageIndex = 0;
-        private const int minAllowedPageIndex = -13;
+        private const int maxAllowedPageIndex = CalendarMaxFutureDays - 1;
+        private const int minAllowedPageIndex = -CalendarMaxPastDays + 1;
         private const int weekViewHeaderFontSize = 12;
         private const float showCardDelay = 0.1f;
 
@@ -461,7 +462,11 @@ namespace Toggl.iOS.ViewControllers
                         cancellationToken: cardAnimationCancellation.Token);
 
                     AnimationExtensions.Animate(Timings.LeaveTiming, Curves.CardOutCurve,
-                        () => CurrentTimeEntryCard.Transform = CGAffineTransform.MakeTranslation(0, 0),
+                        () =>
+                        {
+                            CurrentTimeEntryCard.Transform = CGAffineTransform.MakeTranslation(0, 0);
+                            CurrentTimeEntryCard.Alpha = 1;
+                        },
                         cancellationToken: cardAnimationCancellation.Token);
                 },
                 cancellationToken: cardAnimationCancellation.Token);
@@ -482,7 +487,12 @@ namespace Toggl.iOS.ViewControllers
                 cancellationToken: cardAnimationCancellation.Token);
 
             AnimationExtensions.Animate(Timings.LeaveTiming, Curves.CardOutCurve,
-                () => CurrentTimeEntryCard.Transform = CGAffineTransform.MakeTranslation(0, CurrentTimeEntryCard.Frame.Height),
+                () =>
+                {
+                    CurrentTimeEntryCard.Transform =
+                        CGAffineTransform.MakeTranslation(0, CurrentTimeEntryCard.Frame.Height);
+                    CurrentTimeEntryCard.Alpha = 0;
+                },
                 () =>
                 {
                     CurrentTimeEntryCard.Hidden = true;
@@ -500,6 +510,7 @@ namespace Toggl.iOS.ViewControllers
             StartTimeEntryButton.Transform = CGAffineTransform.MakeScale(0.01f, 0.01f);
             StopTimeEntryButton.Transform = CGAffineTransform.MakeScale(0.01f, 0.01f);
             CurrentTimeEntryCard.Transform = CGAffineTransform.MakeTranslation(0, CurrentTimeEntryCard.Frame.Height);
+            CurrentTimeEntryCard.Alpha = 0;
         }
 
         private void prepareStartButtonLongPressAnimation()

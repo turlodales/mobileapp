@@ -33,14 +33,15 @@ using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.UI.Helper;
+using static Toggl.Core.Helper.Constants;
 
 namespace Toggl.Droid.Fragments
 {
     public partial class CalendarFragment : ReactiveTabFragment<CalendarViewModel>, IScrollableToStart, IBackPressHandler
     {
         public static int NumberOfDaysInTheWeek = 7;
-        private const int pastCalendarPagesCount = 7 * 8;
-        private const int futureCalendarPagesCount = 7 * 8;
+        private const int pastCalendarPagesCount = CalendarMaxPastDays;
+        private const int futureCalendarPagesCount = CalendarMaxFutureDays;
         private const int calendarPagesCount = pastCalendarPagesCount + futureCalendarPagesCount;
         private readonly Subject<bool> scrollToStartSignaler = new Subject<bool>();
         private CalendarDayFragmentAdapter calendarDayAdapter;
