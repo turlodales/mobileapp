@@ -125,11 +125,11 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(DailyTrackedTimeLabel.Rx().Text())
                 .DisposedBy(DisposeBag);
 
-            var trackModeImage = UIImage.FromBundle("playIcon");
-            var manualModeImage = UIImage.FromBundle("manualIcon");
+            var trackModeImage = UIImage.FromBundle("play").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            var manualModeImage = UIImage.FromBundle("plusLarge").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             ViewModel.IsInManualMode
                 .Select(isInManualMode => isInManualMode ? manualModeImage : trackModeImage)
-                .Subscribe(image => StartTimeEntryButton.Image = image)
+                .Subscribe(image => StartTimeEntryButton.SetImage(image, UIControlState.Normal))
                 .DisposedBy(DisposeBag);
 
             CurrentTimeEntryCard.Rx().Tap()

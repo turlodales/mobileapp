@@ -10,6 +10,7 @@
 
 namespace Toggl.Shared {
     using System;
+    using System.Reflection;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
@@ -2667,19 +2668,19 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("AdvancedReportsViaWeb", resourceCulture);
             }
         }
-
+        
         public static string AdvancedReportsFeatures {
             get {
                 return ResourceManager.GetString("AdvancedReportsFeatures", resourceCulture);
             }
         }
-
+        
         public static string AvailableOnOtherPlans {
             get {
                 return ResourceManager.GetString("AvailableOnOtherPlans", resourceCulture);
             }
         }
-
+        
         public static string BillableAwareness {
             get {
                 return ResourceManager.GetString("BillableAwareness", resourceCulture);
@@ -2689,6 +2690,48 @@ namespace Toggl.Shared {
         public static string Details {
             get {
                 return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        public static string PreLaunchAnnouncementTitle {
+            get {
+                return ResourceManager.GetString("PreLaunchAnnouncementTitle", resourceCulture);
+            }
+        }
+        
+        public static string PreLaunchAnnouncementMessage {
+            get {
+                return ResourceManager.GetString("PreLaunchAnnouncementMessage", resourceCulture);
+            }
+        }
+        
+        public static string RebrandingAnnouncementTitle {
+            get {
+                return ResourceManager.GetString("RebrandingAnnouncementTitle", resourceCulture);
+            }
+        }
+        
+        public static string RebrandingAnnouncementMessage {
+            get {
+                return ResourceManager.GetString("RebrandingAnnouncementMessage", resourceCulture);
+            }
+        }
+        
+        public static string CheckUsOut {
+            get {
+                return ResourceManager.GetString("CheckUsOut", resourceCulture);
+            }
+        }
+        
+        public static string LearnMore {
+            get {
+                return ResourceManager.GetString("LearnMore", resourceCulture);
+            }
+        }
+        
+        public static string Dismiss {
+            get {
+                return ResourceManager.GetString("Dismiss", resourceCulture);
             }
         }
     }

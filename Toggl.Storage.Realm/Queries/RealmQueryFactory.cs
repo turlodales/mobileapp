@@ -34,6 +34,8 @@ namespace Toggl.Storage.Realm.Queries
         public IQuery<Unit> MigrateBackToOldSyncing()
             => new MigrateBackToOldSyncingQuery(realmProvider);
 
+        public IQuery<Unit> ResetLocalState(Networking.Sync.Pull.IResponse response)
+            => new ResetLocalStateQuery(realmProvider, currentTimeProvider, response);
         public IQuery<Unit> PersistExternalCalendarsData(Dictionary<IExternalCalendar, IEnumerable<IExternalCalendarEvent>> calendarData)
             => new PersistExternalCalendarsDataQuery(realmProvider, calendarData);
     }
