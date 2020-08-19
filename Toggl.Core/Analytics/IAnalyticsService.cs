@@ -264,6 +264,9 @@ namespace Toggl.Core.Analytics
       
         IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
+        IAnalyticsEvent BillableTooltipDetailsButtonTapped { get; }
+        IAnalyticsEvent TogglUrlOpenedFromYourWorkspacePlanView { get; }
+
         IAnalyticsEvent LoginWithSso { get; }
         IAnalyticsEvent SsoFlowStarted { get; }
         IAnalyticsEvent SsoUrlRequested { get; }

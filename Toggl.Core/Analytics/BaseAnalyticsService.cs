@@ -262,6 +262,9 @@ namespace Toggl.Core.Analytics
 
         public IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
+        public IAnalyticsEvent BillableTooltipDetailsButtonTapped { get; }
+        public IAnalyticsEvent TogglUrlOpenedFromYourWorkspacePlanView { get; }
+
         public IAnalyticsEvent LoginWithSso { get; }
         public IAnalyticsEvent SsoFlowStarted { get; }
         public IAnalyticsEvent SsoUrlRequested { get; }
@@ -407,7 +410,9 @@ namespace Toggl.Core.Analytics
             SsoLinkOutcome = new AnalyticsEvent<string>(this, nameof(SsoLinkOutcome), "Outcome");
             SsoUrlOutcome = new AnalyticsEvent<string>(this, nameof(SsoUrlOutcome), "Outcome");
             OnboardingTimeEntryCreated = new AnalyticsEvent(this, nameof(OnboardingTimeEntryCreated));
-        }
+            BillableTooltipDetailsButtonTapped = new AnalyticsEvent(this, nameof(BillableTooltipDetailsButtonTapped));
+            TogglUrlOpenedFromYourWorkspacePlanView = new AnalyticsEvent(this, nameof(TogglUrlOpenedFromYourWorkspacePlanView));
+    }
 
         public PerformanceMeasurement StartNewSyncPerformanceMeasurement()
             => startPerformanceMeasurement("SyncPerformanceNew");
