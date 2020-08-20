@@ -108,7 +108,7 @@
   <color name="loginSignUpOptionsDivider">#F3F3F3</color>
   <color name="countryPickerOutlineColor">#61000000</color>
   <color name="dropdownColor">#61000000</color>
-  <color name="onboardingButtonBackgroundColor">#FF5273</color>
+  <color name="onboardingButtonBackgroundColor">#FFE57CD8</color>
   <color name="loginSignUpEditTextOutlineColor">#61000000</color>
 
   <!-- Onboarding -->
