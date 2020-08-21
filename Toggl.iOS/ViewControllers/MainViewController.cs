@@ -328,6 +328,7 @@ namespace Toggl.iOS.ViewControllers
                         return;
 
                     IosDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
+                    addBadgeToReportsTab();
 
                     finalTooltipCellSubscription = tableViewSource
                         .WillDisplayCell
@@ -370,6 +371,20 @@ namespace Toggl.iOS.ViewControllers
             FinalTooltipCloseIcon.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
 
             FinalTooltip.SetUpTooltipShadow();
+        }
+
+        private void addBadgeToReportsTab()
+        {
+            var reportsTabBarItem = TabBarController.TabBar.Items[1];
+           
+            reportsTabBarItem.SetBadgeTextAttributes(
+                new UIStringAttributes
+                {
+                    ForegroundColor = UIColor.Red
+                },
+                UIControlState.Normal);
+            reportsTabBarItem.BadgeColor = UIColor.Clear;
+            reportsTabBarItem.BadgeValue = "●";
         }
 
         private void prepareStartTimeEntryTooltip()

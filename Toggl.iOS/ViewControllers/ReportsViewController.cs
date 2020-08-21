@@ -125,6 +125,8 @@ namespace Toggl.iOS.ViewControllers
             IosDependencyContainer.Instance.IntentDonationService.DonateShowReport();
 
             viewDidAppearSubject.OnNext(Unit.Default);
+
+            NavigationController.TabBarItem.BadgeValue = null;
         }
 
         public void ScrollToTop() { }
