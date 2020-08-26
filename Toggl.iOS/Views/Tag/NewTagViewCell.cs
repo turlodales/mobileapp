@@ -42,8 +42,8 @@ namespace Toggl.iOS.Views.Tag
         protected override void UpdateView()
         {
             TextLabel.Text = Item.Name;
-            UncheckedImageView.Hidden = !Item.Selected;
-            CheckedImageView.Hidden = Item.Selected;
+            UncheckedImageView.Hidden = Item.Selected;
+            CheckedImageView.Hidden = !Item.Selected;
         }
 
         private void setBackgroundColor(bool selected, bool animated)
