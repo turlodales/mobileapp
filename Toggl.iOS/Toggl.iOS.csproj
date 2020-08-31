@@ -1392,6 +1392,7 @@
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%403.png" />
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%402.png" />
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo.png" />
+    <ImageAsset Include="Resources\Colors.xcassets\CalendarDragHandles.colorset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1566,6 +1567,7 @@
     <Compile Include="Startup\IosDependencyContainer.cs" />
     <Compile Include="Startup\IOSSchedulerProvider.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
+    <Compile Include="Transformations\CalendarProjectTaskClientToAttributedString.cs" />
     <Compile Include="Transformations\ProjectTaskClientToAttributedString.cs" />
     <Compile Include="ViewControllers\Calendar\CalendarViewController.KeyCommands.cs">
       <DependentUpon>CalendarViewController.cs</DependentUpon>
@@ -1677,6 +1679,7 @@
     <Compile Include="Views\Calendar\CalendarCollectionViewContextualMenuDismissHelper.cs" />
     <Compile Include="Views\Calendar\CalendarCollectionViewLayout.cs" />
     <Compile Include="Views\Calendar\CalendarContextualMenuActionView.cs" />
+    <Compile Include="Views\Calendar\DragHandleView.cs" />
     <Compile Include="Views\Client\ClientViewCell.cs" />
     <Compile Include="Views\Client\ClientViewCell.designer.cs">
       <DependentUpon>ClientViewCell.cs</DependentUpon>
@@ -2303,6 +2306,7 @@
     <Folder Include="Resources\Colors.xcassets\StartTimeEntryViewDisabledButton.colorset\" />
     <Folder Include="Resources\Colors.xcassets\StartTimeEntryInactiveButton.colorset\" />
     <Folder Include="Resources\Images.xcassets\illustrationBarChart.imageset\" />
+    <Folder Include="Resources\Colors.xcassets\CalendarDragHandles.colorset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

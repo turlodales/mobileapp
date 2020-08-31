@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Toggl.Core.Extensions;
 using Toggl.Core.Models.Calendar;
 using Toggl.Core.Models.Interfaces;
@@ -32,6 +33,10 @@ namespace Toggl.Core.Calendar
 
         public string Client { get; }
 
+        public bool HasTags { get; }
+
+        public bool IsBillable { get; }
+
         public string Color { get; }
 
         public long? TimeEntryId { get; }
@@ -39,6 +44,8 @@ namespace Toggl.Core.Calendar
         public string CalendarId { get; }
 
         public CalendarIconKind IconKind { get; }
+
+        public bool IsPlaceholder { get; }
 
         public CalendarItem(
             string id,
@@ -53,7 +60,11 @@ namespace Toggl.Core.Calendar
             string calendarId = "",
             string project = "",
             string task = "",
-            string client = "")
+            string client = "",
+            bool hasTags = false,
+            bool isBillable = false,
+            bool isPlaceholder = false
+            )
         {
             Id = id;
             SyncId = syncId;
@@ -68,6 +79,9 @@ namespace Toggl.Core.Calendar
             Project = project;
             Task = task;
             Client = client;
+            HasTags = hasTags;
+            IsBillable = isBillable;
+            IsPlaceholder = isPlaceholder;
         }
 
         private CalendarItem(IThreadSafeTimeEntry timeEntry)
@@ -83,7 +97,10 @@ namespace Toggl.Core.Calendar
                 timeEntry.Id,
                 project: timeEntry.Project?.Name,
                 task: timeEntry.Task?.Name,
-                client: timeEntry.Project?.Client?.Name)
+                client: timeEntry.Project?.Client?.Name,
+                hasTags: timeEntry.Tags.Any(),
+                isBillable: timeEntry.Billable,
+                isPlaceholder: false)
         {
             switch (timeEntry.SyncStatus)
             {
@@ -108,7 +125,8 @@ namespace Toggl.Core.Calendar
                   calendarEvent.Duration(),
                   calendarEvent.Title,
                   CalendarIconKind.Event,
-                  calendarEvent.BackgroundColor)
+                  calendarEvent.BackgroundColor,
+                  isPlaceholder: false)
         {
         }
 
@@ -132,7 +150,10 @@ namespace Toggl.Core.Calendar
                 this.CalendarId,
                 this.Project,
                 this.Task,
-                this.Client);
+                this.Client,
+                this.HasTags,
+                this.IsBillable,
+                this.IsPlaceholder);
 
         public CalendarItem WithDuration(TimeSpan? duration)
             => new CalendarItem(
@@ -148,6 +169,9 @@ namespace Toggl.Core.Calendar
                 this.CalendarId,
                 this.Project,
                 this.Task,
-                this.Client);
+                this.Client,
+                this.HasTags,
+                this.IsBillable,
+                this.IsPlaceholder);
     }
 }

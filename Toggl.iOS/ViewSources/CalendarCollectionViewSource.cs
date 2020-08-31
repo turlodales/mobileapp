@@ -39,6 +39,7 @@ namespace Toggl.iOS.ViewSources
 
         private IList<CalendarItem> calendarItems;
         private IList<CalendarItemLayoutAttributes> layoutAttributes;
+        private DurationFormat durationFormat = DurationFormat.Improved;
         private TimeFormat timeOfDayFormat = TimeFormat.TwelveHoursFormat;
         private DateTime date;
         private string selectedItemId;
@@ -61,10 +62,12 @@ namespace Toggl.iOS.ViewSources
             ITimeService timeService,
             UICollectionView collectionView,
             IObservable<TimeFormat> timeOfDayFormat,
+            IObservable<DurationFormat> durationFormat,
             ObservableGroupedOrderedCollection<CalendarItem> collection)
         {
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
             Ensure.Argument.IsNotNull(timeOfDayFormat, nameof(timeOfDayFormat));
+            Ensure.Argument.IsNotNull(durationFormat, nameof(durationFormat));
             Ensure.Argument.IsNotNull(collection, nameof(collection));
             this.timeService = timeService;
             this.collection = collection;
@@ -78,6 +81,10 @@ namespace Toggl.iOS.ViewSources
 
             timeOfDayFormat
                 .Subscribe(timeOfDayFormatChanged)
+                .DisposedBy(disposeBag);
+
+            durationFormat
+                .Subscribe(durationFormatChanged)
                 .DisposedBy(disposeBag);
 
             collection
@@ -105,7 +112,8 @@ namespace Toggl.iOS.ViewSources
         {
             var cell = collectionView.DequeueReusableCell(itemReuseIdentifier, indexPath) as CalendarItemView;
             var item = calendarItems[(int) indexPath.Item];
-            cell.Layout = layout;
+            cell.DurationFormat = durationFormat;
+            cell.TimeService = timeService;
             cell.Item = item;
             cell.IsEditing = IsEditing && selectedItemId == item.Id;
             return cell;
@@ -240,7 +248,7 @@ namespace Toggl.iOS.ViewSources
             if (!IsEditing)
                 throw new InvalidOperationException("Set IsEditing before calling insert/update/remove");
 
-            var item = new CalendarItem(newItemId, newItemId, CalendarItemSource.TimeEntry, startTime, duration, FoundationResources.NewTimeEntry, CalendarIconKind.None);
+            var item = new CalendarItem(newItemId, newItemId, CalendarItemSource.TimeEntry, startTime, duration, FoundationResources.NewTimeEntry, CalendarIconKind.None, isPlaceholder: true);
             selectedItemId = newItemId;
 
             itemTappedSubject.OnNext(item);
@@ -262,6 +270,10 @@ namespace Toggl.iOS.ViewSources
             calendarItems[position] = itemAt(position)
                 .WithStartTime(startTime)
                 .WithDuration(duration);
+
+            UIView.AnimationsEnabled = false;
+            reloadItem(calendarItems[position]);
+            UIView.AnimationsEnabled = true;
 
             layoutAttributes = calculateLayoutAttributes();
 
@@ -308,6 +320,12 @@ namespace Toggl.iOS.ViewSources
         private void timeOfDayFormatChanged(TimeFormat timeFormat)
         {
             timeOfDayFormat = timeFormat;
+            collectionView.ReloadData();
+        }
+
+        private void durationFormatChanged(DurationFormat durationFormat)
+        {
+            this.durationFormat = durationFormat;
             collectionView.ReloadData();
         }
 

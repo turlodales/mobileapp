@@ -97,6 +97,7 @@ namespace Toggl.iOS.ViewControllers
                 timeService,
                 CalendarCollectionView,
                 ViewModel.TimeOfDayFormat,
+                ViewModel.DurationFormat,
                 ViewModel.CalendarItems);
 
             layout = new CalendarCollectionViewLayout(ViewModel.Date, timeService, dataSource);
