@@ -275,6 +275,7 @@ namespace Toggl.Core.Analytics
         IAnalyticsEvent<string> SsoUrlOutcome { get; }
         IAnalyticsEvent<string> SsoFlowOutcome { get; }
         IAnalyticsEvent<string> SsoLinkOutcome { get; }
+        IAnalyticsEvent BlogOpened { get; }
 
         void SetUserId(long id);
         void ResetUserId();

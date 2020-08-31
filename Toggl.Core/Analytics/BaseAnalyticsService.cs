@@ -209,6 +209,8 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent AppDidEnterForeground { get; }
 
         public IAnalyticsEvent AppSentToBackground { get; }
+            
+        public IAnalyticsEvent BlogOpened { get; }
 
         public IAnalyticsEvent<bool> GroupTimeEntriesSettingsChanged { get; }
 
@@ -412,7 +414,8 @@ namespace Toggl.Core.Analytics
             OnboardingTimeEntryCreated = new AnalyticsEvent(this, nameof(OnboardingTimeEntryCreated));
             BillableTooltipDetailsButtonTapped = new AnalyticsEvent(this, nameof(BillableTooltipDetailsButtonTapped));
             TogglUrlOpenedFromYourWorkspacePlanView = new AnalyticsEvent(this, nameof(TogglUrlOpenedFromYourWorkspacePlanView));
-    }
+            BlogOpened = new AnalyticsEvent(this, nameof(BlogOpened));
+        }
 
         public PerformanceMeasurement StartNewSyncPerformanceMeasurement()
             => startPerformanceMeasurement("SyncPerformanceNew");
