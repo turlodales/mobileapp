@@ -25,7 +25,7 @@ namespace Toggl.iOS.Transformations
             var hasClient = !string.IsNullOrEmpty(calendarItem.Client);
 
             if (!string.IsNullOrEmpty(calendarItem.Project))
-                builder.Append($" {calendarItem.Project}");
+                builder.Append($"{calendarItem.Project}");
 
             if (!string.IsNullOrEmpty(calendarItem.Task))
                 builder.Append($": {calendarItem.Task}");

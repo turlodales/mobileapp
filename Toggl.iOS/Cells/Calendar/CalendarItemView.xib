@@ -31,7 +31,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project: Task - Client" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFA-U7-Cet">
-                                <rect key="frame" x="6" y="26" width="303" height="17"/>
+                                <rect key="frame" x="6" y="22" width="303" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" name="Text"/>
                                 <nil key="highlightedColor"/>
@@ -42,7 +42,7 @@
                             <constraint firstAttribute="trailing" secondItem="sob-Bq-eUc" secondAttribute="trailing" constant="6" id="5lk-oe-LZP"/>
                             <constraint firstItem="SFA-U7-Cet" firstAttribute="leading" secondItem="sob-Bq-eUc" secondAttribute="leading" id="6jd-3r-NYq"/>
                             <constraint firstItem="SFA-U7-Cet" firstAttribute="trailing" secondItem="sob-Bq-eUc" secondAttribute="trailing" id="Dns-C8-veO"/>
-                            <constraint firstItem="SFA-U7-Cet" firstAttribute="top" secondItem="sob-Bq-eUc" secondAttribute="bottom" constant="4" id="Kuc-St-0a7"/>
+                            <constraint firstItem="SFA-U7-Cet" firstAttribute="top" secondItem="sob-Bq-eUc" secondAttribute="bottom" id="Kuc-St-0a7"/>
                             <constraint firstItem="sob-Bq-eUc" firstAttribute="top" secondItem="5IX-SR-QLr" secondAttribute="top" constant="4" id="R8O-Ob-gDh"/>
                             <constraint firstItem="sob-Bq-eUc" firstAttribute="leading" secondItem="5IX-SR-QLr" secondAttribute="leading" constant="6" id="vFw-gc-3MA"/>
                         </constraints>
@@ -63,23 +63,23 @@
                                 <color key="textColor" name="Text"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s0C-Gm-flW">
-                                <rect key="frame" x="271" y="0.5" width="36" height="18"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="s0C-Gm-flW">
+                                <rect key="frame" x="275" y="4.5" width="32" height="14"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icTags" translatesAutoresizingMaskIntoConstraints="NO" id="esf-5T-1sE">
-                                        <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icTags" translatesAutoresizingMaskIntoConstraints="NO" id="esf-5T-1sE">
+                                        <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
                                         <color key="tintColor" name="Text"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="18" id="OYU-TW-eM3"/>
-                                            <constraint firstAttribute="height" constant="18" id="eVJ-gD-7IR"/>
+                                            <constraint firstAttribute="width" constant="14" id="OYU-TW-eM3"/>
+                                            <constraint firstAttribute="height" constant="14" id="eVJ-gD-7IR"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icBillable" translatesAutoresizingMaskIntoConstraints="NO" id="WDb-Qw-MJE">
-                                        <rect key="frame" x="18" y="0.0" width="18" height="18"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icBillable" translatesAutoresizingMaskIntoConstraints="NO" id="WDb-Qw-MJE">
+                                        <rect key="frame" x="18" y="0.0" width="14" height="14"/>
                                         <color key="tintColor" name="Text"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="18" id="CjW-JH-IpX"/>
-                                            <constraint firstAttribute="height" constant="18" id="Cq0-LX-HiZ"/>
+                                            <constraint firstAttribute="width" constant="14" id="CjW-JH-IpX"/>
+                                            <constraint firstAttribute="height" constant="14" id="Cq0-LX-HiZ"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
