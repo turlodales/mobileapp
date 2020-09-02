@@ -53,7 +53,10 @@
 
   <!--Calendar page-->
   <color name="calendarHeaderBackground">#FF959595</color>
+  <color name="calendarItemBackground">#FFFFFF</color>
   <color name="currentHourColor">#FFE57CD8</color>
+  <color name="calendarItemPrimaryText">#180A1E</color>
+  <color name="calendarItemSecondaryText">#5E5B5B</color>
   <color name="contextualMenuDiscardIconOverlay">#E0E0E0</color>
   <color name="contextualMenuEditIconOverlay">#C3E6F6</color>
   <color name="contextualMenuSaveIconOverlay">#F3E2B0</color>

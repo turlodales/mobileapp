@@ -59,4 +59,9 @@
   <color name="announcementBackground">#180a1e</color>
   <color name="announcementButton">#dd6fd1</color>
   <color name="announcementText">#fde5dc</color>
+  
+  <!-- Calendar -->
+  <color name="calendarItemBackground">#000000</color>
+  <color name="calendarItemPrimaryText">#D5D0D8</color>
+  <color name="calendarItemSecondaryText">#C0B9C3</color>
 </resources>

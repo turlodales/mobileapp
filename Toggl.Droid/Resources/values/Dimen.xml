@@ -19,25 +19,26 @@
     <dimen name="calendarEventsLeftPadding">4dp</dimen> 
     <dimen name="calendarEventsRightPadding">4dp</dimen> 
     <dimen name="calendarEventsItemsSpacing">4dp</dimen>
-    <dimen name="shortCalendarItemHeight">18dp</dimen> 
-    <dimen name="regularCalendarItemVerticalPadding">2dp</dimen> 
-    <dimen name="regularCalendarItemHorizontalPadding">4dp</dimen> 
-    <dimen name="shortCalendarItemVerticalPadding">0.5dp</dimen> 
-    <dimen name="shortCalendarItemHorizontalPadding">2dp</dimen> 
-    <dimen name="regularCalendarItemFontSize">12dp</dimen> 
-    <dimen name="shortCalendarItemFontSize">10dp</dimen>
-    <dimen name="textEventsPaintTextSize">12sp</dimen> 
+    <dimen name="maxItemHeightWithoutDetails">20dp</dimen>
+    <dimen name="maxItemHeightWithoutProjectTaskClient">40dp</dimen>
+    <dimen name="maxItemHeightWithoutDuration">60dp</dimen>
+    <dimen name="calendarItemInterItemVerticalSpacing">1dp</dimen>
+    <dimen name="calendarItemVerticalPadding">2dp</dimen> 
+    <dimen name="calendarItemHorizontalPadding">4dp</dimen> 
+    <dimen name="calendarItemDescriptionFontSize">14dp</dimen>
+    <dimen name="calendarItemProjectTaskClientFontSize">14dp</dimen>
+    <dimen name="calendarItemDurationFontSize">14dp</dimen>
     <dimen name="editingHoursLabelPaintTextSize">12sp</dimen> 
     <dimen name="editingHandlesHorizontalMargins">8dp</dimen> 
-    <dimen name="editingHandlesRadius">3dp</dimen> 
     <dimen name="calendarRunningTimeEntryStripesSpacing">12dp</dimen> 
     <dimen name="calendarRunningTimeEntryThinStripeWidth">2dp</dimen> 
     <dimen name="calendarRunningTimeEntryDashedHourTopPadding">4dp</dimen> 
-    <dimen name="calendarEventBottomLineHeight">2dp</dimen> 
-    <dimen name="calendarIconSize">24dp</dimen> 
-    <dimen name="calendarIconRightInsetMargin">4dp</dimen>
+    <dimen name="calendarIconSize">18dp</dimen> 
+    <dimen name="editingHandlesVerticalSpacing">1sp</dimen>
+    <dimen name="editingHandlesLength">5dp</dimen>
     <dimen name="calendarEditingHandleTouchExtraMargins">24dp</dimen>
     <dimen name="calendarCurrentHourCircleRadius">4dp</dimen>
+    <dimen name="calendarItemBottomPartHeight">22dp</dimen>
     <!-- calendar dimensions end -->
     
 </resources>

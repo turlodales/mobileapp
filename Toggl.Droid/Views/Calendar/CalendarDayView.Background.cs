@@ -15,6 +15,7 @@ namespace Toggl.Droid.Views.Calendar
         private float timeSlicesTopPadding;
         private float verticalLineLeftMargin;
         private TimeFormat timeOfDayFormat = TimeFormat.TwelveHoursFormat;
+        private DurationFormat durationFormat = DurationFormat.Improved;
         private ImmutableArray<string> hours = ImmutableArray<string>.Empty;
         private ImmutableArray<float> timeLinesYs = ImmutableArray<float>.Empty;
         private ImmutableArray<float> hoursYs = ImmutableArray<float>.Empty;
@@ -44,7 +45,7 @@ namespace Toggl.Droid.Views.Calendar
         }
 
         partial void processBackgroundOnLayout()
-        {            
+        {
             timeLinesYs = createTimeLinesYPositions();
             hoursYs = timeLinesYs.Select(lineY => lineY + hoursLabelPaint.Descent()).ToImmutableArray();
         }
