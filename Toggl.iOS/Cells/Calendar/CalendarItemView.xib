@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -24,12 +24,25 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5IX-SR-QLr">
                         <rect key="frame" x="0.0" y="0.0" width="315" height="130.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weekly meeting" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sob-Bq-eUc">
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="1xp-Wo-pRO">
                                 <rect key="frame" x="6" y="4" width="303" height="18"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <color key="textColor" name="Text"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icCalendarSmall" translatesAutoresizingMaskIntoConstraints="NO" id="z4X-Si-tG5">
+                                        <rect key="frame" x="0.0" y="2" width="14" height="14"/>
+                                        <color key="tintColor" name="Text"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="14" id="9xl-TU-dFu"/>
+                                            <constraint firstAttribute="width" constant="14" id="djq-g7-lPE"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weekly meeting" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sob-Bq-eUc">
+                                        <rect key="frame" x="18" y="0.0" width="285" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <color key="textColor" name="Text"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project: Task - Client" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFA-U7-Cet">
                                 <rect key="frame" x="6" y="22" width="303" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -39,12 +52,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="sob-Bq-eUc" secondAttribute="trailing" constant="6" id="5lk-oe-LZP"/>
-                            <constraint firstItem="SFA-U7-Cet" firstAttribute="leading" secondItem="sob-Bq-eUc" secondAttribute="leading" id="6jd-3r-NYq"/>
-                            <constraint firstItem="SFA-U7-Cet" firstAttribute="trailing" secondItem="sob-Bq-eUc" secondAttribute="trailing" id="Dns-C8-veO"/>
-                            <constraint firstItem="SFA-U7-Cet" firstAttribute="top" secondItem="sob-Bq-eUc" secondAttribute="bottom" id="Kuc-St-0a7"/>
-                            <constraint firstItem="sob-Bq-eUc" firstAttribute="top" secondItem="5IX-SR-QLr" secondAttribute="top" constant="4" id="R8O-Ob-gDh"/>
-                            <constraint firstItem="sob-Bq-eUc" firstAttribute="leading" secondItem="5IX-SR-QLr" secondAttribute="leading" constant="6" id="vFw-gc-3MA"/>
+                            <constraint firstAttribute="trailing" secondItem="1xp-Wo-pRO" secondAttribute="trailing" constant="6" id="Gl7-GA-p8f"/>
+                            <constraint firstItem="1xp-Wo-pRO" firstAttribute="leading" secondItem="5IX-SR-QLr" secondAttribute="leading" constant="6" id="T82-q5-uCs"/>
+                            <constraint firstItem="SFA-U7-Cet" firstAttribute="top" secondItem="1xp-Wo-pRO" secondAttribute="bottom" id="XqX-KF-Jrl"/>
+                            <constraint firstItem="SFA-U7-Cet" firstAttribute="leading" secondItem="1xp-Wo-pRO" secondAttribute="leading" id="c4m-pp-U3V"/>
+                            <constraint firstItem="SFA-U7-Cet" firstAttribute="trailing" secondItem="1xp-Wo-pRO" secondAttribute="trailing" id="fTr-Jk-g79"/>
+                            <constraint firstItem="1xp-Wo-pRO" firstAttribute="top" secondItem="5IX-SR-QLr" secondAttribute="top" constant="4" id="kBr-zj-Hrb"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pjh-Kn-f6n">
@@ -154,11 +167,13 @@
                 <outlet property="BottomContainerView" destination="URh-8Q-nXx" id="fCy-ZM-bMY"/>
                 <outlet property="BottomDragIndicator" destination="ftH-hb-JkM" id="nfn-J9-Qgb"/>
                 <outlet property="BottomShadowView" destination="Pjh-Kn-f6n" id="ReJ-LO-RxS"/>
+                <outlet property="DescriptionContainerView" destination="1xp-Wo-pRO" id="Yki-s7-1Ma"/>
                 <outlet property="DescriptionLabel" destination="sob-Bq-eUc" id="c0H-Y8-7we"/>
                 <outlet property="DurationLabel" destination="kvQ-sG-QSn" id="aEO-zi-4ns"/>
                 <outlet property="HasTagsImageView" destination="esf-5T-1sE" id="lFE-bQ-F66"/>
                 <outlet property="IconsContainerView" destination="s0C-Gm-flW" id="N88-IK-tS1"/>
                 <outlet property="IsBillableImageView" destination="WDb-Qw-MJE" id="ftT-qh-sHP"/>
+                <outlet property="IsEventImageView" destination="z4X-Si-tG5" id="uiQ-Xq-g2e"/>
                 <outlet property="ProjectTaskClientLabel" destination="SFA-U7-Cet" id="p5u-Fl-FvU"/>
                 <outlet property="SyncStatusView" destination="Gn5-DA-4II" id="NdW-6r-JV9"/>
                 <outlet property="TopContainerView" destination="5IX-SR-QLr" id="xxp-cG-QtB"/>
@@ -169,6 +184,7 @@
     </objects>
     <resources>
         <image name="icBillable" width="8" height="16"/>
+        <image name="icCalendarSmall" width="10" height="11"/>
         <image name="icTags" width="14" height="13"/>
         <namedColor name="CellBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -83,6 +83,9 @@ namespace Toggl.iOS.Cells.Calendar
             var icBillable = UIImage.FromBundle("icBillable").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             IsBillableImageView.Image = icBillable;
 
+            var icCalendar = UIImage.FromBundle("icCalendarSmall").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            IsEventImageView.Image = icCalendar;
+
             var badgePath = UIBezierPath.FromOval(new CGRect(0, 0, SyncStatusView.Bounds.Width * 2, SyncStatusView.Bounds.Height * 2));
             badgeLayer.Path = badgePath.CGPath;
         }
@@ -157,6 +160,7 @@ namespace Toggl.iOS.Cells.Calendar
 
             HasTagsImageView.Hidden = !Item.HasTags;
             IsBillableImageView.Hidden = !Item.IsBillable;
+            IsEventImageView.Hidden = Item.IconKind != CalendarIconKind.Event;
 
             CATransaction.Commit();
 

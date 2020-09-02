@@ -25,6 +25,9 @@ namespace Toggl.iOS.Cells.Calendar
 		UIKit.UIView BottomShadowView { get; set; }
 
 		[Outlet]
+		UIKit.UIStackView DescriptionContainerView { get; set; }
+
+		[Outlet]
 		UIKit.UILabel DescriptionLabel { get; set; }
 
 		[Outlet]
@@ -38,6 +41,9 @@ namespace Toggl.iOS.Cells.Calendar
 
 		[Outlet]
 		UIKit.UIImageView IsBillableImageView { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView IsEventImageView { get; set; }
 
 		[Outlet]
 		UIKit.UILabel ProjectTaskClientLabel { get; set; }
@@ -88,6 +94,11 @@ namespace Toggl.iOS.Cells.Calendar
 				HasTagsImageView = null;
 			}
 
+			if (IconsContainerView != null) {
+				IconsContainerView.Dispose ();
+				IconsContainerView = null;
+			}
+
 			if (IsBillableImageView != null) {
 				IsBillableImageView.Dispose ();
 				IsBillableImageView = null;
@@ -113,9 +124,14 @@ namespace Toggl.iOS.Cells.Calendar
 				TopDragIndicator = null;
 			}
 
-			if (IconsContainerView != null) {
-				IconsContainerView.Dispose ();
-				IconsContainerView = null;
+			if (IsEventImageView != null) {
+				IsEventImageView.Dispose ();
+				IsEventImageView = null;
+			}
+
+			if (DescriptionContainerView != null) {
+				DescriptionContainerView.Dispose ();
+				DescriptionContainerView = null;
 			}
 		}
 	}
