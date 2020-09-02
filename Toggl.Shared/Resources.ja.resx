@@ -1366,4 +1366,7 @@ PDF、CSV &amp; XLSを書き出す</value>
     <data name="Dismiss" xml:space="preserve">
         <value>Dismiss</value>
     </data>
+    <data name="BlogOnPersonalEfficiency" xml:space="preserve">
+        <value>Toggl Blog on Personal Efficiency</value>
+    </data>
 </root>

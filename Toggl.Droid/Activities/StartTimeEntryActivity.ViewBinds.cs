@@ -55,6 +55,7 @@ namespace Toggl.Droid.Activities
             adapter = new StartTimeEntryRecyclerAdapter();
             recyclerView.SetLayoutManager(new UnpredictiveLinearLayoutManager(this));
             recyclerView.SetAdapter(adapter);
+            recyclerView.FitBottomMarginInset();
 
             SetupToolbar();
             SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_close);

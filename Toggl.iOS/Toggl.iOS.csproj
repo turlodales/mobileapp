@@ -450,7 +450,13 @@
     <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglLogo%403x.png">
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\line.imageset\Contents.json">
@@ -831,15 +837,6 @@
     <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\logo.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\logo%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\logo%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\icGoogleColored.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -1021,9 +1018,6 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\togglLogoRed.pdf">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\stripes.imageset\Contents.json">
@@ -1240,7 +1234,6 @@
     <ImageAsset Include="Resources\Images.xcassets\delete.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\delete.imageset\delete.png" />
     <ImageAsset Include="Resources\Images.xcassets\delete.imageset\delete%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\delete.imageset\delete%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\delete.imageset\delete%403x-1.png" />
     <ImageAsset Include="Resources\Colors.xcassets\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\Background.colorset\Contents.json" />
@@ -1258,8 +1251,6 @@
     <ImageAsset Include="Resources\Colors.xcassets\CustomGray4.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\CustomGray5.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\CustomGray6.colorset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglLogo.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglLogo%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\icJustSpider.imageset\icJustSpiderDark.png" />
     <ImageAsset Include="Resources\Images.xcassets\icJustSpider.imageset\icJustSpiderDark%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\icJustSpider.imageset\icJustSpiderDark%403x.png" />
@@ -1269,12 +1260,9 @@
     <ImageAsset Include="Resources\Images.xcassets\icIllustrationErrorSpider.imageset\icIllustrationErrorSpiderDark.png" />
     <ImageAsset Include="Resources\Images.xcassets\icIllustrationErrorSpider.imageset\icIllustrationErrorSpiderDark%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\icIllustrationErrorSpider.imageset\icIllustrationErrorSpiderDark%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglLogoDark-1.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglLogoDark%402x-1.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglLogoDark%403x-1.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\logoBigDark-1.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\logoBigDark%402x-1.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\logoBigDark%403x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\bike.imageset\bikeDark.png" />
     <ImageAsset Include="Resources\Images.xcassets\bike.imageset\bikeDark%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\bike.imageset\bikeDark%403x.png" />
@@ -1329,9 +1317,6 @@
     <ImageAsset Include="Resources\Images.xcassets\icErrorBadData.imageset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingButtonBackground.colorset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglLogo%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage1BackgroundColor.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage2BackgroundColor.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\OnboardingPage3BackgroundColor.colorset\Contents.json" />
@@ -1352,7 +1337,6 @@
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%402x-1.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_periscope.imageset\periscope%403x.png" />
     <ImageAsset Include="Resources\Colors.xcassets\IconTint.colorset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\logo.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid.png" />
     <ImageAsset Include="Resources\Images.xcassets\ic_eyelid.imageset\ic_eyelid%402x.png" />
@@ -1393,6 +1377,25 @@
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%402.png" />
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo.png" />
     <ImageAsset Include="Resources\Colors.xcassets\CalendarDragHandles.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\togglPinkDark.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\togglPinkDark%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\togglPinkDark%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\togglPinkLight%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\togglPinkLight%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoBig.imageset\togglPinkLight.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\toggl-track_icon_pink_rgb.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkDark.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkDark%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkDark%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
