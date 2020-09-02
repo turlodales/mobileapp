@@ -505,6 +505,7 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.NavigationService,
                     dependencyContainer.InteractorFactory,
                     dependencyContainer.SchedulerProvider,
+                    dependencyContainer.AnalyticsService,
                     dependencyContainer.RxActionFactory);
             }
 

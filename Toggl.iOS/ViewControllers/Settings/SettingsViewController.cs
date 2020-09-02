@@ -157,8 +157,9 @@ namespace Toggl.iOS.ViewControllers
                 new SettingSection(Resources.General, new ISettingRow[]
                 {
                     new NavigationRow(Resources.SubmitFeedback, ViewModel.SubmitFeedback),
+                    new NavigationRow(Resources.Help, ViewModel.OpenHelpView),
+                    new NavigationRow(Resources.BlogOnPersonalEfficiency, ViewModel.OpenBlog),
                     new NavigationRow(Resources.About, ViewModel.Version, ViewModel.OpenAboutView),
-                    new NavigationRow(Resources.Help, ViewModel.OpenHelpView)
                 }));
 
             sections.Add(generalSection);

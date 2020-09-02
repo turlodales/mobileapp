@@ -502,7 +502,11 @@ namespace Toggl.Core.UI.ViewModels
             isBillablePremiumTooltipVisibile.Accept(false);
         }
 
-        private Task openPlanSettings() => Navigate<YourPlanViewModel>();
+        private Task openPlanSettings()
+        {
+            analyticsService.BillableTooltipDetailsButtonTapped.Track();
+            return Navigate<YourPlanViewModel>();
+        }
 
         private async Task changeTime()
         {

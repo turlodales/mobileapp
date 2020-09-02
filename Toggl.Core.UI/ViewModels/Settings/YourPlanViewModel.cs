@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Toggl.Core.Analytics;
 using Toggl.Core.Interactors;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
@@ -15,6 +16,8 @@ namespace Toggl.Core.UI.ViewModels
 {
     public sealed class YourPlanViewModel : ViewModel
     {
+        private readonly IAnalyticsService analyticsService;
+
         public IObservable<IImmutableList<PlanFeature>> Features { get; }
 
         public IObservable<string> PlanName { get; }
@@ -27,9 +30,13 @@ namespace Toggl.Core.UI.ViewModels
             INavigationService navigationService,
             IInteractorFactory interactorFactory,
             ISchedulerProvider schedulerProvider,
+            IAnalyticsService analyticsService,
             IRxActionFactory rxActionFactory) : base(navigationService)
         {
             Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
+            Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
+
+            this.analyticsService = analyticsService;
 
             OpenTogglWebpage = rxActionFactory.FromAsync(openTogglWebpage);
 
@@ -41,7 +48,10 @@ namespace Toggl.Core.UI.ViewModels
         }
 
         private Task openTogglWebpage()
-            => Browser.OpenAsync(Resources.TogglUrl, BrowserLaunchMode.SystemPreferred);
+        {
+            analyticsService.TogglUrlOpenedFromYourWorkspacePlanView.Track();
+            return Browser.OpenAsync(Resources.TogglUrl, BrowserLaunchMode.SystemPreferred);
+        }
 
         private IImmutableList<PlanFeature> featuresFromPlan(Plan plan)
             => ImmutableList.Create(

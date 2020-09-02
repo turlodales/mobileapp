@@ -264,6 +264,9 @@ namespace Toggl.Core.Analytics
       
         IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
+        IAnalyticsEvent BillableTooltipDetailsButtonTapped { get; }
+        IAnalyticsEvent TogglUrlOpenedFromYourWorkspacePlanView { get; }
+
         IAnalyticsEvent LoginWithSso { get; }
         IAnalyticsEvent SsoFlowStarted { get; }
         IAnalyticsEvent SsoUrlRequested { get; }
@@ -272,6 +275,7 @@ namespace Toggl.Core.Analytics
         IAnalyticsEvent<string> SsoUrlOutcome { get; }
         IAnalyticsEvent<string> SsoFlowOutcome { get; }
         IAnalyticsEvent<string> SsoLinkOutcome { get; }
+        IAnalyticsEvent BlogOpened { get; }
 
         void SetUserId(long id);
         void ResetUserId();
