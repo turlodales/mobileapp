@@ -355,6 +355,8 @@ namespace Toggl.Droid.Fragments
         {
             playButton.Alpha = isContextualMenuVisible ? 0 : 1;
             runningEntryCardFrame.Alpha = isContextualMenuVisible ? 0 : 1;
+            playButton.Clickable = !isContextualMenuVisible;
+            runningEntryCardFrame.Clickable = !isContextualMenuVisible;
         }
 
         public void ScrollToStart()
