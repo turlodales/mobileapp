@@ -27,41 +27,9 @@ namespace Toggl.Core.Interactors
 
         public async Task<SyncOutcome> Execute()
         {
-            if (!shouldExecute())
-                return SyncOutcome.NoData;
-
-            var calendarData = new Dictionary<IExternalCalendar, IEnumerable<IExternalCalendarEvent>>();
-
-            try
-            {
-                var integrations = await interactorFactory.PullCalendarIntegrations().Execute();
-
-                foreach (var integration in integrations)
-                {
-                    var calendars = await interactorFactory.PullExternalCalendars(integration).Execute();
-                    foreach (var calendar in calendars)
-                    {
-                        var events = await interactorFactory.PullExternalCalendarEvents(integration, calendar)
-                            .Execute();
-                        calendarData[calendar] = events;
-                    }
-                }
-            }
-            catch
-            {
-                return SyncOutcome.Failed;
-            }
-
-            interactorFactory.PersistExternalCalendarsData(calendarData).Execute();
-            lastTimeUsageStorage.SetLastTimeExternalCalendarsSynced(timeService.Now());
-            return calendarData.Any() ? SyncOutcome.NewData : SyncOutcome.NoData;
-        }
-
-        private bool shouldExecute()
-        {
-            var now = timeService.Now();
-            var lastSynced = lastTimeUsageStorage.LastTimeExternalCalendarsSynced;
-            return lastSynced?.Date != now.Date;
+            // We are disabling the external calendars sync for the rebranding release
+            // since it's still untested
+            return SyncOutcome.NoData;
         }
     }
 }
