@@ -1,4 +1,5 @@
 ﻿using System;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
 using Toggl.Storage;
@@ -48,5 +49,8 @@ namespace Toggl.Core.Extensions
 
         public static bool IsPlaceholder(this IThreadSafeTask task)
             => task?.SyncStatus == SyncStatus.RefetchingNeeded;
+
+        public static TimeSpan Duration(this IThreadSafeExternalCalendarEvent calendarEvent)
+            => calendarEvent.EndTime - calendarEvent.StartTime;
     }
 }

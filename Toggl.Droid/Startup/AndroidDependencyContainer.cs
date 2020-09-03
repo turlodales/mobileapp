@@ -74,7 +74,7 @@ namespace Toggl.Droid
             => new FetchRemoteConfigServiceAndroid();
 
         protected override ICalendarService CreateCalendarService()
-            => new CalendarServiceAndroid(PermissionsChecker);
+            => new CalendarServiceAndroid(PermissionsChecker, DataSource);
 
         protected override ITogglDatabase CreateDatabase()
             => new Database(realmConfigurator.Value);

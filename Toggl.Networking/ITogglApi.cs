@@ -23,5 +23,6 @@ namespace Toggl.Networking
         IWorkspaceFeaturesApi WorkspaceFeatures { get; }
         IFeedbackApi Feedback { get; }
         ITimeZonesApi Timezones { get; }
+        IExternalCalendarsApi ExternalCalendars { get; }
     }
 }

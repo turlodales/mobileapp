@@ -18,8 +18,8 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(nextDayKeyCommand);
             AddKeyCommand(openSettingsKeyCommand);
             AddKeyCommand(ShowMainLogKeyCommand);
-            AddKeyCommand(ShowReportsKeyCommand);
             AddKeyCommand(ShowCalendarKeyCommand);
+            AddKeyCommand(ShowReportsKeyCommand);
         }
 
         private readonly UIKeyCommand previousDayKeyCommand = KeyCommandFactory.Create(

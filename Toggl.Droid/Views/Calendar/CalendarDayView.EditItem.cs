@@ -21,7 +21,7 @@ namespace Toggl.Droid.Views.Calendar
         private readonly RectF eventStartingRect = new RectF();
         private const float dragAcceleration = 0.1f;
         private const float dragMaxSpeed = 15f;
-        
+
         private string startHourLabel = string.Empty;
         private string endHourLabel = string.Empty;
         private int handleTouchExtraMargins;
@@ -55,7 +55,7 @@ namespace Toggl.Droid.Views.Calendar
         {
             autoScrollWasCancelled = false;
         }
-        
+
         private void onAnimationCancelled()
         {
             autoScrollWasCancelled = true;
@@ -103,7 +103,7 @@ namespace Toggl.Droid.Views.Calendar
 
             PostInvalidate();
         }
-        
+
         private void cancelDraggingAndAutoScroll()
         {
             draggingSpeed = 0;
@@ -159,18 +159,18 @@ namespace Toggl.Droid.Views.Calendar
         {
             activeItemEditInfo.CalculateRect(dragTopRect);
             dragTopRect.Bottom = dragTopRect.Top + handleTouchExtraMargins;
-            dragTopRect.Top -= handleTouchExtraMargins;
-            dragTopRect.Left = dragTopRect.Right - handleTouchExtraMargins;
-            dragTopRect.Right += handleTouchExtraMargins;
+            dragTopRect.Top = dragTopRect.Top - handleTouchExtraMargins;
+            dragTopRect.Left = dragTopRect.CenterX() - handleTouchExtraMargins;
+            dragTopRect.Right = dragTopRect.CenterX() + handleTouchExtraMargins;
         }
 
         private void calculateBottomDragRect(CalendarItemEditInfo activeItemEditInfo)
         {
             activeItemEditInfo.CalculateRect(dragBottomRect);
             dragBottomRect.Top = dragBottomRect.Bottom - handleTouchExtraMargins;
-            dragBottomRect.Bottom += handleTouchExtraMargins;
-            dragBottomRect.Right = dragBottomRect.Left + handleTouchExtraMargins;
-            dragBottomRect.Left -= handleTouchExtraMargins;
+            dragBottomRect.Bottom = dragBottomRect.Bottom + handleTouchExtraMargins;
+            dragBottomRect.Left = dragBottomRect.CenterX() - handleTouchExtraMargins;
+            dragBottomRect.Right = dragBottomRect.CenterX() + handleTouchExtraMargins;
         }
 
         private void dragEvent(MotionEvent e)
@@ -282,7 +282,7 @@ namespace Toggl.Droid.Views.Calendar
                 return;
 
             var newBottom = (eventStartingRect.Bottom + draggingDelta + draggingScrollDelta).Clamp(itemInEditModeRect.Top, maxHeight);
-            itemInEditModeRect.Bottom = newBottom;
+            itemInEditModeRect.Bottom = newBottom - calendarItemInterItemVerticalSpacing;
 
             var now = timeService.CurrentDateTime;
             var calendarItem = itemToEdit.CalendarItem;

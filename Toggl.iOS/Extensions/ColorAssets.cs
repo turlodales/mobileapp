@@ -38,6 +38,7 @@ namespace Toggl.iOS.Extensions
         public static readonly UIColor CalendarUnavailableDayText = UIColor.FromName("CalendarUnavailableDayText");
         public static readonly UIColor CalendarUnselectedTodayText = UIColor.FromName("CalendarUnselectedTodayText");
         public static readonly UIColor CalendarHeaderLabel = UIColor.FromName("CalendarHeaderLabel");
+        public static readonly UIColor CalendarDragHandles = UIColor.FromName("CalendarDragHandles");
 
         public static readonly UIColor ReportsBarChartFilled = UIColor.FromName("ReportsBarChartFilled");
         public static readonly UIColor ReportsBarChartTotal = UIColor.FromName("ReportsBarChartTotal");

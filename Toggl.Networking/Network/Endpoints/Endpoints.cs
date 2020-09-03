@@ -1,6 +1,7 @@
 using System;
 using Toggl.Networking.Helpers;
 using ReportsEndpoints = Toggl.Networking.Network.Reports.Endpoints;
+using IntegrationsEndpoints = Toggl.Networking.Network.Integrations.Endpoints;
 
 namespace Toggl.Networking.Network
 {
@@ -27,14 +28,15 @@ namespace Toggl.Networking.Network
         public FeedbackEndpoints Feedback => new FeedbackEndpoints(baseUrl);
         public TimezoneEndpoints Timezones => new TimezoneEndpoints(baseUrl);
         public SyncApiEndpoints SyncServerEndpoints => new SyncApiEndpoints(syncServerBaseUrl);
-
         public ReportsEndpoints ReportsEndpoints { get; }
+        public IntegrationsEndpoints IntegrationsEndpoints { get; }
 
         public Endpoints(ApiEnvironment environment)
         {
             baseUrl = BaseUrls.ForApi(environment);
             syncServerBaseUrl = BaseUrls.ForSyncServer(environment);
             ReportsEndpoints = new ReportsEndpoints(environment);
+            IntegrationsEndpoints = new IntegrationsEndpoints(environment);
         }
     }
 }

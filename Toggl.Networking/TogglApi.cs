@@ -37,6 +37,7 @@ namespace Toggl.Networking
             WorkspaceFeatures = new WorkspaceFeaturesApi(endpoints, apiClient, serializer, credentials);
             Feedback = new FeedbackApiClient(endpoints, apiClient, serializer, credentials);
             Timezones = new TimezonesApi(endpoints, apiClient, serializer, credentials);
+            ExternalCalendars = new ExternalCalendarsApi(endpoints, apiClient, serializer, credentials);
         }
 
         public ITagsApi Tags { get; }
@@ -57,6 +58,7 @@ namespace Toggl.Networking
         public IWorkspaceFeaturesApi WorkspaceFeatures { get; }
         public IFeedbackApi Feedback { get; }
         public ITimeZonesApi Timezones { get; }
+        public IExternalCalendarsApi ExternalCalendars { get; }
     }
 
     public static class TogglApiFactory

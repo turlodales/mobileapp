@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Accord;
 using Android.Runtime;
 using Android.Support.Constraints;
 using AndroidX.Fragment.App;
@@ -24,14 +25,24 @@ using Toggl.Droid.Views.Calendar;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
 using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
+using Android.Text;
 using Toggl.Core.Analytics;
+using Toggl.Core.Extensions;
+using Toggl.Core.Models.Interfaces;
+using Toggl.Core.UI.Helper;
+using static Toggl.Core.Helper.Constants;
 
 namespace Toggl.Droid.Fragments
 {
     public partial class CalendarFragment : ReactiveTabFragment<CalendarViewModel>, IScrollableToStart, IBackPressHandler
     {
         public static int NumberOfDaysInTheWeek = 7;
-        private const int calendarPagesCount = 14;
+        private const int pastCalendarPagesCount = CalendarMaxPastDays;
+        private const int futureCalendarPagesCount = CalendarMaxFutureDays;
+        private const int calendarPagesCount = pastCalendarPagesCount + futureCalendarPagesCount;
         private readonly Subject<bool> scrollToStartSignaler = new Subject<bool>();
         private CalendarDayFragmentAdapter calendarDayAdapter;
         private CalendarWeekStripeAdapter calendarWeekStripeAdapter;
@@ -39,6 +50,9 @@ namespace Toggl.Droid.Fragments
         private int defaultToolbarElevationInDPs;
         private bool hasResumedOnce = false;
         private bool isChangingPageFromUserInteraction = true;
+
+        private Drawable addDrawable;
+        private Drawable playDrawable;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -84,7 +98,7 @@ namespace Toggl.Droid.Fragments
             {
                 if (calendarDayAdapter.MenuVisibilityRelay.Value)
                     return;
-                
+
                 isChangingPageFromUserInteraction = false;
                 ViewModel.SelectDayFromWeekView.Inputs.OnNext(day);
             }
@@ -97,11 +111,11 @@ namespace Toggl.Droid.Fragments
             calendarWeekStripeAdapter = new CalendarWeekStripeAdapter(clickOnTopWeekDatePicker, swipeOnTopWeekDatePicker, ViewModel.CurrentlyShownDate);
             calendarWeekStripePager.AddOnPageChangeListener(calendarWeekStripeAdapter);
             calendarWeekStripePager.Adapter = calendarWeekStripeAdapter;
-            
+
             ViewModel.WeekViewHeaders
                 .Subscribe(updateWeekViewHeaders)
                 .DisposedBy(DisposeBag);
-            
+
             ViewModel.WeekViewDays
                 .Subscribe(weekDays =>
                 {
@@ -110,17 +124,17 @@ namespace Toggl.Droid.Fragments
                     calendarWeekStripePager.SetCurrentItem(updatedCurrentPage, false);
                 })
                 .DisposedBy(DisposeBag);
-            
+
             ViewModel.CurrentlyShownDate
                 .Subscribe(calendarWeekStripeAdapter.UpdateSelectedDay)
                 .DisposedBy(DisposeBag);
-            
+
             calendarDayAdapter.MenuVisibilityRelay
                 .Select(CommonFunctions.Invert)
                 .Subscribe(hideBottomBar)
                 .DisposedBy(DisposeBag);
 
-            calendarViewPager.SetCurrentItem(calendarPagesCount - 1, false);
+            calendarViewPager.SetCurrentItem(pastCalendarPagesCount - 1, false);
             ViewModel.CurrentlyShownDate
                 .Select(calculateDayViewPage)
                 .Subscribe(page => calendarViewPager.SetCurrentItem(page, true))
@@ -128,12 +142,12 @@ namespace Toggl.Droid.Fragments
 
             var startingPageForCalendarWeekPager = calendarWeekStripeAdapter.GetPageFor(ViewModel.CurrentlyShownDate.Value);
             calendarWeekStripePager.SetCurrentItem(startingPageForCalendarWeekPager, false);
-            
+
             ViewModel.CurrentlyShownDate
                 .Select(calendarWeekStripeAdapter.GetPageFor)
                 .Subscribe(page => calendarWeekStripePager.SetCurrentItem(page, true))
                 .DisposedBy(DisposeBag);
-            
+
             calendarDayAdapter.CurrentPageRelay
                 .DistinctUntilChanged()
                 .Select(calculateDayForCalendarDayPage)
@@ -149,9 +163,95 @@ namespace Toggl.Droid.Fragments
                 .Select(eventArgs => eventArgs.Event)
                 .Subscribe(touch => calendarWeekStripePager.OnTouchEvent(touch))
                 .DisposedBy(DisposeBag);
-            
+
             calendarDayAdapter.PageChanged
                 .Subscribe(recordPageSwipeEvent)
+                .DisposedBy(DisposeBag);
+
+            playButton.Rx()
+                .BindAction(ViewModel.StartTimeEntry, _ => true)
+                .DisposedBy(DisposeBag);
+
+            playButton.Rx()
+                .BindAction(ViewModel.StartTimeEntry, _ => false, ButtonEventType.LongPress)
+                .DisposedBy(DisposeBag);
+
+            stopButton.Rx()
+                .BindAction(ViewModel.StopTimeEntry)
+                .DisposedBy(DisposeBag);
+
+            playButton.Rx().TouchEvents()
+                .Subscribe(handlePlayFabEvent)
+                .DisposedBy(DisposeBag);
+
+            playButton.Rx().LongPress()
+                .Subscribe(_ => playButton.StopAnimation())
+                .DisposedBy(DisposeBag);
+
+            runningEntryCardFrame.Rx().Tap()
+                .WithLatestFrom(ViewModel.CurrentRunningTimeEntry,
+                    (_, te) => new EditTimeEntryInfo(EditTimeEntryOrigin.RunningTimeEntryCard, te.Id))
+                .Subscribe(ViewModel.SelectTimeEntry.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.ElapsedTime
+                .Subscribe(timeEntryCardTimerLabel.Rx().TextObserver())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.CurrentRunningTimeEntry
+                .Select(te => te?.Description ?? "")
+                .Subscribe(timeEntryCardDescriptionLabel.Rx().TextObserver())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.CurrentRunningTimeEntry
+                .Select(te => string.IsNullOrWhiteSpace(te?.Description))
+                .Subscribe(timeEntryCardAddDescriptionLabel.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.CurrentRunningTimeEntry
+                .Select(te => string.IsNullOrWhiteSpace(te?.Description))
+                .Invert()
+                .Subscribe(timeEntryCardDescriptionLabel.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            ViewModel.CurrentRunningTimeEntry
+                .Select(CreateProjectClientTaskLabel)
+                .Subscribe(timeEntryCardProjectClientTaskLabel.Rx().TextFormattedObserver())
+                .DisposedBy(DisposeBag);
+
+            var projectVisibilityObservable = ViewModel.CurrentRunningTimeEntry
+                .Select(te => te?.Project != null);
+
+            projectVisibilityObservable
+                .Subscribe(timeEntryCardProjectClientTaskLabel.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            projectVisibilityObservable
+                .Subscribe(timeEntryCardDotContainer.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            var projectColorObservable = ViewModel.CurrentRunningTimeEntry
+                .Select(te => te?.Project?.Color ?? "#000000")
+                .Select(Color.ParseColor);
+
+            projectColorObservable
+                .Subscribe(timeEntryCardDotView.Rx().DrawableColor())
+                .DisposedBy(DisposeBag);
+
+            addDrawable = ContextCompat.GetDrawable(Context, Resource.Drawable.ic_add);
+            playDrawable = ContextCompat.GetDrawable(Context, Resource.Drawable.ic_play_big);
+
+            ViewModel.IsInManualMode
+                .Select(isManualMode => isManualMode ? addDrawable : playDrawable)
+                .Subscribe(playButton.SetDrawableImageSafe)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.IsTimeEntryRunning
+                .Subscribe(visible => playButton.SetExpanded(visible))
+                .DisposedBy(DisposeBag);
+
+            calendarDayAdapter.MenuVisibilityRelay
+                .Subscribe(setRunningTimeEntryCardAndStartButtonVisibility)
                 .DisposedBy(DisposeBag);
         }
 
@@ -167,7 +267,7 @@ namespace Toggl.Droid.Fragments
             var swipeDirection = previousPageIndex > newPageIndex
                 ? CalendarSwipeDirection.Left
                 : CalendarSwipeDirection.Rignt;
-            var daysSinceToday = newPageIndex - calendarPagesCount + 1;
+            var daysSinceToday = newPageIndex - pastCalendarPagesCount + 1;
             var dayOfWeek = ViewModel.IndexToDate(daysSinceToday).DayOfWeek.ToString();
             AndroidDependencyContainer.Instance.AnalyticsService.CalendarSingleSwipe.Track(swipeDirection, daysSinceToday, dayOfWeek);
         }
@@ -175,14 +275,14 @@ namespace Toggl.Droid.Fragments
         private DateTime calculateDayForCalendarDayPage(int currentPage)
         {
             var today = AndroidDependencyContainer.Instance.TimeService.CurrentDateTime.ToLocalTime().Date;
-            return today.AddDays(-(calendarPagesCount - currentPage - 1));
+            return today.AddDays(-(pastCalendarPagesCount - currentPage - 1));
         }
 
         private int calculateDayViewPage(DateTime newDate)
         {
             var today = AndroidDependencyContainer.Instance.TimeService.CurrentDateTime.ToLocalTime().Date;
             var distanceFromToday = (today - newDate).Days;
-            return calendarPagesCount - distanceFromToday - 1;
+            return pastCalendarPagesCount - distanceFromToday - 1;
         }
 
         private void updateWeekViewHeaders(IImmutableList<DayOfWeek> days)
@@ -198,11 +298,50 @@ namespace Toggl.Droid.Fragments
         {
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
             {
-                calendarDayAdapter?.OnBackPressed();   
+                calendarDayAdapter?.OnBackPressed();
                 return true;
             }
 
             return false;
+        }
+
+        public ISpannable CreateProjectClientTaskLabel(IThreadSafeTimeEntry te)
+        {
+            if (te == null)
+                return new SpannableString(string.Empty);
+
+            var hasProject = te.ProjectId != null;
+            var projectIsPlaceholder = te.Project?.IsPlaceholder() ?? false;
+            var taskIsPlaceholder = te.Task?.IsPlaceholder() ?? false;
+            return Extensions.TimeEntryExtensions.ToProjectTaskClient(
+                Context,
+                hasProject,
+                te.Project?.Name,
+                te.Project?.Color,
+                te.Task?.Name,
+                te.Project?.Client?.Name,
+                projectIsPlaceholder,
+                taskIsPlaceholder,
+                displayPlaceholders: true);
+        }
+
+        private void handlePlayFabEvent(View.TouchEventArgs eventArgs)
+        {
+            if (eventArgs == null)
+            {
+                return;
+            }
+
+            eventArgs.Handled = false;
+
+            if (eventArgs.Event.Action == MotionEventActions.Up)
+            {
+                playButton.StopAnimation();
+            }
+            else
+            {
+                playButton.TryStartAnimation();
+            }
         }
 
         private void hideBottomBar(bool bottomBarShouldBeHidden)
@@ -212,28 +351,36 @@ namespace Toggl.Droid.Fragments
             calendarDayAdapter?.InvalidateCurrentPage();
         }
 
+        private void setRunningTimeEntryCardAndStartButtonVisibility(bool isContextualMenuVisible)
+        {
+            playButton.Alpha = isContextualMenuVisible ? 0 : 1;
+            runningEntryCardFrame.Alpha = isContextualMenuVisible ? 0 : 1;
+            playButton.Clickable = !isContextualMenuVisible;
+            runningEntryCardFrame.Clickable = !isContextualMenuVisible;
+        }
+
         public void ScrollToStart()
         {
             if (calendarDayAdapter == null || calendarViewPager == null)
                 return;
-            
+
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
                 return;
-            
+
             scrollToStartSignaler.OnNext(true);
-            calendarViewPager.SetCurrentItem(calendarPagesCount - 1, true);
+            calendarViewPager.SetCurrentItem(pastCalendarPagesCount - 1, true);
         }
 
         public override void OnResume()
         {
             base.OnResume();
-            if (hasResumedOnce) 
+            if (hasResumedOnce)
                 return;
             hasResumedOnce = true;
-            
+
             if (calendarDayAdapter?.MenuVisibilityRelay.Value == true)
                 return;
-            
+
             scrollToStartSignaler.OnNext(false);
         }
 
@@ -246,18 +393,18 @@ namespace Toggl.Droid.Fragments
         private DateTimeOffset getDateAtAdapterPosition(int position)
         {
             var currentDate = timeService.CurrentDateTime.ToLocalTime().Date;
-            return currentDate.AddDays(-(calendarDayAdapter.Count - 1 - position));
+            return currentDate.AddDays(-(calendarDayAdapter.Count - pastCalendarPagesCount - 1 - position));
         }
 
         private void updateAppbarElevation(bool isAtTop)
         {
             if (MarshmallowApis.AreNotAvailable)
                 return;
-            
+
             var targetElevation = isAtTop ? 0f : defaultToolbarElevationInDPs;
             appBarLayout.Elevation = targetElevation;
         }
-        
+
         private class VerticalOffsetPageTransformer : Java.Lang.Object, ViewPager.IPageTransformer
         {
             private BehaviorRelay<int> verticalOffsetProvider { get; }
@@ -299,14 +446,14 @@ namespace Toggl.Droid.Fragments
             private readonly ISubject<Unit> backPressSubject = new Subject<Unit>();
             private readonly ISubject<PageChangedEvent> pageChanged = new Subject<PageChangedEvent>();
             private readonly ISubject<int> ScrollingPage = new Subject<int>();
-            
+
             public BehaviorRelay<int> OffsetRelay { get; } = new BehaviorRelay<int>(0);
             public BehaviorRelay<int> HourHeightRelay { get; }
             public BehaviorRelay<int> CurrentPageRelay { get; } = new BehaviorRelay<int>(-1);
             public BehaviorRelay<bool> MenuVisibilityRelay { get; } = new BehaviorRelay<bool>(false);
             public BehaviorRelay<string> TimeTrackedOnDay { get; } = new BehaviorRelay<string>(string.Empty);
             public IObservable<PageChangedEvent> PageChanged => pageChanged.AsObservable();
-            
+
             public CalendarDayFragmentAdapter(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
             {
             }
@@ -329,7 +476,7 @@ namespace Toggl.Droid.Fragments
             public override Fragment GetItem(int position)
                 => new CalendarDayViewPageFragment
                 {
-                    ViewModel = calendarViewModel.DayViewModelAt(-(Count - 1 - position)),
+                    ViewModel = calendarViewModel.DayViewModelAt(-(pastCalendarPagesCount - 1 - position)),
                     ScrollOffsetRelay = OffsetRelay,
                     HourHeightRelay = HourHeightRelay,
                     CurrentPageRelay = CurrentPageRelay,
@@ -368,7 +515,7 @@ namespace Toggl.Droid.Fragments
                 ScrollingPage.OnNext(position);
             }
         }
-        
+
         private class CalendarWeekStripeAdapter : PagerAdapter, ViewPager.IOnPageChangeListener
         {
             private readonly Action<CalendarWeeklyViewDayViewModel> dayInputAction;
@@ -390,11 +537,11 @@ namespace Toggl.Droid.Fragments
                 var weekStripe = (ConstraintLayout)LayoutInflater.From(container.Context).Inflate(Resource.Layout.CalendarWeekStripeDaysView, container, false);
                 var weekSectionViewHolder = new CalendarWeekSectionViewHolder(weekStripe, dayInputAction);
                 var weekSection = weekSections[position];
-                
+
                 weekSectionViewHolder.InitDaysAndSelectedDate(weekSection, currentlySelectedDate);
 
                 pages[position] = weekSectionViewHolder;
-                
+
                 weekStripe.Tag = position;
                 container.AddView(weekStripe);
                 return weekStripe;
@@ -414,14 +561,14 @@ namespace Toggl.Droid.Fragments
                 var tag = ((View) @object).Tag;
                 if (tag == null)
                     return PositionNone;
-                
+
                 var positionFromTag = (int)tag;
                 return positionFromTag == Count
                     ? PositionNone
                     : positionFromTag;
             }
 
-            public override bool IsViewFromObject(View view, Java.Lang.Object @object) 
+            public override bool IsViewFromObject(View view, Java.Lang.Object @object)
                 => view == @object;
 
             public override int Count => weekSections.Count;
@@ -475,7 +622,7 @@ namespace Toggl.Droid.Fragments
                 currentlySelectedDate = newSelectedDate;
                 applyToAllPages((pageIndex, page) => page.UpdateCurrentlySelectedDate(newSelectedDate));
             }
-            
+
             private void applyToAllPages(Action<int, CalendarWeekSectionViewHolder> apply)
             {
                 for (var pageIndex = 0; pageIndex < weekSections.Count; pageIndex++)

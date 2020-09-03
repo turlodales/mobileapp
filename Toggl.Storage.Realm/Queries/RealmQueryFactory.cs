@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive;
 using Toggl.Shared;
+using Toggl.Shared.Models.Calendar;
 using Toggl.Storage.Queries;
 using Toggl.Storage.Realm.Sync;
 
@@ -34,5 +36,7 @@ namespace Toggl.Storage.Realm.Queries
 
         public IQuery<Unit> ResetLocalState(Networking.Sync.Pull.IResponse response)
             => new ResetLocalStateQuery(realmProvider, currentTimeProvider, response);
+        public IQuery<Unit> PersistExternalCalendarsData(Dictionary<IExternalCalendar, IEnumerable<IExternalCalendarEvent>> calendarData)
+            => new PersistExternalCalendarsDataQuery(realmProvider, calendarData);
     }
 }

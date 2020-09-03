@@ -90,6 +90,7 @@ namespace Toggl.Droid
             IsInForeground = true;
             var backgroundService = AndroidDependencyContainer.Instance?.BackgroundService;
             backgroundService?.EnterForeground();
+            fetchExternalCalendarsDataIfNeeded();
         }
 
         [Export]
@@ -100,7 +101,7 @@ namespace Toggl.Droid
             var backgroundService = AndroidDependencyContainer.Instance?.BackgroundService;
             backgroundService?.EnterBackground();
         }
-        
+
         [Preserve]
         [Annotation("androidx.lifecycle.OnLifecycleEvent(androidx.lifecycle.Lifecycle.Event.ON_START)")]
         public class OnStartAttribute : Attribute
@@ -126,6 +127,11 @@ namespace Toggl.Droid
                         ?.Track(Platform.Giskard);
                     break;
             }
+        }
+
+        private async void fetchExternalCalendarsDataIfNeeded()
+        {
+            await AndroidDependencyContainer.Instance.InteractorFactory.SyncExternalCalendars().Execute();
         }
     }
 }

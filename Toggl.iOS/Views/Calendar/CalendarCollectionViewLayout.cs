@@ -44,7 +44,7 @@ namespace Toggl.iOS.Views.Calendar
                 ? 11
                 : 4;
 
-        private DateTime date;
+        private DateTimeOffset date;
         private readonly ITimeService timeService;
         private readonly ICalendarCollectionViewLayoutDataSource dataSource;
 
@@ -60,7 +60,7 @@ namespace Toggl.iOS.Views.Calendar
         private Dictionary<NSIndexPath, UICollectionViewLayoutAttributes> itemLayoutAttributes = new Dictionary<NSIndexPath, UICollectionViewLayoutAttributes>();
         private Dictionary<NSString, Dictionary<NSIndexPath, UICollectionViewLayoutAttributes>> supplementaryViewLayoutAttributes = new Dictionary<NSString, Dictionary<NSIndexPath, UICollectionViewLayoutAttributes>>();
 
-        private bool isToday => date.ToLocalTime().Date == timeService.CurrentDateTime.ToLocalTime().Date;
+        private bool isToday => date.Date == timeService.CurrentDateTime.Date;
 
         private bool isEditing;
         public bool IsEditing
@@ -74,7 +74,7 @@ namespace Toggl.iOS.Views.Calendar
         }
 
         public CalendarCollectionViewLayout(
-            DateTime date,
+            DateTimeOffset date,
             ITimeService timeService,
             ICalendarCollectionViewLayoutDataSource dataSource)
             : base()
@@ -400,7 +400,7 @@ namespace Toggl.iOS.Views.Calendar
 
         private void dateChanged(DateTimeOffset dateTimeOffset)
         {
-            date = dateTimeOffset.ToLocalTime().Date;
+            date = dateTimeOffset.Date;
             InvalidateLayout();
         }
 

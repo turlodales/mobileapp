@@ -8,7 +8,7 @@ namespace Toggl.Storage.Realm
         public RealmConfiguration Configuration { get; }
             = new RealmConfiguration
             {
-                SchemaVersion = 9,
+                SchemaVersion = 10,
                 MigrationCallback = (migration, oldSchemaVersion) =>
                 {
                     if (oldSchemaVersion < 3)
@@ -51,6 +51,12 @@ namespace Toggl.Storage.Realm
                         // RealmPreferences: Added backup properties
                         // RealmTask: Added new property ServerDeletedAt (defaulting to null is a correct behavior)
                         // Added [PrimaryKey] to all entities that did not yet had one
+                    }
+
+                    if (oldSchemaVersion < 10)
+                    {
+                        // RealmExternalCalendar: New entity for the Calendar Integration
+                        // RealmExternalCalendarEvent: New entity for the Calendar Integration
                     }
                 }
             };

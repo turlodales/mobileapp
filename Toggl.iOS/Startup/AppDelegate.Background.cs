@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Toggl.Core.Extensions;
+using Toggl.Core.Models;
 using Toggl.iOS.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -39,6 +41,7 @@ namespace Toggl.iOS
         public override void WillEnterForeground(UIApplication application)
         {
             IosDependencyContainer.Instance.BackgroundService.EnterForeground();
+            fetchExternalCalendarsDataIfNeeded();
         }
 
         public override void DidEnterBackground(UIApplication application)
@@ -102,6 +105,11 @@ namespace Toggl.iOS
                 SharedStorage.Instance.SetWidgetInstalled(true);
                 analyticsService.TimerWidgetInstallStateChange.Track(true);
             }
+        }
+
+        private async void fetchExternalCalendarsDataIfNeeded()
+        {
+            await IosDependencyContainer.Instance.InteractorFactory.SyncExternalCalendars().Execute();
         }
     }
 }

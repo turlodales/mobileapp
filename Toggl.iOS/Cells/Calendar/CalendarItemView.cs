@@ -2,42 +2,35 @@
 using CoreGraphics;
 using Foundation;
 using System;
-using System.Collections.Generic;
+using System.Reactive.Linq;
+using System.Timers;
+using Toggl.Core;
 using Toggl.Core.Calendar;
-using Toggl.Core.UI.Extensions;
+using Toggl.Core.Extensions;
+using Toggl.Core.UI.Transformations;
 using Toggl.iOS.Extensions;
+using Toggl.iOS.Transformations;
 using Toggl.iOS.Views;
-using Toggl.iOS.Views.Calendar;
 using Toggl.Shared;
+using Toggl.Shared.Extensions;
 using UIKit;
 
 namespace Toggl.iOS.Cells.Calendar
 {
     public sealed partial class CalendarItemView : ReactiveCollectionViewCell<CalendarItem>
     {
-        private const int shortCalendarItemThreshold = 28;
-
-        private static readonly Dictionary<CalendarIconKind, UIImage> images;
-
-        private CALayer backgroundLayer;
-        private CALayer patternLayer;
-        private CALayer tintLayer;
-        private CAShapeLayer topBorderLayer;
-        private CAShapeLayer bottomBorderLayer;
-        private CAShapeLayer topDragIndicatorBorderLayer;
-        private CAShapeLayer bottomDragIndicatorBorderLayer;
-
         public static readonly NSString Key = new NSString(nameof(CalendarItemView));
         public static readonly UINib Nib;
+
+        private CALayer stripesLayer;
+        private CAShapeLayer borderLayer;
+        private CAShapeLayer maskLayer;
+        private CAShapeLayer badgeLayer;
 
         public CGRect TopDragTouchArea => TopDragIndicator.Frame.Inset(-20, -20);
         public CGRect BottomDragTouchArea => BottomDragIndicator.Frame.Inset(-20, -20);
 
-        public CalendarCollectionViewLayout Layout { private get; set; }
-
-        private bool shortCalendarItem => Frame.Height <= shortCalendarItemThreshold;
-
-        private bool shouldCenterIconVertically => Frame.Height <= Layout.HourHeight / 4;
+        private CalendarProjectTaskClientToAttributedString projectTaskClientToAttributedString;
 
         private bool isEditing;
         public bool IsEditing
@@ -46,32 +39,24 @@ namespace Toggl.iOS.Cells.Calendar
             set
             {
                 isEditing = value;
-                updateDragIndicators(itemColor());
-                updateShadow();
+                updateDragHandles();
+                updateStripesPattern();
+                updateBorders();
+                updateShadows();
             }
         }
 
-        private bool isRunningTimeEntry => Item.Duration == null;
+        public DurationFormat DurationFormat { get; set; }
+        public ITimeService TimeService { get; set; }
+        private IDisposable timerDisposable;
 
         static CalendarItemView()
         {
             Nib = UINib.FromName(nameof(CalendarItemView), NSBundle.MainBundle);
-
-            images = new Dictionary<CalendarIconKind, UIImage>
-            {
-                { CalendarIconKind.Unsynced, templateImage("icUnsynced") },
-                { CalendarIconKind.Event, templateImage("icCalendarSmall") },
-                { CalendarIconKind.Unsyncable, templateImage("icErrorSmall") }
-            };
-
-            UIImage templateImage(string iconName)
-                => UIImage.FromBundle(iconName)
-                      .ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
         }
 
         public CalendarItemView(IntPtr handle) : base(handle)
         {
-            // Note: this .ctor should not contain any initialization logic.
         }
 
         public override void AwakeFromNib()
@@ -80,139 +65,29 @@ namespace Toggl.iOS.Cells.Calendar
 
             prepareInitialConstraints();
 
-            backgroundLayer = new CALayer();
-            patternLayer = new CALayer { CornerRadius = 2 };
-            tintLayer = new CALayer();
-            topBorderLayer = new CAShapeLayer();
-            bottomBorderLayer = new CAShapeLayer();
+            stripesLayer = new CALayer();
+            borderLayer = new CAShapeLayer();
+            maskLayer = new CAShapeLayer();
+            badgeLayer = new CAShapeLayer();
+            BackgroundColorView.Layer.AddSublayer(stripesLayer);
+            BackgroundColorView.Layer.AddSublayer(borderLayer);
+            ContentView.Layer.Mask = maskLayer;
+            SyncStatusView.Layer.Mask = badgeLayer;
+            TopContainerView.BackgroundColor = UIColor.Clear;
+            BottomContainerView.BackgroundColor = UIColor.Clear;
+            BottomShadowView.BackgroundColor = UIColor.Clear;
 
-            ContentView.Layer.InsertSublayer(topBorderLayer, 0);
-            ContentView.Layer.InsertSublayer(bottomBorderLayer, 1);
-            ContentView.Layer.InsertSublayer(backgroundLayer, 2);
-            ContentView.Layer.InsertSublayer(patternLayer, 3);
-            ContentView.Layer.InsertSublayer(tintLayer, 4);
+            var icTags = UIImage.FromBundle("icTags").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            HasTagsImageView.Image = icTags;
 
-            ContentView.BringSubviewToFront(TopDragIndicator);
-            ContentView.BringSubviewToFront(BottomDragIndicator);
+            var icBillable = UIImage.FromBundle("icBillable").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            IsBillableImageView.Image = icBillable;
 
-            topDragIndicatorBorderLayer = new CAShapeLayer();
-            configureDragIndicatorBorderLayer(TopDragIndicator, topDragIndicatorBorderLayer);
-            bottomDragIndicatorBorderLayer = new CAShapeLayer();
-            configureDragIndicatorBorderLayer(BottomDragIndicator, bottomDragIndicatorBorderLayer);
+            var icCalendar = UIImage.FromBundle("icCalendarSmall").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            IsEventImageView.Image = icCalendar;
 
-            void configureDragIndicatorBorderLayer(UIView dragIndicator, CAShapeLayer borderLayer)
-            {
-                var rect = dragIndicator.Bounds;
-                borderLayer.Path = UIBezierPath.FromOval(rect).CGPath;
-                borderLayer.BorderWidth = 2;
-                borderLayer.FillColor = UIColor.Clear.CGColor;
-                dragIndicator.Layer.AddSublayer(borderLayer);
-            }
-        }
-
-        protected override void UpdateView()
-        {
-            CATransaction.Begin();
-            CATransaction.DisableActions = true;
-
-            var color = itemColor();
-            backgroundLayer.BackgroundColor = ColorAssets.TableBackground.CGColor;
-            patternLayer.BackgroundColor = patternColor(Item.Source, color).CGColor;
-            tintLayer.BackgroundColor = tintColor(color).CGColor;
-            BackgroundColor = ColorAssets.TableBackground;
-            DescriptionLabel.Text = Item.Description;
-            DescriptionLabel.TextColor = textColor(color);
-            BottomLine.Hidden = Item.Source != CalendarItemSource.Calendar;
-            BottomLine.BackgroundColor = color;
-
-            updateIcon(color);
-            updateConstraints();
-            updateBorderStyle(color);
-            updateDragIndicators(color);
-
-            CATransaction.Commit();
-        }
-
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            updateShadow();
-            updateBorderLayers();
-            updateBackgroundLayers();
-            updateConstraints();
-        }
-
-        private UIColor itemColor()
-            => new Color(Item.Color).ToNativeColor();
-
-        private UIColor patternColor(CalendarItemSource source, UIColor color)
-        {
-            switch (source)
-            {
-                case CalendarItemSource.Calendar:
-                    return color.ColorWithAlpha((nfloat)0.24);
-                case CalendarItemSource.TimeEntry:
-                    if (isRunningTimeEntry)
-                    {
-                        var patternTint = color.ColorWithAlpha((nfloat)0.1);
-                        var patternTemplate = UIImage.FromBundle("stripes").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
-
-                        UIGraphics.BeginImageContextWithOptions(patternTemplate.Size, false, patternTemplate.CurrentScale);
-                        UIGraphics.GetCurrentContext().ScaleCTM(1, -1);
-                        UIGraphics.GetCurrentContext().TranslateCTM(0, -patternTemplate.Size.Height);
-                        patternTint.SetColor();
-                        patternTemplate.Draw(new CGRect(0, 0, patternTemplate.Size.Width, patternTemplate.Size.Height));
-
-                        var pattern = UIGraphics.GetImageFromCurrentImageContext();
-                        UIGraphics.EndImageContext();
-
-                        return UIColor.FromPatternImage(pattern);
-                    }
-                    else
-                    {
-                        return color;
-                    }
-                default:
-                    throw new ArgumentException("Unexpected calendar item source");
-            }
-        }
-
-        private UIColor tintColor(UIColor color)
-            => isRunningTimeEntry ? color.ColorWithAlpha((nfloat)0.04) : UIColor.Clear;
-
-        private UIColor textColor(UIColor color)
-        {
-            switch (Item.Source)
-            {
-                case CalendarItemSource.Calendar:
-                    return color;
-                case CalendarItemSource.TimeEntry:
-                    return isRunningTimeEntry ? color : Item.ForegroundColor().ToNativeColor();
-                default:
-                    throw new ArgumentException("Unexpected calendar item source");
-            }
-        }
-
-        private void updateIcon(UIColor color)
-        {
-            if (Item.IconKind == CalendarIconKind.None)
-            {
-                CalendarIconImageView.Hidden = true;
-                return;
-            }
-
-            CalendarIconImageView.Hidden = false;
-            CalendarIconImageView.TintColor = textColor(color);
-            CalendarIconImageView.Image = images[Item.IconKind];
-        }
-
-        private void updateDragIndicators(UIColor color)
-        {
-            TopDragIndicator.Hidden = !IsEditing;
-            BottomDragIndicator.Hidden = !IsEditing || isRunningTimeEntry;
-            topDragIndicatorBorderLayer.StrokeColor = color.CGColor;
-            bottomDragIndicatorBorderLayer.StrokeColor = color.CGColor;
+            var badgePath = UIBezierPath.FromOval(new CGRect(0, 0, SyncStatusView.Bounds.Width * 2, SyncStatusView.Bounds.Height * 2));
+            badgeLayer.Path = badgePath.CGPath;
         }
 
         private void prepareInitialConstraints()
@@ -225,93 +100,151 @@ namespace Toggl.iOS.Cells.Calendar
             ContentView.TrailingAnchor.ConstraintEqualTo(TrailingAnchor).Active = true;
         }
 
-        private void updateConstraints()
+        public override void PrepareForReuse()
         {
-            CalendarIconWidthConstrarint.Constant
-                = CalendarIconHeightConstrarint.Constant
-                = iconSize();
-
-            CalendarIconBaselineConstraint.Active = !shouldCenterIconVertically;
-            CalendarIconCenterVerticallyConstraint.Active = shouldCenterIconVertically;
-
-            DescriptionLabelLeadingConstraint.Constant = descriptionLabelLeadingConstraintConstant();
-            DescriptionLabelTopConstraint.Constant
-                = DescriptionLabelBottomConstraint.Constant
-                = descriptionLabelTopAndBottomConstraintConstant();
-
+            base.PrepareForReuse();
+            timerDisposable?.Dispose();
+            timerDisposable = null;
         }
 
-        private void updateBorderStyle(UIColor color)
+        public override void LayoutSubviews()
         {
-            topBorderLayer.FillColor = UIColor.Clear.CGColor;
-            topBorderLayer.StrokeColor = isRunningTimeEntry ? color.CGColor : UIColor.Clear.CGColor;
-            topBorderLayer.LineWidth = 1.5f;
-            topBorderLayer.LineCap = CAShapeLayer.CapRound;
+            base.LayoutSubviews();
 
-            bottomBorderLayer.FillColor = UIColor.Clear.CGColor;
-            bottomBorderLayer.StrokeColor = isRunningTimeEntry ? color.CGColor : UIColor.Clear.CGColor;
-            bottomBorderLayer.LineWidth = 1.5f;
-            bottomBorderLayer.LineCap = CAShapeLayer.CapRound;
-            bottomBorderLayer.LineDashPattern = new NSNumber[] { 4, 6 };
-        }
-
-        private void updateBackgroundLayers()
-        {
             CATransaction.Begin();
-            CATransaction.AnimationDuration = 0.0;
+            CATransaction.AnimationDuration = 0;
+            CATransaction.DisableActions = true;
 
-            var borderWidth = isRunningTimeEntry ? 1.5 : 0;
-            var rect = ContentView.Bounds.Inset((nfloat)borderWidth, (nfloat)borderWidth);
-
-            backgroundLayer.Frame = rect;
-            patternLayer.Frame = rect;
-            tintLayer.Frame = rect;
+            updateStripesPattern();
+            updateBorders();
+            updateShadows();
+            updateElementsVisibility();
 
             CATransaction.Commit();
         }
 
-        private void updateBorderLayers()
+        protected override void UpdateView()
         {
-            var dashLineHeight = Layout.HourHeight / 4;
-            var halfLineWidth = 0.5;
-
             CATransaction.Begin();
-            CATransaction.AnimationDuration = 0.0;
+            CATransaction.AnimationDuration = 0;
+            CATransaction.DisableActions = true;
 
-            topBorderLayer.Frame = new CGRect(0, 0, ContentView.Bounds.Width, ContentView.Bounds.Height - dashLineHeight);
-            bottomBorderLayer.Frame = new CGRect(0, ContentView.Bounds.Height - dashLineHeight, ContentView.Bounds.Width, dashLineHeight);
+            var color = new Color(Item.Color).ToNativeColor();
+            setBackgroundColor(color, Item.IsPlaceholder);
+            updateStripesPattern();
 
-            var topBorderBezierPathRect = topBorderLayer.Bounds.Inset((nfloat)halfLineWidth, (nfloat)halfLineWidth);
-            var topBorderBezierPath = UIBezierPath.FromRoundedRect(topBorderBezierPathRect, UIRectCorner.TopLeft | UIRectCorner.TopRight, new CGSize(2, 2));
-            topBorderLayer.Path = topBorderBezierPath.CGPath;
+            setBorderColor(color);
+            updateBorders();
 
-            var bottomBorderBezierPathRect = bottomBorderLayer.Bounds.Inset((nfloat)halfLineWidth, (nfloat)halfLineWidth);
-            var bottomBorderBezierPath = UIBezierPath.FromRoundedRect(bottomBorderBezierPathRect, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, new CGSize(2, 2));
-            bottomBorderLayer.Path = bottomBorderBezierPath.CGPath;
+            setSyncStatus();
+
+            DescriptionLabel.Text = Item.Description;
+
+            projectTaskClientToAttributedString = new CalendarProjectTaskClientToAttributedString(12);
+            ProjectTaskClientLabel.AttributedText = projectTaskClientToAttributedString.Convert(Item);
+
+            if (Item.Duration.HasValue)
+            {
+                DurationLabel.Text = DurationAndFormatToString.Convert(Item.Duration.Value, DurationFormat);
+            }
+            else
+            {
+                timerDisposable?.Dispose();
+                timerDisposable = null;
+                timerDisposable = TimeService.CurrentDateTimeObservable
+                    .Select(now => now - Item.StartTime)
+                    .Select(duration => DurationAndFormatToString.Convert(duration, DurationFormat.Improved))
+                    .AsDriver("", IosDependencyContainer.Instance.SchedulerProvider)
+                    .Subscribe(formattedDuration => DurationLabel.Text = formattedDuration);
+            }
+
+            HasTagsImageView.Hidden = !Item.HasTags;
+            IsBillableImageView.Hidden = !Item.IsBillable;
+            IsEventImageView.Hidden = Item.IconKind != CalendarIconKind.Event;
 
             CATransaction.Commit();
+
+            SetNeedsLayout();
+            LayoutIfNeeded();
         }
 
-        private int descriptionLabelLeadingConstraintConstant()
+        private void setBackgroundColor(UIColor color, bool isPlaceholder)
         {
-            if (Item.IconKind == CalendarIconKind.None)
-                return 5;
+            if (isPlaceholder)
+            {
+                BackgroundColorView.BackgroundColor = UIColor.Clear;
+                return;
+            }
 
-            return shortCalendarItem ? 18 : 24;
+            stripesLayer.Hidden = !Item.IsRunningTimeEntry();
+            if (Item.Source == CalendarItemSource.Calendar || !Item.IsRunningTimeEntry())
+            {
+                var alpha = IsEditing ? (nfloat)0.34 : (nfloat)0.25;
+                BackgroundColorView.BackgroundColor = color.ColorWithAlpha(alpha);
+            }
+            else
+            {
+                BackgroundColorView.BackgroundColor = color.ColorWithAlpha((nfloat)0.08);
+                stripesLayer.BackgroundColor = createStripesPattern(color).CGColor;
+            }
         }
 
-        private int iconSize()
-            => shortCalendarItem ? 8 : 14;
+        private void setBorderColor(UIColor color)
+        {
+            borderLayer.Hidden = !Item.IsRunningTimeEntry();
+            borderLayer.FillColor = UIColor.Clear.CGColor;
+            borderLayer.StrokeColor = color.ColorWithAlpha((nfloat)0.5).CGColor;
+            borderLayer.LineWidth = 1f;
+            borderLayer.LineCap = CAShapeLayer.CapRound;
+            borderLayer.LineDashPattern = new NSNumber[] { 4, 4 };
+        }
 
-        private int descriptionLabelTopAndBottomConstraintConstant()
-            => shortCalendarItem ? 0 : 6;
+        private UIColor createStripesPattern(UIColor color)
+        {
+            var patternTint = color.ColorWithAlpha((nfloat)0.08);
+            var patternTemplate = UIImage.FromBundle("stripes")
+                .ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                .ApplyTintColor(patternTint);
 
-        private void updateShadow()
+            UIGraphics.BeginImageContextWithOptions(patternTemplate.Size, false, patternTemplate.CurrentScale);
+            UIGraphics.GetCurrentContext().ScaleCTM(1, -1);
+            UIGraphics.GetCurrentContext().TranslateCTM(0, -patternTemplate.Size.Height);
+            patternTemplate.Draw(new CGRect(0, 0, patternTemplate.Size.Width, patternTemplate.Size.Height));
+
+            var pattern = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+
+            return UIColor.FromPatternImage(pattern);
+        }
+
+        private void setSyncStatus()
+        {
+            switch (Item.IconKind)
+            {
+                case CalendarIconKind.Unsynced:
+                    SyncStatusView.Hidden = false;
+                    SyncStatusView.BackgroundColor = ColorAssets.CustomGray;
+                    break;
+                case CalendarIconKind.Unsyncable:
+                    SyncStatusView.Hidden = false;
+                    SyncStatusView.BackgroundColor = ColorAssets.StopButton;
+                    break;
+                default:
+                    SyncStatusView.Hidden = true;
+                    break;
+            }
+        }
+
+        private void updateStripesPattern()
+        {
+            stripesLayer.Frame = ContentView.Bounds;
+        }
+
+        private void updateShadows()
         {
             if (isEditing)
             {
                 var shadowPath = UIBezierPath.FromRect(Bounds);
-                Layer.ShadowPath?.Dispose();
                 Layer.ShadowPath = shadowPath.CGPath;
 
                 Layer.CornerRadius = 2;
@@ -325,6 +258,73 @@ namespace Toggl.iOS.Cells.Calendar
             {
                 Layer.ShadowOpacity = 0;
             }
+        }
+
+        private void updateBorders()
+        {
+            var radius = 4;
+
+            var backgroundCorners = Item.IsRunningTimeEntry() ? UIRectCorner.TopLeft | UIRectCorner.TopRight : UIRectCorner.AllCorners;
+            var backgroundPath = UIBezierPath.FromRoundedRect(ContentView.Bounds, backgroundCorners, new CGSize(radius, radius));
+            borderLayer.Frame = ContentView.Bounds;
+            borderLayer.Path = backgroundPath.CGPath;
+            maskLayer.Path = backgroundPath.CGPath;
+        }
+
+        private void updateElementsVisibility()
+        {
+            var height = ContentView.Bounds.Height;
+
+            if (height < 20)
+            {
+                DescriptionLabel.Hidden = true;
+                ProjectTaskClientLabel.Hidden = true;
+                BottomContainerView.Hidden = true;
+            }
+            else if (height < 40)
+            {
+                DescriptionLabel.Hidden = false;
+                ProjectTaskClientLabel.Hidden = true;
+                BottomContainerView.Hidden = true;
+            }
+            else if (height < 64)
+            {
+                DescriptionLabel.Hidden = false;
+                ProjectTaskClientLabel.Hidden = false;
+                BottomContainerView.Hidden = true;
+            }
+            else
+            {
+                DescriptionLabel.Hidden = false;
+                ProjectTaskClientLabel.Hidden = false;
+                BottomContainerView.Hidden = false;
+            }
+
+            TopContainerView.ClipsToBounds = !BottomContainerView.Hidden;
+
+            if (!BottomContainerView.Hidden && ProjectTaskClientLabel.Frame.GetMaxY() >= BottomContainerView.Frame.GetMinY())
+            {
+                var shadowPath = UIBezierPath.FromRect(BottomShadowView.Bounds);
+                BottomShadowView.Layer.ShadowPath = shadowPath.CGPath;
+
+                BottomShadowView.Layer.ShadowRadius = 1;
+                BottomShadowView.Layer.ShadowOpacity = 0.1f;
+                BottomShadowView.Layer.MasksToBounds = false;
+                BottomShadowView.Layer.ShadowOffset = new CGSize(0, -2);
+                BottomShadowView.Layer.ShadowColor = UIColor.Black.CGColor;
+            }
+            else
+            {
+                BottomShadowView.Layer.ShadowOpacity = 0;
+            }
+
+            IconsContainerView.Hidden = IconsContainerView.Frame.GetMinX() <= DurationLabel.Frame.GetMaxX();
+        }
+
+        private void updateDragHandles()
+        {
+            TopDragIndicator.Hidden = !IsEditing;
+            BottomDragIndicator.Hidden = !IsEditing;
         }
     }
 }
