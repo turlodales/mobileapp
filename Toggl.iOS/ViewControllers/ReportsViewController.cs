@@ -83,6 +83,12 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.OpenYourPlanView.Inputs)
                 .DisposedBy(DisposeBag);
 
+            source.ItemTapped
+                .Where(item => item == ReportsCollectionViewCell.BarChartPlaceholder)
+                .SelectUnit()
+                .Subscribe(openMainTab)
+                .DisposedBy(DisposeBag);
+
             ViewModel.Elements
                 .Subscribe(source.SetNewElements)
                 .DisposedBy(DisposeBag);
@@ -116,6 +122,11 @@ namespace Toggl.iOS.ViewControllers
                 UserActivity = userActivity;
                 UserActivity.BecomeCurrent();
             }
+        }
+
+        private void openMainTab()
+        {
+            TabBarController.SelectedIndex = 0;
         }
 
         public override void ViewDidAppear(bool animated)

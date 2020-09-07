@@ -1394,6 +1394,7 @@
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo.png" />
   </ItemGroup>
   <ItemGroup>
+    <InterfaceDefinition Include="Cells\Reports\ReportsBarChartPlaceholderCollectionViewCell.xib" />
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="ViewControllers\MainViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\EditTimeEntryViewController.xib" />
@@ -1513,6 +1514,8 @@
     <Compile Include="Cells\MainLog\SuggestionLogViewCell.designer.cs">
       <DependentUpon>SuggestionLogViewCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cells\Reports\ReportsBarChartPlaceholderCollectionViewCell.cs" />
+    <Compile Include="Cells\Reports\ReportsBarChartPlaceholderCollectionViewCell.designer.cs" />
     <Compile Include="Extensions\ButtonExtensions.cs" />
     <Compile Include="Extensions\ColorAssets.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />

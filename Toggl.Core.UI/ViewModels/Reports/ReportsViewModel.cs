@@ -281,18 +281,19 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 var durationFormat = preferences.DurationFormat;
                 var dateFormat = preferences.DateFormat;
 
-                if (summaryData.Segments.None())
-                    return elements(new ReportNoDataElement());
-
                 var currentPlan = await interactorFactory
                     .ObserveCurrentWorkspacePlan()
                     .Execute()
                     .FirstAsync();
 
+                var barChartElement = summaryData.Segments.None()
+                    ? new ReportProjectsBarChartPlaceholderElement()
+                    : (IReportElement)new ReportProjectsBarChartElement(reportsTotal, dateFormat);
+
                 return elements(
                     new ReportWorkspaceNameElement(filter.Workspace.Name),
                     new ReportSummaryElement(summaryData, durationFormat),
-                    new ReportProjectsBarChartElement(reportsTotal, dateFormat),
+                    barChartElement,
                     new ReportAdvancedReportsViaWebElement(currentPlan),
                     new ReportProjectsDonutChartElement(summaryData, durationFormat));
             }

@@ -231,7 +231,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
 
                     // Data based on the workspace change
                     OnNext<IEnumerable<IReportElement>>(3, isLoadingElements),
-                    OnNext<IEnumerable<IReportElement>>(4, isNoDataElement)
+                    OnNext<IEnumerable<IReportElement>>(4, isNotLoadingElements)
                 );
             }
         }
@@ -563,7 +563,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
 
                     // Data based on the workspace change
                     OnNext<IEnumerable<IReportElement>>(3, isLoadingElements),
-                    OnNext<IEnumerable<IReportElement>>(4, isNoDataElement)
+                    OnNext<IEnumerable<IReportElement>>(4, isNotLoadingElements)
                 );
             }
 

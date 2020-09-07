@@ -1366,4 +1366,12 @@ PDF、CSV &amp; XLSを書き出す</value>
     <data name="Dismiss" xml:space="preserve">
         <value>Dismiss</value>
     </data>
+    <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
+        <value>You haven’t tracked anything yet</value>
+        <comment>Placeholder message line 1 shown in the reports bar chart when there's no data</comment>
+    </data>
+    <data name="GetTracking" xml:space="preserve">
+        <value>Get tracking!</value>
+        <comment>Placeholder message line 2 shown in the reports bar chart when there's no data</comment>
+    </data>
 </root>

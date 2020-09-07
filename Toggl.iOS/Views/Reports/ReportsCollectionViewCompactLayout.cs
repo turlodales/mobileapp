@@ -65,6 +65,7 @@ namespace Toggl.iOS.Views.Reports
                             ReportsSummaryCollectionViewCell.Height);
                         break;
 
+                    case ReportsCollectionViewCell.BarChartPlaceholder:
                     case ReportsCollectionViewCell.BarChart:
                         attributes.Frame = new CGRect(
                             horizontalCellInset,

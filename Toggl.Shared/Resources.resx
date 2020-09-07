@@ -983,7 +983,15 @@ Use them to add keywords to your time entries.</value>
 the selected time period.</value>
         <comment>Placeholder message shown in the reports view when there's no data for a selected period</comment>
     </data>
-
+    <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
+        <value>You haven’t tracked anything yet</value>
+        <comment>Placeholder message line 1 shown in the reports bar chart when there's no data</comment>
+    </data>
+    <data name="GetTracking" xml:space="preserve">
+        <value>Get tracking!</value>
+        <comment>Placeholder message line 2 shown in the reports bar chart when there's no data</comment>
+    </data>
+    
     <!-- Calendar view -->
 
     <data name="Now" xml:space="preserve">
