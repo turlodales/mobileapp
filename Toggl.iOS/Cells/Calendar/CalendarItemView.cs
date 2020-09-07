@@ -203,12 +203,12 @@ namespace Toggl.iOS.Cells.Calendar
         {
             var patternTint = color.ColorWithAlpha((nfloat)0.08);
             var patternTemplate = UIImage.FromBundle("stripes")
-                .ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-                .ApplyTintColor(patternTint);
+                .ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
 
             UIGraphics.BeginImageContextWithOptions(patternTemplate.Size, false, patternTemplate.CurrentScale);
             UIGraphics.GetCurrentContext().ScaleCTM(1, -1);
             UIGraphics.GetCurrentContext().TranslateCTM(0, -patternTemplate.Size.Height);
+            patternTint.SetColor();
             patternTemplate.Draw(new CGRect(0, 0, patternTemplate.Size.Width, patternTemplate.Size.Height));
 
             var pattern = UIGraphics.GetImageFromCurrentImageContext();
