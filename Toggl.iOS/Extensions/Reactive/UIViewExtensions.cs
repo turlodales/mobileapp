@@ -29,6 +29,22 @@ namespace Toggl.iOS.Extensions.Reactive
                 });
             });
 
+        public static IObservable<Unit> TapUsingGesture(this IReactive<UIView> reactive)
+            => Observable.Create<Unit>(observer =>
+            {
+                var gestureRecognizer = new UITapGestureRecognizer(_ => observer.OnNext(Unit.Default));
+                gestureRecognizer.ShouldRecognizeSimultaneously = (recognizer, otherRecognizer) => true;
+                reactive.Base.AddGestureRecognizer(gestureRecognizer);
+
+                return Disposable.Create(() =>
+                {
+                    DispatchQueue.MainQueue.DispatchAsync(() =>
+                    {
+                        reactive.Base.RemoveGestureRecognizer(gestureRecognizer);
+                    });
+                });
+            });
+
         public static IObservable<Unit> LongPress(this IReactive<UIView> reactive, bool useFeedback = false)
             => Observable.Create<Unit>(observer =>
             {
@@ -144,6 +160,9 @@ namespace Toggl.iOS.Extensions.Reactive
             {
                 case ButtonEventType.Tap:
                     eventObservable = reactive.Base.Rx().Tap();
+                    break;
+                case ButtonEventType.TapGesture:
+                    eventObservable = reactive.Base.Rx().TapUsingGesture();
                     break;
                 case ButtonEventType.LongPress:
                     eventObservable = reactive.Base.Rx().LongPress(useFeedback);

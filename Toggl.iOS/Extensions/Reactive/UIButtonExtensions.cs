@@ -11,6 +11,7 @@ namespace Toggl.iOS.Extensions.Reactive
     public enum ButtonEventType
     {
         Tap,
+        TapGesture,
         LongPress
     }
 
