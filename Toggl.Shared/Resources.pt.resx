@@ -1429,4 +1429,24 @@ em outros planos</value>
   <data name="BlogOnPersonalEfficiency" xml:space="preserve">
     <value>Toggl Blog on Personal Efficiency</value>
   </data>
+  <data name="TwelveHoursFormat">
+    <value>h tt</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="TwentyFourHoursFormat">
+    <value>HH:mm</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="EditingTwelveHoursFormat">
+    <value>h:mm tt</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="EditingTwentyFourHoursFormat">
+    <value>HH:mm</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="CalendarToolbarDateFormat">
+    <value>dddd, MMM d</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>
