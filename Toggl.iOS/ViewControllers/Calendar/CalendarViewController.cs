@@ -181,7 +181,7 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             StartTimeEntryButton.Rx()
-                .BindAction(ViewModel.StartTimeEntry, _ => true)
+                .BindAction(ViewModel.StartTimeEntry, _ => true, ButtonEventType.TapGesture)
                 .DisposedBy(DisposeBag);
 
             StartTimeEntryButton.Rx()
