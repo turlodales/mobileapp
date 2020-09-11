@@ -1275,6 +1275,17 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string ChangeDateRangeTootlipTitle {
+            get {
+                return ResourceManager.GetString("ChangeDateRangeTootlipTitle", resourceCulture);
+            }
+        }
+        
+        public static string ChangeDateRangeTooltipMessage {
+            get {
+                return ResourceManager.GetString("ChangeDateRangeTooltipMessage", resourceCulture);
+            }
+        }
         public static string YouHaventTrackedAnythingYet {
             get {
                 return ResourceManager.GetString("YouHaventTrackedAnythingYet", resourceCulture);

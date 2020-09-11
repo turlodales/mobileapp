@@ -983,6 +983,14 @@ Use them to add keywords to your time entries.</value>
 the selected time period.</value>
         <comment>Placeholder message shown in the reports view when there's no data for a selected period</comment>
     </data>
+    <data name="ChangeDateRangeTootlipTitle" xml:space="preserve">
+        <value>Change date range 🗓</value>
+        <comment>Title of a tooltip in the reports view that points to the button to change the date range</comment>
+    </data>
+    <data name="ChangeDateRangeTooltipMessage" xml:space="preserve">
+        <value>Move between weeks and months or select your desired date range by tapping here.</value>
+        <comment>Explanation message in the tooltip in the reports view that points to the button to change the date range</comment>
+    </data>
     <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
         <value>You haven’t tracked anything yet</value>
         <comment>Placeholder message line 1 shown in the reports bar chart when there's no data</comment>

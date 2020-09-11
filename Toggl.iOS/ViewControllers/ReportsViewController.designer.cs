@@ -13,6 +13,27 @@ namespace Toggl.iOS.ViewControllers
 	partial class ReportsViewController
 	{
 		[Outlet]
+		UIKit.UIView ChangeDateRangeTooltip { get; set; }
+
+		[Outlet]
+		Toggl.iOS.Views.TriangleView ChangeDateRangeTooltipArrow { get; set; }
+
+		[Outlet]
+		UIKit.UIView ChangeDateRangeTooltipBackground { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView ChangeDateRangeTooltipCloseIcone { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ChangeDateRangeTooltipGotItLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ChangeDateRangeTooltipMessageLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ChangeDateRangeTooltipTitleLabel { get; set; }
+
+		[Outlet]
 		UIKit.UICollectionView CollectionView { get; set; }
 
 		[Outlet]
@@ -26,6 +47,11 @@ namespace Toggl.iOS.ViewControllers
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (CollectionView != null) {
+				CollectionView.Dispose ();
+				CollectionView = null;
+			}
+
 			if (WorkspaceButton != null) {
 				WorkspaceButton.Dispose ();
 				WorkspaceButton = null;
@@ -41,9 +67,39 @@ namespace Toggl.iOS.ViewControllers
 				WorkspaceLabel = null;
 			}
 
-			if (CollectionView != null) {
-				CollectionView.Dispose ();
-				CollectionView = null;
+			if (ChangeDateRangeTooltip != null) {
+				ChangeDateRangeTooltip.Dispose ();
+				ChangeDateRangeTooltip = null;
+			}
+
+			if (ChangeDateRangeTooltipBackground != null) {
+				ChangeDateRangeTooltipBackground.Dispose ();
+				ChangeDateRangeTooltipBackground = null;
+			}
+
+			if (ChangeDateRangeTooltipTitleLabel != null) {
+				ChangeDateRangeTooltipTitleLabel.Dispose ();
+				ChangeDateRangeTooltipTitleLabel = null;
+			}
+
+			if (ChangeDateRangeTooltipMessageLabel != null) {
+				ChangeDateRangeTooltipMessageLabel.Dispose ();
+				ChangeDateRangeTooltipMessageLabel = null;
+			}
+
+			if (ChangeDateRangeTooltipGotItLabel != null) {
+				ChangeDateRangeTooltipGotItLabel.Dispose ();
+				ChangeDateRangeTooltipGotItLabel = null;
+			}
+
+			if (ChangeDateRangeTooltipCloseIcone != null) {
+				ChangeDateRangeTooltipCloseIcone.Dispose ();
+				ChangeDateRangeTooltipCloseIcone = null;
+			}
+
+			if (ChangeDateRangeTooltipArrow != null) {
+				ChangeDateRangeTooltipArrow.Dispose ();
+				ChangeDateRangeTooltipArrow = null;
 			}
 		}
 	}

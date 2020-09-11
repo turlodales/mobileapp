@@ -69,6 +69,7 @@ namespace Toggl.Storage
         TapToStopTimeEntryTooltip,
         StartViewProjectsTooltip,
         EditViewProjectsTooltip,
-        FinalTooltip
+        FinalTooltip,
+        ChangeDateRange
     }
 }
