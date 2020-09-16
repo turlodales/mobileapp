@@ -243,7 +243,7 @@ namespace Toggl.iOS.ViewControllers
             var manualModeImage = UIImage.FromBundle("plusLarge").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             ViewModel.IsInManualMode
                 .Select(isInManualMode => isInManualMode ? manualModeImage : trackModeImage)
-                .Subscribe(image => StartTimeEntryButton.SetImage(image, UIControlState.Normal))
+                .Subscribe(image => StartTimeEntryButtonIcon.Image = image)
                 .DisposedBy(DisposeBag);
 
             //The sync failures button
