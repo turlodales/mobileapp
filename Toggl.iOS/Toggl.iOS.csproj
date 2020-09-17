@@ -1392,6 +1392,10 @@
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%403.png" />
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo%402.png" />
     <ImageAsset Include="Resources\Images.xcassets\icTogglTrackLogo.imageset\icTogglTrackLogo.png" />
+    <ImageAsset Include="Resources\Images.xcassets\pieChartIllustration.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\pieChartIllustration.imageset\Pie.png" />
+    <ImageAsset Include="Resources\Images.xcassets\pieChartIllustration.imageset\Pie%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\pieChartIllustration.imageset\Pie%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Cells\Reports\ReportsBarChartPlaceholderCollectionViewCell.xib" />
@@ -1495,6 +1499,7 @@
     <InterfaceDefinition Include="Cells\Reports\ReportAdvancedReportsViaWebCollectionViewCell.xib" />
     <InterfaceDefinition Include="ViewControllers\Settings\YourPlanViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\AnnouncementViewController.xib" />
+    <InterfaceDefinition Include="Cells\Reports\ReportsDonutChartPlaceholderCollectionViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -2150,6 +2155,10 @@
     <Compile Include="ViewControllers\AnnouncementViewController.designer.cs">
       <DependentUpon>AnnouncementViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cells\Reports\ReportsDonutChartPlaceholderCollectionViewCell.cs" />
+    <Compile Include="Cells\Reports\ReportsDonutChartPlaceholderCollectionViewCell.designer.cs">
+      <DependentUpon>ReportsDonutChartPlaceholderCollectionViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core.UI\Toggl.Core.UI.csproj">
@@ -2306,6 +2315,7 @@
     <Folder Include="Resources\Colors.xcassets\StartTimeEntryViewDisabledButton.colorset\" />
     <Folder Include="Resources\Colors.xcassets\StartTimeEntryInactiveButton.colorset\" />
     <Folder Include="Resources\Images.xcassets\illustrationBarChart.imageset\" />
+    <Folder Include="Resources\Images.xcassets\pieChartIllustration.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

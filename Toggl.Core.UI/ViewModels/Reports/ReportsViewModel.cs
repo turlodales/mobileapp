@@ -15,6 +15,7 @@ using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
+using Toggl.Core.Reports;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
@@ -316,12 +317,22 @@ namespace Toggl.Core.UI.ViewModels.Reports
                     ? new ReportProjectsBarChartPlaceholderElement()
                     : (IReportElement)new ReportProjectsBarChartElement(reportsTotal, dateFormat);
 
+                var projectHasBeenTracked = summaryData
+                    .Segments
+                    .Any(segment => segment.ProjectName != Resources.NoProject);
+
+                var donutChartElement = projectHasBeenTracked
+                    ? new ReportProjectsDonutChartElement(summaryData, durationFormat)
+                    : (IReportElement)new ReportDonutChartPlaceholderElement(
+                        summaryData.Segments.FirstOrDefault(segment => segment.ProjectName == Resources.NoProject),
+                        durationFormat);
+
                 return elements(
                     new ReportWorkspaceNameElement(filter.Workspace.Name),
                     new ReportSummaryElement(summaryData, durationFormat),
                     barChartElement,
-                    new ReportAdvancedReportsViaWebElement(currentPlan),
-                    new ReportProjectsDonutChartElement(summaryData, durationFormat));
+                    donutChartElement,
+                    new ReportAdvancedReportsViaWebElement(currentPlan));
             }
             catch (Exception ex)
             {

@@ -19,6 +19,7 @@ namespace Toggl.iOS.ViewSources
         AdvancedReportsViaWeb,
         DonutChart,
         DonutChartLegendItem,
+        DonutChartPlaceholder,
         Error,
         NoData
     }
@@ -33,6 +34,7 @@ namespace Toggl.iOS.ViewSources
         private const string barChartCellIdentifier = nameof(barChartCellIdentifier);
         private const string donutChartCellIdentifier = nameof(donutChartCellIdentifier);
         private const string donutChartLegendCellIdentifier = nameof(donutChartLegendCellIdentifier);
+        private const string donutChartPlaceholderCellIdentifier = nameof(donutChartPlaceholderCellIdentifier);
         private const string noDataCellIdentifier = nameof(noDataCellIdentifier);
         private const string errorCellIdentifier = nameof(errorCellIdentifier);
         private const string workspaceCellIdentifier = nameof(workspaceCellIdentifier);
@@ -56,6 +58,7 @@ namespace Toggl.iOS.ViewSources
             collectionView.RegisterNibForCell(ReportsErrorCollectionViewCell.Nib, errorCellIdentifier);
             collectionView.RegisterNibForCell(ReportAdvancedReportsViaWebCollectionViewCell.Nib, advancedReportsViaWebCellIdentifier);
             collectionView.RegisterNibForCell(ReportsBarChartPlaceholderCollectionViewCell.Nib, barChartPlaceholderCellIdentifier);
+            collectionView.RegisterNibForCell(ReportsDonutChartPlaceholderCollectionViewCell.Nib, donutChartPlaceholderCellIdentifier);
         }
 
         public void SetNewElements(IImmutableList<IReportElement> elements)
@@ -72,7 +75,8 @@ namespace Toggl.iOS.ViewSources
 
         public override UICollectionViewCell GetCell(UICollectionView collectionView, NSIndexPath indexPath)
         {
-            switch (elements[(int)indexPath.Item])
+            var x = elements[(int) indexPath.Item];
+            switch (x)
             {
                 case ReportSummaryElement element:
                     var summaryCell = collectionView.DequeueReusableCell(summaryCellIdentifier, indexPath) as ReportsSummaryCollectionViewCell;
@@ -87,6 +91,11 @@ namespace Toggl.iOS.ViewSources
                     barChartCell.SetElement(element);
                     return barChartCell;
 
+                case ReportDonutChartPlaceholderIllustrationElement _:
+                    var donutChartPlaceholderCell = collectionView.DequeueReusableCell(donutChartPlaceholderCellIdentifier, indexPath) as ReportsDonutChartPlaceholderCollectionViewCell;
+                    donutChartPlaceholderCell.DonutChartLegendVisible = NumberOfDonutChartLegendItems() > 0;
+                    return donutChartPlaceholderCell;
+
                 case ReportDonutChartDonutElement element:
                     var donutCell = collectionView.DequeueReusableCell(donutChartCellIdentifier, indexPath) as ReportsDonutChartCollectionViewCell;
                     donutCell.SetElement(element, indexPath.Item == elements.Count - 1);
@@ -94,7 +103,9 @@ namespace Toggl.iOS.ViewSources
 
                 case ReportProjectsDonutChartLegendItemElement element:
                     var donutLegendItemCell = collectionView.DequeueReusableCell(donutChartLegendCellIdentifier, indexPath) as ReportsDonutChartLegendCollectionViewCell;
-                    donutLegendItemCell.SetElement(element, indexPath.Item == elements.Count - 1);
+                    var legendItemCount = NumberOfDonutChartLegendItems();
+                    var legendIndex = indexPath.Row - 3;
+                    donutLegendItemCell.SetElement(element, legendIndex == legendItemCount - 1);
                     return donutLegendItemCell;
 
                 case ReportNoDataElement _:
@@ -134,6 +145,8 @@ namespace Toggl.iOS.ViewSources
                     return ReportsCollectionViewCell.BarChart;
                 case ReportProjectsBarChartPlaceholderElement _:
                     return ReportsCollectionViewCell.BarChartPlaceholder;
+                case ReportDonutChartPlaceholderIllustrationElement _:
+                    return ReportsCollectionViewCell.DonutChartPlaceholder;
                 case ReportDonutChartDonutElement _:
                     return ReportsCollectionViewCell.DonutChart;
                 case ReportDonutChartLegendItemElement _:
