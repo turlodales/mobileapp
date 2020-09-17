@@ -78,7 +78,7 @@ namespace Toggl.iOS.ViewControllers
 
         private void handleSettingTap(ISettingRow setting)
         {
-            setting.Action.Execute();
+            setting.Action?.Execute();
         }
 
         private IObservable<IImmutableList<SettingSection>> settingsSections()
@@ -157,6 +157,7 @@ namespace Toggl.iOS.ViewControllers
                 new SettingSection(Resources.General, new ISettingRow[]
                 {
                     new NavigationRow(Resources.SubmitFeedback, ViewModel.SubmitFeedback),
+                    new NavigationRow(Resources.RecommendTogglTrackToOthers, ViewModel.ShareToggl),
                     new NavigationRow(Resources.About, ViewModel.Version, ViewModel.OpenAboutView),
                     new NavigationRow(Resources.Help, ViewModel.OpenHelpView)
                 }));

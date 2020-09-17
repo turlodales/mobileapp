@@ -1288,6 +1288,7 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("ChangeDateRangeTooltipMessage", resourceCulture);
             }
         }
+        
         public static string YouHaventTrackedAnythingYet {
             get {
                 return ResourceManager.GetString("YouHaventTrackedAnythingYet", resourceCulture);
@@ -1345,6 +1346,18 @@ namespace Toggl.Shared {
         public static string CalendarToolbarDateFormat {
             get {
                 return ResourceManager.GetString("CalendarToolbarDateFormat", resourceCulture);
+            }
+        }
+        
+        public static string RecommendTogglTrackToOthers {
+            get {
+                return ResourceManager.GetString("RecommendTogglTrackToOthers", resourceCulture);
+            }
+        }
+        
+        public static string RecommendTogglUrlToShare {
+            get {
+                return ResourceManager.GetString("RecommendTogglUrlToShare", resourceCulture);
             }
         }
         
