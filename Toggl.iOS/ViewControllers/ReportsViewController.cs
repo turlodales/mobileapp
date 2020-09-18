@@ -91,7 +91,7 @@ namespace Toggl.iOS.ViewControllers
             source.ItemTapped
                 .Where(item => item == ReportsCollectionViewCell.BarChartPlaceholder)
                 .SelectUnit()
-                .Subscribe(openMainTab)
+                .Subscribe(barChartPlaceholderTapped)
                 .DisposedBy(DisposeBag);
 
             ViewModel.Elements
@@ -129,8 +129,9 @@ namespace Toggl.iOS.ViewControllers
             }
         }
 
-        private void openMainTab()
+        private void barChartPlaceholderTapped()
         {
+            IosDependencyContainer.Instance.AnalyticsService.GetTrackingTappedInReportsView.Track();
             TabBarController.SelectedIndex = 0;
         }
 
