@@ -46,7 +46,10 @@ namespace Toggl.iOS.ViewControllers
 		UIKit.NSLayoutConstraint SettingsButtonTrailingConstraint { get; set; }
 
 		[Outlet]
-		UIKit.UIButton StartTimeEntryButton { get; set; }
+		UIKit.UIView StartTimeEntryButton { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView StartTimeEntryButtonIcon { get; set; }
 
 		[Outlet]
 		UIKit.UIButton StopTimeEntryButton { get; set; }
@@ -123,6 +126,11 @@ namespace Toggl.iOS.ViewControllers
 			if (StartTimeEntryButton != null) {
 				StartTimeEntryButton.Dispose ();
 				StartTimeEntryButton = null;
+			}
+
+			if (StartTimeEntryButtonIcon != null) {
+				StartTimeEntryButtonIcon.Dispose ();
+				StartTimeEntryButtonIcon = null;
 			}
 
 			if (StopTimeEntryButton != null) {

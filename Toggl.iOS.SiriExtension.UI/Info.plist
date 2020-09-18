@@ -36,6 +36,6 @@
 		<string>com.apple.intents-ui-service</string>
 	</dict>
 	<key>CFBundleShortVersionString</key>
-	<string>2.19.2</string>
+	<string>2.19.3</string>
 </dict>
 </plist>

@@ -81,7 +81,10 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
-		UIKit.UIButton StartTimeEntryButton { get; set; }
+		UIKit.UIView StartTimeEntryButton { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView StartTimeEntryButtonIcon { get; set; }
 
 		[Outlet]
 		UIKit.UIView StartTimeEntryTooltip { get; set; }
@@ -245,6 +248,11 @@ namespace Toggl.iOS.ViewControllers
 			if (StartTimeEntryButton != null) {
 				StartTimeEntryButton.Dispose ();
 				StartTimeEntryButton = null;
+			}
+
+			if (StartTimeEntryButtonIcon != null) {
+				StartTimeEntryButtonIcon.Dispose ();
+				StartTimeEntryButtonIcon = null;
 			}
 
 			if (StartTimeEntryTooltip != null) {

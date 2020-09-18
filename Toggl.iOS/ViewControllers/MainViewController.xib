@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -32,7 +32,8 @@
                 <outlet property="RunningTimeEntryTooltipCloseIcon" destination="aT2-CI-qi9" id="8KX-OM-FZt"/>
                 <outlet property="RunningTimeEntryTooltipLabel" destination="dCP-Af-qYJ" id="mZC-BR-jXO"/>
                 <outlet property="SendFeedbackSuccessView" destination="fge-d2-Ud2" id="J5U-mZ-rsF"/>
-                <outlet property="StartTimeEntryButton" destination="JcZ-Hd-kNq" id="fYH-ME-9Jl"/>
+                <outlet property="StartTimeEntryButton" destination="o4T-g6-udX" id="awY-Rn-4Ud"/>
+                <outlet property="StartTimeEntryButtonIcon" destination="xe9-DR-fuv" id="yjX-Du-FrA"/>
                 <outlet property="StartTimeEntryTooltip" destination="bcc-wP-og6" id="lIX-aV-C5f"/>
                 <outlet property="StartTimeEntryTooltipArrow" destination="75Q-3G-Ryw" id="egH-3J-vZL"/>
                 <outlet property="StartTimeEntryTooltipBackground" destination="5b1-Hh-Pp9" id="VFC-ul-8Mq"/>
@@ -268,21 +269,27 @@ Time Entry on Toggl mobile app 🎉</string>
                         <constraint firstItem="E3W-8n-IfX" firstAttribute="leading" secondItem="vou-B4-go4" secondAttribute="leading" constant="48" id="qd2-Cm-m2L"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-Hd-kNq" userLabel="Start TE Button">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4T-g6-udX" userLabel="Start TE Button">
                     <rect key="frame" x="307" y="550" width="56" height="56"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="xe9-DR-fuv" userLabel="Start TE Button Icon">
+                            <rect key="frame" x="22" y="20" width="12" height="16"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
+                    </subviews>
                     <color key="backgroundColor" name="DarkAccent"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="56" id="BbI-lx-sAk"/>
-                        <constraint firstAttribute="width" constant="56" id="e5o-Fv-hOd"/>
+                        <constraint firstItem="xe9-DR-fuv" firstAttribute="centerX" secondItem="o4T-g6-udX" secondAttribute="centerX" id="LGK-pT-P42"/>
+                        <constraint firstAttribute="height" constant="56" id="hf4-fM-L2y"/>
+                        <constraint firstAttribute="width" constant="56" id="shI-4M-y0j"/>
+                        <constraint firstItem="xe9-DR-fuv" firstAttribute="centerY" secondItem="o4T-g6-udX" secondAttribute="centerY" id="wTk-d7-R82"/>
                     </constraints>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" image="play"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="28"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                </button>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddo-IW-xE3" userLabel="Stop TE Button">
                     <rect key="frame" x="330" y="565" width="34" height="34"/>
                     <color key="backgroundColor" name="StopButton"/>
@@ -527,28 +534,28 @@ Tap to edit it.</string>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="fge-d2-Ud2" secondAttribute="trailing" priority="750" constant="8" id="1SE-ip-Wha"/>
                 <constraint firstAttribute="trailing" secondItem="vou-B4-go4" secondAttribute="trailing" priority="750" id="83s-7t-oAW"/>
+                <constraint firstItem="o4T-g6-udX" firstAttribute="top" secondItem="bcc-wP-og6" secondAttribute="bottom" constant="5" id="FES-4P-wQN"/>
                 <constraint firstItem="Ddo-IW-xE3" firstAttribute="top" secondItem="65C-4h-51c" secondAttribute="bottom" constant="3" id="HAj-Yg-llI"/>
+                <constraint firstItem="o4T-g6-udX" firstAttribute="top" secondItem="fge-d2-Ud2" secondAttribute="bottom" constant="28" id="K77-bl-OQg"/>
                 <constraint firstItem="vou-B4-go4" firstAttribute="top" secondItem="b95-fG-diW" secondAttribute="bottom" id="LFh-9t-a19"/>
                 <constraint firstItem="vou-B4-go4" firstAttribute="top" secondItem="S4t-q9-ct9" secondAttribute="bottom" constant="-72" id="Lpx-CQ-TA7"/>
                 <constraint firstItem="hoP-Tg-vBM" firstAttribute="centerX" secondItem="S4t-q9-ct9" secondAttribute="centerX" id="Q2g-g8-PMQ"/>
                 <constraint firstItem="Ddo-IW-xE3" firstAttribute="trailing" secondItem="vou-B4-go4" secondAttribute="trailing" constant="-11" id="RsZ-Od-g2H"/>
                 <constraint firstAttribute="trailing" secondItem="Jhd-oR-xIN" secondAttribute="trailing" id="TAP-Mf-VjB"/>
-                <constraint firstItem="S4t-q9-ct9" firstAttribute="bottom" secondItem="JcZ-Hd-kNq" secondAttribute="bottom" constant="12" id="YgQ-me-nwo"/>
-                <constraint firstItem="JcZ-Hd-kNq" firstAttribute="top" secondItem="65C-4h-51c" secondAttribute="bottom" constant="-12" id="ZvI-Za-osj"/>
+                <constraint firstItem="S4t-q9-ct9" firstAttribute="bottom" secondItem="o4T-g6-udX" secondAttribute="bottom" constant="12" id="TTK-cw-H1O"/>
+                <constraint firstItem="S4t-q9-ct9" firstAttribute="trailing" secondItem="o4T-g6-udX" secondAttribute="trailing" constant="12" id="VGH-Qr-6fW"/>
                 <constraint firstItem="Jhd-oR-xIN" firstAttribute="top" secondItem="S4t-q9-ct9" secondAttribute="top" id="cO8-xe-txr"/>
                 <constraint firstAttribute="bottom" secondItem="vou-B4-go4" secondAttribute="bottom" id="eTc-gF-8yE"/>
                 <constraint firstItem="b95-fG-diW" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="ffs-iZ-9a1"/>
                 <constraint firstItem="S4t-q9-ct9" firstAttribute="bottom" secondItem="Jhd-oR-xIN" secondAttribute="bottom" priority="750" id="jk0-Wh-1za"/>
+                <constraint firstItem="o4T-g6-udX" firstAttribute="top" secondItem="65C-4h-51c" secondAttribute="bottom" constant="-12" id="m0H-iE-KqS"/>
                 <constraint firstItem="Jhd-oR-xIN" firstAttribute="bottom" secondItem="vou-B4-go4" secondAttribute="top" id="oMA-0v-07i"/>
                 <constraint firstItem="fge-d2-Ud2" firstAttribute="centerX" secondItem="S4t-q9-ct9" secondAttribute="centerX" id="pke-Cq-lDE"/>
                 <constraint firstItem="vou-B4-go4" firstAttribute="leading" secondItem="2" secondAttribute="leading" priority="750" id="q3O-7e-AfR"/>
                 <constraint firstItem="fge-d2-Ud2" firstAttribute="leading" secondItem="2" secondAttribute="leading" priority="750" constant="8" id="r4o-tI-pyA"/>
                 <constraint firstItem="Ddo-IW-xE3" firstAttribute="top" secondItem="vou-B4-go4" secondAttribute="top" constant="19" id="rDp-HB-uui"/>
-                <constraint firstItem="S4t-q9-ct9" firstAttribute="trailing" secondItem="JcZ-Hd-kNq" secondAttribute="trailing" constant="12" id="rpo-Sy-OUy"/>
-                <constraint firstItem="75Q-3G-Ryw" firstAttribute="centerX" secondItem="JcZ-Hd-kNq" secondAttribute="centerX" id="rul-7r-sxA"/>
-                <constraint firstItem="JcZ-Hd-kNq" firstAttribute="top" secondItem="fge-d2-Ud2" secondAttribute="bottom" constant="28" id="wGD-Wp-fH6"/>
+                <constraint firstItem="o4T-g6-udX" firstAttribute="centerX" secondItem="75Q-3G-Ryw" secondAttribute="centerX" id="tog-3S-aJ8"/>
                 <constraint firstItem="vou-B4-go4" firstAttribute="centerX" secondItem="S4t-q9-ct9" secondAttribute="centerX" id="xZy-96-mgm"/>
-                <constraint firstItem="JcZ-Hd-kNq" firstAttribute="top" secondItem="bcc-wP-og6" secondAttribute="bottom" constant="5" id="xxM-bN-5ui"/>
                 <constraint firstItem="Jhd-oR-xIN" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="yWZ-Xb-sTX"/>
                 <constraint firstItem="amM-QK-XMX" firstAttribute="centerX" secondItem="Ddo-IW-xE3" secondAttribute="centerX" id="yjZ-fe-0Qp"/>
             </constraints>

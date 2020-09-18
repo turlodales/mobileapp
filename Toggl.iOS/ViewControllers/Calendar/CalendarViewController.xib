@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -22,7 +22,8 @@
                 <outlet property="SelectedDateLabel" destination="wEf-qU-HdQ" id="OJ6-3U-X4H"/>
                 <outlet property="SettingsButton" destination="Yda-xM-gg0" id="mDD-BA-oS7"/>
                 <outlet property="SettingsButtonTrailingConstraint" destination="7km-uO-em2" id="aAf-f9-F2C"/>
-                <outlet property="StartTimeEntryButton" destination="Gtv-fV-aM3" id="89s-85-vTN"/>
+                <outlet property="StartTimeEntryButton" destination="6Hc-GE-dZp" id="JAR-S4-xBr"/>
+                <outlet property="StartTimeEntryButtonIcon" destination="x8K-LG-bD5" id="Gdd-D3-It5"/>
                 <outlet property="StopTimeEntryButton" destination="nOf-5b-PEn" id="wxj-1g-W8E"/>
                 <outlet property="WeekViewCollectionView" destination="bZp-QY-WMc" id="SHu-pU-VJE"/>
                 <outlet property="WeekViewContainer" destination="1ni-Vd-ktT" id="WEV-v4-IvA"/>
@@ -173,21 +174,27 @@
                         <constraint firstItem="sQA-Hp-RLq" firstAttribute="top" secondItem="5ga-7Q-xPr" secondAttribute="bottom" id="yhC-HB-A4x"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gtv-fV-aM3" userLabel="Start TE Button">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Hc-GE-dZp" userLabel="Start TE Button">
                     <rect key="frame" x="346" y="794" width="56" height="56"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="x8K-LG-bD5" userLabel="Start TE Button Icon">
+                            <rect key="frame" x="22" y="20" width="12" height="16"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
+                    </subviews>
                     <color key="backgroundColor" name="DarkAccent"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="56" id="drv-RG-Q2d"/>
-                        <constraint firstAttribute="width" constant="56" id="f7H-xP-ENe"/>
+                        <constraint firstAttribute="height" constant="56" id="JI8-OG-v4x"/>
+                        <constraint firstAttribute="width" constant="56" id="kls-na-YtH"/>
+                        <constraint firstItem="x8K-LG-bD5" firstAttribute="centerX" secondItem="6Hc-GE-dZp" secondAttribute="centerX" id="pG7-9Q-00e"/>
+                        <constraint firstItem="x8K-LG-bD5" firstAttribute="centerY" secondItem="6Hc-GE-dZp" secondAttribute="centerY" id="w0e-Zy-LKK"/>
                     </constraints>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" image="play"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="28"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                </button>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nOf-5b-PEn" userLabel="Stop TE Button">
                     <rect key="frame" x="369" y="809" width="34" height="34"/>
                     <color key="backgroundColor" name="StopButton"/>
@@ -210,7 +217,7 @@
                 <constraint firstItem="le5-oK-3MI" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="11" id="2SI-gg-7rc"/>
                 <constraint firstAttribute="trailing" secondItem="Yda-xM-gg0" secondAttribute="trailing" constant="15" id="7km-uO-em2"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="top" secondItem="Yda-xM-gg0" secondAttribute="bottom" constant="8" id="Eke-Ze-5YD"/>
-                <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="Gtv-fV-aM3" secondAttribute="bottom" constant="12" id="H7g-pP-7sh"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="6Hc-GE-dZp" secondAttribute="trailing" constant="12" id="IgU-wi-Qal"/>
                 <constraint firstItem="le5-oK-3MI" firstAttribute="top" secondItem="9QM-qy-tJ0" secondAttribute="top" constant="17" id="Inn-Ml-JMZ"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="bottom" secondItem="sTR-Lt-CVR" secondAttribute="top" id="KnD-dd-q2K"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="2ri-oj-8tD" secondAttribute="trailing" id="LCl-YB-dn2"/>
@@ -220,6 +227,7 @@
                 <constraint firstAttribute="trailing" secondItem="1ni-Vd-ktT" secondAttribute="trailing" priority="750" id="cEL-UC-oeX"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="meM-Fh-TW3" secondAttribute="trailing" id="cQM-fq-gl1"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="leading" secondItem="2" secondAttribute="leading" priority="750" id="dZ4-am-wSo"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="6Hc-GE-dZp" secondAttribute="bottom" constant="12" id="dZZ-Fs-Nh4"/>
                 <constraint firstItem="meM-Fh-TW3" firstAttribute="top" secondItem="9QM-qy-tJ0" secondAttribute="bottom" constant="-72" id="gg1-Up-fiy"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="meM-Fh-TW3" secondAttribute="bottom" id="hqi-Bi-nsx"/>
                 <constraint firstItem="nOf-5b-PEn" firstAttribute="top" secondItem="meM-Fh-TW3" secondAttribute="top" constant="19" id="l1u-CV-Bwn"/>
@@ -231,12 +239,11 @@
                 <constraint firstItem="sTR-Lt-CVR" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="snF-hT-D3v"/>
                 <constraint firstItem="wEf-qU-HdQ" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="uRK-xR-00N"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="sTR-Lt-CVR" secondAttribute="bottom" id="wSU-13-All"/>
-                <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="Gtv-fV-aM3" secondAttribute="trailing" constant="12" id="wbn-1k-kCi"/>
                 <constraint firstItem="meM-Fh-TW3" firstAttribute="leading" secondItem="9QM-qy-tJ0" secondAttribute="leading" id="xHV-GC-EhH"/>
                 <constraint firstAttribute="trailing" secondItem="sTR-Lt-CVR" secondAttribute="trailing" id="xOm-hU-0j5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="9QM-qy-tJ0"/>
-            <point key="canvasLocation" x="34" y="54"/>
+            <point key="canvasLocation" x="33.333333333333336" y="53.571428571428569"/>
         </view>
     </objects>
     <resources>
