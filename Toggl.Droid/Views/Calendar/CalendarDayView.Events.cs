@@ -229,7 +229,9 @@ namespace Toggl.Droid.Views.Calendar
 
             if (runningTimeEntryIndex.HasValue && runningTimeEntryDisposable == null)
             {
-                runningTimeEntryDisposable = timeService.CurrentDateTimeObservable.Subscribe(_ => Invalidate());
+                runningTimeEntryDisposable = timeService.CurrentDateTimeObservable
+                    .AsDriver(default, AndroidDependencyContainer.Instance.SchedulerProvider)
+                    .Subscribe(_ => Invalidate());
             }
             else if (!runningTimeEntryIndex.HasValue)
             {
