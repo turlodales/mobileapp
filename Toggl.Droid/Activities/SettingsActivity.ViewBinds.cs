@@ -32,6 +32,7 @@ namespace Toggl.Droid.Activities
         private NavigationRowViewView calendarSettingsRow;
         private NavigationRowViewView smartRemindersRow;
         private NavigationRowViewView submitFeedbackRow;
+        private NavigationRowViewView recommendTogglRow;
         private NavigationRowViewView aboutRow;
         private NavigationRowViewView helpRow;
         private LogoutRowViewView logoutRowViewView;
@@ -50,19 +51,19 @@ namespace Toggl.Droid.Activities
 
             profileHeaderRow = HeaderRowView.Create(this);
             profileHeaderRow.SetRowData(new HeaderRow(Shared.Resources.YourProfile));
-            
+
             dateTimeHeaderRow = HeaderRowView.Create(this);
             dateTimeHeaderRow.SetRowData(new HeaderRow(Shared.Resources.DateAndTime));
-            
+
             timerDefaultsHeaderRow = HeaderRowView.Create(this);
             timerDefaultsHeaderRow.SetRowData(new HeaderRow(Shared.Resources.TimerDefaults));
-            
+
             calendarHeaderRow = HeaderRowView.Create(this);
             calendarHeaderRow.SetRowData(new HeaderRow(Shared.Resources.Calendar));
-            
+
             generalHeaderRow = HeaderRowView.Create(this);
             generalHeaderRow.SetRowData(new HeaderRow(Shared.Resources.General));
-            
+
             nameRow = InfoRowViewView.Create(this);
             emailRow = InfoRowViewView.Create(this);
             planRow = NavigationRowViewView.Create(this);
@@ -79,6 +80,7 @@ namespace Toggl.Droid.Activities
             calendarSettingsRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowView);
             smartRemindersRow = NavigationRowViewView.Create(this);
             submitFeedbackRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowView);
+            recommendTogglRow = NavigationRowViewView.Create(this, Resource.Layout.SettingsButtonRowView);
             aboutRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowWithDetailsView);
             helpRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowView);
             logoutRowViewView = LogoutRowViewView.Create(this);
@@ -109,6 +111,7 @@ namespace Toggl.Droid.Activities
                 DividerRowView.Create(this),
                 generalHeaderRow,
                 submitFeedbackRow,
+                recommendTogglRow,
                 aboutRow,
                 helpRow,
                 logoutRowViewView

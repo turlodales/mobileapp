@@ -85,6 +85,7 @@ namespace Toggl.Droid.Activities
 
             // general section
             submitFeedbackRow.SetRowData(new NavigationRow(SubmitFeedback, ViewModel.SubmitFeedback));
+            recommendTogglRow.SetRowData(new NavigationRow(RecommendTogglTrackToOthers, ViewModel.ShareToggl));
             aboutRow.SetRowData(new NavigationRow(About, ViewModel.Version, ViewModel.OpenAboutView));
             helpRow.SetRowData(new NavigationRow(Help, ViewModel.OpenHelpView));
 
