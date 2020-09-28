@@ -88,6 +88,8 @@ namespace Toggl.Droid.Activities
             recommendTogglRow.SetRowData(new NavigationRow(RecommendTogglTrackToOthers, ViewModel.ShareToggl));
             aboutRow.SetRowData(new NavigationRow(About, ViewModel.Version, ViewModel.OpenAboutView));
             helpRow.SetRowData(new NavigationRow(Help, ViewModel.OpenHelpView));
+            blogRow.SetRowData(new NavigationRow(BlogOnPersonalEfficiency, ViewModel.OpenBlog));
+            aboutRow.SetRowData(new NavigationRow(About, ViewModel.Version, ViewModel.OpenAboutView));
 
             ViewModel.LoggingOut
                 .Subscribe(this.CancelAllNotifications)

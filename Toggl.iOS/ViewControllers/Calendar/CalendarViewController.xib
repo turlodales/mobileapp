@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -11,12 +11,20 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalendarViewController">
             <connections>
+                <outlet property="CurrentTimeEntryCard" destination="meM-Fh-TW3" id="3Ig-hG-enx"/>
+                <outlet property="CurrentTimeEntryDescriptionLabel" destination="Wsh-hJ-P1Q" id="WzP-H4-TyY"/>
+                <outlet property="CurrentTimeEntryElapsedTimeLabel" destination="5ga-7Q-xPr" id="acM-4F-SdM"/>
+                <outlet property="CurrentTimeEntryProjectTaskClientLabel" destination="hyL-RW-Eao" id="c2Z-PM-v4b"/>
                 <outlet property="DailyTrackedTimeLabel" destination="le5-oK-3MI" id="ZI4-0B-66v"/>
                 <outlet property="DailyTrackedTimeLeadingConstraint" destination="2SI-gg-7rc" id="ASk-TK-5Mr"/>
                 <outlet property="DayViewContainer" destination="sTR-Lt-CVR" id="Wre-ir-6EJ"/>
+                <outlet property="RunningEntryDescriptionFadeView" destination="sQA-Hp-RLq" id="gET-d5-xgq"/>
                 <outlet property="SelectedDateLabel" destination="wEf-qU-HdQ" id="OJ6-3U-X4H"/>
                 <outlet property="SettingsButton" destination="Yda-xM-gg0" id="mDD-BA-oS7"/>
                 <outlet property="SettingsButtonTrailingConstraint" destination="7km-uO-em2" id="aAf-f9-F2C"/>
+                <outlet property="StartTimeEntryButton" destination="6Hc-GE-dZp" id="JAR-S4-xBr"/>
+                <outlet property="StartTimeEntryButtonIcon" destination="x8K-LG-bD5" id="Gdd-D3-It5"/>
+                <outlet property="StopTimeEntryButton" destination="nOf-5b-PEn" id="wxj-1g-W8E"/>
                 <outlet property="WeekViewCollectionView" destination="bZp-QY-WMc" id="SHu-pU-VJE"/>
                 <outlet property="WeekViewContainer" destination="1ni-Vd-ktT" id="WEV-v4-IvA"/>
                 <outlet property="WeekViewContainerWidthConstraint" destination="Y2s-6t-qem" id="RrJ-Cc-jq6"/>
@@ -94,19 +102,135 @@
                         <constraint firstAttribute="height" constant="1" id="ZQ0-hd-gY8"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meM-Fh-TW3" customClass="AccessibilityAwareView">
+                    <rect key="frame" x="0.0" y="790" width="414" height="72"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:15:25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ga-7Q-xPr">
+                            <rect key="frame" x="180.5" y="14" width="53.5" height="18"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <color key="textColor" name="Text"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sQA-Hp-RLq" userLabel="Fading view" customClass="FadeView">
+                            <rect key="frame" x="48" y="32" width="318" height="40"/>
+                            <subviews>
+                                <scrollView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQu-rN-ris" customClass="MarqueeView">
+                                    <rect key="frame" x="0.0" y="0.0" width="318" height="40"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jkf-xw-miK">
+                                            <rect key="frame" x="0.0" y="0.0" width="358.5" height="23"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New iOS app landing page design" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wsh-hJ-P1Q">
+                                                    <rect key="frame" x="8" y="6" width="217.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" name="Text"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project: task client" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hyL-RW-Eao">
+                                                    <rect key="frame" x="230.5" y="6" width="120" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" name="Text"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" name="Background"/>
+                                            <constraints>
+                                                <constraint firstItem="hyL-RW-Eao" firstAttribute="centerY" secondItem="Wsh-hJ-P1Q" secondAttribute="centerY" id="FfT-bQ-Cna"/>
+                                                <constraint firstAttribute="trailing" secondItem="hyL-RW-Eao" secondAttribute="trailing" constant="8" id="TLf-az-Tx4"/>
+                                                <constraint firstItem="hyL-RW-Eao" firstAttribute="leading" secondItem="Wsh-hJ-P1Q" secondAttribute="trailing" constant="5" id="TUb-8R-ZO1"/>
+                                                <constraint firstAttribute="bottom" secondItem="Wsh-hJ-P1Q" secondAttribute="bottom" id="Z5y-L9-O9J"/>
+                                                <constraint firstItem="Wsh-hJ-P1Q" firstAttribute="leading" secondItem="Jkf-xw-miK" secondAttribute="leading" constant="8" id="ZoZ-FF-GDn"/>
+                                                <constraint firstItem="Wsh-hJ-P1Q" firstAttribute="top" secondItem="Jkf-xw-miK" secondAttribute="top" constant="6" id="eLy-c5-9Rf"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Jkf-xw-miK" firstAttribute="leading" secondItem="tQu-rN-ris" secondAttribute="leading" id="8AZ-0l-mqE"/>
+                                        <constraint firstAttribute="bottom" secondItem="Jkf-xw-miK" secondAttribute="bottom" id="D0K-BF-N9v"/>
+                                        <constraint firstItem="Jkf-xw-miK" firstAttribute="top" secondItem="tQu-rN-ris" secondAttribute="top" id="ibd-ht-z45"/>
+                                        <constraint firstAttribute="trailing" secondItem="Jkf-xw-miK" secondAttribute="trailing" id="xDg-pM-HBY"/>
+                                    </constraints>
+                                </scrollView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="tQu-rN-ris" secondAttribute="trailing" id="AHR-nE-xFq"/>
+                                <constraint firstAttribute="bottom" secondItem="tQu-rN-ris" secondAttribute="bottom" id="KbV-Oz-foE"/>
+                                <constraint firstItem="tQu-rN-ris" firstAttribute="leading" secondItem="sQA-Hp-RLq" secondAttribute="leading" id="VIz-yx-4Ph"/>
+                                <constraint firstItem="tQu-rN-ris" firstAttribute="top" secondItem="sQA-Hp-RLq" secondAttribute="top" id="sDm-h8-tyo"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" name="Background"/>
+                    <accessibility key="accessibilityConfiguration" identifier="CurrentTimeEntryCard">
+                        <bool key="isElement" value="YES"/>
+                    </accessibility>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="sQA-Hp-RLq" secondAttribute="trailing" constant="48" id="HdP-gG-lyE"/>
+                        <constraint firstItem="sQA-Hp-RLq" firstAttribute="leading" secondItem="meM-Fh-TW3" secondAttribute="leading" constant="48" id="KYP-F7-0FV"/>
+                        <constraint firstItem="5ga-7Q-xPr" firstAttribute="top" secondItem="meM-Fh-TW3" secondAttribute="top" constant="14" id="ZYi-bs-d8l"/>
+                        <constraint firstItem="5ga-7Q-xPr" firstAttribute="centerX" secondItem="meM-Fh-TW3" secondAttribute="centerX" id="cig-ZO-vHu"/>
+                        <constraint firstAttribute="bottom" secondItem="sQA-Hp-RLq" secondAttribute="bottom" id="g8d-YN-KWV"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="834" id="xxg-ao-bKK"/>
+                        <constraint firstItem="sQA-Hp-RLq" firstAttribute="top" secondItem="5ga-7Q-xPr" secondAttribute="bottom" id="yhC-HB-A4x"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Hc-GE-dZp" userLabel="Start TE Button">
+                    <rect key="frame" x="346" y="794" width="56" height="56"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="x8K-LG-bD5" userLabel="Start TE Button Icon">
+                            <rect key="frame" x="22" y="20" width="12" height="16"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" name="DarkAccent"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="JI8-OG-v4x"/>
+                        <constraint firstAttribute="width" constant="56" id="kls-na-YtH"/>
+                        <constraint firstItem="x8K-LG-bD5" firstAttribute="centerX" secondItem="6Hc-GE-dZp" secondAttribute="centerX" id="pG7-9Q-00e"/>
+                        <constraint firstItem="x8K-LG-bD5" firstAttribute="centerY" secondItem="6Hc-GE-dZp" secondAttribute="centerY" id="w0e-Zy-LKK"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="28"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nOf-5b-PEn" userLabel="Stop TE Button">
+                    <rect key="frame" x="369" y="809" width="34" height="34"/>
+                    <color key="backgroundColor" name="StopButton"/>
+                    <accessibility key="accessibilityConfiguration" identifier="MainStopTimeEntry"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="3mQ-as-X1q"/>
+                        <constraint firstAttribute="width" constant="34" id="wvn-pP-LtM"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" image="stopButtonIcon"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="17"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
             </subviews>
             <color key="backgroundColor" name="Background"/>
             <constraints>
                 <constraint firstItem="le5-oK-3MI" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="11" id="2SI-gg-7rc"/>
                 <constraint firstAttribute="trailing" secondItem="Yda-xM-gg0" secondAttribute="trailing" constant="15" id="7km-uO-em2"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="top" secondItem="Yda-xM-gg0" secondAttribute="bottom" constant="8" id="Eke-Ze-5YD"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="6Hc-GE-dZp" secondAttribute="trailing" constant="12" id="IgU-wi-Qal"/>
                 <constraint firstItem="le5-oK-3MI" firstAttribute="top" secondItem="9QM-qy-tJ0" secondAttribute="top" constant="17" id="Inn-Ml-JMZ"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="bottom" secondItem="sTR-Lt-CVR" secondAttribute="top" id="KnD-dd-q2K"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="2ri-oj-8tD" secondAttribute="trailing" id="LCl-YB-dn2"/>
+                <constraint firstItem="nOf-5b-PEn" firstAttribute="trailing" secondItem="meM-Fh-TW3" secondAttribute="trailing" constant="-11" id="LpO-2C-OlQ"/>
                 <constraint firstItem="2ri-oj-8tD" firstAttribute="leading" secondItem="9QM-qy-tJ0" secondAttribute="leading" id="Sab-tG-lv0"/>
                 <constraint firstItem="2ri-oj-8tD" firstAttribute="top" secondItem="1ni-Vd-ktT" secondAttribute="bottom" id="Zfe-9B-ryx"/>
                 <constraint firstAttribute="trailing" secondItem="1ni-Vd-ktT" secondAttribute="trailing" priority="750" id="cEL-UC-oeX"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="trailing" secondItem="meM-Fh-TW3" secondAttribute="trailing" id="cQM-fq-gl1"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="leading" secondItem="2" secondAttribute="leading" priority="750" id="dZ4-am-wSo"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="6Hc-GE-dZp" secondAttribute="bottom" constant="12" id="dZZ-Fs-Nh4"/>
+                <constraint firstItem="meM-Fh-TW3" firstAttribute="top" secondItem="9QM-qy-tJ0" secondAttribute="bottom" constant="-72" id="gg1-Up-fiy"/>
+                <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="meM-Fh-TW3" secondAttribute="bottom" id="hqi-Bi-nsx"/>
+                <constraint firstItem="nOf-5b-PEn" firstAttribute="top" secondItem="meM-Fh-TW3" secondAttribute="top" constant="19" id="l1u-CV-Bwn"/>
                 <constraint firstItem="1ni-Vd-ktT" firstAttribute="centerX" secondItem="9QM-qy-tJ0" secondAttribute="centerX" id="n2n-Wk-QdP"/>
                 <constraint firstItem="wEf-qU-HdQ" firstAttribute="centerY" secondItem="le5-oK-3MI" secondAttribute="centerY" id="ooB-48-jYG"/>
                 <constraint firstItem="Yda-xM-gg0" firstAttribute="centerY" secondItem="wEf-qU-HdQ" secondAttribute="centerY" constant="-2.5" id="ovN-uw-JFU">
@@ -115,19 +239,31 @@
                 <constraint firstItem="sTR-Lt-CVR" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="snF-hT-D3v"/>
                 <constraint firstItem="wEf-qU-HdQ" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="uRK-xR-00N"/>
                 <constraint firstItem="9QM-qy-tJ0" firstAttribute="bottom" secondItem="sTR-Lt-CVR" secondAttribute="bottom" id="wSU-13-All"/>
+                <constraint firstItem="meM-Fh-TW3" firstAttribute="leading" secondItem="9QM-qy-tJ0" secondAttribute="leading" id="xHV-GC-EhH"/>
                 <constraint firstAttribute="trailing" secondItem="sTR-Lt-CVR" secondAttribute="trailing" id="xOm-hU-0j5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="9QM-qy-tJ0"/>
-            <point key="canvasLocation" x="34" y="54"/>
+            <point key="canvasLocation" x="33.333333333333336" y="53.571428571428569"/>
         </view>
     </objects>
     <resources>
         <image name="icSettings" width="16" height="16"/>
+        <image name="play" width="12" height="16"/>
+        <image name="stopButtonIcon" width="14" height="14"/>
         <namedColor name="Background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="DarkAccent">
+            <color red="0.12549020349979401" green="0.050980392843484879" blue="0.15294118225574493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Separator">
             <color red="0.7764706015586853" green="0.7764706015586853" blue="0.78431373834609985" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="StopButton">
+            <color red="1" green="0.53333336114883423" blue="0.47450980544090271" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Text">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

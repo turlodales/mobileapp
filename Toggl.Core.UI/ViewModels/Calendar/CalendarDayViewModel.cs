@@ -34,10 +34,11 @@ namespace Toggl.Core.UI.ViewModels.Calendar
 
         private readonly CompositeDisposable disposeBag = new CompositeDisposable();
         private readonly IObservable<TimeSpan> timeTrackedOnDaySubject;
-        
+
         public DateTimeOffset Date { get; }
         public ObservableGroupedOrderedCollection<CalendarItem> CalendarItems { get; }
         public IObservable<TimeFormat> TimeOfDayFormat { get; }
+        public IObservable<DurationFormat> DurationFormat { get; }
         public IObservable<string> TimeTrackedOnDay { get; }
 
         public InputAction<CalendarItem> OnTimeEntryEdited { get; }
@@ -88,6 +89,10 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .Select(current => current.TimeOfDayFormat)
                 .AsDriver(schedulerProvider);
 
+            DurationFormat = preferences
+                .Select(current => current.DurationFormat)
+                .AsDriver(schedulerProvider);
+
             CalendarItems = new ObservableGroupedOrderedCollection<CalendarItem>(
                 indexKey: item => item.StartTime,
                 orderingKey: item => item.StartTime,
@@ -113,7 +118,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .Execute()
                 .ObserveOn(schedulerProvider.BackgroundScheduler)
                 .StartWith(TimeSpan.Zero);
-            
+
             var timeTrackedOnDay = CalendarItems
                 .CollectionChange
                 .ObserveOn(schedulerProvider.BackgroundScheduler)
@@ -126,22 +131,22 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             if (timeService.CurrentDateTime.LocalDateTime.Date == Date)
             {
                 timeTrackedOnDaySubject = timeTrackedOnDay
-                    .CombineLatest(timeTrackedToday.ReemitWhen(timeService.MidnightObservable.SelectUnit()), 
+                    .CombineLatest(timeTrackedToday.ReemitWhen(timeService.MidnightObservable.SelectUnit()),
                         selectTrackedTimeSource);
             }
             else
             {
                 timeTrackedOnDaySubject = timeTrackedOnDay;
             }
-            
+
             TimeTrackedOnDay = timeTrackedOnDaySubject
                 .CombineLatest(durationFormat, DurationAndFormatToString.Convert)
                 .DistinctUntilChanged()
                 .AsDriver(schedulerProvider);
         }
 
-        private TimeSpan selectTrackedTimeSource(TimeSpan timeTrackedOnDay, TimeSpan timeTrackedToday) 
-            => timeService.CurrentDateTime.LocalDateTime.Date == Date 
+        private TimeSpan selectTrackedTimeSource(TimeSpan timeTrackedOnDay, TimeSpan timeTrackedToday)
+            => timeService.CurrentDateTime.LocalDateTime.Date == Date
                 ? timeTrackedToday
                 : timeTrackedOnDay;
 

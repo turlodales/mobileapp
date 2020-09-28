@@ -16,6 +16,8 @@ namespace Toggl.Networking.Helpers
 
         private const string syncApiPrefix = "/";
 
+        private const string integrationsPrefix = "/integrations/api/v1/";
+
         public static Uri ForApi(ApiEnvironment environment)
             => forEnvironment(environment, apiPrefix);
 
@@ -27,6 +29,9 @@ namespace Toggl.Networking.Helpers
                 environment,
                 staging: new Uri("https://sync.toggl.space"),
                 production: new Uri("https://sync.toggl.com"));
+
+        public static Uri ForIntegrations(ApiEnvironment environment)
+            => forEnvironment(environment, integrationsPrefix);
 
         private static Uri forEnvironment(ApiEnvironment environment, string prefix)
             => selectByEnvironment(

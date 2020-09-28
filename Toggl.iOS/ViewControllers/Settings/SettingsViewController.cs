@@ -158,8 +158,9 @@ namespace Toggl.iOS.ViewControllers
                 {
                     new NavigationRow(Resources.SubmitFeedback, ViewModel.SubmitFeedback),
                     new NavigationRow(Resources.RecommendTogglTrackToOthers, ViewModel.ShareToggl),
+                    new NavigationRow(Resources.Help, ViewModel.OpenHelpView),
+                    new NavigationRow(Resources.BlogOnPersonalEfficiency, ViewModel.OpenBlog),
                     new NavigationRow(Resources.About, ViewModel.Version, ViewModel.OpenAboutView),
-                    new NavigationRow(Resources.Help, ViewModel.OpenHelpView)
                 }));
 
             sections.Add(generalSection);

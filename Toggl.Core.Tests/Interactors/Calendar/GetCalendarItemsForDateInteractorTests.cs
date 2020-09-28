@@ -34,6 +34,7 @@ namespace Toggl.Core.Tests.Interactors.Calendar
                 {
                     new CalendarItem(
                         "id",
+                        "id",
                         CalendarItemSource.Calendar,
                         new DateTimeOffset(2018, 08, 06, 10, 30, 00, TimeSpan.Zero),
                         TimeSpan.FromMinutes(30),
@@ -43,6 +44,7 @@ namespace Toggl.Core.Tests.Interactors.Calendar
                         calendarId: "1"),
                     new CalendarItem(
                         "id",
+                        "id",
                         CalendarItemSource.Calendar,
                         new DateTimeOffset(2018, 08, 06, 10, 00, 00, TimeSpan.Zero),
                         TimeSpan.FromMinutes(90),
@@ -51,6 +53,7 @@ namespace Toggl.Core.Tests.Interactors.Calendar
                         color: "#0000ff",
                         calendarId: "1"),
                     new CalendarItem(
+                        "id",
                         "id",
                         CalendarItemSource.Calendar,
                         new DateTimeOffset(2018, 08, 06, 09, 00, 00, TimeSpan.Zero),
@@ -162,6 +165,7 @@ namespace Toggl.Core.Tests.Interactors.Calendar
                     .Append(
                         new CalendarItem(
                             "id",
+                            "id",
                             CalendarItemSource.Calendar,
                             new DateTimeOffset(2018, 08, 06, 10, 30, 00, TimeSpan.Zero),
                             TimeSpan.FromHours(24),
@@ -170,6 +174,7 @@ namespace Toggl.Core.Tests.Interactors.Calendar
                             "#0000ff"))
                     .Append(
                         new CalendarItem(
+                            "id",
                             "id",
                             CalendarItemSource.Calendar,
                             new DateTimeOffset(2018, 08, 06, 10, 30, 00, TimeSpan.Zero),

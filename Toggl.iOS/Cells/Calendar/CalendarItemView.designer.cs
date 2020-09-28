@@ -1,8 +1,7 @@
-﻿// WARNING
+// WARNING
 //
-// This file has been generated automatically by Rider IDE
-//   to store outlets and actions made in Xcode.
-// If it is removed, they will be lost.
+// This file has been generated automatically by Visual Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
 using Foundation;
@@ -14,79 +13,70 @@ namespace Toggl.iOS.Cells.Calendar
 	partial class CalendarItemView
 	{
 		[Outlet]
+		UIKit.UIView BackgroundColorView { get; set; }
+
+		[Outlet]
+		UIKit.UIView BottomContainerView { get; set; }
+
+		[Outlet]
 		UIKit.UIView BottomDragIndicator { get; set; }
 
 		[Outlet]
-		UIKit.UIView BottomLine { get; set; }
+		UIKit.UIView BottomShadowView { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint CalendarIconBaselineConstraint { get; set; }
-
-		[Outlet]
-		UIKit.NSLayoutConstraint CalendarIconCenterVerticallyConstraint { get; set; }
-
-		[Outlet]
-		UIKit.NSLayoutConstraint CalendarIconHeightConstrarint { get; set; }
-
-		[Outlet]
-		UIKit.UIImageView CalendarIconImageView { get; set; }
-
-		[Outlet]
-		UIKit.NSLayoutConstraint CalendarIconLeadingConstraint { get; set; }
-
-		[Outlet]
-		UIKit.NSLayoutConstraint CalendarIconWidthConstrarint { get; set; }
+		UIKit.UIStackView DescriptionContainerView { get; set; }
 
 		[Outlet]
 		UIKit.UILabel DescriptionLabel { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint DescriptionLabelBottomConstraint { get; set; }
+		UIKit.UILabel DurationLabel { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint DescriptionLabelLeadingConstraint { get; set; }
+		UIKit.UIImageView HasTagsImageView { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint DescriptionLabelTopConstraint { get; set; }
+		UIKit.UIStackView IconsContainerView { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView IsBillableImageView { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView IsEventImageView { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ProjectTaskClientLabel { get; set; }
+
+		[Outlet]
+		UIKit.UIView SyncStatusView { get; set; }
+
+		[Outlet]
+		UIKit.UIView TopContainerView { get; set; }
 
 		[Outlet]
 		UIKit.UIView TopDragIndicator { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
+			if (BackgroundColorView != null) {
+				BackgroundColorView.Dispose ();
+				BackgroundColorView = null;
+			}
+
+			if (BottomContainerView != null) {
+				BottomContainerView.Dispose ();
+				BottomContainerView = null;
+			}
+
 			if (BottomDragIndicator != null) {
 				BottomDragIndicator.Dispose ();
 				BottomDragIndicator = null;
 			}
 
-			if (CalendarIconBaselineConstraint != null) {
-				CalendarIconBaselineConstraint.Dispose ();
-				CalendarIconBaselineConstraint = null;
-			}
-
-			if (CalendarIconCenterVerticallyConstraint != null) {
-				CalendarIconCenterVerticallyConstraint.Dispose ();
-				CalendarIconCenterVerticallyConstraint = null;
-			}
-
-			if (CalendarIconHeightConstrarint != null) {
-				CalendarIconHeightConstrarint.Dispose ();
-				CalendarIconHeightConstrarint = null;
-			}
-
-			if (CalendarIconImageView != null) {
-				CalendarIconImageView.Dispose ();
-				CalendarIconImageView = null;
-			}
-
-			if (CalendarIconLeadingConstraint != null) {
-				CalendarIconLeadingConstraint.Dispose ();
-				CalendarIconLeadingConstraint = null;
-			}
-
-			if (CalendarIconWidthConstrarint != null) {
-				CalendarIconWidthConstrarint.Dispose ();
-				CalendarIconWidthConstrarint = null;
+			if (BottomShadowView != null) {
+				BottomShadowView.Dispose ();
+				BottomShadowView = null;
 			}
 
 			if (DescriptionLabel != null) {
@@ -94,19 +84,39 @@ namespace Toggl.iOS.Cells.Calendar
 				DescriptionLabel = null;
 			}
 
-			if (DescriptionLabelBottomConstraint != null) {
-				DescriptionLabelBottomConstraint.Dispose ();
-				DescriptionLabelBottomConstraint = null;
+			if (DurationLabel != null) {
+				DurationLabel.Dispose ();
+				DurationLabel = null;
 			}
 
-			if (DescriptionLabelLeadingConstraint != null) {
-				DescriptionLabelLeadingConstraint.Dispose ();
-				DescriptionLabelLeadingConstraint = null;
+			if (HasTagsImageView != null) {
+				HasTagsImageView.Dispose ();
+				HasTagsImageView = null;
 			}
 
-			if (DescriptionLabelTopConstraint != null) {
-				DescriptionLabelTopConstraint.Dispose ();
-				DescriptionLabelTopConstraint = null;
+			if (IconsContainerView != null) {
+				IconsContainerView.Dispose ();
+				IconsContainerView = null;
+			}
+
+			if (IsBillableImageView != null) {
+				IsBillableImageView.Dispose ();
+				IsBillableImageView = null;
+			}
+
+			if (ProjectTaskClientLabel != null) {
+				ProjectTaskClientLabel.Dispose ();
+				ProjectTaskClientLabel = null;
+			}
+
+			if (SyncStatusView != null) {
+				SyncStatusView.Dispose ();
+				SyncStatusView = null;
+			}
+
+			if (TopContainerView != null) {
+				TopContainerView.Dispose ();
+				TopContainerView = null;
 			}
 
 			if (TopDragIndicator != null) {
@@ -114,11 +124,15 @@ namespace Toggl.iOS.Cells.Calendar
 				TopDragIndicator = null;
 			}
 
-			if (BottomLine != null) {
-				BottomLine.Dispose ();
-				BottomLine = null;
+			if (IsEventImageView != null) {
+				IsEventImageView.Dispose ();
+				IsEventImageView = null;
 			}
 
+			if (DescriptionContainerView != null) {
+				DescriptionContainerView.Dispose ();
+				DescriptionContainerView = null;
+			}
 		}
 	}
 }

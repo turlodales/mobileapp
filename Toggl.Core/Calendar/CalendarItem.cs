@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Toggl.Core.Extensions;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
 using Toggl.Storage;
@@ -8,7 +11,11 @@ namespace Toggl.Core.Calendar
 {
     public struct CalendarItem
     {
+        public static string ExternalEventIdPrefix = "ExternalEvent-";
+
         public string Id { get; }
+
+        public string SyncId { get; }
 
         public CalendarItemSource Source { get; }
 
@@ -19,12 +26,16 @@ namespace Toggl.Core.Calendar
         public DateTimeOffset? EndTime => StartTime + Duration;
 
         public string Description { get; }
-        
+
         public string Project { get; }
-        
+
         public string Task { get; }
-        
+
         public string Client { get; }
+
+        public bool HasTags { get; }
+
+        public bool IsBillable { get; }
 
         public string Color { get; }
 
@@ -34,8 +45,11 @@ namespace Toggl.Core.Calendar
 
         public CalendarIconKind IconKind { get; }
 
+        public bool IsPlaceholder { get; }
+
         public CalendarItem(
             string id,
+            string syncId,
             CalendarItemSource source,
             DateTimeOffset startTime,
             TimeSpan? duration,
@@ -46,9 +60,14 @@ namespace Toggl.Core.Calendar
             string calendarId = "",
             string project = "",
             string task = "",
-            string client = "")
+            string client = "",
+            bool hasTags = false,
+            bool isBillable = false,
+            bool isPlaceholder = false
+            )
         {
             Id = id;
+            SyncId = syncId;
             Source = source;
             StartTime = startTime;
             Duration = duration;
@@ -60,11 +79,15 @@ namespace Toggl.Core.Calendar
             Project = project;
             Task = task;
             Client = client;
+            HasTags = hasTags;
+            IsBillable = isBillable;
+            IsPlaceholder = isPlaceholder;
         }
 
         private CalendarItem(IThreadSafeTimeEntry timeEntry)
             : this(
                 timeEntry.Id.ToString(),
+                null,
                 CalendarItemSource.TimeEntry,
                 timeEntry.Start,
                 timeEntry.Duration.HasValue ? TimeSpan.FromSeconds(timeEntry.Duration.Value) : null as TimeSpan?,
@@ -74,7 +97,10 @@ namespace Toggl.Core.Calendar
                 timeEntry.Id,
                 project: timeEntry.Project?.Name,
                 task: timeEntry.Task?.Name,
-                client: timeEntry.Project?.Client?.Name)
+                client: timeEntry.Project?.Client?.Name,
+                hasTags: timeEntry.Tags.Any(),
+                isBillable: timeEntry.Billable,
+                isPlaceholder: false)
         {
             switch (timeEntry.SyncStatus)
             {
@@ -90,12 +116,30 @@ namespace Toggl.Core.Calendar
             }
         }
 
+        private CalendarItem(IThreadSafeExternalCalendarEvent calendarEvent)
+            : this(
+                  $"{ExternalEventIdPrefix}{calendarEvent.Id}",
+                  calendarEvent.SyncId,
+                  CalendarItemSource.Calendar,
+                  calendarEvent.StartTime,
+                  calendarEvent.Duration(),
+                  calendarEvent.Title,
+                  CalendarIconKind.Event,
+                  calendarEvent.BackgroundColor,
+                  isPlaceholder: false)
+        {
+        }
+
         public static CalendarItem From(IThreadSafeTimeEntry timeEntry)
             => new CalendarItem(timeEntry);
+
+        public static CalendarItem From(IThreadSafeExternalCalendarEvent calendarEvent)
+            => new CalendarItem(calendarEvent);
 
         public CalendarItem WithStartTime(DateTimeOffset startTime)
             => new CalendarItem(
                 this.Id,
+                this.SyncId,
                 this.Source,
                 startTime,
                 this.Duration,
@@ -106,11 +150,15 @@ namespace Toggl.Core.Calendar
                 this.CalendarId,
                 this.Project,
                 this.Task,
-                this.Client);
+                this.Client,
+                this.HasTags,
+                this.IsBillable,
+                this.IsPlaceholder);
 
         public CalendarItem WithDuration(TimeSpan? duration)
             => new CalendarItem(
                 this.Id,
+                this.SyncId,
                 this.Source,
                 this.StartTime,
                 duration,
@@ -121,6 +169,9 @@ namespace Toggl.Core.Calendar
                 this.CalendarId,
                 this.Project,
                 this.Task,
-                this.Client);
+                this.Client,
+                this.HasTags,
+                this.IsBillable,
+                this.IsPlaceholder);
     }
 }

@@ -104,10 +104,16 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("ContinueWithEmail", resourceCulture);
             }
         }
-        
+ 
         public static string InvalidEmailError {
             get {
                 return ResourceManager.GetString("InvalidEmailError", resourceCulture);
+            }
+        }
+
+        public static string BlogOnPersonalEfficiency {
+            get {
+                return ResourceManager.GetString("BlogOnPersonalEfficiency", resourceCulture);
             }
         }
         

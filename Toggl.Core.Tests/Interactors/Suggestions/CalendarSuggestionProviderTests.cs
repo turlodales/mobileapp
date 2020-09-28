@@ -65,6 +65,7 @@ namespace Toggl.Core.Tests.Suggestions
                 var events = Enumerable.Range(1, 5)
                     .Select(id => new CalendarItem(
                         id.ToString(),
+                        id.ToString(),
                         CalendarItemSource.Calendar,
                         now - tenMinutes * id,
                         tenMinutes,
@@ -101,6 +102,7 @@ namespace Toggl.Core.Tests.Suggestions
                 var events = Enumerable.Range(1, 5)
                     .Select(id => new CalendarItem(
                         id.ToString(),
+                        id.ToString(),
                         CalendarItemSource.Calendar,
                         now - tenMinutes * id,
                         tenMinutes,
@@ -132,6 +134,7 @@ namespace Toggl.Core.Tests.Suggestions
                 var tenMinutes = TimeSpan.FromMinutes(10);
                 var events = Enumerable.Range(1, 5)
                     .Select(id => new CalendarItem(
+                        id.ToString(),
                         id.ToString(),
                         CalendarItemSource.Calendar,
                         id % 2 == 0 ? now - tenMinutes * id : now + tenMinutes * id,
@@ -176,6 +179,7 @@ namespace Toggl.Core.Tests.Suggestions
                 var tenMinutes = TimeSpan.FromMinutes(10);
                 var events = Enumerable.Range(1, 5)
                     .Select(id => new CalendarItem(
+                        id.ToString(),
                         id.ToString(),
                         CalendarItemSource.Calendar,
                         now - tenMinutes * id,

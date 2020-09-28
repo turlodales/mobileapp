@@ -612,6 +612,7 @@
     <Compile Include="Extensions\Reactive\ToolbarExtensions.cs" />
     <Compile Include="Extensions\SnackbarExtensions.cs" />
     <Compile Include="Extensions\SpannableExtensions.cs" />
+    <Compile Include="Extensions\StaticLayoutExtensions.cs" />
     <Compile Include="Fragments\AnnouncementFragment.cs" />
     <Compile Include="Fragments\Calendar\CalendarDayViewPageFragment.cs" />
     <Compile Include="Fragments\Calendar\CalendarDayViewPageFragment.DialogProvider.cs">

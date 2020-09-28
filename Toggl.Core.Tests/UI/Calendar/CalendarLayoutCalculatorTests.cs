@@ -15,13 +15,13 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.TimeEntry,
+                new CalendarItem("2", "2", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 2",
                     CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.TimeEntry,
+                new CalendarItem("3", "3", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 10, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 3",
                     CalendarIconKind.None),
             };
@@ -45,13 +45,13 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.TimeEntry,
+                new CalendarItem("2", "2", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 2",
                     CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.TimeEntry,
+                new CalendarItem("3", "3", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 10, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 3",
                     CalendarIconKind.None),
             };
@@ -75,10 +75,10 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromSeconds(10), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.TimeEntry,
+                new CalendarItem("2", "2", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 11, TimeSpan.Zero), TimeSpan.FromSeconds(10), "Item 2",
                     CalendarIconKind.None)
             };
@@ -100,13 +100,13 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.TimeEntry,
+                new CalendarItem("2", "2", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 2",
                     CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.TimeEntry,
+                new CalendarItem("3", "3", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 10, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 3",
                     CalendarIconKind.None),
             };
@@ -130,19 +130,19 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(180), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.TimeEntry,
+                new CalendarItem("2", "2", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 2",
                     CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.TimeEntry,
+                new CalendarItem("3", "3", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 10, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 3",
                     CalendarIconKind.None),
-                new CalendarItem("4", CalendarItemSource.TimeEntry,
+                new CalendarItem("4", "4", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 14, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 4",
                     CalendarIconKind.None),
-                new CalendarItem("5", CalendarItemSource.TimeEntry,
+                new CalendarItem("5", "5", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 15, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 5",
                     CalendarIconKind.None),
             };
@@ -170,19 +170,19 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(90), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.Calendar,
+                new CalendarItem("2", "2", CalendarItemSource.Calendar,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(60), "Item 2",
                     CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.TimeEntry,
+                new CalendarItem("3", "3", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(30), "Item 3",
                     CalendarIconKind.None),
-                new CalendarItem("4", CalendarItemSource.TimeEntry,
+                new CalendarItem("4", "4", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 11, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(120), "Item 4",
                     CalendarIconKind.None),
-                new CalendarItem("5", CalendarItemSource.Calendar,
+                new CalendarItem("5", "5", CalendarItemSource.Calendar,
                     new DateTimeOffset(2018, 11, 21, 11, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(60), "Item 5",
                     CalendarIconKind.None),
             };
@@ -216,13 +216,13 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2018, 11, 21, 8, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(180), "Item 1",
                     CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.Calendar,
+                new CalendarItem("2", "2", CalendarItemSource.Calendar,
                     new DateTimeOffset(2018, 11, 21, 9, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(180), "Item 2",
                     CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.Calendar,
+                new CalendarItem("3", "3", CalendarItemSource.Calendar,
                     new DateTimeOffset(2018, 11, 21, 10, 0, 0, TimeSpan.Zero), TimeSpan.FromMinutes(180), "Item 3",
                     CalendarIconKind.None),
             };
@@ -246,7 +246,7 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry,
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2019, 11, 21, 1, 30, 0, ((DateTimeOffset)DateTimeOffset.Now.LocalDateTime.Date).Offset), TimeSpan.FromMinutes(60), "Item 1",
                     CalendarIconKind.None)
             };
@@ -272,6 +272,7 @@ namespace Toggl.Core.Tests.Calendar
             var calendarItems = new[]
             {
                 new CalendarItem(
+                    "1",
                     "1",
                     CalendarItemSource.TimeEntry,
                     new DateTimeOffset(2019, 11, 21, 21, 30, 0, DateTimeOffset.Now.Offset),
@@ -301,8 +302,8 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 1, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
-                new CalendarItem("1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 3, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 1, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 3, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
             };
 
             var timeService = Substitute.For<ITimeService>();
@@ -326,9 +327,9 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 1, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
-                new CalendarItem("2", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 1, 35, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(20), "Item 2", CalendarIconKind.None),
-                new CalendarItem("3", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 3, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 3", CalendarIconKind.None),
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 1, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
+                new CalendarItem("2", "2", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 1, 35, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(20), "Item 2", CalendarIconKind.None),
+                new CalendarItem("3", "3", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 3, 30, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 3", CalendarIconKind.None),
             };
 
             var timeService = Substitute.For<ITimeService>();
@@ -352,9 +353,9 @@ namespace Toggl.Core.Tests.Calendar
         {
             var calendarItems = new[]
             {
-                new CalendarItem("1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 2, 1, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
-                new CalendarItem("1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 15, 00, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
-                new CalendarItem("1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 21, 29, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 2, 1, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 15, 00, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
+                new CalendarItem("1", "1", CalendarItemSource.TimeEntry, new DateTimeOffset(2019, 11, 21, 21, 29, 0, DateTimeOffset.Now.Offset), TimeSpan.FromMinutes(30), "Item 1", CalendarIconKind.None),
             };
 
             var timeService = Substitute.For<ITimeService>();

@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
+using System.Threading.Tasks;
 using CoreAnimation;
 using Toggl.Core.Analytics;
 using Toggl.Core.Models.Interfaces;
@@ -178,7 +179,7 @@ namespace Toggl.iOS.ViewControllers
             syncFailuresButton.Rx().BindAction(ViewModel.OpenSyncFailures).DisposedBy(DisposeBag);
             StopTimeEntryButton.Rx().BindAction(ViewModel.StopTimeEntry, _ => TimeEntryStopOrigin.Manual).DisposedBy(DisposeBag);
 
-            StartTimeEntryButton.Rx().BindAction(ViewModel.StartTimeEntry, _ => true).DisposedBy(DisposeBag);
+            StartTimeEntryButton.Rx().BindAction(ViewModel.StartTimeEntry, _ => true, ButtonEventType.TapGesture).DisposedBy(DisposeBag);
             StartTimeEntryButton.Rx().BindAction(ViewModel.StartTimeEntry, _ => false, ButtonEventType.LongPress, useFeedback: true).DisposedBy(DisposeBag);
 
             CurrentTimeEntryCard.Rx().Tap()
@@ -242,7 +243,7 @@ namespace Toggl.iOS.ViewControllers
             var manualModeImage = UIImage.FromBundle("plusLarge").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
             ViewModel.IsInManualMode
                 .Select(isInManualMode => isInManualMode ? manualModeImage : trackModeImage)
-                .Subscribe(image => StartTimeEntryButton.SetImage(image, UIControlState.Normal))
+                .Subscribe(image => StartTimeEntryButtonIcon.Image = image)
                 .DisposedBy(DisposeBag);
 
             //The sync failures button

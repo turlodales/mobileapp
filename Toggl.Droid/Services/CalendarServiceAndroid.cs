@@ -2,9 +2,13 @@
 using Android.Database;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Toggl.Core.Calendar;
+using Toggl.Core.DataSources;
+using Toggl.Core.Models.Calendar;
 using Toggl.Core.UI.Services;
 using Toggl.Shared;
+using Toggl.Shared.Extensions;
 using static Android.Provider.CalendarContract;
 using Color = Android.Graphics.Color;
 
@@ -32,7 +36,8 @@ namespace Toggl.Droid.Services
             Instances.InterfaceConsts.Title,
             Instances.InterfaceConsts.DisplayColor,
             Instances.InterfaceConsts.CalendarId,
-            Instances.InterfaceConsts.AllDay
+            Instances.InterfaceConsts.AllDay,
+            Events.InterfaceConsts.SyncId
         };
 
         private const int calendarIdIndex = 0;
@@ -46,9 +51,10 @@ namespace Toggl.Droid.Services
         private const int eventDisplayColorIndex = 4;
         private const int eventCalendarIdIndex = 5;
         private const int eventIsAllDayIndex = 6;
+        private const int eventSyncIdIndex = 7;
 
-        public CalendarServiceAndroid(IPermissionsChecker permissionsChecker)
-            : base(permissionsChecker)
+        public CalendarServiceAndroid(IPermissionsChecker permissionsChecker, ITogglDataSource dataSource)
+            : base(permissionsChecker, dataSource)
         {
         }
 
@@ -117,13 +123,19 @@ namespace Toggl.Droid.Services
             cursor.MoveToNext();
             var calendarItem = calendarItemFromCursor(cursor);
             cursor.Close();
-            
+
             return calendarItem;
         }
+
+        protected override IEnumerable<IThreadSafeExternalCalendarEvent> ResolveDuplicates(
+            IEnumerable<CalendarItem> nativeEvents,
+            IEnumerable<IThreadSafeExternalCalendarEvent> externalEvents)
+            => externalEvents.Where((externalEvent) => nativeEvents.None((nativeEvent) => externalEvent.SyncId == nativeEvent.SyncId));
 
         private static CalendarItem calendarItemFromCursor(ICursor cursor)
         {
             var id = cursor.GetString(eventIdIndex);
+            var syncId = cursor.GetString(eventSyncIdIndex);
             var startDateUnixTime = cursor.GetLong(eventStartDateIndex);
             var endDateUnixTime = cursor.GetLong(eventEndDateIndex);
             var description = cursor.GetString(eventDescriptionIndex);
@@ -137,6 +149,7 @@ namespace Toggl.Droid.Services
 
             return new CalendarItem(
                 id: id,
+                syncId: syncId,
                 source: CalendarItemSource.Calendar,
                 startTime: startDate,
                 duration: DateTimeOffset.FromUnixTimeMilliseconds(endDateUnixTime) - startDate,

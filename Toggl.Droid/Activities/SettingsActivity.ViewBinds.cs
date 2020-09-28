@@ -35,6 +35,7 @@ namespace Toggl.Droid.Activities
         private NavigationRowViewView recommendTogglRow;
         private NavigationRowViewView aboutRow;
         private NavigationRowViewView helpRow;
+        private NavigationRowViewView blogRow;
         private LogoutRowViewView logoutRowViewView;
 
         private HeaderRowView profileHeaderRow;
@@ -83,6 +84,7 @@ namespace Toggl.Droid.Activities
             recommendTogglRow = NavigationRowViewView.Create(this, Resource.Layout.SettingsButtonRowView);
             aboutRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowWithDetailsView);
             helpRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowView);
+            blogRow = NavigationRowViewView.Create(this, viewLayout: Resource.Layout.SettingsButtonRowView);
             logoutRowViewView = LogoutRowViewView.Create(this);
 
             addSettingsRowViewsToSettingsContainer(

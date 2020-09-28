@@ -41,6 +41,7 @@ namespace Toggl.Core.Tests.Interactors.Notifications
                     .Range(0, 14)
                     .Select(number => new CalendarItem(
                         id: number.ToString(),
+                        syncId: number.ToString(),
                         source: CalendarItemSource.Calendar,
                         startTime: now.Add(eightHours * number),
                         duration: eightHours,
@@ -88,6 +89,7 @@ namespace Toggl.Core.Tests.Interactors.Notifications
                     .Range(0, 14)
                     .Select(number => new CalendarItem(
                         id: number.ToString(),
+                        syncId: number.ToString(),
                         source: CalendarItemSource.Calendar,
                         startTime: now.Add(eightHours * number),
                         duration: eightHours,
@@ -134,6 +136,7 @@ namespace Toggl.Core.Tests.Interactors.Notifications
                     return Enumerable
                         .Range(1, eventsPerCalendar)
                         .Select(id => new CalendarItem(
+                            id.ToString(),
                             id.ToString(),
                             CalendarItemSource.Calendar,
                             now.AddHours(id),

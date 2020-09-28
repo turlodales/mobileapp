@@ -9,8 +9,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Microsoft.Reactive.Testing;
-using Toggl.Core.Calendar;
-using Toggl.Core.Interactors;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Generators;
 using Toggl.Core.Tests.TestExtensions;
@@ -22,6 +20,10 @@ using Toggl.Shared.Extensions;
 using Xunit;
 using Toggl.Core.UI.Helper;
 using System.Globalization;
+using Toggl.Core.Analytics;
+using Toggl.Core.Tests.Mocks;
+using Toggl.Core.UI.Parameters;
+using static Toggl.Core.Helper.Constants;
 
 namespace Toggl.Core.Tests.UI.ViewModels
 {
@@ -41,6 +43,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     SchedulerProvider,
                     OnboardingStorage,
                     PermissionsChecker,
+                    SyncManager,
                     NavigationService
                 );
 
@@ -86,7 +89,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 bool useOnboardingStorage,
                 bool usePermissionChecker,
                 bool useNavigationService,
-                bool useRxActionFactory)
+                bool useRxActionFactory,
+                bool useSyncManager)
             {
                 var dataSource = useDataSource ? DataSource : null;
                 var timeService = useTimeService ? TimeService : null;
@@ -99,6 +103,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var onboardingStorage = useOnboardingStorage ? OnboardingStorage : null;
                 var permissionChecker = usePermissionChecker ? PermissionsChecker : null;
                 var navigationService = useNavigationService ? NavigationService : null;
+                var syncManager = useSyncManager ? SyncManager : null;
 
                 Action tryingToConstructWithEmptyParameters =
                     () => new CalendarViewModel(
@@ -112,6 +117,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         schedulerProvider,
                         onboardingStorage,
                         permissionChecker,
+                        syncManager,
                         navigationService);
 
                 tryingToConstructWithEmptyParameters.Should().Throw<ArgumentNullException>();
@@ -259,21 +265,6 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Theory, LogIfTooSlow]
             [MemberData(nameof(BeginningOfWeekTestData))]
-            public void AlwaysContains14ViewableDays(BeginningOfWeek beginningOfWeek)
-            {
-                SetupBeginningOfWeek(beginningOfWeek);
-                var observer = TestScheduler.CreateObserver<IImmutableList<CalendarWeeklyViewDayViewModel>>();
-                var viewModel = CreateViewModel();
-                viewModel.WeekViewDays.Subscribe(observer);
-
-                TestScheduler.Start();
-
-                observer.Values().Should().HaveCount(1);
-                observer.Values().First().Where(day => day.Enabled).Should().HaveCount(14);
-            }
-
-            [Theory, LogIfTooSlow]
-            [MemberData(nameof(BeginningOfWeekTestData))]
             public void StartsWithTheSelectedBeginningOfWeek(BeginningOfWeek beginningOfWeek)
             {
                 SetupBeginningOfWeek(beginningOfWeek);
@@ -379,7 +370,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Theory, LogIfTooSlow]
             [MemberData(nameof(BeginningOfWeekTestData))]
-            public void AllDaysAfterTodayAreMarkedAsUnviewable(BeginningOfWeek beginningOfWeek)
+            public void AllDaysAfterTheLastViewableDayAreMarkedAsUnviewable(BeginningOfWeek beginningOfWeek)
             {
                 SetupBeginningOfWeek(beginningOfWeek);
                 var observer = TestScheduler.CreateObserver<IImmutableList<CalendarWeeklyViewDayViewModel>>();
@@ -388,9 +379,9 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                var daysAfterToday = observer.Values().Single().Where(day => day.Date > now.Date);
-                if (daysAfterToday.None()) return;
-                daysAfterToday.Should().OnlyContain(day => !day.Enabled);
+                var daysAfterLastViewableDate = observer.Values().Single().Where(day => day.Date > now.Date.BeginningOfWeek(beginningOfWeek).AddDays(CalendarMaxPastDays).Date);
+                if (daysAfterLastViewableDate.None()) return;
+                daysAfterLastViewableDate.Should().OnlyContain(day => !day.Enabled);
             }
 
             [Theory, LogIfTooSlow]
@@ -404,8 +395,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
                 TestScheduler.Start();
 
-                var twoWeeksAgo = now.Date.AddDays(-14);
-                var daysBeforeTwoWeeks = observer.Values().Single().Where(day => day.Date < twoWeeksAgo);
+                var weeksAgo = now.Date.AddDays(-CalendarMaxPastDays);
+                var daysBeforeTwoWeeks = observer.Values().Single().Where(day => day.Date < weeksAgo);
                 if (daysBeforeTwoWeeks.None()) return;
                 daysBeforeTwoWeeks.Should().OnlyContain(day => !day.Enabled);
             }
@@ -538,6 +529,195 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.OpenSettings.Execute();
 
                 NavigationService.Received().Navigate<SettingsViewModel>(View);
+            }
+        }
+
+        public sealed class TheStartTimeEntryAction : CalendarViewModelTest
+        {
+            private readonly ISubject<IThreadSafeTimeEntry> runningTimeEntry = new Subject<IThreadSafeTimeEntry>();
+
+            public TheStartTimeEntryAction()
+            {
+                DataSource.TimeEntries.CurrentlyRunningTimeEntry.Returns(runningTimeEntry);
+                TimeService.CurrentDateTime.Returns(DateTimeOffset.Now);
+                ViewModel.Initialize().GetAwaiter().GetResult();
+
+                runningTimeEntry.OnNext(null);
+                TestScheduler.AdvanceBy(TimeSpan.FromMilliseconds(50).Ticks);
+            }
+
+            [Theory, LogIfTooSlow]
+            [InlineData(true, true)]
+            [InlineData(true, false)]
+            [InlineData(false, true)]
+            [InlineData(false, false)]
+            public async Task NavigatesToTheStartTimeEntryViewModel(bool isInManualMode, bool useDefaultMode)
+            {
+                runningTimeEntry.OnNext(null);
+
+                UserPreferences.IsManualModeEnabled.Returns(isInManualMode);
+
+                ViewModel.StartTimeEntry.Execute(useDefaultMode);
+                TestScheduler.Start();
+
+                await NavigationService.Received()
+                   .Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(Arg.Any<StartTimeEntryParameters>(), ViewModel.View);
+            }
+
+            [Theory, LogIfTooSlow]
+            [InlineData(true, true)]
+            [InlineData(true, false)]
+            [InlineData(false, true)]
+            [InlineData(false, false)]
+            public async Task PassesTheAppropriatePlaceholderToTheStartTimeEntryViewModel(bool isInManualMode, bool useDefaultMode)
+            {
+                UserPreferences.IsManualModeEnabled.Returns(isInManualMode);
+
+                ViewModel.StartTimeEntry.Execute(useDefaultMode);
+
+                TestScheduler.Start();
+                var expected = isInManualMode == useDefaultMode
+                    ? Resources.ManualTimeEntryPlaceholder
+                    : Resources.StartTimeEntryPlaceholder;
+                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(
+                    Arg.Is<StartTimeEntryParameters>(parameter => parameter.PlaceholderText == expected),
+                    ViewModel.View
+                );
+            }
+
+            [Theory, LogIfTooSlow]
+            [InlineData(true, true)]
+            [InlineData(true, false)]
+            [InlineData(false, true)]
+            [InlineData(false, false)]
+            public async Task PassesTheAppropriateDurationToTheStartTimeEntryViewModel(bool isInManualMode, bool useDefaultMode)
+            {
+                UserPreferences.IsManualModeEnabled.Returns(isInManualMode);
+
+                ViewModel.StartTimeEntry.Execute(useDefaultMode);
+
+                TestScheduler.Start();
+                var expected = isInManualMode == useDefaultMode
+                    ? TimeSpan.FromMinutes(DefaultTimeEntryDurationForManualModeInMinutes)
+                    : (TimeSpan?)null;
+                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(
+                    Arg.Is<StartTimeEntryParameters>(parameter => parameter.Duration == expected),
+                    ViewModel.View
+                );
+            }
+
+            [Theory, LogIfTooSlow]
+            [InlineData(true, true)]
+            [InlineData(true, false)]
+            [InlineData(false, true)]
+            [InlineData(false, false)]
+            public async Task PassesTheAppropriateStartTimeToTheStartTimeEntryViewModel(bool isInManualMode, bool useDefaultMode)
+            {
+                var date = DateTimeOffset.Now;
+                TimeService.CurrentDateTime.Returns(date);
+                UserPreferences.IsManualModeEnabled.Returns(isInManualMode);
+
+                ViewModel.StartTimeEntry.Execute(useDefaultMode);
+
+                TestScheduler.Start();
+                var expected = isInManualMode == useDefaultMode
+                    ? date.Subtract(TimeSpan.FromMinutes(DefaultTimeEntryDurationForManualModeInMinutes))
+                    : date;
+                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(
+                    Arg.Is<StartTimeEntryParameters>(parameter => parameter.StartTime == expected),
+                    ViewModel.View
+                );
+            }
+
+            [Theory, LogIfTooSlow]
+            [InlineData(true)]
+            [InlineData(false)]
+            public void CannotBeExecutedWhenThereIsARunningTimeEntry(bool useDefaultMode)
+            {
+                var timeEntry = new MockTimeEntry();
+                runningTimeEntry.OnNext(timeEntry);
+                TestScheduler.AdvanceBy(TimeSpan.FromMilliseconds(50).Ticks);
+
+                var errors = TestScheduler.CreateObserver<Exception>();
+                ViewModel.StartTimeEntry.Errors.Subscribe(errors);
+                ViewModel.StartTimeEntry.Execute(useDefaultMode);
+
+                TestScheduler.Start();
+
+                errors.Messages.Count.Should().Be(1);
+                errors.LastEmittedValue().Should().BeEquivalentTo(new RxActionNotEnabledException());
+            }
+        }
+
+        public class TheStopTimeEntryAction : CalendarViewModelTest
+        {
+            private ISubject<IThreadSafeTimeEntry> runningTimeEntry;
+
+            public TheStopTimeEntryAction()
+            {
+                var timeEntry = Substitute.For<IThreadSafeTimeEntry>();
+                runningTimeEntry = new BehaviorSubject<IThreadSafeTimeEntry>(timeEntry);
+                DataSource.TimeEntries.CurrentlyRunningTimeEntry.Returns(runningTimeEntry);
+
+                ViewModel.Initialize().Wait();
+                TestScheduler.AdvanceBy(TimeSpan.FromMilliseconds(50).Ticks);
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task CallsTheStopMethodOnTheDataSource()
+            {
+                var date = DateTimeOffset.UtcNow;
+                TimeService.CurrentDateTime.Returns(date);
+
+                ViewModel.StopTimeEntry.Execute();
+
+                TestScheduler.Start();
+                await InteractorFactory.Received().StopTimeEntry(date, TimeEntryStopOrigin.Manual).Execute();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task InitiatesPushSync()
+            {
+                ViewModel.StopTimeEntry.Execute();
+
+                TestScheduler.Start();
+                SyncManager.Received().PushSync();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task DoesNotInitiatePushSyncWhenSavingFails()
+            {
+                InteractorFactory
+                    .StopTimeEntry(Arg.Any<DateTimeOffset>(), Arg.Any<TimeEntryStopOrigin>())
+                    .Execute()
+                    .Returns(Task.FromException<IThreadSafeTimeEntry>(new Exception()));
+
+                var errors = TestScheduler.CreateObserver<Exception>();
+                ViewModel.StopTimeEntry.Errors.Subscribe(errors);
+                ViewModel.StopTimeEntry.Execute();
+
+                TestScheduler.Start();
+
+                errors.Messages.Count().Should().Be(1);
+                SyncManager.DidNotReceive().PushSync();
+            }
+
+            [Fact, LogIfTooSlow]
+            public async Task CannotBeExecutedWhenNoTimeEntryIsRunning()
+            {
+                runningTimeEntry.OnNext(null);
+                TestScheduler.AdvanceBy(TimeSpan.FromMilliseconds(50).Ticks);
+
+                var errors = TestScheduler.CreateObserver<Exception>();
+                ViewModel.StopTimeEntry.Errors.Subscribe(errors);
+                ViewModel.StopTimeEntry.Execute();
+
+                TestScheduler.Start();
+
+                errors.Messages.Count.Should().Be(1);
+                errors.LastEmittedValue().Should().BeEquivalentTo(new RxActionNotEnabledException());
+
+                await InteractorFactory.DidNotReceive().StopTimeEntry(Arg.Any<DateTimeOffset>(), Arg.Any<TimeEntryStopOrigin>()).Execute();
             }
         }
     }

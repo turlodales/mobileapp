@@ -49,6 +49,10 @@ namespace Toggl.Core.UI.ViewModels
         private IThreadSafeUser currentUser;
         private IThreadSafePreferences currentPreferences;
 
+        private string blogUrl => platformInfo.Platform == Platform.Daneel ?
+            "https://toggl.com/blog/tag/mobile-productivity?utm_source=ios&utm_medium=app&utm_campaign=settings-link" :
+            "https://toggl.com/blog/tag/mobile-productivity?utm_source=android&utm_medium=app&utm_campaign=settings-link";
+
         public string Title { get; private set; } = Resources.Settings;
         public string Version => $"{platformInfo.Version} ({platformInfo.BuildNumber}/{syncManager.Version})";
 
@@ -80,6 +84,7 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction OpenNotificationSettings { get; }
         public ViewAction ToggleTwentyFourHourSettings { get; }
         public ViewAction OpenHelpView { get; }
+        public ViewAction OpenBlog { get; }
         public ViewAction TryLogout { get; }
         public ViewAction OpenAboutView { get; }
         public ViewAction OpenSiriShortcuts { get; }
@@ -260,6 +265,7 @@ namespace Toggl.Core.UI.ViewModels
             OpenHelpView = rxActionFactory.FromAsync(openHelpView);
             TryLogout = rxActionFactory.FromAsync(tryLogout);
             OpenAboutView = rxActionFactory.FromAsync(openAboutView);
+            OpenBlog = rxActionFactory.FromAsync(openBlog);
             OpenSiriShortcuts = rxActionFactory.FromAsync(openSiriShorcuts);
             SubmitFeedback = rxActionFactory.FromAsync(submitFeedback);
             SelectDateFormat = rxActionFactory.FromAsync(selectDateFormat);
@@ -413,6 +419,12 @@ namespace Toggl.Core.UI.ViewModels
                 .Confirm(title, message, Resources.SettingsDialogButtonSignOut, Resources.Cancel)
                 .SelectMany(shouldLogout
                     => shouldLogout ? logout() : Observable.Return(Unit.Default));
+        }
+
+        private Task openBlog()
+        {
+            analyticsService.BlogOpened.Track();
+            return Browser.OpenAsync(blogUrl, BrowserLaunchMode.External);
         }
 
         private Task openAboutView()

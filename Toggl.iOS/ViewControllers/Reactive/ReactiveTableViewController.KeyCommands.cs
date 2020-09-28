@@ -16,18 +16,18 @@ namespace Toggl.iOS.ViewControllers
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
 
-        protected readonly UIKeyCommand ShowReportsKeyCommand = KeyCommandFactory.Create(
-            title: Resources.Reports,
-            image: null,
-            action: new Selector(nameof(showReports)),
-            input: "2",
-            modifierFlags: UIKeyModifierFlags.Command,
-            propertyList: null);
-
         protected readonly UIKeyCommand ShowCalendarKeyCommand = KeyCommandFactory.Create(
             title: Resources.Calendar,
             image: null,
             action: new Selector(nameof(showCalendar)),
+            input: "2",
+            modifierFlags: UIKeyModifierFlags.Command,
+            propertyList: null);
+
+        protected readonly UIKeyCommand ShowReportsKeyCommand = KeyCommandFactory.Create(
+            title: Resources.Reports,
+            image: null,
+            action: new Selector(nameof(showReports)),
             input: "3",
             modifierFlags: UIKeyModifierFlags.Command,
             propertyList: null);
@@ -38,14 +38,14 @@ namespace Toggl.iOS.ViewControllers
             TabBarController.SelectedIndex = 0;
         }
 
-        [Export(nameof(showReports))]
-        private void showReports()
+        [Export(nameof(showCalendar))]
+        private void showCalendar()
         {
             TabBarController.SelectedIndex = 1;
         }
 
-        [Export(nameof(showCalendar))]
-        private void showCalendar()
+        [Export(nameof(showReports))]
+        private void showReports()
         {
             TabBarController.SelectedIndex = 2;
         }

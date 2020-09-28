@@ -16,7 +16,6 @@ namespace Toggl.Core.UI.Calendar
         private const long NanosecondPerSecond = 10000000;
         private const long maxGapDuration = 2 * 60 * 60 * NanosecondPerSecond;
 
-        private static readonly TimeSpan offsetFromNow = TimeSpan.FromMinutes(7);
         private static readonly List<CalendarItemLayoutAttributes> emptyAttributes = new List<CalendarItemLayoutAttributes>();
         private readonly ITimeService timeService;
         private readonly TimeSpan minimumDurationForUIPurposes = TimeSpan.FromMinutes(15);
@@ -214,10 +213,10 @@ namespace Toggl.Core.UI.Calendar
 
         private DateTimeOffset endTime(CalendarItem calendarItem, DateTimeOffset now)
         {
-            var duration = calendarItem.Duration(now, offsetFromNow);
+            var duration = calendarItem.Duration(now);
             return duration <= minimumDurationForUIPurposes
                 ? calendarItem.StartTime.LocalDateTime + minimumDurationForUIPurposes
-                : calendarItem.EndTime(now, offsetFromNow);
+                : calendarItem.EndTime(now);
         }
 
         private CalendarItemLayoutAttributes attributesForItem(
@@ -226,7 +225,7 @@ namespace Toggl.Core.UI.Calendar
             int columnIndex)
         {
             var now = timeService.CurrentDateTime;
-            return new CalendarItemLayoutAttributes(calendarItem.StartTime.LocalDateTime, calendarItem.Duration(now, offsetFromNow), totalColumns, columnIndex);
+            return new CalendarItemLayoutAttributes(calendarItem.StartTime.LocalDateTime, calendarItem.Duration(now), totalColumns, columnIndex);
         }
     }
 }

@@ -27,8 +27,8 @@ namespace Toggl.iOS.ViewControllers
             AddKeyCommand(selectDateRangeCommand);
             AddKeyCommand(selectWorkspaceCommand);
             AddKeyCommand(ShowMainLogKeyCommand);
-            AddKeyCommand(ShowReportsKeyCommand);
             AddKeyCommand(ShowCalendarKeyCommand);
+            AddKeyCommand(ShowReportsKeyCommand);
         }
 
         private readonly UIKeyCommand selectWorkspaceCommand = KeyCommandFactory.Create(

@@ -12,6 +12,8 @@ namespace Toggl.Storage.Settings
 
         DateTimeOffset? LastTimePlaceholdersWereCreated { get; }
 
+        DateTimeOffset? LastTimeExternalCalendarsSynced { get; }
+
         void SetFullSyncAttempt(DateTimeOffset now);
 
         void SetSuccessfulFullSync(DateTimeOffset now);
@@ -19,5 +21,7 @@ namespace Toggl.Storage.Settings
         void SetLogin(DateTimeOffset now);
 
         void SetPlaceholdersWereCreated(DateTimeOffset now);
+
+        void SetLastTimeExternalCalendarsSynced(DateTimeOffset now);
     }
 }
