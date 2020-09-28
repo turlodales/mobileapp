@@ -999,6 +999,10 @@ the selected time period.</value>
         <value>Get tracking!</value>
         <comment>Placeholder message line 2 shown in the reports bar chart when there's no data</comment>
     </data>
+    <data name="DonutChartPlaceholderMessage" xml:space="preserve">
+        <value>Here you’ll see a visualization of your Projects containing total clocked hours.</value>
+        <comment>A message that's shown instead of the donut chart when there are no projects tracked</comment>
+    </data>
     
     <!-- Calendar view -->
 

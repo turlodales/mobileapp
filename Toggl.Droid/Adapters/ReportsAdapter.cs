@@ -17,8 +17,10 @@ namespace Toggl.Droid.Fragments
             WorkspaceName,
             Summary,
             BarChart,
+            BarChartPlaceholder,
             Donut,
             DonutLegendItem,
+            DonutPlaceholder,
             NoData,
             Error,
             AdvancedReportsOnWeb
@@ -43,8 +45,10 @@ namespace Toggl.Droid.Fragments
                 ReportWorkspaceNameElement _ => WorkspaceName,
                 ReportSummaryElement _ => Summary,
                 ReportBarChartElement _ => BarChart,
+                ReportProjectsBarChartPlaceholderElement _ => BarChartPlaceholder,
                 ReportDonutChartDonutElement _ => Donut,
                 ReportDonutChartLegendItemElement _ => DonutLegendItem,
+                ReportDonutChartPlaceholderIllustrationElement _ => DonutPlaceholder,
                 ReportNoDataElement _ => NoData,
                 ReportErrorElement _ => Error,
                 ReportAdvancedReportsViaWebElement _ => AdvancedReportsOnWeb,
@@ -70,9 +74,17 @@ namespace Toggl.Droid.Fragments
                     var barChartCell = inflater.Inflate(Resource.Layout.ReportsBarChartElement, parent, false);
                     return new ReportBarChartViewHolder(barChartCell);
 
+                case BarChartPlaceholder:
+                    var barChartPlaceholderCell = inflater.Inflate(Resource.Layout.ReportBarChartPlaceholderElement, parent, false);
+                    return new ReportBarChartPlaceholderViewHolder(barChartPlaceholderCell);
+
                 case Donut:
                     var donutCell = inflater.Inflate(Resource.Layout.ReportDonutChartDonutElement, parent, false);
                     return new ReportDonutChartDonutViewHolder(donutCell);
+
+                case DonutPlaceholder:
+                    var donutPlaceholderCell = inflater.Inflate(Resource.Layout.ReportDonutChartPlaceholderElement, parent, false);
+                    return new ReportDonutChartPlaceholderViewHolder(donutPlaceholderCell);
 
                 case DonutLegendItem:
                     var donutLegendItemCell = inflater.Inflate(Resource.Layout.ReportDonutLegendItem, parent, false);

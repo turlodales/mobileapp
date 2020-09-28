@@ -175,7 +175,7 @@ namespace Toggl.Droid.Activities
                 {
                     var viewModel = ViewModel.ReportsViewModel.Value as ReportsViewModel;
                     await viewModel.Initialize();
-                    return new ReportsFragment { ViewModel = viewModel };
+                    return new ReportsFragment { ViewModel = viewModel, BottomNavigationView = navigationView};
                 }),
                 Resource.Id.MainTabCalendarItem => await Task.Run<Fragment>(async () =>
                 {
