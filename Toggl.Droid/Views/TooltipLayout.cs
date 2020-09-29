@@ -36,6 +36,7 @@ namespace Toggl.Droid.Views
                     return;
 
                 title.Text = value;
+                title.Visibility = (!string.IsNullOrEmpty(value)).ToVisibility();
             }
         }
 
@@ -48,6 +49,7 @@ namespace Toggl.Droid.Views
                     return;
 
                 label.Text = value;
+                label.Visibility = (!string.IsNullOrEmpty(value)).ToVisibility();
             }
         }
 

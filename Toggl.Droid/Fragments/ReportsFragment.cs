@@ -1,7 +1,6 @@
 ﻿using Android.OS;
 using Android.Views;
 using System;
-using System.Reactive;
 using System.Reactive.Linq;
 using Google.Android.Material.BottomNavigation;
 using Toggl.Core.UI.ViewModels.Reports;
@@ -48,6 +47,14 @@ namespace Toggl.Droid.Fragments
 
             toolbarCurrentDateRangeText.Rx()
                 .BindAction(ViewModel.SelectDateRange)
+                .DisposedBy(DisposeBag);
+
+            ViewModel.ChangeDateRangeTooltipShouldBeVisible
+                .Subscribe(changeDateRangeTooltip.Rx().IsVisible())
+                .DisposedBy(DisposeBag);
+
+            changeDateRangeTooltip.Rx().Tap()
+                .Subscribe(ViewModel.ChangeDateRangeTooltipTapped.Inputs)
                 .DisposedBy(DisposeBag);
         }
 
