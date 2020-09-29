@@ -207,11 +207,11 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         private void showChangeDateRangeTooltipIfNeeded()
         {
-            var wasShownBefore = onboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.ChangeDateRange);
+            var wasShownBefore = onboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.ChangeDateRangeTooltip);
             if (!wasShownBefore)
             {
                 changeDateRangeTooltipShouldBeVisibleSubject.Accept(true);
-                onboardingStorage.SetOnboardingConditionWasMet(OnboardingConditionKey.ChangeDateRange);
+                onboardingStorage.SetOnboardingConditionWasMet(OnboardingConditionKey.ChangeDateRangeTooltip);
             }
         }
 
@@ -239,7 +239,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private async Task<DateRangeSelectionResult> selectDateRange()
         {
             changeDateRangeTooltipShouldBeVisibleSubject.Accept(false);
-            analyticsService.TooltipDismissed.Track(OnboardingConditionKey.ChangeDateRange, TooltipDismissReason.ConditionMet);
+            analyticsService.TooltipDismissed.Track(OnboardingConditionKey.ChangeDateRangeTooltip, TooltipDismissReason.ConditionMet);
             var dateRangeSelection = await Navigate<DateRangePickerViewModel, Either<DateRangePeriod, DateRange>, DateRangeSelectionResult>(selection);
             if (dateRangeSelection?.SelectedRange == null)
                 return null;
@@ -366,7 +366,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private void changeDateRangeTooltipTapped()
         {
             changeDateRangeTooltipShouldBeVisibleSubject.Accept(false);
-            analyticsService.TooltipDismissed.Track(OnboardingConditionKey.ChangeDateRange, TooltipDismissReason.ManuallyDismissed);
+            analyticsService.TooltipDismissed.Track(OnboardingConditionKey.ChangeDateRangeTooltip, TooltipDismissReason.ManuallyDismissed);
         }
 
         private struct ReportsAnalyticsEventData
