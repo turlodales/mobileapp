@@ -1367,12 +1367,10 @@ PDF、CSV &amp; XLSを書き出す</value>
         <value>Dismiss</value>
     </data>
     <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
-        <value>You haven’t tracked anything yet</value>
-        <comment>Placeholder message line 1 shown in the reports bar chart when there's no data</comment>
+        <value>まだ何も記録していません</value>
     </data>
     <data name="GetTracking" xml:space="preserve">
-        <value>Get tracking!</value>
-        <comment>Placeholder message line 2 shown in the reports bar chart when there's no data</comment>
+        <value>記録をし始めて！</value>
     </data>
     <data name="BlogOnPersonalEfficiency" xml:space="preserve">
         <value>Toggl Blog on Personal Efficiency</value>
@@ -1396,5 +1394,20 @@ PDF、CSV &amp; XLSを書き出す</value>
     <data name="CalendarToolbarDateFormat">
         <value>dddd, MMM d</value>
         <comment>@Invariant</comment>
+    </data>
+    <data name="ChangeDateRangeTootlipTitle" xml:space="preserve">
+        <value>日付範囲を変えます📅</value>
+    </data>
+    <data name="ChangeDateRangeTooltipMessage" xml:space="preserve">
+        <value>週と月を移動する、或いはここをタッチすると希望日付範囲を選びます。</value>
+    </data>
+    <data name="RecommendTogglTrackToOthers" xml:space="preserve">
+        <value>他人にToggl Trackを勧めます</value>
+    </data>
+    <data name="RecommendTogglUrlToShare" xml:space="preserve">
+        <value>https://toggl.com/track?utm_source=ios&amp;utm_medium=app&amp;utm_campaign=recommend</value>
+    </data>
+    <data name="DonutChartPlaceholderMessage" xml:space="preserve">
+        <value>ここに追跡した時間がある夫々のプロジェクトの可視化を見えるになります。</value>    
     </data>
 </root>
