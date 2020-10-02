@@ -144,6 +144,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                     SchedulerProvider,
                     RxActionFactory,
                     AnalyticsService,
+                    OnboardingStorage,
                     TimeService,
                     DateRangeShortcutsService);
         }
@@ -159,6 +160,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 bool useInteractorFactory,
                 bool useRxActionFactory,
                 bool useAnalyticsService,
+                bool useOnboardingStorage,
                 bool useTimeService,
                 bool useDateRangeShortcutsService)
             {
@@ -168,6 +170,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                 var schedulerProvider = useSchedulerProvider ? SchedulerProvider : null;
                 var rxActionFactory = useRxActionFactory ? RxActionFactory : null;
                 var analyticsService = useAnalyticsService ? AnalyticsService : null;
+                var onboardingStorage = useOnboardingStorage ? OnboardingStorage : null;
                 var timeService = useTimeService ? TimeService : null;
                 var dateRangeShortcutsService = useDateRangeShortcutsService ? DateRangeShortcutsService : null;
 
@@ -178,6 +181,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
                     schedulerProvider,
                     rxActionFactory,
                     analyticsService,
+                    onboardingStorage,
                     timeService,
                     dateRangeShortcutsService);
 
@@ -231,7 +235,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
 
                     // Data based on the workspace change
                     OnNext<IEnumerable<IReportElement>>(3, isLoadingElements),
-                    OnNext<IEnumerable<IReportElement>>(4, isNoDataElement)
+                    OnNext<IEnumerable<IReportElement>>(4, isNotLoadingElements)
                 );
             }
         }
@@ -563,7 +567,7 @@ namespace Toggl.Core.Tests.UI.ViewModels.Reports
 
                     // Data based on the workspace change
                     OnNext<IEnumerable<IReportElement>>(3, isLoadingElements),
-                    OnNext<IEnumerable<IReportElement>>(4, isNoDataElement)
+                    OnNext<IEnumerable<IReportElement>>(4, isNotLoadingElements)
                 );
             }
 

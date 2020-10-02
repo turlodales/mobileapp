@@ -15,6 +15,7 @@ using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
+using Toggl.Core.Reports;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
@@ -24,7 +25,10 @@ using Toggl.Core.UI.ViewModels.DateRangePicker;
 using Toggl.Core.UI.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
+using Toggl.Shared.Extensions.Reactive;
 using Toggl.Shared.Models;
+using Toggl.Storage;
+using Toggl.Storage.Settings;
 using DateRangeSelectionResult = Toggl.Core.UI.ViewModels.DateRangePicker.DateRangePickerViewModel.DateRangeSelectionResult;
 
 namespace Toggl.Core.UI.ViewModels.Reports
@@ -37,6 +41,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         private bool shouldReloadReportOnViewAppeared;
         private readonly ISubject<Unit> reloadReportsSubject = new Subject<Unit>();
+        private readonly BehaviorRelay<bool> changeDateRangeTooltipShouldBeVisibleSubject = new BehaviorRelay<bool>(false);
 
         private readonly CompositeDisposable disposeBag = new CompositeDisposable();
 
@@ -47,6 +52,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
         private readonly ISchedulerProvider schedulerProvider;
         private readonly ITogglDataSource dataSource;
         private readonly IAnalyticsService analyticsService;
+        private readonly IOnboardingStorage onboardingStorage;
         private readonly ISubject<IThreadSafeWorkspace> workspaceSelectedById = new Subject<IThreadSafeWorkspace>();
 
         public IObservable<IImmutableList<IReportElement>> Elements { get; private set; }
@@ -57,10 +63,13 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         public IObservable<DateRange> DateRange { get; private set; }
 
+        public IObservable<bool> ChangeDateRangeTooltipShouldBeVisible => changeDateRangeTooltipShouldBeVisibleSubject.AsObservable();
+
         public OutputAction<IThreadSafeWorkspace> SelectWorkspace { get; }
         public OutputAction<DateRangeSelectionResult> SelectDateRange { get; }
         public InputAction<DateRangeSelectionResult> SetDateRange { get; }
         public ViewAction OpenYourPlanView { get; }
+        public ViewAction ChangeDateRangeTooltipTapped { get; }
 
         public ReportsViewModel(
             ITogglDataSource dataSource,
@@ -69,6 +78,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             ISchedulerProvider schedulerProvider,
             IRxActionFactory rxActionFactory,
             IAnalyticsService analyticsService,
+            IOnboardingStorage onboardingStorage,
             ITimeService timeService,
             IDateRangeShortcutsService dateRangeShortcutsService)
             : base(navigationService)
@@ -79,6 +89,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
+            Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
             Ensure.Argument.IsNotNull(dateRangeShortcutsService, nameof(dateRangeShortcutsService));
 
@@ -87,6 +98,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             this.schedulerProvider = schedulerProvider;
             this.timeService = timeService;
             this.analyticsService = analyticsService;
+            this.onboardingStorage = onboardingStorage;
             this.dateRangeShortcutsService = dateRangeShortcutsService;
 
             HasMultipleWorkspaces = interactorFactory.ObserveAllWorkspaces().Execute()
@@ -99,6 +111,7 @@ namespace Toggl.Core.UI.ViewModels.Reports
             SelectDateRange = rxActionFactory.FromAsync(selectDateRange);
             OpenYourPlanView = rxActionFactory.FromAsync(openYourPlanView);
             SetDateRange = rxActionFactory.FromAction<DateRangeSelectionResult>(setDateRange);
+            ChangeDateRangeTooltipTapped = rxActionFactory.FromAction(changeDateRangeTooltipTapped);
         }
 
         public override async Task Initialize()
@@ -152,6 +165,8 @@ namespace Toggl.Core.UI.ViewModels.Reports
             selectedWorkspaceId = (await interactorFactory.GetDefaultWorkspace().Execute())?.Id;
 
             selection = Either<DateRangePeriod, DateRange>.WithLeft(DateRangePeriod.ThisWeek);
+
+            showChangeDateRangeTooltipIfNeeded();
         }
 
         public override void ViewDestroyed()
@@ -190,6 +205,16 @@ namespace Toggl.Core.UI.ViewModels.Reports
             }
         }
 
+        private void showChangeDateRangeTooltipIfNeeded()
+        {
+            var wasShownBefore = onboardingStorage.OnboardingConditionWasMetBefore(OnboardingConditionKey.ChangeDateRangeTooltip);
+            if (!wasShownBefore)
+            {
+                changeDateRangeTooltipShouldBeVisibleSubject.Accept(true);
+                onboardingStorage.SetOnboardingConditionWasMet(OnboardingConditionKey.ChangeDateRangeTooltip);
+            }
+        }
+
         private async Task<IThreadSafeWorkspace> selectWorkspace()
         {
             var allWorkspaces = await interactorFactory.GetAllWorkspaces().Execute();
@@ -213,6 +238,8 @@ namespace Toggl.Core.UI.ViewModels.Reports
 
         private async Task<DateRangeSelectionResult> selectDateRange()
         {
+            changeDateRangeTooltipShouldBeVisibleSubject.Accept(false);
+            analyticsService.TooltipDismissed.Track(OnboardingConditionKey.ChangeDateRangeTooltip, TooltipDismissReason.ConditionMet);
             var dateRangeSelection = await Navigate<DateRangePickerViewModel, Either<DateRangePeriod, DateRange>, DateRangeSelectionResult>(selection);
             if (dateRangeSelection?.SelectedRange == null)
                 return null;
@@ -281,20 +308,31 @@ namespace Toggl.Core.UI.ViewModels.Reports
                 var durationFormat = preferences.DurationFormat;
                 var dateFormat = preferences.DateFormat;
 
-                if (summaryData.Segments.None())
-                    return elements(new ReportNoDataElement());
-
                 var currentPlan = await interactorFactory
                     .ObserveCurrentWorkspacePlan()
                     .Execute()
                     .FirstAsync();
 
+                var barChartElement = summaryData.Segments.None()
+                    ? new ReportProjectsBarChartPlaceholderElement()
+                    : (IReportElement)new ReportProjectsBarChartElement(reportsTotal, dateFormat);
+
+                var projectHasBeenTracked = summaryData
+                    .Segments
+                    .Any(segment => segment.ProjectName != Resources.NoProject);
+
+                var donutChartElement = projectHasBeenTracked
+                    ? new ReportProjectsDonutChartElement(summaryData, durationFormat)
+                    : (IReportElement)new ReportDonutChartPlaceholderElement(
+                        summaryData.Segments.FirstOrDefault(segment => segment.ProjectName == Resources.NoProject),
+                        durationFormat);
+
                 return elements(
                     new ReportWorkspaceNameElement(filter.Workspace.Name),
                     new ReportSummaryElement(summaryData, durationFormat),
-                    new ReportProjectsBarChartElement(reportsTotal, dateFormat),
-                    new ReportAdvancedReportsViaWebElement(currentPlan),
-                    new ReportProjectsDonutChartElement(summaryData, durationFormat));
+                    barChartElement,
+                    donutChartElement,
+                    new ReportAdvancedReportsViaWebElement(currentPlan));
             }
             catch (Exception ex)
             {
@@ -323,6 +361,12 @@ namespace Toggl.Core.UI.ViewModels.Reports
             {
                 analyticsService.ReportsFailure.Track(eventData.Source, eventData.TotalDays, loadingTime.TotalMilliseconds);
             }
+        }
+
+        private void changeDateRangeTooltipTapped()
+        {
+            changeDateRangeTooltipShouldBeVisibleSubject.Accept(false);
+            analyticsService.TooltipDismissed.Track(OnboardingConditionKey.ChangeDateRangeTooltip, TooltipDismissReason.ManuallyDismissed);
         }
 
         private struct ReportsAnalyticsEventData

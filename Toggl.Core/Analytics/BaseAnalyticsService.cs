@@ -209,7 +209,7 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent AppDidEnterForeground { get; }
 
         public IAnalyticsEvent AppSentToBackground { get; }
-            
+
         public IAnalyticsEvent BlogOpened { get; }
 
         public IAnalyticsEvent<bool> GroupTimeEntriesSettingsChanged { get; }
@@ -265,7 +265,10 @@ namespace Toggl.Core.Analytics
         public IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
         public IAnalyticsEvent BillableTooltipDetailsButtonTapped { get; }
+
         public IAnalyticsEvent TogglUrlOpenedFromYourWorkspacePlanView { get; }
+
+        public IAnalyticsEvent GetTrackingTappedInReportsView { get; }
 
         public IAnalyticsEvent LoginWithSso { get; }
         public IAnalyticsEvent SsoFlowStarted { get; }
@@ -414,6 +417,7 @@ namespace Toggl.Core.Analytics
             OnboardingTimeEntryCreated = new AnalyticsEvent(this, nameof(OnboardingTimeEntryCreated));
             BillableTooltipDetailsButtonTapped = new AnalyticsEvent(this, nameof(BillableTooltipDetailsButtonTapped));
             TogglUrlOpenedFromYourWorkspacePlanView = new AnalyticsEvent(this, nameof(TogglUrlOpenedFromYourWorkspacePlanView));
+            GetTrackingTappedInReportsView = new AnalyticsEvent(this, nameof(GetTrackingTappedInReportsView));
             BlogOpened = new AnalyticsEvent(this, nameof(BlogOpened));
         }
 

@@ -166,13 +166,16 @@ namespace Toggl.Droid.Activities
                 {
                     var viewModel = ViewModel.MainViewModel.Value as MainViewModel;
                     await viewModel.Initialize();
-                    return new MainFragment { ViewModel = viewModel };
+                    return new MainFragment(() =>
+                    {
+                        navigationView.GetOrCreateBadge(Resource.Id.MainTabReportsItem);
+                    }) { ViewModel = viewModel };
                 }),
                 Resource.Id.MainTabReportsItem => await Task.Run<Fragment>(async () =>
                 {
                     var viewModel = ViewModel.ReportsViewModel.Value as ReportsViewModel;
                     await viewModel.Initialize();
-                    return new ReportsFragment { ViewModel = viewModel };
+                    return new ReportsFragment { ViewModel = viewModel, BottomNavigationView = navigationView};
                 }),
                 Resource.Id.MainTabCalendarItem => await Task.Run<Fragment>(async () =>
                 {
@@ -199,7 +202,7 @@ namespace Toggl.Droid.Activities
                 if (calendarFragment?.HandledBackPress() == true)
                     return;
             }
-            
+
             showFragment(Resource.Id.MainTabTimerItem);
             navigationView.SelectedItemId = Resource.Id.MainTabTimerItem;
         }
@@ -224,10 +227,15 @@ namespace Toggl.Droid.Activities
         {
             if (!this.IsAtLeastStarted())
                 return;
-            
+
             SupportFragmentManager.ExecutePendingTransactions();
             var transaction = SupportFragmentManager.BeginTransaction();
             var fragment = await getCachedFragment(fragmentId);
+
+            if (fragment is ReportsFragment)
+            {
+                navigationView.RemoveBadge(Resource.Id.MainTabReportsItem);
+            }
 
             if (activeFragment is MainFragment mainFragmentToHide)
                 mainFragmentToHide.SetFragmentIsVisible(false);
@@ -247,7 +255,7 @@ namespace Toggl.Droid.Activities
 
             if (!this.IsAtLeastStarted())
                 return;
-            
+
             transaction.Commit();
 
             if (fragment is MainFragment mainFragmentToShow)
@@ -284,7 +292,7 @@ namespace Toggl.Droid.Activities
 
             navigationView.SelectedItemId = initialTabItemId;
             activeFragment = initialFragment;
-            
+
             navigationView
                 .Rx()
                 .ItemSelected()

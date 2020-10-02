@@ -362,6 +362,7 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.SchedulerProvider,
                     dependencyContainer.RxActionFactory,
                     dependencyContainer.AnalyticsService,
+                    dependencyContainer.OnboardingStorage,
                     dependencyContainer.TimeService,
                     dependencyContainer.DateRangeShortcutsService);
             }

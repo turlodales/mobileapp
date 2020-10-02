@@ -14,4 +14,8 @@
           <enum name="topCenter" value="4"/>
         </attr>
     </declare-styleable>
+    
+    <declare-styleable name="BarChartView">
+        <attr name="drawEmptyState" format="boolean"/>
+    </declare-styleable>
 </resources>

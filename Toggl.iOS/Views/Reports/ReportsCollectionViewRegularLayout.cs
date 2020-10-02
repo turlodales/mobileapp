@@ -69,6 +69,7 @@ namespace Toggl.iOS.Views.Reports
                             columnWidth,
                             ReportsSummaryCollectionViewCell.Height);
                         break;
+                    case ReportsCollectionViewCell.BarChartPlaceholder:
                     case ReportsCollectionViewCell.BarChart:
                         attributes.Frame = new CGRect(
                             horizontalStartPoint + horizontalCellInset,
@@ -86,6 +87,7 @@ namespace Toggl.iOS.Views.Reports
                             columnWidth,
                             ReportAdvancedReportsViaWebCollectionViewCell.Height);
                         break;
+                    case ReportsCollectionViewCell.DonutChartPlaceholder:
                     case ReportsCollectionViewCell.DonutChart:
                         attributes.Frame = new CGRect(
                             horizontalStartPoint + CollectionViewContentSize.Width / 2 + horizontalCellInset,
@@ -98,7 +100,7 @@ namespace Toggl.iOS.Views.Reports
                             horizontalStartPoint + CollectionViewContentSize.Width / 2 + horizontalCellInset,
                             verticalCellInset
                                 + ReportsDonutChartCollectionViewCell.Height
-                                + ReportsDonutChartLegendCollectionViewCell.Height * (indexPath.Item - (CollectionView.NumberOfItemsInSection(0) - source.NumberOfDonutChartLegendItems())),
+                                + ReportsDonutChartLegendCollectionViewCell.Height * (indexPath.Item - (CollectionView.NumberOfItemsInSection(0) - source.NumberOfDonutChartLegendItems()) + 1),
                             columnWidth,
                             ReportsDonutChartLegendCollectionViewCell.Height);
                         break;

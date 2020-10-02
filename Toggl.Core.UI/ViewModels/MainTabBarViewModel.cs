@@ -57,6 +57,7 @@ namespace Toggl.Core.UI.ViewModels
                 container.SchedulerProvider,
                 container.RxActionFactory,
                 container.AnalyticsService,
+                container.OnboardingStorage,
                 container.TimeService,
                 container.DateRangeShortcutsService));
 

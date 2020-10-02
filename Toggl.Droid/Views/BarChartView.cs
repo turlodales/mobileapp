@@ -58,6 +58,7 @@ namespace Toggl.Droid.Views
         private bool willDrawIndividualLabels;
         private float startEndDatesY;
         private float barsStartingLeft;
+        private bool shouldDrawEmptyState;
 
         private IImmutableList<Bar> bars;
         private IImmutableList<string> xLabels;
@@ -66,10 +67,10 @@ namespace Toggl.Droid.Views
         private string startDate;
         private string endDate;
         private float dayLabelsY;
+        private IImmutableList<Bar> placeholderBars = generatePlaceholderBars();
 
         private static YAxisLabels placeholderYLabels = new YAxisLabels("10 h", "5 h", "0 h");
         private static IImmutableList<string> placeholderXLabels = new string[] { "", "" }.ToImmutableList();
-        private static IImmutableList<Bar> placeholderBars = generatePlaceholderBars();
         private bool isDrawingPlaceholders() => bars == placeholderBars;
 
         public BarChartView(Context context) : base(context)
@@ -80,6 +81,23 @@ namespace Toggl.Droid.Views
         public BarChartView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             initialize(context);
+
+            var customAttrs = Context.ObtainStyledAttributes(attrs, Resource.Styleable.BarChartView, 0, 0);
+            try
+            {
+                shouldDrawEmptyState = customAttrs.GetBoolean(Resource.Styleable.BarChartView_drawEmptyState, false);
+                if (shouldDrawEmptyState)
+                {
+                    bars = placeholderBars = generateEmptyStateBars();
+                    xLabels = new[] {"01/04", "30/04"}.ToImmutableList();
+                    yLabels = YAxisLabels.Empty;
+                    updateBarChartDrawingData();
+                }
+            }
+            finally
+            {
+                customAttrs.Recycle();
+            }
         }
 
         protected BarChartView(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
@@ -140,6 +158,11 @@ namespace Toggl.Droid.Views
 
         private void updateBarChartDrawingData()
         {
+            if (shouldDrawEmptyState)
+            {
+                barsRightMargin = barsLeftMargin;
+            }
+
             if (bars == null)
             {
                 willDrawBarChart = false;
@@ -197,6 +220,13 @@ namespace Toggl.Droid.Views
 
         private void drawHorizontalLines(Canvas canvas)
         {
+            if (shouldDrawEmptyState)
+            {
+                //We do need the bottom one though
+                canvas.DrawLine(0f, barsBottom, Width, barsBottom, othersPaint);
+                return;
+            }
+
             othersPaint.Color = horizontalLineColor;
             canvas.DrawLine(0f, barsTopMargin, Width, barsTopMargin, othersPaint);
             canvas.DrawLine(0f, middleHorizontalLineY, Width, middleHorizontalLineY, othersPaint);
@@ -213,7 +243,7 @@ namespace Toggl.Droid.Views
 
         private void drawXAxisLegendIfNotDrawingIndividualLabels(Canvas canvas)
         {
-            if (!willDrawIndividualLabels && !isDrawingPlaceholders())
+            if (!willDrawIndividualLabels && (!isDrawingPlaceholders() || shouldDrawEmptyState))
             {
                 othersPaint.Color = xAxisLegendColor;
                 othersPaint.TextAlign = Paint.Align.Left;
@@ -340,5 +370,14 @@ namespace Toggl.Droid.Views
             .Select(tuple => new Bar(tuple.Filled / maxTotal, (tuple.Filled + tuple.Regular) / maxTotal))
             .ToImmutableList();
         }
+
+        private static IImmutableList<Bar> generateEmptyStateBars()
+            => new[]
+                {
+                    3, 10, 3, 9, 10, 9, 14, 8, 11, 13, 14, 16, 20, 20, 41, 44, 37, 21, 39, 43, 32, 39, 31, 28, 36, 36,
+                    41, 38, 37, 38
+                }
+                .Select(height => new Bar( height, height).Scaled(100))
+                .ToImmutableList();
     }
 }

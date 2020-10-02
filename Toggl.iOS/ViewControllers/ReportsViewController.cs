@@ -6,11 +6,14 @@ using CoreGraphics;
 using Foundation;
 using Toggl.Core.Analytics;
 using Toggl.Core.UI.Extensions;
+using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
 using Toggl.iOS.Helper;
 using Toggl.iOS.Presentation;
+using Toggl.iOS.Shared;
+using Toggl.iOS.Views;
 using Toggl.iOS.Views.Reports;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
@@ -46,6 +49,8 @@ namespace Toggl.iOS.ViewControllers
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            prepareChangeDateRangeTooltip();
             prepareViews();
 
             ViewModel.CurrentWorkspaceName
@@ -83,6 +88,12 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ViewModel.OpenYourPlanView.Inputs)
                 .DisposedBy(DisposeBag);
 
+            source.ItemTapped
+                .Where(item => item == ReportsCollectionViewCell.BarChartPlaceholder)
+                .SelectUnit()
+                .Subscribe(barChartPlaceholderTapped)
+                .DisposedBy(DisposeBag);
+
             ViewModel.Elements
                 .Subscribe(source.SetNewElements)
                 .DisposedBy(DisposeBag);
@@ -118,6 +129,12 @@ namespace Toggl.iOS.ViewControllers
             }
         }
 
+        private void barChartPlaceholderTapped()
+        {
+            IosDependencyContainer.Instance.AnalyticsService.GetTrackingTappedInReportsView.Track();
+            TabBarController.SelectedIndex = 0;
+        }
+
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
@@ -125,9 +142,42 @@ namespace Toggl.iOS.ViewControllers
             IosDependencyContainer.Instance.IntentDonationService.DonateShowReport();
 
             viewDidAppearSubject.OnNext(Unit.Default);
+
+            NavigationController.TabBarItem.BadgeValue = null;
         }
 
         public void ScrollToTop() { }
+
+        private void prepareChangeDateRangeTooltip()
+        {
+            ChangeDateRangeTooltip.Alpha = 0;
+
+            ViewModel.ChangeDateRangeTooltipShouldBeVisible
+                .Subscribe(ChangeDateRangeTooltip.Rx().IsVisibleWithFade())
+                .DisposedBy(DisposeBag);
+
+            ChangeDateRangeTooltip.Rx().Tap()
+                .Subscribe(ViewModel.ChangeDateRangeTooltipTapped.Inputs)
+                .DisposedBy(DisposeBag);
+
+            ChangeDateRangeTooltipArrow.Direction = TriangleView.TriangleDirection.Up;
+            ChangeDateRangeTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;
+            ChangeDateRangeTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;
+
+            ChangeDateRangeTooltipMessageLabel.SetLineSpacing(OnboardingConstants.LineSpacing, UITextAlignment.Left);
+
+            ChangeDateRangeTooltipTitleLabel.Text = Resources.ChangeDateRangeTootlipTitle;
+            ChangeDateRangeTooltipMessageLabel.Text = Resources.ChangeDateRangeTooltipMessage;
+            ChangeDateRangeTooltipGotItLabel.Text = Resources.OkGotIt;
+
+            ChangeDateRangeTooltipTitleLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            ChangeDateRangeTooltipMessageLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+            ChangeDateRangeTooltipGotItLabel.TextColor = ColorAssets.OnboardingTooltipTextColor;
+
+            ChangeDateRangeTooltipCloseIcone.SetTemplateColor(ColorAssets.OnboardingTooltipTextColor);
+
+            ChangeDateRangeTooltip.SetUpTooltipShadow();
+        }
 
         private void prepareViews()
         {

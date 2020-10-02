@@ -261,11 +261,12 @@ namespace Toggl.Core.Analytics
         PerformanceMeasurement StartNewSyncPerformanceMeasurement();
         PerformanceMeasurement StartOldSyncPerformanceMeasurement();
         void StopAndTrack(PerformanceMeasurement measurement);
-      
+
         IAnalyticsEvent<OnboardingConditionKey, TooltipDismissReason> TooltipDismissed { get; }
 
         IAnalyticsEvent BillableTooltipDetailsButtonTapped { get; }
         IAnalyticsEvent TogglUrlOpenedFromYourWorkspacePlanView { get; }
+        IAnalyticsEvent GetTrackingTappedInReportsView { get; }
 
         IAnalyticsEvent LoginWithSso { get; }
         IAnalyticsEvent SsoFlowStarted { get; }

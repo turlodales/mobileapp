@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -15,11 +14,9 @@ using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;
 using Toggl.Core.UI.Extensions;
-using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.Services;
-using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Core.UI.Views;
 using Toggl.Shared;
@@ -101,6 +98,8 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction ToggleSwipeActions { get; }
         public ViewAction ToggleRunningTimerNotifications { get; }
         public ViewAction ToggleStoppedTimerNotifications { get; }
+
+        public ViewAction ShareToggl { get; }
 
         public SettingsViewModel(
             ITogglDataSource dataSource,
@@ -276,6 +275,7 @@ namespace Toggl.Core.UI.ViewModels
             ToggleTimeEntriesGrouping = rxActionFactory.FromAsync(toggleTimeEntriesGrouping);
             ToggleManualMode = rxActionFactory.FromAction(toggleManualMode);
             ToggleSwipeActions = rxActionFactory.FromAction(toggleSwipeActions);
+            ShareToggl = rxActionFactory.FromAsync(shareToggl);
             ToggleRunningTimerNotifications = rxActionFactory.FromAction(toggleRunningTimerNotifications);
             ToggleStoppedTimerNotifications = rxActionFactory.FromAction(toggleStoppedTimerNotifications);
         }
@@ -295,6 +295,14 @@ namespace Toggl.Core.UI.ViewModels
         public void CloseFeedbackSuccessView()
         {
             isFeedbackSuccessViewShowing.OnNext(false);
+        }
+
+        private async Task shareToggl()
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Uri = Resources.RecommendTogglUrlToShare
+            });
         }
 
         private async Task toggleUseTwentyFourHourClock()

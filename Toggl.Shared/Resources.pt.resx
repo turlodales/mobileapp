@@ -1426,6 +1426,12 @@ em outros planos</value>
   <data name="Dismiss" xml:space="preserve">
       <value>Dismiss</value>
   </data>
+  <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
+    <value>Você ainda não possui entradas de tempo</value>
+  </data>
+  <data name="GetTracking" xml:space="preserve">
+    <value>Comece a registrar seu tempo!</value>
+  </data>
   <data name="BlogOnPersonalEfficiency" xml:space="preserve">
     <value>Toggl Blog on Personal Efficiency</value>
   </data>
@@ -1448,5 +1454,20 @@ em outros planos</value>
   <data name="CalendarToolbarDateFormat">
     <value>dddd, MMM d</value>
     <comment>@Invariant</comment>
+  </data>
+  <data name="ChangeDateRangeTootlipTitle" xml:space="preserve">
+    <value>Mude a data dos relatórios 📅</value>
+  </data>
+  <data name="ChangeDateRangeTooltipMessage" xml:space="preserve">
+    <value>Selecione a data desejada para seu relatório tocando aqui.</value>
+  </data>
+  <data name="DonutChartPlaceholderMessage" xml:space="preserve">
+    <value>Aqui você irá visualizar seus projetos que contém registros de tempo</value>
+  </data>
+  <data name="RecommendTogglTrackToOthers" xml:space="preserve">
+    <value>Recomende o Toggl Track para outras pessoas</value>
+  </data>
+  <data name="RecommendTogglUrlToShare" xml:space="preserve">
+    <value>https://toggl.com/track?utm_source=ios&amp;utm_medium=app&amp;utm_campaign=recommend</value>
   </data>
 </root>

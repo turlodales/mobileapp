@@ -983,7 +983,27 @@ Use them to add keywords to your time entries.</value>
 the selected time period.</value>
         <comment>Placeholder message shown in the reports view when there's no data for a selected period</comment>
     </data>
-
+    <data name="ChangeDateRangeTootlipTitle" xml:space="preserve">
+        <value>Change date range 📅</value>
+        <comment>Title of a tooltip in the reports view that points to the button to change the date range</comment>
+    </data>
+    <data name="ChangeDateRangeTooltipMessage" xml:space="preserve">
+        <value>Move between weeks and months or select your desired date range by tapping here.</value>
+        <comment>Explanation message in the tooltip in the reports view that points to the button to change the date range</comment>
+    </data>
+    <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
+        <value>You haven’t tracked anything yet</value>
+        <comment>Placeholder message line 1 shown in the reports bar chart when there's no data</comment>
+    </data>
+    <data name="GetTracking" xml:space="preserve">
+        <value>Get tracking!</value>
+        <comment>Placeholder message line 2 shown in the reports bar chart when there's no data</comment>
+    </data>
+    <data name="DonutChartPlaceholderMessage" xml:space="preserve">
+        <value>Here you’ll see a visualization of your Projects containing total clocked hours.</value>
+        <comment>A message that's shown instead of the donut chart when there are no projects tracked</comment>
+    </data>
+    
     <!-- Calendar view -->
 
     <data name="Now" xml:space="preserve">
@@ -1020,7 +1040,13 @@ the selected time period.</value>
     </data>
 
     <!-- Settings view -->
-
+    
+    <data name="RecommendTogglTrackToOthers" xml:space="preserve">
+        <value>Recommend Toggl Track to others</value>
+    </data>
+    <data name="RecommendTogglUrlToShare" xml:space="preserve">
+        <value>https://toggl.com/track?utm_source=ios&amp;utm_medium=app&amp;utm_campaign=recommend</value>
+    </data>
     <data name="SettingsSyncInProgressTitle" xml:space="preserve">
         <value>We're syncing your data</value>
         <comment>Shown in the settings area, near the logout button, when data is being synced</comment>
@@ -1248,7 +1274,7 @@ the selected time period.</value>
         <comment>Message shown in the calendar settings screen button to initiate the flow to link calendars to the Toggl app</comment>
     </data>
     <data name="LinkCalendarsMessage" xml:space="preserve">
-        <value>View your calendar events in Toggl and log them with a single tap</value>
+        <value>View your calendar events in Toggl Track and log them with a single tap</value>
         <comment>Informative message that appears in the calendar settings screen to explain the calendar integration with the Toggl app</comment>
     </data>
     <data name="AllowAccess" xml:space="preserve">
@@ -1260,7 +1286,7 @@ the selected time period.</value>
         <comment>Title of the screen/view to select which user calendars should appear in the calendar view, accessed from the settings screen</comment>
     </data>
     <data name="SelectCalendarsMessage" xml:space="preserve">
-        <value>Choose the calendars containing events you’d like to log in Toggl</value>
+        <value>Choose the calendars containing events you’d like to log in Toggl Track</value>
         <comment>Informative text from the screen/view to select which user calendars should appear in the calendar view, accessed from the settings screen</comment>
     </data>
     <data name="On" xml:space="preserve">
@@ -1288,7 +1314,7 @@ the selected time period.</value>
         <comment>One of the labels of the actions shown when the user denies the permission to access the user's calendar</comment>
     </data>
     <data name="CalendarAccessExplanation" xml:space="preserve">
-        <value>Toggl needs access to your calendar in order to display events. Events are visible to you only and won’t appear in Reports.</value>
+        <value>Toggl Track needs access to your calendar in order to display events. Events are visible to you only and won’t appear in Reports.</value>
         <comment>Informative message shown when asking permission to access the user's calendar</comment>
     </data>
     <data name="CalendarPermissionDeniedOr" xml:space="preserve">
@@ -1626,7 +1652,7 @@ No worries. Create a new workspace to continue.</value>
         <comment>Title of label that leads to the Siri settings screen. Also the title of Siri settings screen</comment>
     </data>
     <data name="SiriShortcutsDescription" xml:space="preserve">
-        <value>Add shortcuts to control Toggl with Siri and the Shortcuts app</value>
+        <value>Add shortcuts to control Toggl Track with Siri and the Shortcuts app</value>
         <comment>Instructive message from the Siri settings screen</comment>
     </data>
     <data name="SiriShortcutCustomTimeEntryTitle" xml:space="preserve">
@@ -1809,7 +1835,7 @@ boost your productivity!</value>
         <comment>A welcome message for users who just signed up</comment>
     </data>
     <data name="GettingStartedWithTogglApp" xml:space="preserve">
-        <value>Getting started with Toggl app</value>
+        <value>Getting started with Toggl Track app</value>
         <comment>Description of the time entry that gets created automatically as a part of user onboarding</comment>
     </data>
     <data name="HereIsYourRunningTimeEntryTooltip" xml:space="preserve">
@@ -1921,7 +1947,7 @@ a Project to a Time Entry</value>
         <comment>Feature name in the Your Plan view in the Settings</comment>
     </data>
     <data name="MobileAppDesktopAppWebAppTogglButton" xml:space="preserve">
-        <value>Mobile App, Desktop App, Web App &amp; Toggl Button</value>
+        <value>Mobile App, Desktop App, Web App &amp; Toggl Track Button</value>
         <comment>Feature name in the Your Plan view in the Settings</comment>
     </data>
     <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
@@ -1934,11 +1960,11 @@ a Project to a Time Entry</value>
     </data>
     <data name="YouveMadeYourFirstTimeEntry" xml:space="preserve">
         <value>You've made your first
-Time Entry on Toggl mobile app 🎉</value>
+Time Entry on Toggl Track mobile app 🎉</value>
         <comment>Title of the final tooltip of onboarding. Displayed below the created time entry</comment>
     </data>
     <data name="YouCanAccessTimeEntriesFromAnyTogglApp" xml:space="preserve">
-        <value>You can easily access and edit all your Time Entries from any Toggl app.</value>
+        <value>You can easily access and edit all your Time Entries from any Toggl Track app.</value>
         <comment>Message in the final tooltip of onboarding. Displayed below the created time entry</comment>
     </data>
     <data name="OkGotIt" xml:space="preserve">

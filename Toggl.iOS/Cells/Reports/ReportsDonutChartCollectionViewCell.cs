@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreAnimation;
+using CoreGraphics;
 using Foundation;
 using Toggl.Core.UI.ViewModels.Reports;
 using UIKit;

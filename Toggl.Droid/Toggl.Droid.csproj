@@ -679,8 +679,10 @@
     <Compile Include="ViewHolders\DateRangePicker\DateRangePickerShortcutViewHolder.cs" />
     <Compile Include="ViewHolders\LicenseViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportAdvancedCardOnWebViewHolder.cs" />
+    <Compile Include="ViewHolders\Reports\ReportBarChartPlaceholderViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportDonutChartLegendItemViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportDonutChartDonutViewHolder.cs" />
+    <Compile Include="ViewHolders\Reports\ReportDonutChartPlaceholderViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportElementViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportErrorElementViewHolder.cs" />
     <Compile Include="ViewHolders\Reports\ReportNoDataElementViewHolder.cs" />
@@ -1073,6 +1075,8 @@
     <AndroidResource Include="Resources\layout\OnboardingFirstSlideFragment.axml" />
     <AndroidResource Include="Resources\layout\OnboardingSecondSlideFragment.axml" />
     <AndroidResource Include="Resources\layout\OnboardingThirdSlideFragment.axml" />
+    <AndroidResource Include="Resources\layout\ReportBarChartPlaceholderElement.axml" />
+    <AndroidResource Include="Resources\layout\ReportDonutChartPlaceholderElement.axml" />
     <AndroidResource Include="Resources\layout\ReportSummaryElement.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayViewPageFragmentContextualMenu.axml" />
     <AndroidResource Include="Resources\layout\CalendarDayViewPageFragmentDayView.axml" />
@@ -1313,6 +1317,26 @@
     <AndroidResource Include="Resources\layout\ReportDonutChartDonutElement.axml" />
     <AndroidResource Include="Resources\layout\ReportDonutLegendItem.axml" />
     <AndroidResource Include="Resources\layout\ReportsBarChartElement.axml" />
+    <AndroidResource Include="Resources\drawable-ldpi\pie_chart_illustration.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\pie_chart_illustration.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\pie_chart_illustration.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\pie_chart_illustration.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pie_chart_illustration.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toggl.Core\Toggl.Core.csproj">
