@@ -321,7 +321,8 @@ namespace Toggl.iOS.ViewControllers
 
         public void ScrollToTop()
         {
-            CalendarCollectionView?.SetContentOffset(CGPoint.Empty, true);
+            var point = layout.PointAtDate(timeService.CurrentDateTime);
+            CalendarCollectionView?.SetContentOffset(point, true);
         }
 
         public void SetGoodScrollPoint()
