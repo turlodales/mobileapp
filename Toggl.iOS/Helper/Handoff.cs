@@ -14,7 +14,7 @@ namespace Toggl.iOS.Helper
 #endif
             private const string dateFormat = "yyyy-MM-dd";
 
-            public static NSUrl Log { get; } = new NSUrl($"https://{domain}/app");
+            public static NSUrl Log { get; } = new NSUrl($"https://{domain}/timer");
 
             public static NSUrl Settings { get; } = new NSUrl($"https://{domain}/profile");
 
