@@ -3,6 +3,7 @@ using System.Reactive;
 using Toggl.Core.UI.Collections;
 using Toggl.Core.UI.ViewModels;
 using Toggl.iOS.Cells;
+using Toggl.iOS.Extensions;
 using Toggl.iOS.ViewSources.Generic.TableView;
 using Toggl.Shared;
 using UIKit;
@@ -39,6 +40,7 @@ namespace Toggl.iOS.ViewControllers
             tableViewSource.OnItemTapped = onWorkspaceTapped;
             WorkspacesTableView.Source = tableViewSource;
             WorkspacesTableView.TableFooterView = new UIKit.UIView(new CoreGraphics.CGRect(0, 0, UIKit.UIScreen.MainScreen.Bounds.Width, 24));
+            WorkspacesTableView.TableFooterView.BackgroundColor = ColorAssets.Background;
         }
 
         public override void ViewDidLayoutSubviews()
