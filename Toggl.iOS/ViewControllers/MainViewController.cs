@@ -376,8 +376,8 @@ namespace Toggl.iOS.ViewControllers
 
         private void addBadgeToReportsTab()
         {
-            var reportsTabBarItem = TabBarController.TabBar.Items[1];
-           
+            var reportsTabBarItem = TabBarController.TabBar.Items[2];
+
             reportsTabBarItem.SetBadgeTextAttributes(
                 new UIStringAttributes
                 {
