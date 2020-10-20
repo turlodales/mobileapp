@@ -1425,13 +1425,26 @@ Exports PDF, CSV et XLS</value>
     <data name="Dismiss" xml:space="preserve">
         <value>Dismiss</value>
     </data>
+    <data name="ChangeDateRangeTootlipTitle" xml:space="preserve">
+        <value>Changer l'intervalle des dates 📅</value>
+    </data>
+    <data name="ChangeDateRangeTooltipMessage" xml:space="preserve">
+        <value>Se deplacer entre les semaines et les mois ou choisir un intervalle paticulier en tappant ici.</value>
+    </data>
     <data name="YouHaventTrackedAnythingYet" xml:space="preserve">
-        <value>You haven’t tracked anything yet</value>
-        <comment>Placeholder message line 1 shown in the reports bar chart when there's no data</comment>
+        <value>Vous n'avez encore rien suivi</value>
     </data>
     <data name="GetTracking" xml:space="preserve">
-        <value>Get tracking!</value>
-        <comment>Placeholder message line 2 shown in the reports bar chart when there's no data</comment>
+        <value>Commencer le suivi!</value>
+    </data>
+    <data name="DonutChartPlaceholderMessage" xml:space="preserve">
+         <value>Ici, vous verrez une visualisation de vos projets contenant le nombre total d'heures suivies.</value>
+    </data>
+    <data name="RecommendTogglTrackToOthers" xml:space="preserve">
+        <value>Recommander Toggl Track à d'autres</value>
+    </data>
+    <data name="RecommendTogglUrlToShare" xml:space="preserve">
+        <value>https://toggl.com/track?utm_source=ios&amp;utm_medium=app&amp;utm_campaign=recommend</value>
     </data>
     <data name="BlogOnPersonalEfficiency" xml:space="preserve">
         <value>Toggl Blog on Personal Efficiency</value>
