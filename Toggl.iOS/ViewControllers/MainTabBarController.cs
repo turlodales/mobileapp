@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using CoreGraphics;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
@@ -10,6 +11,7 @@ using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.Reports;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Presentation;
+using Toggl.iOS.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using UIKit;
@@ -18,6 +20,13 @@ namespace Toggl.iOS.ViewControllers
 {
     public sealed partial class MainTabBarController : UITabBarController
     {
+        public enum Tab
+        {
+            Main,
+            Reports,
+            Calendar
+        }
+
         public MainTabBarViewModel ViewModel { get; set; }
         private IDisposable? ssoLinkResultDisposable;
 
@@ -25,16 +34,14 @@ namespace Toggl.iOS.ViewControllers
         {
             { typeof(MainViewModel), "icTime" },
             { typeof(ReportsViewModel), "icReports" },
-            { typeof(CalendarViewModel), "icCalendar" },
-            { typeof(SettingsViewModel), "icSettings" }
+            { typeof(CalendarViewModel), "icCalendar" }
         };
 
         private static readonly Dictionary<Type, string> accessibilityLabels = new Dictionary<Type, string>
         {
             { typeof(MainViewModel), Resources.Timer },
             { typeof(ReportsViewModel), Resources.Reports },
-            { typeof(CalendarViewModel), Resources.Calendar },
-            { typeof(SettingsViewModel), Resources.Settings }
+            { typeof(CalendarViewModel), Resources.Calendar }
         };
 
         public MainTabBarController(MainTabBarViewModel viewModel)
@@ -78,6 +85,29 @@ namespace Toggl.iOS.ViewControllers
                 };
                 return viewController;
             }
+        }
+
+        public void AddOnboardingBadgeFor(Tab tab)
+        {
+            var tabBarButton = TabBar.Subviews.Where(view => view is UIControl).ElementAtOrDefault(indexFor(tab));
+            if (tabBarButton == null)
+                return;
+
+            var centerX = tabBarButton.Center.X;
+            var centerY = tabBarButton.Frame.Bottom - 4;
+            var tabBarIndicator = new TabBarIndicator(new CGPoint(centerX, centerY));
+            tabBarIndicator.BackgroundColor = ColorAssets.Accent;
+            tabBarIndicator.Tag = (int)tab;
+            TabBar.AddSubview(tabBarIndicator);
+        }
+
+        public void RemoveOnboardingBadgeFrom(Tab tab)
+        {
+            var tabBarIndicator = TabBar
+                .Subviews
+                .FirstOrDefault(view => view is TabBarIndicator && view.Tag == (int)tab);
+            if (tabBarIndicator == null) return;
+            tabBarIndicator.RemoveFromSuperview();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -154,5 +184,13 @@ namespace Toggl.iOS.ViewControllers
             TabBar.SelectedImageTintColor = Colors.TabBar.SelectedImageTintColor.ToNativeColor();
             TabBarItem.TitlePositionAdjustment = new UIOffset(0, 200);
         }
+
+        private int indexFor(Tab tab)
+            => tab switch
+            {
+                Tab.Main => 0,
+                Tab.Calendar => 1,
+                Tab.Reports => 2
+            };
     }
 }

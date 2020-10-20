@@ -376,16 +376,8 @@ namespace Toggl.iOS.ViewControllers
 
         private void addBadgeToReportsTab()
         {
-            var reportsTabBarItem = TabBarController.TabBar.Items[1];
-           
-            reportsTabBarItem.SetBadgeTextAttributes(
-                new UIStringAttributes
-                {
-                    ForegroundColor = UIColor.Red
-                },
-                UIControlState.Normal);
-            reportsTabBarItem.BadgeColor = UIColor.Clear;
-            reportsTabBarItem.BadgeValue = "●";
+            if (TabBarController is MainTabBarController mainTabBarController)
+                mainTabBarController.AddOnboardingBadgeFor(MainTabBarController.Tab.Reports);
         }
 
         private void prepareStartTimeEntryTooltip()
