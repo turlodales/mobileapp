@@ -4,6 +4,7 @@ namespace Toggl.iOS.Extensions
 {
     public class ColorAssets
     {
+        public static readonly UIColor AlwaysWhite = UIColor.FromName("AlwaysWhite");
         public static readonly UIColor Background = UIColor.FromName("Background");
         public static readonly UIColor Text = UIColor.FromName("Text");
         public static readonly UIColor InverseText = UIColor.FromName("InverseText");
@@ -47,6 +48,7 @@ namespace Toggl.iOS.Extensions
 
         public static readonly UIColor LightishGreen = UIColor.FromRGB(76, 217, 100);
         public static readonly UIColor Accent = UIColor.FromName("Accent");
+        public static readonly UIColor DarkAccent = UIColor.FromName("DarkAccent");
 
         public static readonly UIColor OnboardingPage1BackgroundColor = UIColor.FromName("OnboardingPage1BackgroundColor");
         public static readonly UIColor OnboardingPage2BackgroundColor = UIColor.FromName("OnboardingPage2BackgroundColor");

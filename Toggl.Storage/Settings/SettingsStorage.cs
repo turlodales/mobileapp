@@ -70,6 +70,8 @@ namespace Toggl.Storage.Settings
 
         private readonly Version version;
         private readonly IKeyValueStorage keyValueStorage;
+        private readonly int tooltipCount;
+        private readonly HashSet<OnboardingConditionKey> shownTooltips;
 
         private readonly ISubject<bool> userSignedUpUsingTheAppSubject;
         private readonly ISubject<bool> isNewUserSubject;
@@ -100,6 +102,11 @@ namespace Toggl.Storage.Settings
             this.version = version;
             this.keyValueStorage = keyValueStorage;
 
+            var allTooltips = Enum.GetValues(typeof(OnboardingConditionKey)).Cast<OnboardingConditionKey>().ToArray();
+            tooltipCount = allTooltips.Length;
+            shownTooltips = new HashSet<OnboardingConditionKey>();
+            initializeShownTooltipHashSet(allTooltips);
+
             (isNewUserSubject, IsNewUser) = prepareSubjectAndObservable(isNewUserKey, keyValueStorage.GetBool);
             (enabledCalendarsSubject, EnabledCalendars) = prepareSubjectAndObservable(EnabledCalendarIds());
             (isManualModeEnabledSubject, IsManualModeEnabledObservable) = prepareSubjectAndObservable(preferManualModeKey, keyValueStorage.GetBool);
@@ -121,6 +128,17 @@ namespace Toggl.Storage.Settings
 
             onboardingConditionMetSubject = new Subject<OnboardingConditionKey>();
             OnboardingConditionMet = onboardingConditionMetSubject.AsObservable().DistinctUntilChanged();
+        }
+
+        private void initializeShownTooltipHashSet(OnboardingConditionKey[] allOnboardingConditionKeys)
+        {
+            foreach (var tooltip in allOnboardingConditionKeys)
+            {
+                if (OnboardingConditionWasMetBefore(tooltip))
+                    shownTooltips.Add(tooltip);
+            }
+            if (shownTooltips.Count == tooltipCount)
+                setCompletedOnboarding();
         }
 
         #region IAccessRestrictionStorage
@@ -246,7 +264,7 @@ namespace Toggl.Storage.Settings
             keyValueStorage.SetBool(isNewUserKey, isNewUser);
         }
 
-        public void SetCompletedOnboarding()
+        private void setCompletedOnboarding()
         {
             keyValueStorage.SetBool(completedOnboardingKey, true);
         }
@@ -328,6 +346,9 @@ namespace Toggl.Storage.Settings
         public void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey)
         {
             keyValueStorage.SetBool(onboardingPrefix + onboardingConditionKey, true);
+            shownTooltips.Add(onboardingConditionKey);
+            if (shownTooltips.Count == tooltipCount)
+                setCompletedOnboarding();
             onboardingConditionMetSubject.OnNext(onboardingConditionKey);
         }
 

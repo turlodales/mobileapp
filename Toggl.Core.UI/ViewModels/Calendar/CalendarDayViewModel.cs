@@ -22,6 +22,7 @@ using Toggl.Storage.Settings;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels.Calendar.ContextualMenu;
+using Toggl.Storage;
 
 namespace Toggl.Core.UI.ViewModels.Calendar
 {
@@ -45,6 +46,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         public InputAction<(DateTimeOffset, TimeSpan)> OnDurationSelected { get; }
         public CalendarContextualMenuViewModel ContextualMenuViewModel { get; }
 
+        public TrackingOnboardingCondition CalendarTimeEntryTooltipCondition { get; }
+
         public CalendarDayViewModel(
             DateTimeOffset date,
             ITimeService timeService,
@@ -55,7 +58,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             IBackgroundService backgroundService,
             IInteractorFactory interactorFactory,
             ISchedulerProvider schedulerProvider,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            TrackingOnboardingCondition calendarTimeEntryTooltipCondition)
             : base(navigationService)
         {
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
@@ -66,11 +70,13 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             Ensure.Argument.IsNotNull(backgroundService, nameof(backgroundService));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
+            Ensure.Argument.IsNotNull(calendarTimeEntryTooltipCondition, nameof(calendarTimeEntryTooltipCondition));
 
             Date = date;
             this.timeService = timeService;
             this.analyticsService = analyticsService;
             this.interactorFactory = interactorFactory;
+            CalendarTimeEntryTooltipCondition = calendarTimeEntryTooltipCondition;
 
             ContextualMenuViewModel = new CalendarContextualMenuViewModel(
                 interactorFactory,

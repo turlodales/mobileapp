@@ -24,6 +24,7 @@ using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Shared.Extensions.Reactive;
+using Toggl.Storage;
 using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI.ViewModels.Calendar
@@ -75,6 +76,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         public ViewAction StopTimeEntry { get; private set; }
 
         public InputAction<EditTimeEntryInfo> SelectTimeEntry { get; private set; }
+
+        public TrackingOnboardingCondition CalendarTimeEntryTooltipCondition { get; private set; }
 
         public CalendarViewModel(
             ITogglDataSource dataSource,
@@ -138,6 +141,13 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .DistinctUntilChanged()
                 .Select(date => DateTimeToFormattedString.Convert(date, dateFormat))
                 .AsDriver(schedulerProvider);
+
+            CalendarTimeEntryTooltipCondition = new OnboardingCondition(
+                OnboardingConditionKey.CalendarTimeEntryTooltip,
+                onboardingStorage,
+                schedulerProvider,
+                Observable.Return(true))
+                .TrackingDismissEvents(analyticsService);
         }
 
         public override async Task Initialize()
@@ -256,7 +266,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 backgroundService,
                 interactorFactory,
                 schedulerProvider,
-                NavigationService);
+                NavigationService,
+                CalendarTimeEntryTooltipCondition);
         }
 
         public DateTime IndexToDate(int index)

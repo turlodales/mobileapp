@@ -1400,6 +1400,7 @@
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight.png" />
+    <ImageAsset Include="Resources\Colors.xcassets\AlwaysWhite.colorset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Cells\Reports\ReportsBarChartPlaceholderCollectionViewCell.xib" />
@@ -2324,6 +2325,8 @@
     <Folder Include="Resources\Images.xcassets\illustrationBarChart.imageset\" />
     <Folder Include="Resources\Images.xcassets\pieChartIllustration.imageset\" />
     <Folder Include="Resources\Colors.xcassets\CalendarDragHandles.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\AlwaysWhite.imageset\" />
+    <Folder Include="Resources\Colors.xcassets\AlwaysWhite.colorset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

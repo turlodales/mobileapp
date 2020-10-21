@@ -13,14 +13,20 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive;
+using Foundation;
+using Remotion.Linq.Utilities;
+using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Calendar.ContextualMenu;
+using Toggl.iOS.Cells.Calendar;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Views;
 using Toggl.Shared;
 using Toggl.Shared.Extensions.Reactive;
+using Toggl.Storage;
 
 namespace Toggl.iOS.ViewControllers
 {
@@ -49,6 +55,8 @@ namespace Toggl.iOS.ViewControllers
         private readonly BehaviorRelay<nfloat> runningTimeEntryCardHeight;
         private readonly BehaviorRelay<string> timeTrackedOnDay;
         private readonly BehaviorRelay<int> currentPageRelay;
+
+        private UIView calendarTimeEntryTooltip;
 
         public CalendarDayViewController(CalendarDayViewModel viewModel,
             BehaviorRelay<int> currentPageRelay,
@@ -181,6 +189,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(ContextualMenuTimeEntryDescriptionProjectTaskClientLabel.Rx().AttributedText())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.ContextualMenuViewModel.TimeEntryInfo
+                .Subscribe(_ => ViewModel.CalendarTimeEntryTooltipCondition.Dismiss())
+                .DisposedBy(DisposeBag);
+
             ViewModel.TimeTrackedOnDay
                 .ReemitWhen(currentPageRelay.SelectUnit())
                 .Subscribe(notifyTotalDurationIfCurrentPage)
@@ -191,6 +203,162 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             CalendarCollectionView.LayoutIfNeeded();
+
+            dataSource.WillDisplayCellObservable
+                .CombineLatest(ViewModel.CalendarTimeEntryTooltipCondition.ConditionMet, (cell, conditionMet) => (cell, conditionMet))
+                .Subscribe(tuple => showCalendarTimeEntryTooltipIfNecessary(tuple.cell, tuple.conditionMet));
+
+            ViewModel.ContextualMenuViewModel.TimeEntryInfo
+                .Subscribe(_ => removeCalendarTimeEntryTooltip(TooltipDismissReason.ConditionMet))
+                .DisposedBy(DisposeBag);
+        }
+
+        private void showCalendarTimeEntryTooltipIfNecessary(UICollectionViewCell cell, bool shouldShow)
+        {
+            if (!shouldShow)
+            {
+                calendarTimeEntryTooltip?.RemoveFromSuperview();
+                calendarTimeEntryTooltip = null;
+                return;
+            }
+
+            if (calendarTimeEntryTooltip != null)
+                return;
+
+            if (cell is CalendarItemView calendarItemView&& calendarItemView.Item.Source != CalendarItemSource.TimeEntry)
+                return;
+
+            var (tooltip, tooltipPointsUpwards, tooltipArrow) = createCalendarEntryTooltip(cell);
+            calendarTimeEntryTooltip = tooltip;
+
+            calendarTimeEntryTooltip.Rx()
+                .Tap()
+                .Subscribe(_ => ViewModel.CalendarTimeEntryTooltipCondition.Dismiss())
+                .DisposedBy(DisposeBag);
+
+            View.AddSubview(tooltip);
+
+            var cellHasHorizontalNeighbours = cell.Frame.Right < CalendarCollectionView.Frame.Right - 16;
+            if (cellHasHorizontalNeighbours)
+                tooltipArrow.LeadingAnchor.ConstraintEqualTo(tooltip.LeadingAnchor, 14).Active = true;
+            else
+                tooltip.CenterXAnchor.ConstraintEqualTo(tooltipArrow.CenterXAnchor).Active = true;
+
+            if (tooltipPointsUpwards)
+                tooltip.TopAnchor.ConstraintEqualTo(cell.BottomAnchor).Active = true;
+            else
+                tooltip.BottomAnchor.ConstraintEqualTo(cell.TopAnchor).Active = true;
+
+            tooltip.WidthAnchor.ConstraintEqualTo(220).Active = true;
+            tooltipArrow.CenterXAnchor.ConstraintEqualTo(cell.CenterXAnchor).Active = true;
+        }
+
+        private void removeCalendarTimeEntryTooltip(TooltipDismissReason reason)
+        {
+            if (calendarTimeEntryTooltip == null) return;
+            calendarTimeEntryTooltip.RemoveFromSuperview();
+            calendarTimeEntryTooltip = null;
+            IosDependencyContainer.Instance.AnalyticsService.TooltipDismissed.Track(OnboardingConditionKey.CalendarTimeEntryTooltip, reason);
+        }
+
+        private (UIView tooltip, bool tooltipPointsUpwards, TriangleView tooltipArrow) createCalendarEntryTooltip(UICollectionViewCell cell)
+        {
+            var arrowHeight = 8;
+            var arrowWidth = 16;
+            var closeImageSize = 24;
+
+            var tooltip = new UIView();
+            tooltip.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var background = new UIView();
+            background.BackgroundColor = ColorAssets.DarkAccent;
+            background.Layer.CornerRadius = 8;
+            background.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var arrow = new TriangleView();
+            arrow.Color = ColorAssets.DarkAccent;
+            arrow.BackgroundColor = UIColor.Clear;
+            arrow.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var messageLabel = new UILabel();
+
+            messageLabel.Lines = 0;
+            messageLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            messageLabel.Font = UIFont.SystemFontOfSize(15, UIFontWeight.Semibold);
+            var attributes = new UIStringAttributes()
+            {
+                ParagraphStyle = new NSMutableParagraphStyle()
+                {
+                    LineSpacing = 6
+                },
+                ForegroundColor = ColorAssets.AlwaysWhite
+            };
+            var messasgeString = new NSMutableAttributedString(Resources.HereIsYourTimeEntryInCalendarView);
+            messasgeString.AddAttributes(attributes, new NSRange(0, messasgeString.Length));
+            messageLabel.AttributedText = messasgeString;
+
+            var gotItLabel = new UILabel();
+            gotItLabel.Text = Resources.OkGotIt;
+            gotItLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            gotItLabel.Font = UIFont.SystemFontOfSize(15, UIFontWeight.Semibold);
+            gotItLabel.TextColor = ColorAssets.AlwaysWhite;
+
+            var closeImage = new UIImageView();
+            closeImage.Image = UIImage.FromBundle("x").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            closeImage.TintColor = UIColor.White;
+
+            closeImage.ContentMode = UIViewContentMode.Center;
+            closeImage.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            tooltip.AddSubview(arrow);
+            tooltip.AddSubview(background);
+            background.AddSubview(gotItLabel);
+            background.AddSubview(closeImage);
+            background.AddSubview(messageLabel);
+
+            //Background
+            background.LeadingAnchor.ConstraintEqualTo(tooltip.LeadingAnchor).Active = true;
+            background.TrailingAnchor.ConstraintEqualTo(tooltip.TrailingAnchor).Active = true;
+
+            var verticalSpaceNeeded = 150;
+            var verticalSpaceavailable = CalendarCollectionView.ContentSize.Height - cell.Frame.Bottom;
+            var tooltipPointsUpwards = verticalSpaceavailable >= verticalSpaceNeeded;
+            if (tooltipPointsUpwards)
+            {
+                arrow.Direction = TriangleView.TriangleDirection.Up;
+                arrow.TopAnchor.ConstraintEqualTo(tooltip.TopAnchor).Active = true;
+                background.TopAnchor.ConstraintEqualTo(arrow.BottomAnchor).Active = true;
+                background.BottomAnchor.ConstraintEqualTo(tooltip.BottomAnchor).Active = true;
+            }
+            else
+            {
+                arrow.Direction = TriangleView.TriangleDirection.Down;
+                background.TopAnchor.ConstraintEqualTo(tooltip.TopAnchor).Active = true;
+                background.BottomAnchor.ConstraintEqualTo(arrow.TopAnchor).Active = true;
+                arrow.BottomAnchor.ConstraintEqualTo(tooltip.BottomAnchor).Active = true;
+            }
+
+            //Arrow
+            arrow.WidthAnchor.ConstraintEqualTo(arrowWidth).Active = true;
+            arrow.HeightAnchor.ConstraintEqualTo(arrowHeight).Active = true;
+
+            //Message
+            messageLabel.TopAnchor.ConstraintEqualTo(background.TopAnchor, 12).Active = true;
+            messageLabel.LeadingAnchor.ConstraintEqualTo(background.LeadingAnchor, 14).Active = true;
+            messageLabel.TrailingAnchor.ConstraintEqualTo(background.TrailingAnchor, -28).Active = true;
+            messageLabel.BottomAnchor.ConstraintEqualTo(gotItLabel.TopAnchor, -10).Active = true;
+
+            //Got it
+            gotItLabel.TrailingAnchor.ConstraintEqualTo(background.TrailingAnchor, -22).Active = true;
+            gotItLabel.BottomAnchor.ConstraintEqualTo(background.BottomAnchor, -10).Active = true;
+
+            //Close icon
+            closeImage.TrailingAnchor.ConstraintEqualTo(background.TrailingAnchor).Active = true;
+            closeImage.TopAnchor.ConstraintEqualTo(background.TopAnchor).Active = true;
+            closeImage.WidthAnchor.ConstraintEqualTo(closeImageSize).Active = true;
+            closeImage.HeightAnchor.ConstraintEqualTo(closeImageSize).Active = true;
+
+            return (tooltip, tooltipPointsUpwards, arrow);
         }
 
         private void notifyTotalDurationIfCurrentPage(string durationString)

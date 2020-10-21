@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -47,7 +48,7 @@ namespace Toggl.Storage
 
         private bool conditionWasNotMetBefore(bool shouldShow)
         {
-            if (onboardingStorage.OnboardingConditionWasMetBefore(Key) || onboardingStorage.CompletedOnboarding())
+            if (onboardingStorage.OnboardingConditionWasMetBefore(Key))
                 return false;
             return shouldShow;
         }
@@ -70,6 +71,7 @@ namespace Toggl.Storage
         StartViewProjectsTooltip,
         EditViewProjectsTooltip,
         FinalTooltip,
-        ChangeDateRangeTooltip
+        ChangeDateRangeTooltip,
+        CalendarTimeEntryTooltip
     }
 }

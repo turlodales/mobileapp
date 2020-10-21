@@ -1038,7 +1038,11 @@ the selected time period.</value>
         <value>dddd, MMM d</value>
         <comment>@Invariant</comment>
     </data>
-
+    <data name="HereIsYourTimeEntryInCalendarView">
+        <value>Here is your Time Entry in calendar view 📅</value>
+        <comment>Message displayed in a a tooltip that points to a time entry in the calendar</comment>
+    </data>
+    
     <!-- Settings view -->
     
     <data name="RecommendTogglTrackToOthers" xml:space="preserve">

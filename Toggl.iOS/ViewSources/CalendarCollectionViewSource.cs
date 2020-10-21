@@ -56,6 +56,9 @@ namespace Toggl.iOS.ViewSources
 
         public bool IsEditing { get; private set; }
 
+        private readonly Subject<UICollectionViewCell> willDisplayCellSubject = new Subject<UICollectionViewCell>();
+        public IObservable<UICollectionViewCell> WillDisplayCellObservable => willDisplayCellSubject;
+
         public IObservable<CalendarItem> ItemTapped => itemTappedSubject.AsObservable();
 
         public CalendarCollectionViewSource(
@@ -117,6 +120,11 @@ namespace Toggl.iOS.ViewSources
             cell.Item = item;
             cell.IsEditing = IsEditing && selectedItemId == item.Id;
             return cell;
+        }
+
+        public override void WillDisplayCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath)
+        {
+            willDisplayCellSubject.OnNext(cell);
         }
 
         public override nint GetItemsCount(UICollectionView collectionView, nint section)

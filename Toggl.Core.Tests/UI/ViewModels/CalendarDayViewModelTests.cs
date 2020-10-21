@@ -14,8 +14,10 @@ using Toggl.Core.Interactors;
 using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.Tests.Generators;
+using Toggl.Core.Tests.Interactors.PushNotifications;
 using Toggl.Core.Tests.Mocks;
 using Toggl.Core.Tests.TestExtensions;
+using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Transformations;
@@ -23,6 +25,7 @@ using Toggl.Core.UI.ViewModels;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.Views;
 using Toggl.Shared;
+using Toggl.Storage;
 using Xunit;
 using Task = System.Threading.Tasks.Task;
 
@@ -35,12 +38,19 @@ namespace Toggl.Core.Tests.UI.ViewModels
             protected const long TimeEntryId = 10;
             protected const long DefaultWorkspaceId = 1;
             protected IInteractor<IObservable<IEnumerable<CalendarItem>>> CalendarInteractor { get; private set; }
+            protected TrackingOnboardingCondition CalendarTimeEntryTooltipCondition { get; private set; }
 
             protected static DateTimeOffset Now { get; } = new DateTimeOffset(2018, 8, 10, 12, 0, 0, TimeSpan.Zero);
 
             protected override void AdditionalSetup()
             {
                 CalendarInteractor = Substitute.For<IInteractor<IObservable<IEnumerable<CalendarItem>>>>();
+                CalendarTimeEntryTooltipCondition = new OnboardingCondition(
+                        OnboardingConditionKey.CalendarTimeEntryTooltip,
+                        OnboardingStorage,
+                        SchedulerProvider,
+                        Substitute.For<IObservable<bool>>())
+                    .TrackingDismissEvents(AnalyticsService);
 
                 var workspace = new MockWorkspace { Id = DefaultWorkspaceId };
                 var timeEntry = new MockTimeEntry { Id = TimeEntryId };
@@ -83,7 +93,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     BackgroundService,
                     InteractorFactory,
                     SchedulerProvider,
-                    NavigationService);
+                    NavigationService,
+                    CalendarTimeEntryTooltipCondition);
         }
 
         public sealed class TheConstructor : CalendarDayViewModelTest
@@ -99,7 +110,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 bool useBackgroundService,
                 bool useInteractorFactory,
                 bool useSchedulerProvider,
-                bool useNavigationService)
+                bool useNavigationService,
+                bool useCalendarTimeEntryTooltipCondition)
             {
                 Action tryingToConstructWithEmptyParameters =
                     () => new CalendarDayViewModel(
@@ -112,7 +124,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         useBackgroundService ? BackgroundService : null,
                         useInteractorFactory ? InteractorFactory : null,
                         useSchedulerProvider ? SchedulerProvider : null,
-                        useNavigationService ? NavigationService : null);
+                        useNavigationService ? NavigationService : null,
+                        useCalendarTimeEntryTooltipCondition ? CalendarTimeEntryTooltipCondition : null);
 
                 tryingToConstructWithEmptyParameters.Should().Throw<ArgumentNullException>();
             }
@@ -354,7 +367,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 AnalyticsService.TimeEntryChangedFromCalendar.Received().Track(CalendarChangeEvent.StartTime);
             }
         }
-        
+
         public sealed class TheTimeTrackedOnDayObservable : CalendarDayViewModelTest
         {
             [Fact, LogIfTooSlow]
@@ -378,14 +391,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 this.DataSource.Preferences.Current.Returns(Observable.Return(preferences));
                 var timeOnDayObserver = TestScheduler.CreateObserver<string>();
                 ViewModel.TimeTrackedOnDay.Subscribe(timeOnDayObserver);
-                
+
                 await ViewModel.Initialize();
 
                 TestScheduler.Start();
 
                 timeOnDayObserver.LastEmittedValue().Should().Be(DurationAndFormatToString.Convert(TimeSpan.FromMinutes(90), DurationFormat.Classic));
             }
-            
+
             [Fact, LogIfTooSlow]
             public async Task ItsTheSameAsTheTimeEntriesTodayIfTheCalendarDayInFactToday()
             {
@@ -413,7 +426,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     BackgroundService,
                     InteractorFactory,
                     SchedulerProvider,
-                    NavigationService);
+                    NavigationService,
+                    CalendarTimeEntryTooltipCondition);
                 var preferences = Substitute.For<IThreadSafePreferences>();
                 preferences.DurationFormat.Returns(DurationFormat.Classic);
                 this.DataSource.Preferences.Current.Returns(Observable.Return(preferences));

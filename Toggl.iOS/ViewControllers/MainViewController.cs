@@ -328,7 +328,6 @@ namespace Toggl.iOS.ViewControllers
                     if (!conditionMet)
                         return;
 
-                    IosDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
                     addBadgeToReportsTab();
 
                     finalTooltipCellSubscription = tableViewSource

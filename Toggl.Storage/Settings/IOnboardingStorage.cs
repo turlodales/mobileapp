@@ -14,8 +14,7 @@ namespace Toggl.Storage.Settings
         IObservable<bool> ProjectOrTagWasAddedBefore { get; }
         IObservable<bool> NavigatedAwayFromMainViewAfterTappingStopButton { get; }
         IObservable<bool> HasTimeEntryBeenContinued { get; }
-
-        void SetCompletedOnboarding();
+        
         void SetIsNewUser(bool isNewUser);
         void SetLastOpened(DateTimeOffset dateString);
         void SetFirstOpened(DateTimeOffset dateTime);
