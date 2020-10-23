@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Transactions;
+using Toggl.Core.Calendar;
 using Toggl.Core.Services;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Services;
+using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Networking;
 using Toggl.Networking.Network;
+using Toggl.Storage.Settings;
 
 namespace Toggl.Core.UI
 {

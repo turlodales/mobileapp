@@ -53,6 +53,7 @@ namespace Toggl.Storage.Settings
         private const char calendarIdSeparator = ';';
         private const string isFirstTimeConnectingCalendarsKey = "IsFirstTimeConnectingCalendars";
         private const string calendarViewWasOpenedBeforeKey = "CalendarViewWasOpenedBefore";
+        private const string connectCalendarsPopupWasShownKey = "ConnectCalendarsPopupWasShown";
 
         private const string calendarNotificationsEnabledKey = "CalendarNotificationsEnabled";
         private const string timeSpanBeforeCalendarNotificationsKey = "TimeSpanBeforeCalendarNotifications";
@@ -227,7 +228,13 @@ namespace Toggl.Storage.Settings
             => keyValueStorage.GetBool(calendarViewWasOpenedBeforeKey);
 
         public void SetCalendarPermissionWasAskedBefore()
-        => keyValueStorage.SetBool(calendarViewWasOpenedBeforeKey, true);
+            => keyValueStorage.SetBool(calendarViewWasOpenedBeforeKey, true);
+
+        public bool ConnectCalendarsPopupWasShown()
+            => keyValueStorage.GetBool(connectCalendarsPopupWasShownKey);
+
+        public void SetConnectCalendarsPopupWasShown()
+            => keyValueStorage.SetBool(connectCalendarsPopupWasShownKey, true);
 
         public void SetLastOpened(DateTimeOffset date)
         {

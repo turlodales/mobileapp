@@ -8,6 +8,7 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
+using Toggl.Core.Calendar;
 using Toggl.Core.DataSources;
 using Toggl.Core.Extensions;
 using Toggl.Core.Interactors;
@@ -96,6 +97,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         {
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
             Ensure.Argument.IsNotNull(timeService, nameof(timeService));
+            Ensure.Argument.IsNotNull(syncManager, nameof(syncManager));
             Ensure.Argument.IsNotNull(userPreferences, nameof(userPreferences));
             Ensure.Argument.IsNotNull(rxActionFactory, nameof(rxActionFactory));
             Ensure.Argument.IsNotNull(analyticsService, nameof(analyticsService));
@@ -104,10 +106,10 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
             Ensure.Argument.IsNotNull(permissionsChecker, nameof(permissionsChecker));
-            Ensure.Argument.IsNotNull(syncManager, nameof(syncManager));
 
             this.dataSource = dataSource;
             this.timeService = timeService;
+            this.syncManager = syncManager;
             this.rxActionFactory = rxActionFactory;
             this.userPreferences = userPreferences;
             this.analyticsService = analyticsService;
@@ -116,7 +118,6 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             this.schedulerProvider = schedulerProvider;
             this.onboardingStorage = onboardingStorage;
             this.permissionsChecker = permissionsChecker;
-            this.syncManager = syncManager;
 
             OpenSettings = rxActionFactory.FromAsync(openSettings);
             SelectDayFromWeekView = rxActionFactory.FromAction<CalendarWeeklyViewDayViewModel>(selectDayFromWeekView);
@@ -184,36 +185,6 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             SelectTimeEntry = rxActionFactory.FromAsync<EditTimeEntryInfo>(timeEntrySelected);
         }
 
-        public override void ViewAppeared()
-        {
-            base.ViewAppeared();
-
-            if (onboardingStorage.CalendarPermissionWasAskedBefore())
-                return;
-
-            permissionsChecker.CalendarPermissionGranted
-                    .Where(calendarPermissionGranted => !calendarPermissionGranted)
-                    .Select(_ => onboardingStorage.CalendarPermissionWasAskedBefore())
-                    .Where(calendarViewWasOpenedBefore => !calendarViewWasOpenedBefore)
-                    .SelectMany(_ => View.RequestCalendarAuthorization(false))
-                    .Subscribe(onCalendarPermission)
-                    .DisposedBy(disposeBag);
-            onboardingStorage.SetCalendarPermissionWasAskedBefore();
-        }
-
-        private void onCalendarPermission(bool granted)
-        {
-            if (granted)
-            {
-                userPreferences.SetCalendarIntegrationEnabled(true);
-                Navigate<IndependentCalendarSettingsViewModel>();
-            }
-            else
-            {
-                Navigate<CalendarPermissionDeniedViewModel>();
-            }
-        }
-
         public override void ViewDestroyed()
         {
             base.ViewDestroyed();
@@ -267,6 +238,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 interactorFactory,
                 schedulerProvider,
                 NavigationService,
+                onboardingStorage,
+                permissionsChecker,
                 CalendarTimeEntryTooltipCondition);
         }
 

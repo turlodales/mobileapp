@@ -20,6 +20,8 @@ namespace Toggl.Storage
 
         public IObservable<bool> ConditionMet { get; }
 
+        public IObservable<Unit> Dismissed => dismissSubject.AsObservable();
+
         public OnboardingCondition(
         OnboardingConditionKey key,
         IOnboardingStorage onboardingStorage,

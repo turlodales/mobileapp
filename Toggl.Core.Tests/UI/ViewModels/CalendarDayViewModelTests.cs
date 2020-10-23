@@ -94,6 +94,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     InteractorFactory,
                     SchedulerProvider,
                     NavigationService,
+                    OnboardingStorage,
+                    PermissionsChecker,
                     CalendarTimeEntryTooltipCondition);
         }
 
@@ -111,6 +113,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 bool useInteractorFactory,
                 bool useSchedulerProvider,
                 bool useNavigationService,
+                bool useOnboardingStorage,
+                bool usePermissionsChecker,
                 bool useCalendarTimeEntryTooltipCondition)
             {
                 Action tryingToConstructWithEmptyParameters =
@@ -125,6 +129,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         useInteractorFactory ? InteractorFactory : null,
                         useSchedulerProvider ? SchedulerProvider : null,
                         useNavigationService ? NavigationService : null,
+                        useOnboardingStorage ? OnboardingStorage : null,
+                        usePermissionsChecker ? PermissionsChecker : null,
                         useCalendarTimeEntryTooltipCondition ? CalendarTimeEntryTooltipCondition : null);
 
                 tryingToConstructWithEmptyParameters.Should().Throw<ArgumentNullException>();
@@ -427,6 +433,8 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     InteractorFactory,
                     SchedulerProvider,
                     NavigationService,
+                    OnboardingStorage,
+                    PermissionsChecker,
                     CalendarTimeEntryTooltipCondition);
                 var preferences = Substitute.For<IThreadSafePreferences>();
                 preferences.DurationFormat.Returns(DurationFormat.Classic);

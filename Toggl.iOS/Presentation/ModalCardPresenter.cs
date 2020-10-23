@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Toggl.Core.UI.ViewModels;
+using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.Core.UI.ViewModels.Settings;
 using Toggl.Core.UI.Views;
 using Toggl.iOS.Presentation.Transition;
@@ -27,6 +28,7 @@ namespace Toggl.iOS.Presentation
             typeof(StartTimeEntryViewModel),
             typeof(UpcomingEventsNotificationSettingsViewModel),
             typeof(AnnouncementViewModel),
+            typeof(ConnectCalendarsPopupViewModel)
         };
 
         public ModalCardPresenter(UIWindow window, AppDelegate appDelegate) : base(window, appDelegate)

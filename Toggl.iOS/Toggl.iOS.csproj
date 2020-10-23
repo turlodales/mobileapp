@@ -1505,6 +1505,7 @@
     <InterfaceDefinition Include="ViewControllers\Settings\YourPlanViewController.xib" />
     <InterfaceDefinition Include="ViewControllers\AnnouncementViewController.xib" />
     <InterfaceDefinition Include="Cells\Reports\ReportsDonutChartPlaceholderCollectionViewCell.xib" />
+    <InterfaceDefinition Include="ViewControllers\Calendar\ConnectCalendarsPopupViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\togglman.mp4" />
@@ -2166,6 +2167,10 @@
     <Compile Include="Cells\Reports\ReportsDonutChartPlaceholderCollectionViewCell.cs" />
     <Compile Include="Cells\Reports\ReportsDonutChartPlaceholderCollectionViewCell.designer.cs">
       <DependentUpon>ReportsDonutChartPlaceholderCollectionViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\Calendar\ConnectCalendarsPopupViewController.cs" />
+    <Compile Include="ViewControllers\Calendar\ConnectCalendarsPopupViewController.designer.cs">
+      <DependentUpon>ConnectCalendarsPopupViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

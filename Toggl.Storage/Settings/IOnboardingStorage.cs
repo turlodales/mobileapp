@@ -14,7 +14,7 @@ namespace Toggl.Storage.Settings
         IObservable<bool> ProjectOrTagWasAddedBefore { get; }
         IObservable<bool> NavigatedAwayFromMainViewAfterTappingStopButton { get; }
         IObservable<bool> HasTimeEntryBeenContinued { get; }
-        
+
         void SetIsNewUser(bool isNewUser);
         void SetLastOpened(DateTimeOffset dateString);
         void SetFirstOpened(DateTimeOffset dateTime);
@@ -47,6 +47,8 @@ namespace Toggl.Storage.Settings
         void SetCalendarPermissionWasAskedBefore();
         bool IsFirstTimeConnectingCalendars();
         void SetIsFirstTimeConnectingCalendars();
+        bool ConnectCalendarsPopupWasShown();
+        void SetConnectCalendarsPopupWasShown();
 
         IObservable<OnboardingConditionKey> OnboardingConditionMet { get; }
         void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey);
