@@ -13,6 +13,7 @@ using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Calendar;
 using Toggl.iOS.Extensions;
 using Toggl.iOS.Extensions.Reactive;
+using Toggl.iOS.Presentation;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -23,7 +24,7 @@ using static Toggl.Core.Helper.Constants;
 
 namespace Toggl.iOS.ViewControllers
 {
-    public sealed partial class CalendarViewController : ReactiveViewController<CalendarViewModel>, IUIPageViewControllerDataSource, IUIPageViewControllerDelegate
+    public sealed partial class CalendarViewController : ReactiveViewController<CalendarViewModel>, IUIPageViewControllerDataSource, IUIPageViewControllerDelegate, IScrollableToTop
     {
         private const int weekViewHeight = 44;
         private const int maxAllowedPageIndex = CalendarMaxFutureDays - 1;
@@ -580,6 +581,14 @@ namespace Toggl.iOS.ViewControllers
                     () => StartTimeEntryButton.Transform = normalScale,
                     cancellationToken: cts.Token);
             }
+        }
+
+        public void ScrollToTop()
+        {
+            ViewModel.ShowToday.Execute();
+            var currentlyShownViewController = pageViewController.ViewControllers.LastOrDefault();
+            if (currentlyShownViewController != null && currentlyShownViewController is IScrollableToTop scrollableToTop)
+                scrollableToTop.ScrollToTop();
         }
     }
 }

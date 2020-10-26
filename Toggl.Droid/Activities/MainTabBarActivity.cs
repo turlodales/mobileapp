@@ -166,10 +166,11 @@ namespace Toggl.Droid.Activities
                 {
                     var viewModel = ViewModel.MainViewModel.Value as MainViewModel;
                     await viewModel.Initialize();
-                    return new MainFragment(() =>
+                    return new MainFragment()
                     {
-                        navigationView.GetOrCreateBadge(Resource.Id.MainTabReportsItem);
-                    }) { ViewModel = viewModel };
+                        ViewModel = viewModel,
+                        AddBadgeToReportsTab = () => navigationView.GetOrCreateBadge(Resource.Id.MainTabReportsItem)
+                    };
                 }),
                 Resource.Id.MainTabReportsItem => await Task.Run<Fragment>(async () =>
                 {

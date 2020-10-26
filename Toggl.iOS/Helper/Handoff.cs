@@ -8,18 +8,18 @@ namespace Toggl.iOS.Helper
         public static class Url
         {
 #if USE_PRODUCTION_API
-            private const string domain = "toggl.com";
+            private const string domain = "track.toggl.com";
 #else
-            private const string domain = "toggl.space";
+            private const string domain = "track.toggl.space";
 #endif
             private const string dateFormat = "yyyy-MM-dd";
 
-            public static NSUrl Log { get; } = new NSUrl($"https://{domain}/app");
+            public static NSUrl Log { get; } = new NSUrl($"https://{domain}/timer");
 
-            public static NSUrl Settings { get; } = new NSUrl($"https://{domain}/app/profile");
+            public static NSUrl Settings { get; } = new NSUrl($"https://{domain}/profile");
 
             public static NSUrl Reports(long workspaceId, DateTimeOffset start, DateTimeOffset end)
-                => new NSUrl($"https://{domain}/app/reports/summary/{workspaceId}/from/{start.ToString(dateFormat)}/to/{end.ToString(dateFormat)}");
+                => new NSUrl($"https://{domain}/reports/summary/{workspaceId}/from/{start.ToString(dateFormat)}/to/{end.ToString(dateFormat)}");
         }
 
         public static class Action

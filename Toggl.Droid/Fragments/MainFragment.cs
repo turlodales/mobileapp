@@ -43,7 +43,6 @@ namespace Toggl.Droid.Fragments
     public sealed partial class MainFragment : ReactiveTabFragment<MainViewModel>, IScrollableToStart
     {
         private const int snackbarDuration = 5000;
-        private readonly Action addBadgeToReportsTab;
         private NotificationManager notificationManager;
         private MainLogRecyclerAdapter mainLogRecyclerAdapter;
         private MainRecyclerViewTouchCallback touchCallback;
@@ -54,10 +53,9 @@ namespace Toggl.Droid.Fragments
         private Drawable addDrawable;
         private Drawable playDrawable;
 
-        public MainFragment(Action addBadgeToReportsTab)
-        {
-            this.addBadgeToReportsTab = addBadgeToReportsTab;
-        }
+        public Action AddBadgeToReportsTab { get; set; }
+
+        public MainFragment() { }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -245,7 +243,7 @@ namespace Toggl.Droid.Fragments
                 {
                     if (conditionMet)
                     {
-                        addBadgeToReportsTab?.Invoke();
+                        AddBadgeToReportsTab?.Invoke();
                     }
                 })
                 .CombineLatest(ViewModel.MainLogItems, (conditionMet, items) => (TooltipShouldBeVisible: conditionMet, LogItems: items))

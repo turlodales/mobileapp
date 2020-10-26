@@ -113,6 +113,7 @@ namespace Toggl.Droid.Views
 
         protected override void OnDraw(Canvas canvas)
         {
+            canvas.Save();
             performCanvasDriftCorrection(canvas);
 
             drawBackground(canvas);
@@ -126,10 +127,12 @@ namespace Toggl.Droid.Views
                 var x = column * dayWidth;
                 var y = row * rowHeight;
 
+                canvas.Save();
                 canvas.Translate(x, y);
                 drawDay(canvas, date);
-                canvas.Translate(-x, -y);
+                canvas.Restore();
             }
+            canvas.Restore();
         }
 
         private void performCanvasDriftCorrection(Canvas canvas)
@@ -139,7 +142,6 @@ namespace Toggl.Droid.Views
             // This will minimize the drift by aligning center correctly
             // and spread the rest of the error towards the start/end.
             var centeringOffset = Width % 7 / 2;
-            canvas.Matrix = null;
             canvas.Translate(centeringOffset, 0);
         }
 
