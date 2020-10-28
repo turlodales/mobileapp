@@ -251,7 +251,8 @@ namespace Toggl.Droid.Fragments
                 .DisposedBy(DisposeBag);
 
             calendarDayAdapter.MenuVisibilityRelay
-                .Subscribe(setRunningTimeEntryCardAndStartButtonVisibility)
+                .WithLatestFrom(ViewModel.IsTimeEntryRunning, Tuple.Create)
+                .Subscribe(tuple => setRunningTimeEntryCardAndStartButtonVisibility(tuple.Item1, tuple.Item2))
                 .DisposedBy(DisposeBag);
         }
 
@@ -351,12 +352,24 @@ namespace Toggl.Droid.Fragments
             calendarDayAdapter?.InvalidateCurrentPage();
         }
 
-        private void setRunningTimeEntryCardAndStartButtonVisibility(bool isContextualMenuVisible)
+        private void setRunningTimeEntryCardAndStartButtonVisibility(bool contextualMenuVisible, bool timeEntryRunning)
         {
-            playButton.Alpha = isContextualMenuVisible ? 0 : 1;
-            runningEntryCardFrame.Alpha = isContextualMenuVisible ? 0 : 1;
-            playButton.Clickable = !isContextualMenuVisible;
-            runningEntryCardFrame.Clickable = !isContextualMenuVisible;
+            if (contextualMenuVisible)
+            {
+                playButton.Visibility = ViewStates.Invisible;
+                stopButton.Visibility = ViewStates.Invisible;
+                runningEntryCardFrame.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
+                playButton.Visibility = timeEntryRunning ? ViewStates.Invisible : ViewStates.Visible;
+                stopButton.Visibility = runningEntryCardFrame.Visibility =
+                    timeEntryRunning ? ViewStates.Visible : ViewStates.Invisible;
+            }
+
+            playButton.Enabled = !contextualMenuVisible;
+            stopButton.Enabled = !contextualMenuVisible;
+            runningEntryCardFrame.Enabled = !contextualMenuVisible;
         }
 
         public void ScrollToStart()

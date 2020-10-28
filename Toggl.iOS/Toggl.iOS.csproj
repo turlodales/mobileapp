@@ -215,9 +215,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\AppIcon-adhoc.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -483,30 +480,6 @@
     <ImageAsset Include="Resources\Images.xcassets\icLoader.imageset\ic-spinner%403x.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-80x80.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-120x120.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-58x58.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-87x87.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-114x114.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-180x180.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\icAdd.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -601,9 +574,6 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\icUnsynced.imageset\icUnsynced%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\toggl-app-icon-1024x1024.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\search.imageset\Contents.json">
@@ -1053,21 +1023,6 @@
     <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-152x152.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-167x167.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\icTimer.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -1393,7 +1348,6 @@
     <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkDark%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogo.imageset\togglPinkLight%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\toggl-track_icon_pink_rgb.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkDark.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkDark%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkDark%402x.png" />
@@ -1401,6 +1355,28 @@
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\togglLogoRedAndBlack.imageset\togglPinkLight.png" />
     <ImageAsset Include="Resources\Colors.xcassets\AlwaysWhite.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\icon_138.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\icon_276.png" />
+    <ImageAsset Include="Resources\Images.xcassets\togglLogoWithoutTextRed.imageset\icon_414.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_60.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_58.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_87.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_120-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_40-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_58-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_40-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_80-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon_1024.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Cells\Reports\ReportsBarChartPlaceholderCollectionViewCell.xib" />
@@ -2332,6 +2308,7 @@
     <Folder Include="Resources\Colors.xcassets\CalendarDragHandles.colorset\" />
     <Folder Include="Resources\Colors.xcassets\AlwaysWhite.imageset\" />
     <Folder Include="Resources\Colors.xcassets\AlwaysWhite.colorset\" />
+    <Folder Include="Assets.xcassets\AppIcon.appiconset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />

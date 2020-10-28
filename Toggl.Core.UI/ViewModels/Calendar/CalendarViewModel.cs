@@ -76,6 +76,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
 
         public ViewAction StopTimeEntry { get; private set; }
 
+        public ViewAction ShowToday { get; }
+
         public InputAction<EditTimeEntryInfo> SelectTimeEntry { get; private set; }
 
         public TrackingOnboardingCondition CalendarTimeEntryTooltipCondition { get; private set; }
@@ -120,6 +122,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             this.permissionsChecker = permissionsChecker;
 
             OpenSettings = rxActionFactory.FromAsync(openSettings);
+            ShowToday = rxActionFactory.FromAction(showToday);
             SelectDayFromWeekView = rxActionFactory.FromAction<CalendarWeeklyViewDayViewModel>(selectDayFromWeekView);
 
             var beginningOfWeekObservable = dataSource.User.Current.Select(user => user.BeginningOfWeek);
@@ -287,6 +290,11 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         {
             analyticsService.EditViewOpened.Track(editTimeEntryInfo.Origin);
             await Navigate<EditTimeEntryViewModel, long[]>(editTimeEntryInfo.Ids);
+        }
+
+        private void showToday()
+        {
+            CurrentlyShownDate.Accept(timeService.CurrentDateTime.Date);
         }
     }
 }

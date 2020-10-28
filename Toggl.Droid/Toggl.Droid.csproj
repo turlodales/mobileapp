@@ -952,17 +952,23 @@
     <AndroidResource Include="Resources\color\FlatButtonTextColor.xml" />
     <AndroidResource Include="Resources\color\outline_text_input_color.xml" />
     <AndroidResource Include="Resources\color\ToolbarButtonTextColor.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-hdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_periscope.png" />
     <AndroidResource Include="Resources\drawable-hdpi\onboarding_slide2_pupil.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-ldpi\illustration_stopwatch.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-mdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-mdpi\togglman.png" />
     <AndroidResource Include="Resources\drawable-hdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\togglman.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_stopwatch.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\togglman.png" />
     <AndroidResource Include="Resources\drawable-ldpi\onboarding_slide2_periscope.png" />
@@ -1128,11 +1134,6 @@
     <AndroidResource Include="Resources\values-ja\strings.xml" />
     <AndroidResource Include="Resources\values-pt\strings.xml" />
     <AndroidResource Include="Resources\values-fr\strings.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable-hdpi\illustration_reports_total_chart.png" />
     <AndroidResource Include="Resources\drawable-mdpi\illustration_reports_total_chart.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\illustration_reports_total_chart.png" />
@@ -1280,7 +1281,6 @@
     <AndroidResource Include="Resources\drawable\background_rounded_rectangle_gray_border.xml" />
     <AndroidResource Include="Resources\layout\CalendarFragment.axml" />
     <AndroidResource Include="Resources\drawable\background_calendar_entry.xml" />
-    <AndroidResource Include="Resources\drawable\ic_launcher.xml" />
     <AndroidResource Include="Resources\animator\Collapse.xml" />
     <AndroidResource Include="Resources\animator\Expand.xml" />
     <AndroidResource Include="Resources\layout\TimeEntryWidget.axml" />
@@ -1317,6 +1317,26 @@
     <AndroidResource Include="Resources\layout\ReportDonutChartDonutElement.axml" />
     <AndroidResource Include="Resources\layout\ReportDonutLegendItem.axml" />
     <AndroidResource Include="Resources\layout\ReportsBarChartElement.axml" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-ldpi\pie_chart_illustration.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -1376,6 +1396,13 @@
     <AndroidResource Include="Resources\layout\AnnouncementFragment.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\mipmap-xxxhdpi\" />
+    <Folder Include="Resources\mipmap-xxhdpi\" />
+    <Folder Include="Resources\mipmap-xhdpi\" />
+    <Folder Include="Resources\mipmap-hdpi\" />
+    <Folder Include="Resources\mipmap-mdpi\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Fody.2.4.6\build\Fody.targets" Condition="Exists('..\packages\Fody.2.4.6\build\Fody.targets')" />

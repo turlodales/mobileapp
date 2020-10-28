@@ -118,6 +118,8 @@
     <Folder Include="Resources\Images.xcassets\icStop.imageset\" />
     <Folder Include="Resources\Images.xcassets\icStart.imageset\" />
     <Folder Include="Resources\Images.xcassets\icContinue.imageset\" />
+    <Folder Include="Resources\Colors.xcassets\StopButton.colorset\" />
+    <Folder Include="Resources\Colors.xcassets\Accent.colorset\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -158,12 +160,6 @@
     <ImageAsset Include="Resources\Images.xcassets\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\play%402x-1.png" />
-    <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\play.png" />
-    <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\play%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\stop.png" />
-    <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\stop%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\stop%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\icContinue.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\icContinue.imageset\continue.png" />
     <ImageAsset Include="Resources\Images.xcassets\icContinue.imageset\continue%402x.png" />
@@ -187,6 +183,14 @@
     <ImageAsset Include="Resources\Colors.xcassets\OpaqueSeparator.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\Text1.colorset\Contents.json" />
     <ImageAsset Include="Resources\Colors.xcassets\Text.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\StopButton.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Colors.xcassets\Accent.colorset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\stopIcon-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\stopIcon%402x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icStop.imageset\stopIcon%403x-1.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\continue.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\continue%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\icStart.imageset\continue%403x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.AppExtension.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
