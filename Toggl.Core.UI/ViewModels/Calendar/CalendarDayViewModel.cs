@@ -186,6 +186,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             connectCalendarsObservable
                 .SelectMany(_ => permissionsChecker.CalendarPermissionGranted)
                 .Where(permissionGranted => !permissionGranted)
+                .Where(_ => !onboardingStorage.ConnectCalendarsPopupWasShown())
                 .SelectMany(_ =>
                     Navigate<ConnectCalendarsPopupViewModel, Unit, bool>(Unit.Default)
                         .ToObservable())
