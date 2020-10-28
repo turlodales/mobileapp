@@ -9,12 +9,9 @@ using Toggl.iOS.Views.Calendar;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared.Extensions;
 using UIKit;
-using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reactive;
 using Foundation;
-using Remotion.Linq.Utilities;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
 using Toggl.Core.Services;
@@ -40,6 +37,8 @@ namespace Toggl.iOS.ViewControllers
         private readonly ITimeService timeService;
         private readonly IRxActionFactory rxActionFactory;
 
+        private readonly Action addOnboardingBadgeToReportsTab;
+
         private bool contextualMenuInitialised;
 
         private CalendarCollectionViewLayout layout;
@@ -62,7 +61,8 @@ namespace Toggl.iOS.ViewControllers
             BehaviorRelay<int> currentPageRelay,
             BehaviorRelay<string> timeTrackedOnDay,
             BehaviorRelay<bool> contextualMenuVisible,
-            BehaviorRelay<nfloat> runningTimeEntryCardHeight)
+            BehaviorRelay<nfloat> runningTimeEntryCardHeight,
+            Action addOnboardingBadgeToReportsTab)
             : base(viewModel, nameof(CalendarDayViewController))
         {
             Ensure.Argument.IsNotNull(ViewModel, nameof(ViewModel));
@@ -70,9 +70,11 @@ namespace Toggl.iOS.ViewControllers
             Ensure.Argument.IsNotNull(timeTrackedOnDay, nameof(timeTrackedOnDay));
             Ensure.Argument.IsNotNull(contextualMenuVisible, nameof(contextualMenuVisible));
             Ensure.Argument.IsNotNull(runningTimeEntryCardHeight, nameof(runningTimeEntryCardHeight));
+            Ensure.Argument.IsNotNull(addOnboardingBadgeToReportsTab, nameof(addOnboardingBadgeToReportsTab));
 
             timeService = IosDependencyContainer.Instance.TimeService;
             rxActionFactory = IosDependencyContainer.Instance.RxActionFactory;
+            this.addOnboardingBadgeToReportsTab = addOnboardingBadgeToReportsTab;
 
             this.currentPageRelay = currentPageRelay;
             this.timeTrackedOnDay = timeTrackedOnDay;
@@ -118,6 +120,12 @@ namespace Toggl.iOS.ViewControllers
             CalendarCollectionView.SetCollectionViewLayout(layout, false);
             CalendarCollectionView.Delegate = dataSource;
             CalendarCollectionView.DataSource = dataSource;
+
+            //Onboarding
+            ViewModel.CalendarLinkingCompleted
+                .ObserveOn(IosDependencyContainer.Instance.SchedulerProvider.MainScheduler)
+                .Subscribe(_ => addOnboardingBadgeToReportsTab?.Invoke())
+                .DisposedBy(DisposeBag);
 
             //Editing items
             dataSource.ItemTapped

@@ -55,6 +55,9 @@ namespace Toggl.Storage.Settings
         private const string calendarViewWasOpenedBeforeKey = "CalendarViewWasOpenedBefore";
         private const string connectCalendarsPopupWasShownKey = "ConnectCalendarsPopupWasShown";
 
+        private const string calendarTabWasOpenedKey = "CalendarTabWasOpened";
+        private const string reportsTabWasOpenedKey = "ReportsTabWasOpened";
+
         private const string calendarNotificationsEnabledKey = "CalendarNotificationsEnabled";
         private const string timeSpanBeforeCalendarNotificationsKey = "TimeSpanBeforeCalendarNotifications";
 
@@ -367,6 +370,18 @@ namespace Toggl.Storage.Settings
 
         public void SetOnboardingTimeEntryWasCreated()
             => keyValueStorage.SetBool(onboardingTimeEntryWasCreatedKey, true);
+
+        public bool CalendarTabWasOpened()
+            => keyValueStorage.GetBool(calendarTabWasOpenedKey);
+
+        public void SetCalendarTabWasOpened()
+            => keyValueStorage.SetBool(calendarTabWasOpenedKey, true);
+
+        public bool ReportsTabWasOpened()
+            => keyValueStorage.GetBool(reportsTabWasOpenedKey);
+
+        public void SetReportsTabWasOpened()
+            => keyValueStorage.SetBool(reportsTabWasOpenedKey, true);
 
         public bool IsRunningTheAppFirstTime()
         {

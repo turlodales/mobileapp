@@ -57,6 +57,11 @@ namespace Toggl.Storage.Settings
         void SetOnboardingTimeEntryWasCreated();
         bool IsRunningTheAppFirstTime();
 
+        bool CalendarTabWasOpened();
+        void SetCalendarTabWasOpened();
+        bool ReportsTabWasOpened();
+        void SetReportsTabWasOpened();
+
         void Reset();
 
         bool CheckIfAnnouncementWasShown(string announcementId);

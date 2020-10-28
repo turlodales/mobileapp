@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
@@ -24,8 +25,6 @@ using Toggl.Core.UI.Services;
 using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels.Calendar.ContextualMenu;
 using Toggl.Core.UI.ViewModels.Settings;
-using Toggl.Core.UI.Views;
-using Toggl.Storage;
 
 namespace Toggl.Core.UI.ViewModels.Calendar
 {
@@ -41,12 +40,14 @@ namespace Toggl.Core.UI.ViewModels.Calendar
 
         private readonly CompositeDisposable disposeBag = new CompositeDisposable();
         private readonly IObservable<TimeSpan> timeTrackedOnDaySubject;
+        private readonly ISubject<Unit> calendarLinkingCompletedSubject = new Subject<Unit>();
 
         public DateTimeOffset Date { get; }
         public ObservableGroupedOrderedCollection<CalendarItem> CalendarItems { get; }
         public IObservable<TimeFormat> TimeOfDayFormat { get; }
         public IObservable<DurationFormat> DurationFormat { get; }
         public IObservable<string> TimeTrackedOnDay { get; }
+        public IObservable<Unit> CalendarLinkingCompleted => calendarLinkingCompletedSubject.AsObservable();
 
         public InputAction<CalendarItem> OnTimeEntryEdited { get; }
         public InputAction<(DateTimeOffset, TimeSpan)> OnDurationSelected { get; }
@@ -168,6 +169,8 @@ namespace Toggl.Core.UI.ViewModels.Calendar
         {
             base.ViewAppeared();
 
+            onboardingStorage.SetCalendarTabWasOpened();
+
             connectCalendars();
         }
 
@@ -202,10 +205,12 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             {
                 userPreferences.SetCalendarIntegrationEnabled(true);
                 Navigate<IndependentCalendarSettingsViewModel>();
+                calendarLinkingCompletedSubject.OnNext(Unit.Default);
             }
             else
             {
                 Navigate<CalendarPermissionDeniedViewModel>();
+                calendarLinkingCompletedSubject.OnNext(Unit.Default);
             }
         }
 

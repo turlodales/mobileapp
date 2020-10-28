@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreAnimation;
+using PassKit;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Core.UI.Helper;
 using Toggl.Core.UI.ViewModels.Calendar;
@@ -252,6 +253,19 @@ namespace Toggl.iOS.ViewControllers
             currentPageRelay.Accept(index);
         }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+
+            removeOnboardingBadge();
+        }
+
+        private void removeOnboardingBadge()
+        {
+            var tabBarController = TabBarController as MainTabBarController;
+            tabBarController?.RemoveOnboardingBadgeFrom(MainTabBarController.Tab.Calendar);
+        }
+
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
@@ -300,9 +314,24 @@ namespace Toggl.iOS.ViewControllers
         private CalendarDayViewController viewControllerAtIndex(nint index)
         {
             var viewModel = ViewModel.DayViewModelAt((int) index);
-            var viewController = new CalendarDayViewController(viewModel, currentPageRelay, timeTrackedOnDay, contextualMenuVisible, runningTimeEntryCardHeight);
+            var viewController = new CalendarDayViewController(
+                viewModel,
+                currentPageRelay,
+                timeTrackedOnDay,
+                contextualMenuVisible,
+                runningTimeEntryCardHeight,
+                addOnboardingBadgeToReportsTab);
             viewController.View.Tag = index;
             return viewController;
+        }
+
+        private void addOnboardingBadgeToReportsTab()
+        {
+            if (IosDependencyContainer.Instance.OnboardingStorage.ReportsTabWasOpened())
+                return;
+
+            var mainTabBarController = TabBarController as MainTabBarController;
+            mainTabBarController?.AddOnboardingBadgeFor(MainTabBarController.Tab.Reports);
         }
 
         [Export("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:")]

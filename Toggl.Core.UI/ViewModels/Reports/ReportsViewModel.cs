@@ -180,6 +180,8 @@ namespace Toggl.Core.UI.ViewModels.Reports
         {
             base.ViewAppeared();
 
+            onboardingStorage.SetReportsTabWasOpened();
+
             if (shouldReloadReportOnViewAppeared)
                 reloadReportsSubject.OnNext(Unit.Default);
         }
