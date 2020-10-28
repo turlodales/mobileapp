@@ -1353,6 +1353,12 @@ namespace Toggl.Shared {
             }
         }
         
+        public static string CalendarEmptyStateMessage {
+            get {
+                return ResourceManager.GetString("CalendarEmptyStateMessage", resourceCulture);
+            }
+        }
+
         public static string HereIsYourTimeEntryInCalendarView {
             get {
                 return ResourceManager.GetString("HereIsYourTimeEntryInCalendarView", resourceCulture);

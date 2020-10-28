@@ -11,6 +11,8 @@ using Toggl.Shared.Extensions;
 using UIKit;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reactive;
+using Accord.Statistics.Analysis;
 using Foundation;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
@@ -90,6 +92,17 @@ namespace Toggl.iOS.ViewControllers
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            var emptyStateText = new NSMutableAttributedString(Resources.CalendarEmptyStateMessage);
+            emptyStateText.AddAttributes(
+                new UIStringAttributes
+                {
+                    ForegroundColor = ColorAssets.CustomGray,
+                    StrokeColor = ColorAssets.TableBackground,
+                    StrokeWidth = -3
+                },
+                new NSRange(0, emptyStateText.Length));
+            EmptyStateLabel.AttributedText = emptyStateText;
 
             ViewModel.ContextualMenuViewModel.AttachView(this);
 
@@ -208,6 +221,13 @@ namespace Toggl.iOS.ViewControllers
 
             runningTimeEntryCardHeight
                 .Subscribe(_ => updateContentInset())
+                .DisposedBy(DisposeBag);
+
+            //Empty state
+            ViewModel.CalendarItems.Empty
+                .Throttle(TimeSpan.FromMilliseconds(1)) //Throttling prevents a small glitch, where the empty state view appears for a split second
+                .ObserveOn(IosDependencyContainer.Instance.SchedulerProvider.MainScheduler)
+                .Subscribe(updateEmptyStateVisibility)
                 .DisposedBy(DisposeBag);
 
             CalendarCollectionView.LayoutIfNeeded();
@@ -369,6 +389,11 @@ namespace Toggl.iOS.ViewControllers
             return (tooltip, tooltipPointsUpwards, arrow);
         }
 
+        private void updateEmptyStateVisibility(bool noCalendarItemsExist)
+        {
+            EmptyStateView.Alpha = noCalendarItemsExist ? 1 : 0;
+        }
+
         private void notifyTotalDurationIfCurrentPage(string durationString)
         {
             if (currentPageRelay.Value == View.Tag)
@@ -389,6 +414,18 @@ namespace Toggl.iOS.ViewControllers
             ContextualMenuBottonConstraint.Constant = -ContextualMenu.Frame.Height - 10;
             ContextualMenu.Layer.ShadowPath = CGPath.FromRect(ContextualMenu.Layer.Bounds);
             View.LayoutIfNeeded();
+
+            updateemptyStateViewCentering();
+        }
+
+        private void updateemptyStateViewCentering()
+        {
+            var leftCenteringPoint = CalendarCollectionViewLayout.LeftPadding + layout.SideMargin;
+            var rightCenteringPoint = CalendarCollectionView.Frame.Width - layout.RightPadding - layout.SideMargin;
+            var currentCenter = CalendarCollectionView.Center.X;
+            var newCenter = (rightCenteringPoint - leftCenteringPoint) / 2 + leftCenteringPoint;
+
+            EmptyStateCenterConstraint.Constant = newCenter - currentCenter;
         }
 
         private void replaceContextualMenuActions(IImmutableList<CalendarMenuAction> actions)

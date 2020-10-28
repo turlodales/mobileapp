@@ -1038,6 +1038,10 @@ the selected time period.</value>
         <value>dddd, MMM d</value>
         <comment>@Invariant</comment>
     </data>
+    <data name="CalendarEmptyStateMessage">
+        <value>Once you start tracking time  you can see and manage your  Time Entries here!</value>
+        <comment>Message shown in the calendar view, when there are no time entries to show</comment>
+    </data>
     <data name="HereIsYourTimeEntryInCalendarView">
         <value>Here is your Time Entry in calendar view 📅</value>
         <comment>Message displayed in a a tooltip that points to a time entry in the calendar</comment>

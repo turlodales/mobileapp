@@ -26,16 +26,16 @@ namespace Toggl.iOS.Views.Calendar
 
         public float HourHeight { get; private set; } = 56;
 
-        private static readonly nfloat leftPadding = 76;
+        public static readonly nfloat LeftPadding = 76;
         private static readonly nfloat hourSupplementaryLabelHeight = 20;
         private static readonly nfloat currentTimeSupplementaryLeftOffset = -18;
         private static readonly nfloat verticalItemSpacing = 1;
 
-        private nfloat sideMargin
+        public nfloat SideMargin
             => CollectionView.Frame.Width >= maxWidth
                 ? (CollectionView.Frame.Width - maxWidth) / 2
                 : 0;
-        private nfloat rightPadding
+        public nfloat RightPadding
             => CollectionView.TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular
                 ? 20
                 : 16;
@@ -288,9 +288,9 @@ namespace Toggl.iOS.Views.Calendar
             var yHour = HourHeight * now.Hour;
             var yMins = HourHeight * now.Minute / 60;
 
-            var width = CollectionViewContentSize.Width - leftPadding - rightPadding - currentTimeSupplementaryLeftOffset - (sideMargin * 2);
+            var width = CollectionViewContentSize.Width - LeftPadding - RightPadding - currentTimeSupplementaryLeftOffset - (SideMargin * 2);
             var height = 8;
-            var x = sideMargin + leftPadding + currentTimeSupplementaryLeftOffset;
+            var x = SideMargin + LeftPadding + currentTimeSupplementaryLeftOffset;
             var y = yHour + yMins - height / 2;
 
             return new CGRect(x, y, width, height);
@@ -353,9 +353,9 @@ namespace Toggl.iOS.Views.Calendar
             var yMins = HourHeight * startTime.Minute / 60;
 
             var totalInterItemSpacing = (attrs.TotalColumns - 1) * horizontalItemSpacing;
-            var width = (CollectionViewContentSize.Width - leftPadding - rightPadding - totalInterItemSpacing - (sideMargin * 2)) / attrs.TotalColumns;
+            var width = (CollectionViewContentSize.Width - LeftPadding - RightPadding - totalInterItemSpacing - (SideMargin * 2)) / attrs.TotalColumns;
             var height = Math.Max(minItemHeight(), HourHeight * duration.TotalMinutes / 60) - verticalItemSpacing;
-            var x = sideMargin + leftPadding + (width + horizontalItemSpacing) * attrs.ColumnIndex;
+            var x = SideMargin + LeftPadding + (width + horizontalItemSpacing) * attrs.ColumnIndex;
             var y = yHour + yMins + verticalItemSpacing;
 
             return new CGRect(x, y, width, height);
@@ -363,9 +363,9 @@ namespace Toggl.iOS.Views.Calendar
 
         private CGRect frameForHour(int hour)
         {
-            var width = CollectionViewContentSize.Width - rightPadding - (sideMargin * 2);
+            var width = CollectionViewContentSize.Width - RightPadding - (SideMargin * 2);
             var height = hourSupplementaryLabelHeight;
-            var x = sideMargin;
+            var x = SideMargin;
             var y = HourHeight * hour - height / 2;
 
             return new CGRect(x, y, width, height);
@@ -390,9 +390,9 @@ namespace Toggl.iOS.Views.Calendar
                 yHour = HourHeight * 24;
             }
 
-            var width = CollectionViewContentSize.Width - rightPadding - (sideMargin * 2);
+            var width = CollectionViewContentSize.Width - RightPadding - (SideMargin * 2);
             var height = hourSupplementaryLabelHeight;
-            var x = sideMargin;
+            var x = SideMargin;
             var y = yHour + yMins - height / 2;
 
             return new CGRect(x, y, width, height);
