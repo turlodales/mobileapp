@@ -127,6 +127,24 @@ namespace Toggl.iOS.ViewControllers
             }
         }
 
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            TabBar.LayoutSubviews();
+
+            var tabBarButtons = TabBar.Subviews.Where(view => view is UIControl).ToArray();
+            TabBar
+                .Subviews
+                .Where(view => view is TabBarIndicator)
+                .ForEach(indicator =>
+                {
+                    var tab = (Tab)(int)indicator.Tag;
+                    var tabBarButton = tabBarButtons[indexFor(tab)];
+                    indicator.Center = new CGPoint(tabBarButton.Center.X, tabBarButton.Frame.Bottom - 4);
+                });
+        }
+
         public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
         {
             base.TraitCollectionDidChange(previousTraitCollection);
