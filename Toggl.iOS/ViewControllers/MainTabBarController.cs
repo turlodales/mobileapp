@@ -93,12 +93,20 @@ namespace Toggl.iOS.ViewControllers
             if (tabBarButton == null)
                 return;
 
-            var centerX = tabBarButton.Center.X;
-            var centerY = tabBarButton.Frame.Bottom - 4;
-            var tabBarIndicator = new TabBarIndicator(new CGPoint(centerX, centerY));
+            var tabBarIndicator = new TabBarIndicator(centerOfOnboardingIndicator(tabBarButton));
             tabBarIndicator.BackgroundColor = ColorAssets.Accent;
             tabBarIndicator.Tag = (int)tab;
             TabBar.AddSubview(tabBarIndicator);
+        }
+
+        private CGPoint centerOfOnboardingIndicator(UIView tabBarButton)
+        {
+            var safeAreaBottomInset = View?.SafeAreaInsets.Bottom ?? 0;
+            var verticalOffset = safeAreaBottomInset > 0
+                ? 4
+                : 8;
+
+            return new CGPoint(tabBarButton.Center.X, tabBarButton.Frame.Bottom - verticalOffset);
         }
 
         public void RemoveOnboardingBadgeFrom(Tab tab)
@@ -141,7 +149,7 @@ namespace Toggl.iOS.ViewControllers
                 {
                     var tab = (Tab)(int)indicator.Tag;
                     var tabBarButton = tabBarButtons[indexFor(tab)];
-                    indicator.Center = new CGPoint(tabBarButton.Center.X, tabBarButton.Frame.Bottom - 4);
+                    indicator.Center = new CGPoint(centerOfOnboardingIndicator(tabBarButton));
                 });
         }
 
@@ -192,6 +200,12 @@ namespace Toggl.iOS.ViewControllers
                 else
                 {
                     vc.TabBarItem.ImageInsets = new UIEdgeInsets(0, 0, 0, 0);
+                }
+
+                //iPads render the icons a bit off-center
+                if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Regular)
+                {
+                    vc.TabBarItem.ImageInsets = new UIEdgeInsets(0, 3, 0, -3);
                 }
             });
         }

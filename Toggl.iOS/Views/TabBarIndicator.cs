@@ -8,8 +8,8 @@ namespace Toggl.iOS.Views
     [Register(nameof(TabBarIndicator))]
     public sealed class TabBarIndicator : UIView
     {
-        private const int diameter = 8;
-        private const int radius = diameter / 2;
+        private const float diameter = 8;
+        private const float radius = diameter / 2;
         private const float animationDuration = 1.2f;
         private const float pauseBetweenAnimationRepeats = 0.8f;
 
