@@ -197,7 +197,9 @@ namespace Toggl.iOS.Presentation.Transition
                     : iPadMaxHeight;
 
                 var height = preferredContentHeight;
-                var width = Min(iPadMaxWidth, parentContainerSize.Width);
+                var width = contentContainer.PreferredContentSize.Width == 0
+                    ? Min(iPadMaxWidth, parentContainerSize.Width)
+                    : contentContainer.PreferredContentSize.Width;
                 var stackingDepth = iPadStackModalViewSpacing * levelsOfModalViews();
 
                 height = Min(height, iPadMaxHeight - stackingDepth);

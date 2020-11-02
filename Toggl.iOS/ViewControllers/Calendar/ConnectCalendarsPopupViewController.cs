@@ -24,7 +24,11 @@ namespace Toggl.iOS.ViewControllers.Calendar
             MessageLabel.Text = Resources.ConnectCalendarsMessage;
             ConnectCalendarsButton.SetTitle(Resources.ConnectCalendarsButtonTitle, UIControlState.Normal);
 
-            PreferredContentSize = new CGSize(0, ConnectCalendarsButton.Frame.Bottom + 40);
+            var bottomPadding = TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Compact
+                ? 40
+                : 0;
+
+            PreferredContentSize = new CGSize(400, ConnectCalendarsButton.Frame.Bottom + bottomPadding);
 
             CloseButton.Rx().Tap()
                 .Subscribe(_ => ViewModel.Close(false))
