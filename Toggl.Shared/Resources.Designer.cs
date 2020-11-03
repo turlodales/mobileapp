@@ -104,16 +104,10 @@ namespace Toggl.Shared {
                 return ResourceManager.GetString("ContinueWithEmail", resourceCulture);
             }
         }
- 
+        
         public static string InvalidEmailError {
             get {
                 return ResourceManager.GetString("InvalidEmailError", resourceCulture);
-            }
-        }
-
-        public static string BlogOnPersonalEfficiency {
-            get {
-                return ResourceManager.GetString("BlogOnPersonalEfficiency", resourceCulture);
             }
         }
         
@@ -1356,6 +1350,36 @@ namespace Toggl.Shared {
         public static string CalendarToolbarDateFormat {
             get {
                 return ResourceManager.GetString("CalendarToolbarDateFormat", resourceCulture);
+            }
+        }
+        
+        public static string CalendarEmptyStateMessage {
+            get {
+                return ResourceManager.GetString("CalendarEmptyStateMessage", resourceCulture);
+            }
+        }
+
+        public static string HereIsYourTimeEntryInCalendarView {
+            get {
+                return ResourceManager.GetString("HereIsYourTimeEntryInCalendarView", resourceCulture);
+            }
+        }
+        
+        public static string ConnectCalendarsTitle {
+            get {
+                return ResourceManager.GetString("ConnectCalendarsTitle", resourceCulture);
+            }
+        }
+        
+        public static string ConnectCalendarsMessage {
+            get {
+                return ResourceManager.GetString("ConnectCalendarsMessage", resourceCulture);
+            }
+        }
+        
+        public static string ConnectCalendarsButtonTitle {
+            get {
+                return ResourceManager.GetString("ConnectCalendarsButtonTitle", resourceCulture);
             }
         }
         
@@ -2778,6 +2802,12 @@ namespace Toggl.Shared {
         public static string Dismiss {
             get {
                 return ResourceManager.GetString("Dismiss", resourceCulture);
+            }
+        }
+        
+        public static string BlogOnPersonalEfficiency {
+            get {
+                return ResourceManager.GetString("BlogOnPersonalEfficiency", resourceCulture);
             }
         }
     }

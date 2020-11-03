@@ -1,8 +1,7 @@
-﻿// WARNING
+// WARNING
 //
-// This file has been generated automatically by Rider IDE
-//   to store outlets and actions made in Xcode.
-// If it is removed, they will be lost.
+// This file has been generated automatically by Visual Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
 using Foundation;
@@ -36,14 +35,18 @@ namespace Toggl.iOS.ViewControllers
 
 		[Outlet]
 		UIKit.UILabel ContextualMenuTimeEntryPeriodLabel { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint EmptyStateCenterConstraint { get; set; }
+
+		[Outlet]
+		UIKit.UILabel EmptyStateLabel { get; set; }
+
+		[Outlet]
+		UIKit.UIView EmptyStateView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ContextualMenuFadeView != null) {
-				ContextualMenuFadeView.Dispose ();
-				ContextualMenuFadeView = null;
-			}
-
 			if (CalendarCollectionView != null) {
 				CalendarCollectionView.Dispose ();
 				CalendarCollectionView = null;
@@ -64,6 +67,11 @@ namespace Toggl.iOS.ViewControllers
 				ContextualMenuCloseButton = null;
 			}
 
+			if (ContextualMenuFadeView != null) {
+				ContextualMenuFadeView.Dispose ();
+				ContextualMenuFadeView = null;
+			}
+
 			if (ContextualMenuStackView != null) {
 				ContextualMenuStackView.Dispose ();
 				ContextualMenuStackView = null;
@@ -77,6 +85,21 @@ namespace Toggl.iOS.ViewControllers
 			if (ContextualMenuTimeEntryPeriodLabel != null) {
 				ContextualMenuTimeEntryPeriodLabel.Dispose ();
 				ContextualMenuTimeEntryPeriodLabel = null;
+			}
+
+			if (EmptyStateLabel != null) {
+				EmptyStateLabel.Dispose ();
+				EmptyStateLabel = null;
+			}
+
+			if (EmptyStateView != null) {
+				EmptyStateView.Dispose ();
+				EmptyStateView = null;
+			}
+
+			if (EmptyStateCenterConstraint != null) {
+				EmptyStateCenterConstraint.Dispose ();
+				EmptyStateCenterConstraint = null;
 			}
 		}
 	}

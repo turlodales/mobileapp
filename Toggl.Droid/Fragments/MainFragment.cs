@@ -243,7 +243,6 @@ namespace Toggl.Droid.Fragments
                 {
                     if (conditionMet)
                     {
-                        AndroidDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
                         AddBadgeToReportsTab?.Invoke();
                     }
                 })

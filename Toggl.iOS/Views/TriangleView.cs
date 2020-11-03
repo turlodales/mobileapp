@@ -94,7 +94,7 @@ namespace Toggl.iOS.Views
             }
         }
 
-
+        public TriangleView() : base() { }
         public TriangleView(CGRect frame) : base(frame) { }
 
         public TriangleView(IntPtr handle) : base(handle) { }

@@ -87,7 +87,6 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 bool useInteractorFactory,
                 bool useSchedulerProvider,
                 bool useOnboardingStorage,
-                bool usePermissionChecker,
                 bool useNavigationService,
                 bool useRxActionFactory,
                 bool useSyncManager)
@@ -101,7 +100,6 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var interactorFactory = useInteractorFactory ? InteractorFactory : null;
                 var schedulerProvider = useSchedulerProvider ? SchedulerProvider : null;
                 var onboardingStorage = useOnboardingStorage ? OnboardingStorage : null;
-                var permissionChecker = usePermissionChecker ? PermissionsChecker : null;
                 var navigationService = useNavigationService ? NavigationService : null;
                 var syncManager = useSyncManager ? SyncManager : null;
 
@@ -116,7 +114,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         interactorFactory,
                         schedulerProvider,
                         onboardingStorage,
-                        permissionChecker,
+                        PermissionsChecker,
                         syncManager,
                         navigationService);
 

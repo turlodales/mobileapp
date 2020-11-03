@@ -1,6 +1,7 @@
 ﻿using Microsoft.Reactive.Testing;
 using NSubstitute;
 using System.Reactive;
+using Toggl.Core.Calendar;
 using Toggl.Core.Login;
 using Toggl.Core.Services;
 using Toggl.Core.Sync;

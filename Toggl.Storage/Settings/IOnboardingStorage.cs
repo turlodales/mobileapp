@@ -15,7 +15,6 @@ namespace Toggl.Storage.Settings
         IObservable<bool> NavigatedAwayFromMainViewAfterTappingStopButton { get; }
         IObservable<bool> HasTimeEntryBeenContinued { get; }
 
-        void SetCompletedOnboarding();
         void SetIsNewUser(bool isNewUser);
         void SetLastOpened(DateTimeOffset dateString);
         void SetFirstOpened(DateTimeOffset dateTime);
@@ -48,6 +47,8 @@ namespace Toggl.Storage.Settings
         void SetCalendarPermissionWasAskedBefore();
         bool IsFirstTimeConnectingCalendars();
         void SetIsFirstTimeConnectingCalendars();
+        bool ConnectCalendarsPopupWasShown();
+        void SetConnectCalendarsPopupWasShown();
 
         IObservable<OnboardingConditionKey> OnboardingConditionMet { get; }
         void SetOnboardingConditionWasMet(OnboardingConditionKey onboardingConditionKey);
@@ -55,6 +56,11 @@ namespace Toggl.Storage.Settings
         bool OnboardingTimeEntryWasCreated();
         void SetOnboardingTimeEntryWasCreated();
         bool IsRunningTheAppFirstTime();
+
+        bool CalendarTabWasOpened();
+        void SetCalendarTabWasOpened();
+        bool ReportsTabWasOpened();
+        void SetReportsTabWasOpened();
 
         void Reset();
 

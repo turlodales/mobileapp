@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using Toggl.Core.Analytics;
 using Toggl.Storage;
 
@@ -20,6 +21,8 @@ namespace Toggl.Core.UI.Extensions
         public OnboardingConditionKey Key => onboardingCondition.Key;
 
         public IObservable<bool> ConditionMet => onboardingCondition.ConditionMet;
+
+        public IObservable<Unit> Dismissed => onboardingCondition.Dismissed;
 
         public TrackingOnboardingCondition(OnboardingCondition onboardingCondition, IAnalyticsService analyticsService)
         {

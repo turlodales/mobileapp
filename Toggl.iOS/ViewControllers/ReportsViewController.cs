@@ -143,7 +143,14 @@ namespace Toggl.iOS.ViewControllers
 
             viewDidAppearSubject.OnNext(Unit.Default);
 
-            NavigationController.TabBarItem.BadgeValue = null;
+            removeOnboardingBadge();
+        }
+
+        private void removeOnboardingBadge()
+        {
+            var tabBarController = TabBarController as MainTabBarController;
+            if (tabBarController == null) return;
+            tabBarController.RemoveOnboardingBadgeFrom(MainTabBarController.Tab.Reports);
         }
 
         public void ScrollToTop() { }

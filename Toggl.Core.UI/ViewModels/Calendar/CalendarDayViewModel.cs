@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Calendar;
@@ -20,8 +21,10 @@ using Toggl.Shared;
 using Toggl.Shared.Extensions;
 using Toggl.Storage.Settings;
 using Toggl.Core.UI.Extensions;
+using Toggl.Core.UI.Services;
 using Toggl.Core.UI.Transformations;
 using Toggl.Core.UI.ViewModels.Calendar.ContextualMenu;
+using Toggl.Core.UI.ViewModels.Settings;
 
 namespace Toggl.Core.UI.ViewModels.Calendar
 {
@@ -29,21 +32,28 @@ namespace Toggl.Core.UI.ViewModels.Calendar
     public sealed class CalendarDayViewModel : ViewModel
     {
         private readonly ITimeService timeService;
+        private readonly IUserPreferences userPreferences;
         private readonly IAnalyticsService analyticsService;
         private readonly IInteractorFactory interactorFactory;
+        private readonly IOnboardingStorage onboardingStorage;
+        private readonly IPermissionsChecker permissionsChecker;
 
         private readonly CompositeDisposable disposeBag = new CompositeDisposable();
         private readonly IObservable<TimeSpan> timeTrackedOnDaySubject;
+        private readonly ISubject<Unit> calendarLinkingCompletedSubject = new Subject<Unit>();
 
         public DateTimeOffset Date { get; }
         public ObservableGroupedOrderedCollection<CalendarItem> CalendarItems { get; }
         public IObservable<TimeFormat> TimeOfDayFormat { get; }
         public IObservable<DurationFormat> DurationFormat { get; }
         public IObservable<string> TimeTrackedOnDay { get; }
+        public IObservable<Unit> CalendarLinkingCompleted => calendarLinkingCompletedSubject.AsObservable();
 
         public InputAction<CalendarItem> OnTimeEntryEdited { get; }
         public InputAction<(DateTimeOffset, TimeSpan)> OnDurationSelected { get; }
         public CalendarContextualMenuViewModel ContextualMenuViewModel { get; }
+
+        public TrackingOnboardingCondition CalendarTimeEntryTooltipCondition { get; }
 
         public CalendarDayViewModel(
             DateTimeOffset date,
@@ -55,7 +65,10 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             IBackgroundService backgroundService,
             IInteractorFactory interactorFactory,
             ISchedulerProvider schedulerProvider,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IOnboardingStorage onboardingStorage,
+            IPermissionsChecker permissionsChecker,
+            TrackingOnboardingCondition calendarTimeEntryTooltipCondition)
             : base(navigationService)
         {
             Ensure.Argument.IsNotNull(dataSource, nameof(dataSource));
@@ -66,11 +79,18 @@ namespace Toggl.Core.UI.ViewModels.Calendar
             Ensure.Argument.IsNotNull(backgroundService, nameof(backgroundService));
             Ensure.Argument.IsNotNull(schedulerProvider, nameof(schedulerProvider));
             Ensure.Argument.IsNotNull(interactorFactory, nameof(interactorFactory));
+            Ensure.Argument.IsNotNull(onboardingStorage, nameof(onboardingStorage));
+            Ensure.Argument.IsNotNull(permissionsChecker, nameof(permissionsChecker));
+            Ensure.Argument.IsNotNull(calendarTimeEntryTooltipCondition, nameof(calendarTimeEntryTooltipCondition));
 
             Date = date;
             this.timeService = timeService;
+            this.userPreferences = userPreferences;
             this.analyticsService = analyticsService;
             this.interactorFactory = interactorFactory;
+            this.onboardingStorage = onboardingStorage;
+            this.permissionsChecker = permissionsChecker;
+            CalendarTimeEntryTooltipCondition = calendarTimeEntryTooltipCondition;
 
             ContextualMenuViewModel = new CalendarContextualMenuViewModel(
                 interactorFactory,
@@ -143,6 +163,55 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .CombineLatest(durationFormat, DurationAndFormatToString.Convert)
                 .DistinctUntilChanged()
                 .AsDriver(schedulerProvider);
+        }
+
+        public override void ViewAppeared()
+        {
+            base.ViewAppeared();
+
+            onboardingStorage.SetCalendarTabWasOpened();
+
+            connectCalendars();
+        }
+
+        private void connectCalendars()
+        {
+            if (onboardingStorage.CalendarPermissionWasAskedBefore())
+                return;
+
+            if (onboardingStorage.ConnectCalendarsPopupWasShown())
+                return;
+
+            var calendarEmptyObservable = CalendarItems.Empty.Throttle(TimeSpan.FromSeconds(1)).Where(isEmpty => isEmpty).SelectUnit();
+            var tooltipDismissedObservable = CalendarTimeEntryTooltipCondition.Dismissed.SelectUnit();
+            var connectCalendarsObservable = calendarEmptyObservable.Merge(tooltipDismissedObservable);
+
+            connectCalendarsObservable
+                .SelectMany(_ => permissionsChecker.CalendarPermissionGranted)
+                .Where(permissionGranted => !permissionGranted)
+                .Where(_ => !onboardingStorage.ConnectCalendarsPopupWasShown())
+                .SelectMany(_ =>
+                    Navigate<ConnectCalendarsPopupViewModel, Unit, bool>(Unit.Default)
+                        .ToObservable())
+                .Where(shouldRequestPermission => shouldRequestPermission)
+                .SelectMany(_ => View.RequestCalendarAuthorization(false))
+                .Do(_ => onboardingStorage.SetCalendarPermissionWasAskedBefore())
+                .Subscribe(permissionGranted => onCalendarPermission(permissionGranted));
+        }
+
+        private void onCalendarPermission(bool permissionGranted)
+        {
+            if (permissionGranted)
+            {
+                userPreferences.SetCalendarIntegrationEnabled(true);
+                Navigate<IndependentCalendarSettingsViewModel>();
+                calendarLinkingCompletedSubject.OnNext(Unit.Default);
+            }
+            else
+            {
+                Navigate<CalendarPermissionDeniedViewModel>();
+                calendarLinkingCompletedSubject.OnNext(Unit.Default);
+            }
         }
 
         private TimeSpan selectTrackedTimeSource(TimeSpan timeTrackedOnDay, TimeSpan timeTrackedToday)

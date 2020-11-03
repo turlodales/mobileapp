@@ -518,6 +518,13 @@ namespace Toggl.Core.UI.Navigation
                     dependencyContainer.NavigationService);
             }
 
+            if (viewModelType == typeof(ConnectCalendarsPopupViewModel))
+            {
+                return new ConnectCalendarsPopupViewModel(
+                    dependencyContainer.NavigationService,
+                    dependencyContainer.OnboardingStorage);
+            }
+
             throw new InvalidOperationException($"Trying to locate ViewModel {viewModelType.Name} failed.");
         }
     }

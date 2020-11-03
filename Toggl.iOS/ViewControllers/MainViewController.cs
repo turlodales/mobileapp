@@ -328,8 +328,7 @@ namespace Toggl.iOS.ViewControllers
                     if (!conditionMet)
                         return;
 
-                    IosDependencyContainer.Instance.OnboardingStorage.SetCompletedOnboarding();
-                    addBadgeToReportsTab();
+                    addBadgeToCalendarTab();
 
                     finalTooltipCellSubscription = tableViewSource
                         .WillDisplayCell
@@ -374,18 +373,13 @@ namespace Toggl.iOS.ViewControllers
             FinalTooltip.SetUpTooltipShadow();
         }
 
-        private void addBadgeToReportsTab()
+        private void addBadgeToCalendarTab()
         {
-            var reportsTabBarItem = TabBarController.TabBar.Items[2];
+            if (IosDependencyContainer.Instance.OnboardingStorage.CalendarTabWasOpened())
+                return;
 
-            reportsTabBarItem.SetBadgeTextAttributes(
-                new UIStringAttributes
-                {
-                    ForegroundColor = UIColor.Red
-                },
-                UIControlState.Normal);
-            reportsTabBarItem.BadgeColor = UIColor.Clear;
-            reportsTabBarItem.BadgeValue = "●";
+            if (TabBarController is MainTabBarController mainTabBarController)
+                mainTabBarController.AddOnboardingBadgeFor(MainTabBarController.Tab.Calendar);
         }
 
         private void prepareStartTimeEntryTooltip()
