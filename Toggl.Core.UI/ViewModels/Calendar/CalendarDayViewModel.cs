@@ -193,6 +193,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 .SelectMany(_ =>
                     Navigate<ConnectCalendarsPopupViewModel, Unit, bool>(Unit.Default)
                         .ToObservable())
+                .Do(shouldRequestPermission => { if (!shouldRequestPermission) calendarLinkingCompletedSubject.OnNext(Unit.Default); })
                 .Where(shouldRequestPermission => shouldRequestPermission)
                 .SelectMany(_ => View.RequestCalendarAuthorization(false))
                 .Do(_ => onboardingStorage.SetCalendarPermissionWasAskedBefore())
