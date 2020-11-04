@@ -1971,7 +1971,7 @@ a Project to a Time Entry</value>
         <comment>Feature name in the Your Plan view in the Settings</comment>
     </data>
     <data name="LoginToYourAccountOnTogglToSeeMore" xml:space="preserve">
-        <value>Login to your account on toggl.com to see more detailed info about you account and plan.</value>
+        <value>Login to your account on toggl.com to see more detailed info about your account and plan.</value>
         <comment>A message at the bottom of Your Plan view</comment>
     </data>
     <data name="TogglUrl" xml:space="preserve">
