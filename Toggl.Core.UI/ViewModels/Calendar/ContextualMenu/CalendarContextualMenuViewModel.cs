@@ -229,6 +229,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
 
         private void closeMenuDismissingUncommittedChanges()
         {
+            calendarItemRemoved.OnNext(currentCalendarItem);
             currentCalendarItem = default;
             calendarItemThatOriginallyTriggeredTheMenu = null;
             currentMenuType = ContextualMenuType.Closed;
