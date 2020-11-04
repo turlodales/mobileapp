@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -63,7 +63,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5j-k9-aHB">
-                    <rect key="frame" x="147.33333333333334" y="12" width="25.666666666666657" height="17"/>
+                    <rect key="frame" x="147" y="12" width="26" height="17"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                     <color key="textColor" name="Text"/>
                     <nil key="highlightedColor"/>
@@ -169,14 +169,14 @@
                                             <rect key="frame" x="16" y="0.0" width="288" height="48"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="tvM-Um-8oM" userLabel="Container">
-                                                    <rect key="frame" x="0.0" y="14.000000000000028" width="122.66666666666667" height="20"/>
+                                                    <rect key="frame" x="0.0" y="14.000000000000028" width="122.33333333333333" height="20"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="icAdd" translatesAutoresizingMaskIntoConstraints="NO" id="oHS-Wc-X7K">
                                                             <rect key="frame" x="0.0" y="5" width="10" height="10"/>
                                                             <color key="tintColor" name="Accent"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Add project/task" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FIb-bL-aFc">
-                                                            <rect key="frame" x="16.000000000000007" y="0.0" width="106.66666666666669" height="20"/>
+                                                            <rect key="frame" x="15.999999999999993" y="0.0" width="106.33333333333331" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="BSL-Yc-3qN"/>
                                                             </constraints>
@@ -359,7 +359,7 @@
                                                     <color key="textColor" name="Text2"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcT-2a-vU7">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcT-2a-vU7">
                                                     <rect key="frame" x="16" y="0.66666666666662877" width="44" height="40"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="EditTimeEntryStopButton"/>
                                                     <constraints>
@@ -574,7 +574,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QAv-qu-O8B" userLabel="Buttons">
                     <rect key="frame" x="0.0" y="824" width="320" height="40"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iqc-QZ-Ds5">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iqc-QZ-Ds5">
                             <rect key="frame" x="16" y="0.0" width="96" height="40"/>
                             <color key="backgroundColor" name="CustomGray4"/>
                             <accessibility key="accessibilityConfiguration" label="EditTimeEntryDelete"/>
@@ -590,7 +590,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1PY-gD-iJQ">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1PY-gD-iJQ">
                             <rect key="frame" x="128" y="0.0" width="176" height="40"/>
                             <color key="backgroundColor" name="Accent"/>
                             <accessibility key="accessibilityConfiguration" label="EditTimeEntryConfirm"/>
@@ -648,7 +648,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" name="OnboardingTooltipBackground"/>
+                            <color key="backgroundColor" name="DarkAccent"/>
                             <constraints>
                                 <constraint firstItem="XeD-vk-ol5" firstAttribute="leading" secondItem="FCE-tN-f6P" secondAttribute="leading" constant="14" id="3aH-86-H0H"/>
                                 <constraint firstItem="XeD-vk-ol5" firstAttribute="top" secondItem="FCE-tN-f6P" secondAttribute="top" constant="14" id="81P-o0-S8F"/>
@@ -676,6 +676,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="N60-Sb-obo"/>
             <color key="backgroundColor" name="Background"/>
             <accessibility key="accessibilityConfiguration" label="EditTimeEntryView">
                 <bool key="isElement" value="YES"/>
@@ -703,7 +704,6 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="N60-Sb-obo"/>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="IE5-wI-pRl"/>
@@ -746,9 +746,6 @@
         </namedColor>
         <namedColor name="ErrorText">
             <color red="0.9686274528503418" green="0.25098040699958801" blue="0.28627452254295349" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="OnboardingTooltipBackground">
-            <color red="0.023529412224888802" green="0.66666668653488159" blue="0.96078431606292725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Text">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
