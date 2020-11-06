@@ -241,7 +241,7 @@ namespace Toggl.iOS.ViewControllers
                 .DisposedBy(DisposeBag);
 
             ProjectsTooltipArrow.Direction = TriangleView.TriangleDirection.Up;
-            ProjectsTooltipArrow.Color = ColorAssets.OnboardingTooltipBackground;;
+            ProjectsTooltipArrow.Color = ColorAssets.DarkAccent;
             ProjectsTooltipBackground.BackgroundColor = ColorAssets.OnboardingTooltipBackground;;
 
             ProjectsTooltipLabel.Text = ViewModel.ProjectsTooltipText;

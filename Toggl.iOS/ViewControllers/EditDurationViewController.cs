@@ -302,6 +302,9 @@ namespace Toggl.iOS.ViewControllers
             var editTimeTap = new UITapGestureRecognizer(onEditTimeTap);
             StartTimeLabel.AddGestureRecognizer(editTimeTap);
             EndTimeLabel.AddGestureRecognizer(editTimeTap);
+
+            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 4))
+                DatePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
         }
 
         private void onEditTimeTap(UITapGestureRecognizer recognizer)

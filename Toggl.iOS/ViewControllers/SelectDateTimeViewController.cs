@@ -61,6 +61,9 @@ namespace Toggl.iOS.ViewControllers
 
             DatePicker.Locale = NSLocale.CurrentLocale;
             DatePicker.Mode = UIDatePickerMode.Date;
+
+            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 4))
+                DatePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
         }
     }
 }
