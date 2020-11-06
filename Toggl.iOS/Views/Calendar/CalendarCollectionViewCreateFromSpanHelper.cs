@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Toggl.Core.Calendar;
 using Toggl.iOS.ViewSources;
 using Toggl.Shared;
 using Toggl.Shared.Extensions;
@@ -24,6 +25,7 @@ namespace Toggl.iOS.Views.Calendar
 
         private CGPoint firstPoint;
 
+        private CalendarItem? calendarItem;
         private TimeSpan previousDuration;
         private DateTimeOffset previousStart;
 
@@ -68,6 +70,14 @@ namespace Toggl.iOS.Views.Calendar
             }
 
             return true;
+        }
+
+        public void DiscardChanges()
+        {
+            if (calendarItem == null) return;
+
+            dataSource.RemoveItemView(calendarItem.Value);
+            calendarItem = null;
         }
 
         private void onLongPress(UILongPressGestureRecognizer gesture)
@@ -119,7 +129,7 @@ namespace Toggl.iOS.Views.Calendar
                 }
             }
 
-            dataSource.InsertItemView(startTime, duration);
+            calendarItem = dataSource.InsertItemView(startTime, duration);
             impactFeedback.ImpactOccurred();
             selectionFeedback.Prepare();
             previousDuration = duration;
@@ -132,7 +142,7 @@ namespace Toggl.iOS.Views.Calendar
         {
             if (Math.Sqrt(Math.Pow(point.X - firstPoint.X, 2) + Math.Pow(point.Y - firstPoint.Y, 2)) < 30)
                 return;
-            
+
             LastPoint = point;
 
             DateTimeOffset startTime;
