@@ -1470,4 +1470,24 @@ em outros planos</value>
   <data name="RecommendTogglUrlToShare" xml:space="preserve">
     <value>https://toggl.com/track?utm_source=ios&amp;utm_medium=app&amp;utm_campaign=recommend</value>
   </data>
+  <data name="CalendarEmptyStateMessage">
+    <value>Once you start tracking time  you can see and manage your  Time Entries here!</value>
+    <comment>Message shown in the calendar view, when there are no time entries to show</comment>
+  </data>
+  <data name="HereIsYourTimeEntryInCalendarView">
+    <value>Here is your Time Entry in calendar view 📅</value>
+    <comment>Message displayed in a a tooltip that points to a time entry in the calendar</comment>
+  </data>
+  <data name="ConnectCalendarsTitle">
+    <value>Make tracking easier than ever before</value>
+    <comment>Title of the tooltip that invites users to enable calendar integration</comment>
+  </data>
+  <data name="ConnectCalendarsMessage">
+    <value>Connect to your other calendars to see or convert events to Time Entries with a single tap.</value>
+    <comment>Message of the tooltip that invites users to enable calendar integration</comment>
+  </data>
+  <data name="ConnectCalendarsButtonTitle">
+    <value>Connect to my calendars</value>
+    <comment>Text in the button inside onf the tooltip that invites users to enable calendar integration</comment>
+  </data>
 </root>
