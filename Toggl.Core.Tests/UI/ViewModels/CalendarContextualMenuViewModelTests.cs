@@ -32,7 +32,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
         {
             protected override CalendarContextualMenuViewModel CreateViewModel()
                 => new CalendarContextualMenuViewModel(InteractorFactory, SchedulerProvider, AnalyticsService, RxActionFactory, TimeService, NavigationService);
-            
+
             protected CalendarItem CreateEmptyCalendarItem()
                 => new CalendarItem();
 
@@ -233,14 +233,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
             }
 
             public abstract CalendarItem CreateMenuTypeCalendarItemTrigger();
-            
+
             public virtual void TheDismissActionClosesTheMenuWhenTheCalendarItemDidNotChange()
                 => ClosesTheMenuWithoutMakingChanges(() => ContextualMenu.Dismiss.Inputs.OnNext(Unit.Default));
 
             public virtual void TheDismissActionConfirmsBeforeDiscardingAndClosingTheMenu()
                 => ConfirmsBeforeDiscardingChanges(() => ContextualMenu.Dismiss.Inputs.OnNext(Unit.Default));
-            
-            public void ExecutesActionAndClosesMenu(Action action)
+
+            public void ExecutesActionAndClosesMenu(Action action, int discardCount = 0)
             {
                 var menuVisibilityObserver = TestScheduler.CreateObserver<bool>();
                 var discardsObserver = TestScheduler.CreateObserver<Unit>();
@@ -249,11 +249,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 ViewModel.DiscardChanges.Subscribe(discardsObserver);
                 ViewModel.CurrentMenu.Subscribe(menuObserver);
                 TestScheduler.Start();
-                
+
                 action();
 
                 TestScheduler.Start();
-                discardsObserver.Messages.Should().BeEmpty();
+                discardsObserver.Messages.Should().HaveCount(discardCount);
                 menuVisibilityObserver.LastEmittedValue().Should().BeFalse();
                 menuObserver.LastEmittedValue().Actions.Should().BeEmpty();
             }
@@ -279,7 +279,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 menuObserver.LastEmittedValue().Actions.Should().BeEmpty();
                 discardsObserver.Messages.Should().HaveCount(1);
             }
-            
+
             public void ConfirmsBeforeDiscardingChanges(Action action)
             {
                 var menuVisibilityObserver = TestScheduler.CreateObserver<bool>();
@@ -305,12 +305,12 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             public void ClosesTheMenuAndDiscardChangesAfterConfirmingDestructiveAction()
             {
-                
+
             }
-            
+
             public void DoesNotCloseTheMenuAndDoesNotDiscardChangesAfterCancellingDestructiveAction()
             {
-                
+
             }
         }
 
@@ -332,7 +332,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
 
                 copyAction.MenuItemAction.Execute();
-                
+
                 var prototypeArg = Arg.Is<ITimeEntryPrototype>(te =>
                         te.Description == expectedDescription
                            && te.StartTime == expectedStartTime
@@ -416,7 +416,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 observer.Messages.Should().HaveCount(1);
             }
-            
+
             [Fact]
             public void TheDiscardActionExecutesActionAndClosesMenu()
                 => ClosesTheMenuWithoutMakingChanges(TheDiscardActionTriggersTheDiscardChangesObservable);
@@ -453,7 +453,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, Unit>(startTimeEntryArg, view);
             }
-            
+
             [Fact]
             public void TheEditActionExecutesActionAndClosesMenu()
                 => ExecutesActionAndClosesMenu(TheEditActionNavigatesToTheStartTimeEntryViewModelWithProperParameters);
@@ -488,7 +488,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 InteractorFactory.Received().CreateTimeEntry(prototypeArg, TimeEntryStartOrigin.CalendarEvent);
             }
-            
+
             [Fact]
             public void TheSaveActionExecutesActionAndClosesMenu()
                 => ExecutesActionAndClosesMenu(TheSaveActionCreatesATimeEntryWithNoDescriptionWithTheRightStartTimeAndDuration);
@@ -498,7 +498,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
             {
                 base.TheDismissActionClosesTheMenuWhenTheCalendarItemDidNotChange();
             }
-            
+
             [Fact]
             public override void TheDismissActionConfirmsBeforeDiscardingAndClosingTheMenu()
             {
@@ -545,7 +545,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Fact]
             public void TheDiscardActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheDiscardActionDeletesTheRunningTimeEntryIfTheUsersConfirmsTheDialog);
+                => ExecutesActionAndClosesMenu(TheDiscardActionDeletesTheRunningTimeEntryIfTheUsersConfirmsTheDialog, 1);
 
             [Fact]
             public void TheEditActionNavigatesToTheEditTimeEntryViewModelWithTheRightId()
@@ -564,10 +564,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 NavigationService.Received().Navigate<EditTimeEntryViewModel, long[], Unit>(idArg, view);
             }
-            
+
             [Fact]
             public void TheEditActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheEditActionNavigatesToTheEditTimeEntryViewModelWithTheRightId);
+                => ExecutesActionAndClosesMenu(TheEditActionNavigatesToTheEditTimeEntryViewModelWithTheRightId, 1);
 
             [Fact]
             public void TheSaveActionUpdatesTheRunningTimeEntry()
@@ -594,10 +594,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 InteractorFactory.Received().UpdateTimeEntry(dtoArg);
             }
-            
+
             [Fact]
             public void TheSaveActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheSaveActionUpdatesTheRunningTimeEntry);
+                => ExecutesActionAndClosesMenu(TheSaveActionUpdatesTheRunningTimeEntry, 1);
 
             [Fact]
             public void TheStopActionStopsTheRunningTimeEntry()
@@ -615,17 +615,17 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 InteractorFactory.Received().StopTimeEntry(now, TimeEntryStopOrigin.CalendarContextualMenu);
             }
-            
+
             [Fact]
             public void TheStopActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheStopActionStopsTheRunningTimeEntry);
+                => ExecutesActionAndClosesMenu(TheStopActionStopsTheRunningTimeEntry, 1);
 
             [Fact]
             public override void TheDismissActionClosesTheMenuWhenTheCalendarItemDidNotChange()
             {
                 base.TheDismissActionClosesTheMenuWhenTheCalendarItemDidNotChange();
             }
-            
+
             [Fact]
             public override void TheDismissActionConfirmsBeforeDiscardingAndClosingTheMenu()
             {
@@ -672,7 +672,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 
             [Fact]
             public void TheDeleteActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheDeleteActionDeletesTheTimeEntryIfTheUserConfirmsTheDialog);
+                => ExecutesActionAndClosesMenu(TheDeleteActionDeletesTheTimeEntryIfTheUserConfirmsTheDialog, 1);
 
             [Fact]
             public void TheEditActionNavigatesToTheEditTimeEntryViewModelWithTheRightId()
@@ -691,10 +691,10 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var idArg = Arg.Is<long[]>(ids => ids[0] == stoppedTimeEntryId);
                 NavigationService.Received().Navigate<EditTimeEntryViewModel, long[], Unit>(idArg, view);
             }
-            
+
             [Fact]
             public void TheEditActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheEditActionNavigatesToTheEditTimeEntryViewModelWithTheRightId);
+                => ExecutesActionAndClosesMenu(TheEditActionNavigatesToTheEditTimeEntryViewModelWithTheRightId, 1);
 
             [Fact]
             public void TheSaveActionUpdatesTheRunningTimeEntry()
@@ -725,11 +725,11 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 InteractorFactory.Received().UpdateTimeEntry(dtoArg);
             }
-            
+
             [Fact]
             public void TheSaveActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheSaveActionUpdatesTheRunningTimeEntry);
-            
+                => ExecutesActionAndClosesMenu(TheSaveActionUpdatesTheRunningTimeEntry, 1);
+
             [Fact]
             public void TheContinueActionStartsANewTheRunningTimeEntryWithTheDetailsFromTheCalendarItemCalledFromTheMenuAction()
             {
@@ -759,17 +759,17 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 InteractorFactory.Received().ContinueTimeEntry(continuePrototype, ContinueTimeEntryMode.CalendarContextualMenu);
             }
-            
+
             [Fact]
             public void TheContinueActionExecutesActionAndClosesMenu()
-                => ExecutesActionAndClosesMenu(TheContinueActionStartsANewTheRunningTimeEntryWithTheDetailsFromTheCalendarItemCalledFromTheMenuAction);
-            
+                => ExecutesActionAndClosesMenu(TheContinueActionStartsANewTheRunningTimeEntryWithTheDetailsFromTheCalendarItemCalledFromTheMenuAction, 1);
+
             [Fact]
             public override void TheDismissActionClosesTheMenuWhenTheCalendarItemDidNotChange()
             {
                 base.TheDismissActionClosesTheMenuWhenTheCalendarItemDidNotChange();
             }
-            
+
             [Fact]
             public override void TheDismissActionConfirmsBeforeDiscardingAndClosingTheMenu()
             {
@@ -789,7 +789,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     string.Empty,
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -798,7 +798,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     client: "Such Client");
                 ViewModel.CalendarItemInEditMode.Subscribe(observer);
                 TestScheduler.Start();
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(calendarItem);
                 TestScheduler.Start();
 
@@ -825,7 +825,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -842,7 +842,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -850,7 +850,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     task: "Such Task",
                     client: "Such Client",
                     timeEntryId: 2);
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(newCalendarItem);
                 TestScheduler.Start();
 
@@ -862,7 +862,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         ci.Value.Id == "2"
                     );
             }
-            
+
             [Fact]
             public void UpdatesTheCurrentItemInEditModeWhenAnewItemIsInputtedAndCurrentMenuIsFromACalendarEventItem()
             {
@@ -875,7 +875,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.Calendar,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.Event,
                     "#c2c2c2",
@@ -889,7 +889,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -897,7 +897,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     task: "Such Task",
                     client: "Such Client",
                     timeEntryId: 2);
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(newCalendarItem);
                 TestScheduler.Start();
 
@@ -909,7 +909,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                         ci.Value.Id == "2"
                     );
             }
-            
+
             [Fact]
             public void ConfirmsBeforeUpdatingTheCurrentItemInEditModeWhenANewItemIsInputtedAndTheCurrentItemInEditModeHasChanged()
             {
@@ -923,7 +923,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -942,7 +942,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -950,7 +950,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     task: "Such Task",
                     client: "Such Client",
                     timeEntryId: 2);
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(newCalendarItem);
                 TestScheduler.Start();
 
@@ -971,7 +971,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -985,14 +985,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem.WithDuration(TimeSpan.FromMinutes(15)));
                 TestScheduler.Start();
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(null);
                 TestScheduler.Start();
 
                 view.Received().ConfirmDestructiveAction(Arg.Is(ActionType.DiscardEditingChanges));
                 observer.Messages.Should().HaveCount(2);
             }
-            
+
             [Fact]
             public void DoesNotUpdateTheCurrentItemInEditModeWhenANewItemIsInputtedAndTheCurrentItemInEditModeHasChangedButConfirmationIsDenied()
             {
@@ -1006,7 +1006,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -1025,7 +1025,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "2",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -1033,7 +1033,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     task: "Such Task",
                     client: "Such Client",
                     timeEntryId: 2);
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(newCalendarItem);
                 TestScheduler.Start();
 
@@ -1054,7 +1054,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -1068,14 +1068,14 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem.WithDuration(TimeSpan.FromMinutes(15)));
                 TestScheduler.Start();
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(null);
                 TestScheduler.Start();
 
                 view.Received().ConfirmDestructiveAction(Arg.Is(ActionType.DiscardEditingChanges));
                 observer.Messages.Should().HaveCount(1);
             }
-            
+
             [Fact]
             public void ClosesTheMenuWhenANullCalendarItemIsInputtedAndNoChangesWereMadeToTheCurrentItemInEditMode()
             {
@@ -1088,7 +1088,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.TimeEntry,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.None,
                     "#c2c2c2",
@@ -1108,7 +1108,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 observer.Messages.Should().HaveCount(2);
                 observer.Messages.Last().Value.Value.Should().BeNull();
             }
-            
+
             [Fact]
             public void ClosesTheMenuWhenANullCalendarItemIsInputtedAndTheCurrentMenuIsFromACalendarEventItem()
             {
@@ -1121,7 +1121,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     "1",
                     CalendarItemSource.Calendar,
                     now,
-                    TimeSpan.FromMinutes(30), 
+                    TimeSpan.FromMinutes(30),
                     "Such description",
                     CalendarIconKind.Event,
                     "#c2c2c2",
@@ -1130,7 +1130,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
                 ViewModel.OnCalendarItemUpdated.Execute(startingCalendarItem);
                 TestScheduler.Start();
-                
+
                 ViewModel.OnCalendarItemUpdated.Execute(null);
                 TestScheduler.Start();
 
