@@ -133,11 +133,15 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
             }
 
             var newCalendarItem = calendarItem.Value;
-            if (needsToConfirmDestructiveChangesBeforeUpdatingCurrentCalendarItem(newCalendarItem))
+
+            if (contextualMenuIsAlreadyOpen() && isADifferentCalendarItem(newCalendarItem))
             {
-                var willUpdateCurrentItem = await View.ConfirmDestructiveAction(ActionType.DiscardEditingChanges);
-                if (!willUpdateCurrentItem)
-                    return;
+                if (changesWereMadeToTheCurrentItem())
+                {
+                    var willUpdateCurrentItem = await View.ConfirmDestructiveAction(ActionType.DiscardEditingChanges);
+                    if (!willUpdateCurrentItem)
+                        return;
+                }
                 discardChangesSubject.OnNext(Unit.Default);
             }
 
@@ -160,13 +164,6 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
 
         private bool needsToConfirmDestructiveChangesBeforeClosingMenu()
             => contextualMenuIsAlreadyOpen() && changesWereMadeToTheCurrentItem();
-
-        private bool needsToConfirmDestructiveChangesBeforeUpdatingCurrentCalendarItem(CalendarItem newCalendarItem)
-        {
-            return contextualMenuIsAlreadyOpen()
-                   && isADifferentCalendarItem(newCalendarItem)
-                   && changesWereMadeToTheCurrentItem();
-        }
 
         private bool changesWereMadeToTheCurrentItem()
         {
@@ -229,7 +226,6 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
 
         private void closeMenuDismissingUncommittedChanges()
         {
-            calendarItemRemoved.OnNext(currentCalendarItem);
             currentCalendarItem = default;
             calendarItemThatOriginallyTriggeredTheMenu = null;
             currentMenuType = ContextualMenuType.Closed;

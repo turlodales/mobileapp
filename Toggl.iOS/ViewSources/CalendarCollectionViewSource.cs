@@ -251,7 +251,7 @@ namespace Toggl.iOS.ViewSources
             selectedItemId = null;
         }
 
-        public void InsertItemView(DateTimeOffset startTime, TimeSpan duration)
+        public CalendarItem InsertItemView(DateTimeOffset startTime, TimeSpan duration)
         {
             if (!IsEditing)
                 throw new InvalidOperationException("Set IsEditing before calling insert/update/remove");
@@ -264,6 +264,7 @@ namespace Toggl.iOS.ViewSources
 
             layoutAttributes = calculateLayoutAttributes();
             collectionView.ReloadData();
+            return item;
         }
 
         public void UpdateItemView(DateTimeOffset startTime, TimeSpan? duration)

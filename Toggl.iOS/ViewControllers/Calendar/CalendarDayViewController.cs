@@ -169,6 +169,10 @@ namespace Toggl.iOS.ViewControllers
                 .Subscribe(_ => editItemHelper.DiscardChanges())
                 .DisposedBy(DisposeBag);
 
+            ViewModel.ContextualMenuViewModel.DiscardChanges
+                .Subscribe(_ => createFromSpanHelper.DiscardChanges())
+                .DisposedBy(DisposeBag);
+
             //Contextual menu
             ViewModel.ContextualMenuViewModel.CurrentMenu
                 .Select(menu => menu.Actions)
