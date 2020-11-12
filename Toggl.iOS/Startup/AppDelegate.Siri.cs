@@ -3,6 +3,7 @@ using Intents;
 using System;
 using System.Linq;
 using Toggl.Core.Analytics;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
@@ -51,7 +52,7 @@ namespace Toggl.iOS
                 case StartTimerIntent startTimerIntent:
                     var timeEntryParams = createStartTimeEntryParameters(startTimerIntent);
                     navigationService.Navigate<MainViewModel>(null);
-                    navigationService.Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(timeEntryParams, null);
+                    navigationService.Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(timeEntryParams, null);
                     return true;
                 default:
                     return false;

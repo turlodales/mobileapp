@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 using NSubstitute;
 using Toggl.Core.Analytics;
 using Toggl.Core.Calendar;
@@ -451,7 +452,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                     && param.WorkspaceId == 1
                 );
                 TestScheduler.Start();
-                NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, Unit>(startTimeEntryArg, view);
+                NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(startTimeEntryArg, view);
             }
 
             [Fact]

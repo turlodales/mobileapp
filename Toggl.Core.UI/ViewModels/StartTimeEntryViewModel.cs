@@ -33,7 +33,7 @@ using static Toggl.Shared.Extensions.CommonFunctions;
 namespace Toggl.Core.UI.ViewModels
 {
     [Preserve(AllMembers = true)]
-    public sealed class StartTimeEntryViewModel : ViewModelWithInput<StartTimeEntryParameters>
+    public sealed class StartTimeEntryViewModel : ViewModel<StartTimeEntryParameters, IThreadSafeTimeEntry>
     {
         private readonly ITimeService timeService;
         private readonly IUserPreferences userPreferences;
@@ -98,7 +98,7 @@ namespace Toggl.Core.UI.ViewModels
         public ViewAction ChangeTime { get; }
         public ViewAction ToggleTagSuggestions { get; }
         public ViewAction ToggleProjectSuggestions { get; }
-        
+
         public InputAction<AutocompleteSuggestion> SelectSuggestion { get; }
         public InputAction<TimeSpan> SetRunningTime { get; }
         public InputAction<ProjectSuggestion> ToggleTasks { get; }
@@ -148,7 +148,7 @@ namespace Toggl.Core.UI.ViewModels
                 .Select(time => time.ToFormattedString(DurationFormat.Improved))
                 .AsDriver(schedulerProvider);
 
-            Done = rxActionFactory.FromObservable<IThreadSafeTimeEntry>(done);
+            Done = rxActionFactory.FromAsync<IThreadSafeTimeEntry>(done);
             DurationTapped = rxActionFactory.FromAction(durationTapped);
             BillableTapped = rxActionFactory.FromAction(billableTapped);
             SetStartDate = rxActionFactory.FromAsync(setStartDate);
@@ -541,7 +541,7 @@ namespace Toggl.Core.UI.ViewModels
             }
         }
 
-        private IObservable<IThreadSafeTimeEntry> done()
+        private async Task<IThreadSafeTimeEntry> done()
         {
             var timeEntry = textFieldInfo.Value.AsTimeEntryPrototype(startTime, duration, isBillable.Value);
             var origin = duration.HasValue ? TimeEntryStartOrigin.Manual : TimeEntryStartOrigin.Timer;
@@ -550,11 +550,13 @@ namespace Toggl.Core.UI.ViewModels
                 origin = paramOrigin;
             }
 
-            Close();
-
-            return interactorFactory.CreateTimeEntry(timeEntry, origin)
+            var createdEntry = await interactorFactory.CreateTimeEntry(timeEntry, origin)
                 .Execute()
                 .ToObservable();
+
+            Close(createdEntry);
+
+            return createdEntry;
         }
 
         private void onParsedQuery(QueryInfo parsedQuery)

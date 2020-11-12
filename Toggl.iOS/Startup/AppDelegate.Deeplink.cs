@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Toggl.Core.Analytics;
 using Toggl.Core.Extensions;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Navigation;
 using Toggl.Core.UI.Parameters;
@@ -38,8 +39,8 @@ namespace Toggl.iOS
         {
             var startTimeEntryParameters = timeEntry.ToStartTimeEntryParameters(IosDependencyContainer.Instance.TimeService);
 
-            IosDependencyContainer.Instance.NavigationService
-                .Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, Unit>(startTimeEntryParameters, null);
+            await IosDependencyContainer.Instance.NavigationService
+                .Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(startTimeEntryParameters, null);
         }
 
         private async Task showEditTimeEntry(DeeplinkEditTimeEntryParameters timeEntry)

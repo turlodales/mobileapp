@@ -273,7 +273,7 @@ namespace Toggl.Core.UI.ViewModels.Calendar
                 ? StartTimeEntryParameters.ForManualMode(timeService.CurrentDateTime, requestCameFromLongPress)
                 : StartTimeEntryParameters.ForTimerMode(timeService.CurrentDateTime, requestCameFromLongPress);
 
-            return Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(parameter);
+            return Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(parameter);
         }
 
         private IObservable<Unit> stopTimeEntry()

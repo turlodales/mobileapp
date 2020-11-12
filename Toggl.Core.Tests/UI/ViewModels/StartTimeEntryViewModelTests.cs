@@ -40,7 +40,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
 {
     public sealed class StartTimeEntryViewModelTests
     {
-        public abstract class StartTimeEntryViewModelTest : BaseViewModelWithInputTests<StartTimeEntryViewModel, StartTimeEntryParameters>
+        public abstract class StartTimeEntryViewModelTest : BaseViewModelTests<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>
         {
             protected const string TagName = "Mobile";
 

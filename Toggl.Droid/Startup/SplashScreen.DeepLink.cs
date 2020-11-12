@@ -3,6 +3,7 @@ using Android.OS;
 using System;
 using System.Reactive;
 using AndroidX.Core.App;
+using Toggl.Core.Models.Interfaces;
 using Toggl.Core.UI.Extensions;
 using Toggl.Core.UI.Parameters;
 using Toggl.Core.UI.ViewModels;
@@ -51,7 +52,7 @@ namespace Toggl.Droid
         private void showNewTimeEntry(DeeplinkNewTimeEntryParameters deeplinkNewTimeEntryParameters)
         {
             var timeService = AndroidDependencyContainer.Instance.TimeService;
-            loadAndCacheViewModelWithParams<StartTimeEntryViewModel, StartTimeEntryParameters>(
+            loadAndCacheViewModelWithParams<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(
                 deeplinkNewTimeEntryParameters.ToStartTimeEntryParameters(timeService));
 
             var mainIntent = createRootActivityIntent();
@@ -102,6 +103,19 @@ namespace Toggl.Droid
 
         private void loadAndCacheViewModelWithParams<TViewModelType, TViewModelParams>(TViewModelParams viewModelParams)
             where TViewModelType : ViewModel<TViewModelParams, Unit>
+        {
+            var dependencyContainer = AndroidDependencyContainer.Instance;
+            var vmLoader = dependencyContainer.ViewModelLoader;
+            var vmCache = dependencyContainer.ViewModelCache;
+
+            var viewModel = vmLoader.Load<TViewModelType>();
+            vmCache.Cache(viewModel);
+
+            viewModel.Initialize(viewModelParams);
+        }
+
+        private void loadAndCacheViewModelWithParams<TViewModelType, TViewModelParams, TViewModelOutput>(TViewModelParams viewModelParams)
+            where TViewModelType : ViewModel<TViewModelParams, TViewModelOutput>
         {
             var dependencyContainer = AndroidDependencyContainer.Instance;
             var vmLoader = dependencyContainer.ViewModelLoader;

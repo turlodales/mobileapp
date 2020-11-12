@@ -565,7 +565,7 @@ namespace Toggl.Core.UI.ViewModels
                 ? StartTimeEntryParameters.ForManualMode(TimeService.CurrentDateTime, requestCameFromLongPress)
                 : StartTimeEntryParameters.ForTimerMode(TimeService.CurrentDateTime, requestCameFromLongPress);
 
-            return navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(parameter);
+            return Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(parameter);
         }
 
         private async Task<IThreadSafeTimeEntry> continueTimeEntry(ContinueTimeEntryInfo continueInfo)
