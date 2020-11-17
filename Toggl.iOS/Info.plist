@@ -89,7 +89,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>CFBundleShortVersionString</key>
-	<string>2.21.1</string>
+	<string>2.21.2</string>
 	<key>CFBundleDisplayName</key>
 	<string>Toggl for Devs</string>
 	<key>CFBundleDevelopmentRegion</key>

@@ -559,7 +559,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 TestScheduler.Start();
 
                 await NavigationService.Received()
-                   .Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(Arg.Any<StartTimeEntryParameters>(), ViewModel.View);
+                   .Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(Arg.Any<StartTimeEntryParameters>(), ViewModel.View);
             }
 
             [Theory, LogIfTooSlow]
@@ -577,7 +577,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var expected = isInManualMode == useDefaultMode
                     ? Resources.ManualTimeEntryPlaceholder
                     : Resources.StartTimeEntryPlaceholder;
-                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(
+                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(
                     Arg.Is<StartTimeEntryParameters>(parameter => parameter.PlaceholderText == expected),
                     ViewModel.View
                 );
@@ -598,7 +598,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var expected = isInManualMode == useDefaultMode
                     ? TimeSpan.FromMinutes(DefaultTimeEntryDurationForManualModeInMinutes)
                     : (TimeSpan?)null;
-                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(
+                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(
                     Arg.Is<StartTimeEntryParameters>(parameter => parameter.Duration == expected),
                     ViewModel.View
                 );
@@ -621,7 +621,7 @@ namespace Toggl.Core.Tests.UI.ViewModels
                 var expected = isInManualMode == useDefaultMode
                     ? date.Subtract(TimeSpan.FromMinutes(DefaultTimeEntryDurationForManualModeInMinutes))
                     : date;
-                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(
+                await NavigationService.Received().Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(
                     Arg.Is<StartTimeEntryParameters>(parameter => parameter.StartTime == expected),
                     ViewModel.View
                 );

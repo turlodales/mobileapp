@@ -427,8 +427,9 @@ namespace Toggl.Core.UI.ViewModels.Calendar.ContextualMenu
                 calendarItem.Duration,
                 workspace.Id);
 
-            await Navigate<StartTimeEntryViewModel, StartTimeEntryParameters>(timeEntryParams);
-            closeMenuWithCommittedChanges();
+            var createdEntry = await Navigate<StartTimeEntryViewModel, StartTimeEntryParameters, IThreadSafeTimeEntry>(timeEntryParams);
+            if (createdEntry != null)
+                closeMenuWithCommittedChanges();
         }
 
         private void discardCurrentItemInEditMode(CalendarItem calendarItem)

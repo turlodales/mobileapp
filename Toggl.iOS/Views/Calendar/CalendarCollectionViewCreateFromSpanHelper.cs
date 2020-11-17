@@ -76,7 +76,9 @@ namespace Toggl.iOS.Views.Calendar
         {
             if (calendarItem == null) return;
 
+            dataSource.StartEditing();
             dataSource.RemoveItemView(calendarItem.Value);
+            dataSource.StopEditing();
             calendarItem = null;
         }
 
