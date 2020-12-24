@@ -117,7 +117,7 @@
                         <constraint firstItem="WYP-jz-sMu" firstAttribute="top" secondItem="dgb-Zz-dvD" secondAttribute="top" constant="19" id="xa7-FF-fcU"/>
                     </constraints>
                 </view>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to your account on Toggl.com to see more detailed info about you account and plan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Hh-hP-xVX">
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to your account on Toggl.com to see more detailed info about your account and plan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Hh-hP-xVX">
                     <rect key="frame" x="16" y="171.5" width="343" height="29"/>
                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
                     <color key="textColor" name="Text2"/>
